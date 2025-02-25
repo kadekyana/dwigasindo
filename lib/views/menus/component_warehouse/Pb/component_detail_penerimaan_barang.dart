@@ -6,11 +6,11 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../widgets/widget_form.dart';
-import '../Stok/component_tambah_item.dart';
 
 class ComponentDetailPenerimaanBarang extends StatefulWidget {
   ComponentDetailPenerimaanBarang({super.key});
@@ -25,8 +25,8 @@ class _ComponentDetailPenerimaanBarangState
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source, StateSetter setState) async {
+    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -34,206 +34,40 @@ class _ComponentDetailPenerimaanBarangState
     }
   }
 
-  void _resetImageFile() {
-    setState(() {
-      _imageFile = null;
-    });
-  }
-
-  void showCompletionDialog(
-      BuildContext context, double width, double height, Function onpressed) {
-    showDialog(
+  void _showImageSourceDialog(StateSetter setState) {
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: Container(
-                width: width * 5,
-                child: Center(
-                  child: Text(
-                    'Terima Barang',
-                    style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera, setState);
+                },
               ),
-              content: Container(
-                width: width,
-                height: height * 7,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: FittedBox(
-                            child: Text(
-                              'Qty Pemesanan',
-                              style: titleTextBlack,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        const Expanded(
-                          child: FittedBox(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Qty Diterima',
-                              style: titleTextBlack,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        const Expanded(
-                          child: Center(
-                            child: Text(
-                              'Qty Result',
-                              style: titleTextBlack,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            child: Center(
-                              child: Text(
-                                '100 (MoU)',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: WidgetForm(
-                              typeInput: TextInputType.number,
-                              alert: '(MoU)',
-                              hint: '(MoU)',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          const Expanded(
-                            child: Center(
-                              child: Text(
-                                '-/+1 (MoU)',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              'Foto Bukti',
-                              style: subtitleTextBlack,
-                            ),
-                          ),
-                          const Expanded(
-                            flex: 2,
-                            child: Text(
-                              'Gudang',
-                              style: subtitleTextBlack,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  await _pickImage();
-                                  setState(() {});
-                                },
-                                child: _imageFile != null
-                                    ? Image.file(
-                                        _imageFile!,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/images/gambar.svg'),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: CustomDropdown(
-                              items: ['a', 'b'],
-                              hintText: 'Tipe',
-                              onChanged: (value) {},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        maxLines: null,
-                        expands: true,
-                        decoration: InputDecoration(
-                          hintText: 'Masukkan keterangan di sini...',
-                          contentPadding: EdgeInsets.all(10),
-                          border: OutlineInputBorder(),
-                        ),
-                        style: TextStyle(fontSize: 16),
-                        textAlignVertical: TextAlignVertical.top,
-                      ),
-                    ),
-                  ],
-                ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery, setState);
+                },
               ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    WidgetButtonCustom(
-                      FullWidth: width,
-                      FullHeight: height,
-                      title: 'Kembali',
-                      onpressed: () {
-                        Navigator.pop(context);
-                        _resetImageFile();
-                      },
-                      bgColor: PRIMARY_COLOR,
-                      color: PRIMARY_COLOR,
-                    ),
-                    WidgetButtonCustom(
-                      FullWidth: width,
-                      FullHeight: height,
-                      title: 'Selesai',
-                      onpressed: () {
-                        onpressed();
-                        Navigator.pop(context);
-                        _resetImageFile();
-                      },
-                      bgColor: PRIMARY_COLOR,
-                      color: PRIMARY_COLOR,
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
+            ],
+          ),
         );
       },
     );
+  }
+
+  void _resetImageFile(StateSetter setState) {
+    setState(() {
+      _imageFile = null;
+    });
   }
 
 // dialog return
@@ -248,86 +82,89 @@ class _ComponentDetailPenerimaanBarangState
               title: Container(
                 width: width * 5,
                 child: Center(
-                  child: Text(
-                    'Return Barang',
-                    style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
+                  child: Text('Return Barang', style: titleTextBlack),
                 ),
               ),
               content: Container(
                 width: width,
-                height: height * 4,
+                height: 300.h,
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Qty',
-                            style: titleTextBlack,
-                          ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Qty',
+                          style: titleTextBlack,
                         ),
-                        SizedBox(width: 10),
-                        const Expanded(
-                          flex: 2,
-                          child: Text(
-                            'Foto Bukti',
-                            style: titleTextBlack,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: WidgetForm(
-                              typeInput: TextInputType.number,
-                              alert: '(MoU)',
-                              hint: '(MoU)',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            flex: 2,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  await _pickImage();
-                                  setState(() {});
-                                },
-                                child: _imageFile != null
-                                    ? Image.file(
-                                        _imageFile!,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/images/gambar.svg'),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                     Expanded(
+                      flex: 2,
+                      child: WidgetForm(
+                        typeInput: TextInputType.number,
+                        alert: '(MoU)',
+                        hint: '(MoU)',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Foto Bukti',
+                          style: titleTextBlack,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _showImageSourceDialog(
+                          setState), // Panggil fungsi saat button diklik
+                      child: Container(
+                        width: 250.w,
+                        height: 100.h,
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _imageFile != null
+                            ? Image.file(
+                                _imageFile!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: SvgPicture.asset(
+                                    'assets/images/gambar.svg'),
+                              ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.1,
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Keterangan',
+                          style: titleTextBlack,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 50,
                       child: TextField(
                         maxLines: null,
                         expands: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Masukkan keterangan di sini...',
                           contentPadding: EdgeInsets.all(10),
                           border: OutlineInputBorder(),
                         ),
-                        style: TextStyle(fontSize: 16),
+                        style: subtitleTextBlack,
                         textAlignVertical: TextAlignVertical.top,
                       ),
                     ),
@@ -344,7 +181,7 @@ class _ComponentDetailPenerimaanBarangState
                       title: 'Kembali',
                       onpressed: () {
                         Navigator.pop(context);
-                        _resetImageFile();
+                        _resetImageFile(setState);
                       },
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR,
@@ -356,7 +193,197 @@ class _ComponentDetailPenerimaanBarangState
                       onpressed: () {
                         onpressed();
                         Navigator.pop(context);
-                        _resetImageFile();
+                        _resetImageFile(setState);
+                      },
+                      bgColor: PRIMARY_COLOR,
+                      color: PRIMARY_COLOR,
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void showCompletionDialog(
+      BuildContext context, double width, double height, Function onpressed) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Container(
+                width: width * 5,
+                child: Center(
+                  child: Text('Terima Barang', style: titleTextBlack),
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FittedBox(
+                            child: Text('Qty Pemesanan', style: titleTextBlack),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: FittedBox(
+                            alignment: Alignment.center,
+                            child: Text('Qty Diterima', style: titleTextBlack),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text('Qty Result', style: titleTextBlack),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                '100 (MoU)',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                          const Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: '(MoU)',
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                '-/+1 (MoU)',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Foto Bukti',
+                          style: subtitleTextBlack,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _showImageSourceDialog(
+                          setState), // Panggil fungsi saat button diklik
+                      child: Container(
+                        width: 250.w,
+                        height: 100.h,
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _imageFile != null
+                            ? Image.file(
+                                _imageFile!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: SvgPicture.asset(
+                                    'assets/images/gambar.svg'),
+                              ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Gudang',
+                          style: subtitleTextBlack,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
+                      child: CustomDropdown(
+                        items: ['a', 'b'],
+                        hintText: 'Tipe',
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.2),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Keterangan',
+                          style: subtitleTextBlack,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 50,
+                      child: TextField(
+                        maxLines: null,
+                        expands: true,
+                        decoration: const InputDecoration(
+                          hintText: 'Masukkan keterangan di sini...',
+                          contentPadding: EdgeInsets.all(10),
+                          border: OutlineInputBorder(),
+                        ),
+                        style: subtitleTextBlack,
+                        textAlignVertical: TextAlignVertical.top,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    WidgetButtonCustom(
+                      FullWidth: width,
+                      FullHeight: height,
+                      title: 'Kembali',
+                      onpressed: () {
+                        Navigator.pop(context);
+                        _resetImageFile(setState);
+                      },
+                      bgColor: PRIMARY_COLOR,
+                      color: PRIMARY_COLOR,
+                    ),
+                    WidgetButtonCustom(
+                      FullWidth: width,
+                      FullHeight: height,
+                      title: 'Selesai',
+                      onpressed: () {
+                        onpressed();
+                        Navigator.pop(context);
+                        _resetImageFile(setState);
                       },
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR,
@@ -383,14 +410,7 @@ class _ComponentDetailPenerimaanBarangState
               title: Container(
                 width: width * 5,
                 child: Center(
-                  child: Text(
-                    'Pembatalan Barang',
-                    style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
+                  child: Text('Pembatalan Barang', style: titleTextBlack),
                 ),
               ),
               content: Container(
@@ -411,12 +431,12 @@ class _ComponentDetailPenerimaanBarangState
                       child: TextField(
                         maxLines: null,
                         expands: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Masukkan keterangan di sini...',
                           contentPadding: EdgeInsets.all(10),
                           border: OutlineInputBorder(),
                         ),
-                        style: TextStyle(fontSize: 16),
+                        style: subtitleTextBlack,
                         textAlignVertical: TextAlignVertical.top,
                       ),
                     ),
@@ -433,7 +453,7 @@ class _ComponentDetailPenerimaanBarangState
                       title: 'Kembali',
                       onpressed: () {
                         Navigator.pop(context);
-                        _resetImageFile();
+                        _resetImageFile(setState);
                       },
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR,
@@ -445,7 +465,7 @@ class _ComponentDetailPenerimaanBarangState
                       onpressed: () {
                         onpressed();
                         Navigator.pop(context);
-                        _resetImageFile();
+                        _resetImageFile(setState);
                       },
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR,
@@ -465,7 +485,6 @@ class _ComponentDetailPenerimaanBarangState
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Penerimaan Barang',
         center: true,
@@ -476,22 +495,6 @@ class _ComponentDetailPenerimaanBarangState
         route: () {
           Navigator.pop(context);
         },
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ComponentTambahItem(),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.add_circle_outline_rounded,
-              color: Colors.black,
-            ),
-          ),
-        ],
       ),
       body: Container(
         width: width,
@@ -502,7 +505,7 @@ class _ComponentDetailPenerimaanBarangState
             Container(
               width: double.maxFinite,
               height: height * 0.15,
-              child: const Column(
+              child: Column(
                 children: [
                   Expanded(
                     child: Row(
@@ -511,19 +514,22 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'Kode SO :',
-                                style: titleTextBlack,
+                                'Kode SO',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(3),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'D000000023',
+                                ': D000000023',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -536,9 +542,11 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'Tanggal :',
-                                style: titleTextBlack,
+                                'Tanggal',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
@@ -547,8 +555,68 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                '09-11-2024',
+                                ': 09-11-2024',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(3),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Nama Vendor',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(3),
+                            child: Text(
+                              ': PT Lorem Ipsum',
+                              overflow: TextOverflow.ellipsis,
+                              style: subtitleTextBlack,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'No. Telp',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': 0812222222',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -564,9 +632,11 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'Nama Vendor :',
-                                style: titleTextBlack,
+                                'Kategori',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
@@ -575,8 +645,10 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'PT Lorem Ipsum',
+                                ': Bahan Baku',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -589,72 +661,23 @@ class _ComponentDetailPenerimaanBarangState
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'No. Telp :',
-                                style: titleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                '0812222222',
+                                'No.SPB',
                                 style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
                               child: Text(
-                                'Kategori :',
-                                style: titleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                'Bahan Baku',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                'No.SPB :',
-                                style: titleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                '24339104',
+                                ': 24339104',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -714,15 +737,14 @@ class _ComponentDetailPenerimaanBarangState
                               child: Column(
                                 children: [
                                   Container(
+                                    margin: EdgeInsets.only(top: height * 0.01),
                                     height: 20,
                                     child: Row(
                                       children: [
-                                        Expanded(child: SizedBox.shrink()),
-                                        Expanded(child: SizedBox.shrink()),
                                         Expanded(
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.start,
                                             children: [
                                               SvgPicture.asset(
                                                 'assets/images/approve4.svg',
@@ -740,6 +762,8 @@ class _ComponentDetailPenerimaanBarangState
                                             ],
                                           ),
                                         ),
+                                        Expanded(child: SizedBox.shrink()),
+                                        Expanded(child: SizedBox.shrink()),
                                       ],
                                     ),
                                   ),
@@ -753,6 +777,7 @@ class _ComponentDetailPenerimaanBarangState
                                           padding: EdgeInsets.all(5),
                                           child: FittedBox(
                                             alignment: Alignment.centerLeft,
+                                            fit: BoxFit.scaleDown,
                                             child: Text(
                                               'Nama Item',
                                               style: subtitleTextBlack,
@@ -766,6 +791,7 @@ class _ComponentDetailPenerimaanBarangState
                                           padding: EdgeInsets.all(5),
                                           child: FittedBox(
                                             alignment: Alignment.centerLeft,
+                                            fit: BoxFit.scaleDown,
                                             child: Text(': Lorem Ipsum',
                                                 style: subtitleTextBlack),
                                           ),
@@ -784,6 +810,7 @@ class _ComponentDetailPenerimaanBarangState
                                           child: Container(
                                             padding: EdgeInsets.all(5),
                                             child: FittedBox(
+                                              fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
                                               child: Text(
                                                 'Qty',
@@ -797,6 +824,7 @@ class _ComponentDetailPenerimaanBarangState
                                           child: Container(
                                             padding: EdgeInsets.all(5),
                                             child: FittedBox(
+                                              fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
                                               child: Text(': 100',
                                                   style: subtitleTextBlack),
@@ -817,6 +845,7 @@ class _ComponentDetailPenerimaanBarangState
                                           child: Container(
                                             padding: EdgeInsets.all(5),
                                             child: FittedBox(
+                                              fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
                                               child: Text(
                                                 'Kategori',
@@ -830,6 +859,7 @@ class _ComponentDetailPenerimaanBarangState
                                           child: Container(
                                             padding: EdgeInsets.all(5),
                                             child: FittedBox(
+                                              fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
                                               child: Text(': Bahan Baku',
                                                   style: subtitleTextBlack),
@@ -846,6 +876,8 @@ class _ComponentDetailPenerimaanBarangState
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
                                           child: Text(
                                             'Keterangan',
                                             style: titleTextBlack,
@@ -870,7 +902,7 @@ class _ComponentDetailPenerimaanBarangState
                               contentPadding: EdgeInsets.all(10),
                               border: OutlineInputBorder(),
                             ),
-                            style: TextStyle(fontSize: 16),
+                            style: subtitleTextBlack,
                             textAlignVertical: TextAlignVertical.top,
                           ),
                         ),
@@ -897,7 +929,7 @@ class _ComponentDetailPenerimaanBarangState
                                 child: WidgetButtonCustom(
                                     FullWidth: width * 0.3,
                                     FullHeight: 30,
-                                    title: "Return Barang",
+                                    title: "Return",
                                     onpressed: () {
                                       showReturn(context, width * 0.3,
                                           height * 0.05, () {});
@@ -912,7 +944,7 @@ class _ComponentDetailPenerimaanBarangState
                                 child: WidgetButtonCustom(
                                     FullWidth: width * 0.3,
                                     FullHeight: 30,
-                                    title: "Terima Barang",
+                                    title: "Terima",
                                     onpressed: () {
                                       showCompletionDialog(context, width * 0.3,
                                           height * 0.05, () {});

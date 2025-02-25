@@ -69,7 +69,6 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
         Offset(width / 2, height * 0.3); // Posisikan lebih tinggi dari tengah
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Scan QR Code',
         colorBG: Colors.grey.shade100,
@@ -226,6 +225,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                           children: [
                             Expanded(
                               child: FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text('Total Tabung\nBerhasil',
                                     textAlign: TextAlign.center,
                                     style: titleText),
@@ -233,14 +233,9 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                             ),
                             Expanded(
                               child: FittedBox(
-                                child: Text(
-                                  '${provider.scanSuccessCount}',
-                                  style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                fit: BoxFit.scaleDown,
+                                child: Text('${provider.scanSuccessCount}',
+                                    style: titleText),
                               ),
                             ),
                           ],
@@ -261,6 +256,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                           children: [
                             Expanded(
                               child: FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text(
                                   'Total Tabung\nDibatalkan',
                                   textAlign: TextAlign.center,
@@ -270,14 +266,9 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                             ),
                             Expanded(
                               child: FittedBox(
-                                child: Text(
-                                  '${provider.scanFailureCount}',
-                                  style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                fit: BoxFit.scaleDown,
+                                child: Text('${provider.scanFailureCount}',
+                                    style: titleText),
                               ),
                             ),
                           ],
@@ -332,10 +323,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                       return AlertDialog(
                         title: Text(
                           "Kamu yakin tambah tabung baru?",
-                          style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700),
+                          style: titleTextBlack,
                           textAlign: TextAlign.center,
                         ),
                         actions: [
@@ -525,6 +513,7 @@ class WidgetCard extends StatelessWidget {
                     ),
                   ),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '${data.data?.code}',
@@ -568,7 +557,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Produk',
@@ -582,6 +572,7 @@ class WidgetCard extends StatelessWidget {
                               child: Container(
                                 padding: EdgeInsets.all(6),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                       ': ${(data.data?.tubeGasId != null) ? providerDis.getGasName(intGas!) : "-"}',
@@ -599,7 +590,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Type',
@@ -613,6 +605,7 @@ class WidgetCard extends StatelessWidget {
                               child: Container(
                                 padding: EdgeInsets.all(6),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                       ': ${(data.data?.isHasTubeType == false) ? "VGL" : "-"} ',
@@ -630,7 +623,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Grade',
@@ -644,6 +638,7 @@ class WidgetCard extends StatelessWidget {
                               child: Container(
                                 padding: EdgeInsets.all(6),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                       ': ${(data.data?.isHasGrade == true) ? providerDis.getGrade(intGrade!) : "-"}',
@@ -661,7 +656,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Milik',
@@ -675,6 +671,7 @@ class WidgetCard extends StatelessWidget {
                               child: Container(
                                 padding: EdgeInsets.all(6),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                       ': ${(data.data?.ownerShipType == 0) ? "-" : (data.data?.ownerShipType == 1) ? "Assets" : "Pelanggan"}',
@@ -692,7 +689,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Keterangan',
@@ -705,7 +703,8 @@ class WidgetCard extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -729,14 +728,10 @@ class WidgetCard extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(13),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '12-08-2024 10:30:00',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
+                    child:
+                        Text('12-08-2024 10:30:00', style: subtitleTextNormal),
                   ),
                 ),
               ),
@@ -779,13 +774,8 @@ class WidgetCard extends StatelessWidget {
                             children: [
                               // Bagian Atas (Title)
                               Center(
-                                child: Text(
-                                  'Yakin Ingin Menghapus',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                child: Text('Yakin Ingin Menghapus',
+                                    style: titleTextBlack),
                               ),
                               SizedBox(height: 16),
                               // Bagian Tengah (Form)
@@ -848,7 +838,7 @@ class WidgetCard extends StatelessWidget {
 }
 
 class WidgetCardNew extends StatelessWidget {
-  const WidgetCardNew({
+  WidgetCardNew({
     super.key,
     required this.height,
     required this.width,
@@ -866,7 +856,7 @@ class WidgetCardNew extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -885,14 +875,15 @@ class WidgetCardNew extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: COMPLEMENTARY_COLOR3,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
                       bottomRight: Radius.circular(40),
                     ),
                   ),
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Tabung Baru',
@@ -927,7 +918,7 @@ class WidgetCardNew extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: PRIMARY_COLOR),
@@ -947,7 +938,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Produk',
@@ -960,7 +952,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -976,7 +969,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Type',
@@ -989,7 +983,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -1005,7 +1000,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Grade',
@@ -1018,7 +1014,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -1034,7 +1031,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Milik',
@@ -1047,7 +1045,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -1063,7 +1062,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Keterangan',
@@ -1076,7 +1076,8 @@ class WidgetCardNew extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -1100,14 +1101,9 @@ class WidgetCardNew extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(13),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '-',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
+                    child: Text('-', style: subtitleTextNormal),
                   ),
                 ),
               ),
@@ -1142,6 +1138,7 @@ class WidgetCardNew extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                       'Lengkapi Data',
                       style: subtitleText,

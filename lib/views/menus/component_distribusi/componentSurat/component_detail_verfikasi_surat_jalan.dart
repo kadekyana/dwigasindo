@@ -32,7 +32,6 @@ class _ComponentScanDetailVerifikasiSuratJalanState
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Detail Verifikasi Surat Jalan',
         colorBG: Colors.grey.shade100,
@@ -69,6 +68,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                           width: width,
                           height: 26,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             alignment: Alignment.centerLeft,
                             child: Text(
                               '23-09-2024',
@@ -83,6 +83,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Nama Driver',
@@ -94,6 +95,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     ': Andi',
@@ -111,6 +113,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Dibuat  Oleh',
@@ -122,6 +125,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     ': Ozo',
@@ -142,6 +146,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                     width: width,
                     height: 26,
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Data Tabung Mencurigakan',
@@ -178,7 +183,8 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                 horizontal: width * 0.05,
                                 vertical: height * 0.01),
                             width: width * 0.3,
-                            child: const FittedBox(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'BPTI tidak ditemukan',
@@ -226,6 +232,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'DWI-002',
@@ -235,6 +242,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                               Padding(
                                                 padding: EdgeInsets.all(2.0),
                                                 child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: Text(
@@ -268,6 +276,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'DWI-002',
@@ -277,6 +286,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                               Padding(
                                                 padding: EdgeInsets.all(2.0),
                                                 child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: Text(
@@ -306,6 +316,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                     width: width,
                     height: 26,
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Data BPTI',
@@ -339,7 +350,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
         child: WidgetButtonCustom(
             FullWidth: width,
             FullHeight: height * 0.06,
@@ -355,7 +366,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
 // widget verifikasi
 
 class CardVerifikasi extends StatelessWidget {
-  const CardVerifikasi({
+  CardVerifikasi({
     super.key,
     required this.provider,
     required this.height,
@@ -401,7 +412,8 @@ class CardVerifikasi extends StatelessWidget {
                       bottomRight: Radius.circular(25),
                     ),
                   ),
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
                     child: Text(
                       'SJ-002',
@@ -413,6 +425,7 @@ class CardVerifikasi extends StatelessWidget {
                   child: Container(
                     height: 18,
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerRight,
                       child: Text(
                         'CV Solusi Teknologi Bangsa',
@@ -462,6 +475,7 @@ class CardVerifikasi extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'DWI-002',
@@ -471,6 +485,7 @@ class CardVerifikasi extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       'Ozo',
@@ -498,6 +513,7 @@ class CardVerifikasi extends StatelessWidget {
                                   )
                                 ]),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'DWI-002',
@@ -522,6 +538,7 @@ class CardVerifikasi extends StatelessWidget {
                                   )
                                 ]),
                             child: FittedBox(
+                              fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'DWI-002',

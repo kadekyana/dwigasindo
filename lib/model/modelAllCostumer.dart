@@ -11,72 +11,80 @@ String modelAllCostumerToJson(ModelAllCostumer data) =>
     json.encode(data.toJson());
 
 class ModelAllCostumer {
-  List<Datum> data;
+  List<Datum>? data;
   dynamic error;
 
   ModelAllCostumer({
-    required this.data,
-    required this.error,
+    this.data,
+    this.error,
   });
-
-  ModelAllCostumer copyWith({
-    List<Datum>? data,
-    dynamic error,
-  }) =>
-      ModelAllCostumer(
-        data: data ?? this.data,
-        error: error ?? this.error,
-      );
 
   factory ModelAllCostumer.fromJson(Map<String, dynamic> json) =>
       ModelAllCostumer(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] == null
+            ? []
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
         error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "error": error,
       };
 }
 
 class Datum {
-  int id;
-  String idStr;
-  String name;
-  String address;
+  int? id;
+  String? code;
+  String? name;
+  DateTime? cooperationSince;
+  String? cooperationSinceToIdn;
+  String? districtComplete;
+  bool? isLimitPlatform;
+  int? limitPlatform;
+  int? totalOrder;
+  int? remaining;
 
   Datum({
-    required this.id,
-    required this.idStr,
-    required this.name,
-    required this.address,
+    this.id,
+    this.code,
+    this.name,
+    this.cooperationSince,
+    this.cooperationSinceToIdn,
+    this.districtComplete,
+    this.isLimitPlatform,
+    this.limitPlatform,
+    this.totalOrder,
+    this.remaining,
   });
-
-  Datum copyWith({
-    int? id,
-    String? idStr,
-    String? name,
-    String? address,
-  }) =>
-      Datum(
-        id: id ?? this.id,
-        idStr: idStr ?? this.idStr,
-        name: name ?? this.name,
-        address: address ?? this.address,
-      );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        idStr: json["id_str"],
+        code: json["code"],
         name: json["name"],
-        address: json["address"],
+        cooperationSince: json["cooperation_since"] == null
+            ? null
+            : DateTime.parse(json["cooperation_since"]),
+        cooperationSinceToIdn: json["cooperation_since_to_idn"],
+        districtComplete: json["district_complete"],
+        isLimitPlatform: json["is_limit_platform"],
+        limitPlatform: json["limit_platform"],
+        totalOrder: json["total_order"],
+        remaining: json["remaining"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "id_str": idStr,
+        "code": code,
         "name": name,
-        "address": address,
+        "cooperation_since": cooperationSince?.toIso8601String(),
+        "cooperation_since_to_idn": cooperationSinceToIdn,
+        "district_complete": districtComplete,
+        "is_limit_platform": isLimitPlatform,
+        "limit_platform": limitPlatform,
+        "total_order": totalOrder,
+        "remaining": remaining,
       };
 }

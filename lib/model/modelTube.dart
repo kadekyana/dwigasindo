@@ -10,30 +10,21 @@ String modelTubeToJson(ModelTube data) => json.encode(data.toJson());
 
 class ModelTube {
   List<Datum>? data;
-  dynamic error;
 
   ModelTube({
     this.data,
-    this.error,
   });
 
-  ModelTube copyWith({
-    List<Datum>? data,
-    dynamic error,
-  }) =>
-      ModelTube(
-        data: data ?? this.data,
-        error: error ?? this.error,
-      );
-
   factory ModelTube.fromJson(Map<String, dynamic> json) => ModelTube(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-        error: json["error"],
+        data: json["data"] == null
+            ? []
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-        "error": error,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
@@ -44,14 +35,14 @@ class Datum {
   String? photo;
   int? ownerShipType;
   bool? isHasTubeType;
-  dynamic tubeTypeId;
+  int? tubeTypeId;
   bool? isHasGrade;
   int? tubeGradeId;
   int? tubeYear;
   String? serialNumber;
-  int? customerId;
+  dynamic customerId;
   String? customerName;
-  int? vendorId;
+  dynamic vendorId;
   String? vendorName;
   String? lastLocation;
   int? tubeGasId;
@@ -75,45 +66,6 @@ class Datum {
     this.lastLocation,
     this.tubeGasId,
   });
-
-  Datum copyWith({
-    int? id,
-    String? idStr,
-    String? code,
-    String? photo,
-    int? ownerShipType,
-    bool? isHasTubeType,
-    dynamic tubeTypeId,
-    bool? isHasGrade,
-    int? tubeGradeId,
-    int? tubeYear,
-    String? serialNumber,
-    int? customerId,
-    String? customerName,
-    int? vendorId,
-    String? vendorName,
-    String? lastLocation,
-    int? tubeGasId,
-  }) =>
-      Datum(
-        id: id ?? this.id,
-        idStr: idStr ?? this.idStr,
-        code: code ?? this.code,
-        photo: photo ?? this.photo,
-        ownerShipType: ownerShipType ?? this.ownerShipType,
-        isHasTubeType: isHasTubeType ?? this.isHasTubeType,
-        tubeTypeId: tubeTypeId ?? this.tubeTypeId,
-        isHasGrade: isHasGrade ?? this.isHasGrade,
-        tubeGradeId: tubeGradeId ?? this.tubeGradeId,
-        tubeYear: tubeYear ?? this.tubeYear,
-        serialNumber: serialNumber ?? this.serialNumber,
-        customerId: customerId ?? this.customerId,
-        customerName: customerName ?? this.customerName,
-        vendorId: vendorId ?? this.vendorId,
-        vendorName: vendorName ?? this.vendorName,
-        lastLocation: lastLocation ?? this.lastLocation,
-        tubeGasId: tubeGasId ?? this.tubeGasId,
-      );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],

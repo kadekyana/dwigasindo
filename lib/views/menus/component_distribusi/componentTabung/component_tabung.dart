@@ -4,12 +4,14 @@ import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
+import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_tambah_cradle.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_tambah_tabung.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_update_tabung.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_grafik.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -25,42 +27,20 @@ class ComponentTabung extends StatefulWidget {
 
 class _ComponentTabungState extends State<ComponentTabung> {
   Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 500), (Timer timer) {
-      final provider = Provider.of<ProviderDistribusi>(context, listen: false);
-      provider.getAllTube(context);
-      provider.getAllTubeGrade(context);
-      provider.getAllTubeType(context);
-      provider.getAllTubeGas(context);
-      provider.getAllCostumer(context);
-      provider.getAllSupplier(context);
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
+  GroupButtonController? cek = GroupButtonController(selectedIndex: 0);
+  bool isTube = true;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderDistribusi>(context);
     final data = provider.tube?.data;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print(
-        "DATA ${provider.tubeGrades?.data}\n${provider.tubeTypes?.data}\n${provider.tubeGas?.data}\n${provider.customer?.data}");
 
     return PopScope(
       onPopInvoked: (didPop) {
         provider.countClear();
       },
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
         appBar: WidgetAppbar(
           title: 'Persentase',
           center: true,
@@ -73,328 +53,855 @@ class _ComponentTabungState extends State<ComponentTabung> {
             provider.countClear();
           },
         ),
-        body: (provider.isLoadingTube == true)
-            ? Center(
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(),
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Menampilkan grafik
+              Container(
+                width: width,
+                height: height * 0.3,
+                margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+                padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: PRIMARY_COLOR,
                 ),
-              )
-            : SafeArea(
                 child: Column(
                   children: [
-                    // Menampilkan grafik
-                    Container(
-                      width: width,
-                      height: height * 0.3,
-                      margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: PRIMARY_COLOR,
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'Tabung Asset',
+                          style: titleText,
+                        ),
+                        subtitle: WidgetGrafik(
+                          percentage: 75,
+                          text:
+                              "${(provider.tabungA == 0) ? 0 : provider.tabungA}",
+                          width: width * 0.8,
+                          height: height * 0.025,
+                        ),
                       ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListTile(
-                              title: Text(
-                                'Tabung Asset',
-                                style: titleText,
-                              ),
-                              subtitle: WidgetGrafik(
-                                percentage: 75,
-                                text:
-                                    "${(provider.tabungA == 0) ? 0 : provider.tabungA}",
-                                width: width * 0.8,
-                                height: height * 0.025,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              title: Text(
-                                'Tabung Pelanggan',
-                                style: titleText,
-                              ),
-                              subtitle: WidgetGrafik(
-                                percentage: 50,
-                                text:
-                                    "${(provider.tabungP == 0) ? 0 : provider.tabungP}",
-                                width: width * 0.8,
-                                height: height * 0.025,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              title: Text(
-                                'Total Tabung',
-                                style: titleText,
-                              ),
-                              subtitle: WidgetGrafik(
-                                percentage: 50,
-                                text: "${data?.length}",
-                                width: width * 0.8,
-                                height: height * 0.025,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Button Simpan
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      width: double.maxFinite,
-                      height: height * 0.05,
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              _timer?.cancel();
-                              final provider = Provider.of<ProviderDistribusi>(
-                                  context,
-                                  listen: false);
-                              await provider.getAllTubeGrade(context);
-                              await provider.getAllTubeType(context);
-                              await provider.getAllTubeGas(context);
-                              await provider.getAllCostumer(context);
-                              await provider.getAllSupplier(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ComponentTambahTabung(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              child: Icon(Icons.add_circle_outline_rounded),
-                            ),
-                          ),
-                          SizedBox(
-                            width: width * 0.02,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Tambah Tabung',
-                              style: subtitleTextBlack,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              WoltModalSheet.show(
-                                context: context,
-                                pageListBuilder: (bottomSheetContext) => [
-                                  SliverWoltModalSheetPage(
-                                    topBarTitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Filter',
-                                          style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            'Reset',
-                                            style: TextStyle(
-                                                color: COMPLEMENTARY_COLOR3,
-                                                fontFamily: 'Manrope'),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    isTopBarLayerAlwaysVisible: true,
-                                    navBarHeight: 60,
-                                    mainContentSliversBuilder: (context) => [
-                                      SliverList.builder(
-                                        itemCount: 1,
-                                        itemBuilder: (context, index) {
-                                          return Column(
-                                            children: [
-                                              SizedBox(
-                                                height: height * 0.02,
-                                              ),
-                                              Container(
-                                                width: double.maxFinite,
-                                                height: 20,
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: width * 0.04),
-                                                child: const FittedBox(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Status',
-                                                    style: titleTextBlack,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                  width: double.maxFinite,
-                                                  height: 80,
-                                                  child: GroupButton(
-                                                      isRadio: false,
-                                                      options:
-                                                          GroupButtonOptions(
-                                                        buttonWidth:
-                                                            width * 0.3,
-                                                        unselectedTextStyle:
-                                                            TextStyle(
-                                                                fontFamily:
-                                                                    'Manrope',
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    width *
-                                                                        0.03),
-                                                        selectedTextStyle:
-                                                            TextStyle(
-                                                                fontFamily:
-                                                                    'Manrope',
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                    width *
-                                                                        0.03),
-                                                        selectedColor:
-                                                            PRIMARY_COLOR,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50),
-                                                      ),
-                                                      buttons: const [
-                                                        'Terverifikasi',
-                                                        'Belum Terverifikasi',
-                                                        "Dihapus"
-                                                      ])),
-                                              SizedBox(
-                                                height: height * 0.01,
-                                              ),
-                                              WidgetButtonCustom(
-                                                FullWidth: width * 0.92,
-                                                FullHeight: height * 0.05,
-                                                title: 'Terapkan Filter',
-                                                onpressed: () {},
-                                                color: Colors.transparent,
-                                                bgColor: PRIMARY_COLOR,
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                      // Tambahkan spacer di bagian bawah
-                                      SliverToBoxAdapter(
-                                        child: SizedBox(
-                                            height:
-                                                50), // Sesuaikan height dengan kebutuhan
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              child: Icon(Icons.filter_list),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: width,
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      height: 20,
-                      child: FittedBox(
-                        alignment: Alignment.centerLeft,
-                        child: GroupButton(
-                            options: GroupButtonOptions(
-                              borderRadius: BorderRadius.circular(50),
-                              buttonHeight: 10,
-                              buttonWidth: width * 0.15,
-                              selectedColor: PRIMARY_COLOR,
-                              selectedTextStyle: const TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 6,
-                                  color: Colors.white),
-                              unselectedTextStyle: const TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 6,
-                                  color: Colors.black),
-                            ),
-                            buttons: ['All', 'Tabung Kosong', 'Tabung Terisi']),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
                     ),
                     Expanded(
-                      flex: 3,
-                      child: Consumer<ProviderDistribusi>(
-                        builder: (context, provider, child) {
-                          final data = provider.tube
-                              ?.data; // Fetch the latest data inside the Consumer
-                          if (data == null || data.isEmpty) {
-                            return Center(child: Text('No data available'));
-                          }
-
-                          return ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              final item =
-                                  data[index]; // Fetch the item based on index
-
-                              return WidgetCard(
-                                  width: width,
-                                  height: height,
-                                  item: item,
-                                  timer: _timer);
-                            },
-                          );
-                        },
+                      child: ListTile(
+                        title: Text(
+                          'Tabung Pelanggan',
+                          style: titleText,
+                        ),
+                        subtitle: WidgetGrafik(
+                          percentage: 50,
+                          text:
+                              "${(provider.tabungP == 0) ? 0 : provider.tabungP}",
+                          width: width * 0.8,
+                          height: height * 0.025,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'Total Tabung',
+                          style: titleText,
+                        ),
+                        subtitle: WidgetGrafik(
+                          percentage: 50,
+                          text: "${data?.length}",
+                          width: width * 0.8,
+                          height: height * 0.025,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+              // Button Simpan
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+                width: double.maxFinite,
+                height: height * 0.05,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: GroupButton(
+                        controller: cek,
+                        options: GroupButtonOptions(
+                            borderRadius: BorderRadius.circular(50),
+                            selectedColor: PRIMARY_COLOR,
+                            mainGroupAlignment: MainGroupAlignment.start,
+                            crossGroupAlignment: CrossGroupAlignment.start),
+                        buttons: ["Tabung", "Cradle"],
+                        onSelected: (value, index, isSelected) {
+                          if (index == 0) {
+                            setState(() {
+                              isTube = true;
+                            });
+                          } else {
+                            setState(() {
+                              isTube = false;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        WoltModalSheet.show(
+                          context: context,
+                          pageListBuilder: (bottomSheetContext) => [
+                            SliverWoltModalSheetPage(
+                              topBarTitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Filter', style: titleTextBlack),
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Reset',
+                                      style: TextStyle(
+                                          color: COMPLEMENTARY_COLOR3,
+                                          fontFamily: 'Manrope'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              isTopBarLayerAlwaysVisible: true,
+                              navBarHeight: 60,
+                              mainContentSliversBuilder: (context) => [
+                                SliverList.builder(
+                                  itemCount: 1,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: height * 0.02,
+                                        ),
+                                        Container(
+                                          width: double.maxFinite,
+                                          height: 20,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: width * 0.04),
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'Status',
+                                              style: titleTextBlack,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                            width: double.maxFinite,
+                                            height: 80,
+                                            child: GroupButton(
+                                                isRadio: false,
+                                                options: GroupButtonOptions(
+                                                  textAlign: TextAlign.center,
+                                                  buttonWidth: width * 0.3,
+                                                  unselectedTextStyle:
+                                                      subtitleTextBlack,
+                                                  selectedTextStyle:
+                                                      subtitleText,
+                                                  selectedColor: PRIMARY_COLOR,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                buttons: [
+                                                  'Terverifikasi',
+                                                  'Belum Terverifikasi',
+                                                  "Dihapus"
+                                                ])),
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        WidgetButtonCustom(
+                                          FullWidth: width * 0.92,
+                                          FullHeight: height * 0.05,
+                                          title: 'Terapkan Filter',
+                                          onpressed: () {},
+                                          color: Colors.transparent,
+                                          bgColor: PRIMARY_COLOR,
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                                // Tambahkan spacer di bagian bawah
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                      height:
+                                          50), // Sesuaikan height dengan kebutuhan
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: Icon(Icons.filter_list),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              if (isTube == true)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: WidgetButtonCustom(
+                    FullWidth: width,
+                    FullHeight: 40.h,
+                    title: 'Tambah Tabung',
+                    onpressed: () async {
+                      if (!mounted) return;
+
+                      // Tampilkan Dialog Loading
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+                      _timer?.cancel();
+                      final provider = Provider.of<ProviderDistribusi>(context,
+                          listen: false);
+
+                      try {
+                        await Future.wait([
+                          provider.getAllTubeGrade(context),
+                          provider.getAllTubeType(context),
+                          provider.getAllTubeGas(context),
+                          provider.getAllCostumer(context),
+                          provider.getAllSupplier(context),
+                        ]);
+
+                        // Navigate sesuai kondisi
+                        Navigator.of(context).pop(); // Tutup Dialog Loading
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ComponentTambahTabung(),
+                          ),
+                        );
+                      } catch (e) {
+                        Navigator.of(context).pop(); // Tutup Dialog Loading
+                        print('Error: $e');
+                        // Tambahkan pesan error jika perlu
+                      }
+                    },
+                    color: PRIMARY_COLOR,
+                    bgColor: PRIMARY_COLOR,
+                  ),
+                ),
+              if (isTube == false)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: WidgetButtonCustom(
+                    FullWidth: width,
+                    FullHeight: 40.h,
+                    title: 'Tambah Cradle',
+                    onpressed: () async {
+                      if (!mounted) return;
+
+                      // Tampilkan Dialog Loading
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+                      _timer?.cancel();
+                      final provider = Provider.of<ProviderDistribusi>(context,
+                          listen: false);
+
+                      try {
+                        await Future.wait([
+                          provider.createCradle(context),
+                        ]);
+
+                        // Navigate sesuai kondisi
+                        Navigator.of(context).pop(); // Tutup Dialog Loading
+                      } catch (e) {
+                        Navigator.of(context).pop(); // Tutup Dialog Loading
+                        print('Error: $e');
+                        // Tambahkan pesan error jika perlu
+                      }
+                    },
+                    color: PRIMARY_COLOR,
+                    bgColor: PRIMARY_COLOR,
+                  ),
+                ),
+              SizedBox(
+                height: 10.h,
+              ),
+              if (cek?.selectedIndex == 0)
+                Expanded(
+                  flex: 3,
+                  child: Consumer<ProviderDistribusi>(
+                    builder: (context, provider, child) {
+                      final data = provider.tube
+                          ?.data; // Fetch the latest data inside the Consumer
+                      if (data == null || data.isEmpty) {
+                        return Center(child: Text('No data available'));
+                      } else {
+                        print(data);
+                      }
+
+                      return ListView.builder(
+                        itemCount: provider.tube?.data?.length,
+                        itemBuilder: (context, index) {
+                          final item = provider.tube?.data?[index];
+
+                          print(item);
+
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: width * 0.05),
+                            width: double.maxFinite,
+                            height: height * 0.25,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 1,
+                                  color: Color(0xffE4E4E4),
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  height: 40,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        width: width * 0.3,
+                                        decoration: BoxDecoration(
+                                          color: PRIMARY_COLOR,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            bottomRight: Radius.circular(40),
+                                          ),
+                                        ),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            item?.code ?? "-",
+                                            style: titleText,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(
+                                          bottom: Radius.circular(8)),
+                                      border: Border(
+                                        top: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: PRIMARY_COLOR),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Milik',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item?.ownerShipType ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Sumber',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item?.customerName ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Serial Number',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item?.serialNumber ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Jenis Gas',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item?.tubeGradeId}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Grade',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${(item?.tubeGradeId == null) ? "-" : provider.getGrade(item!.tubeGradeId!)}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Lokasi',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item?.lastLocation ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(13),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('12-08-2024 10:30:00',
+                                              style: subtitleTextNormal),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () async {
+                                              // Tampilkan Dialog Loading
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+                                              _timer?.cancel();
+                                              final provider =
+                                                  Provider.of<ProviderScan>(
+                                                      context,
+                                                      listen: false);
+
+                                              try {
+                                                await Future.wait([
+                                                  provider.getDataCard(
+                                                      context, item!.code!),
+                                                ]);
+
+                                                // Navigate sesuai kondisi
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComponentUpdateTabung(
+                                                      code: item.idStr!,
+                                                    ),
+                                                  ),
+                                                );
+                                              } catch (e) {
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                print('Error: $e');
+                                                // Tambahkan pesan error jika perlu
+                                              }
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                              color: PRIMARY_COLOR,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Container(
+                                                    width: width * 0.8,
+                                                    height: height * 0.1,
+                                                    child: AlertDialog(
+                                                      title: Text(
+                                                          'Yakin ingin menghapus?'),
+                                                      actions: <Widget>[
+                                                        // Tombol Batal
+                                                        WidgetButtonCustom(
+                                                            FullWidth:
+                                                                width * 0.2,
+                                                            FullHeight:
+                                                                height * 0.05,
+                                                            title: "Kembali",
+                                                            bgColor:
+                                                                PRIMARY_COLOR,
+                                                            onpressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            color:
+                                                                PRIMARY_COLOR),
+                                                        // Tombol Hapus
+                                                        WidgetButtonCustom(
+                                                            FullWidth:
+                                                                width * 0.2,
+                                                            FullHeight:
+                                                                height * 0.05,
+                                                            bgColor:
+                                                                SECONDARY_COLOR,
+                                                            title: "Hapus",
+                                                            onpressed:
+                                                                () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              print(
+                                                                  item?.idStr);
+                                                              // print(
+                                                              //     "No BPTK : ${item!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
+                                                              await provider
+                                                                  .deleteTube(
+                                                                context,
+                                                                item!.idStr!,
+                                                              );
+                                                            },
+                                                            color:
+                                                                SECONDARY_COLOR),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.delete,
+                                              size: 20,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              if (cek?.selectedIndex == 1)
+                Expanded(
+                  flex: 3,
+                  child: Consumer<ProviderDistribusi>(
+                    builder: (context, provider, child) {
+                      final data = provider.cradle
+                          ?.data; // Fetch the latest data inside the Consumer
+                      if (data == null || data.isEmpty) {
+                        return Center(child: Text('No data available'));
+                      }
+
+                      return ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return WidgetCardCradle(
+                            width: width,
+                            height: height,
+                            item: data[index],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-class WidgetCard extends StatelessWidget {
-  const WidgetCard({
+class WidgetCardCradle extends StatelessWidget {
+  WidgetCardCradle({
     super.key,
     required this.width,
     required this.height,
     required this.item,
-    required Timer? timer,
-  }) : _timer = timer;
+  });
 
   final double width;
   final double height;
-  final Datum item;
-  final Timer? _timer;
+  final dynamic item;
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderDistribusi>(context);
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: width * 0.05),
+      margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: width * 0.05),
       width: double.maxFinite,
-      height: height * 0.25,
+      height: 150.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -413,7 +920,7 @@ class WidgetCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -421,9 +928,10 @@ class WidgetCard extends StatelessWidget {
                     ),
                   ),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "${(item.code != null) ? item.code : "-"}",
+                      "${(item.no != null) ? item.no : "-"}",
                       style: titleText,
                     ),
                   ),
@@ -444,7 +952,7 @@ class WidgetCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: PRIMARY_COLOR),
@@ -458,157 +966,104 @@ class WidgetCard extends StatelessWidget {
                       child: Column(
                         children: [
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: const FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Milik',
-                                      style: titleTextBlack,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Jumlah Tabung',
+                                        style: subtitleTextBoldBlack,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        ': ${(item.ownerShipType != null) ? provider.getOwner(item.ownerShipType!) : "-"}',
-                                        style: titleTextBlack),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(': -',
+                                          style: subtitleTextBoldBlack),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            ),
+                          ),
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Sumber',
-                                      style: titleTextBlack,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Dibuat Oleh',
+                                        style: subtitleTextNormal,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        ': ${(item.customerId != null) ? item.customerName : item.vendorId != null ? item.vendorName : "-"}',
-                                        style: titleTextBlack),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(': User 1',
+                                          style: subtitleTextNormal),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            ),
+                          ),
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: const FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Kondisi',
-                                      style: titleTextBlack,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Dibuat Pada',
+                                        style: subtitleTextNormal,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: const FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(': -', style: titleTextBlack),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )),
-                          Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: const FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Grade',
-                                      style: titleTextBlack,
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(': 24 - 11 -2025',
+                                          style: subtitleTextNormal),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        ': ${(item.tubeGradeId == null) ? "-" : provider.getGrade(item.tubeGradeId!)}',
-                                        style: titleTextBlack),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )),
-                          Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: const FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Lokasi',
-                                      style: titleTextBlack,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: EdgeInsets.all(3),
-                                  child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(': ${item.lastLocation}',
-                                        style: titleTextBlack),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -618,105 +1073,98 @@ class WidgetCard extends StatelessWidget {
             ),
           ),
           Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.all(13),
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '12-08-2024 10:30:00',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        _timer?.cancel();
-                        provider.isLoadingT = true;
-                        Provider.of<ProviderScan>(context, listen: false)
-                            .getDataCard(context, item.code!);
-                        Future.delayed(Duration(seconds: 1), () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ComponentUpdateTabung(
-                                code: item.idStr!,
-                              ),
-                            ),
-                          );
-                        });
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        size: 20,
-                        color: PRIMARY_COLOR,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: width * 0.8,
-                              height: height * 0.1,
-                              child: AlertDialog(
-                                title: Text('Yakin ingin menghapus?'),
-                                actions: <Widget>[
-                                  // Tombol Batal
-                                  WidgetButtonCustom(
-                                      FullWidth: width * 0.2,
-                                      FullHeight: height * 0.05,
-                                      title: "Kembali",
-                                      bgColor: PRIMARY_COLOR,
-                                      onpressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      color: PRIMARY_COLOR),
-                                  // Tombol Hapus
-                                  WidgetButtonCustom(
-                                      FullWidth: width * 0.2,
-                                      FullHeight: height * 0.05,
-                                      bgColor: SECONDARY_COLOR,
-                                      title: "Hapus",
-                                      onpressed: () async {
-                                        Navigator.pop(context);
-                                        // print(
-                                        //     "No BPTK : ${item!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
-                                        // await provider.deleteDetail(context,
-                                        //     item.noBptk!, details.id!, reason.text);
-                                      },
-                                      color: SECONDARY_COLOR),
-                                ],
-                              ),
-                            );
-                          },
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    // Tampilkan Dialog Loading
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       },
-                      icon: Icon(
-                        Icons.delete,
-                        size: 20,
-                        color: SECONDARY_COLOR,
-                      ),
-                    ),
-                  ],
+                    );
+
+                    try {
+                      await Future.wait([
+                        provider.getAllTube(context),
+                      ]);
+
+                      // Navigate sesuai kondisi
+                      Navigator.of(context).pop(); // Tutup Dialog Loading
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ComponentTambahCradle(
+                            id: item.id,
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      Navigator.of(context).pop(); // Tutup Dialog Loading
+                      print('Error: $e');
+                      // Tambahkan pesan error jika perlu
+                    }
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    size: 20,
+                    color: PRIMARY_COLOR,
+                  ),
                 ),
-              ),
-            ],
-          )),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: width * 0.8,
+                          height: height * 0.1,
+                          child: AlertDialog(
+                            title: Text('Yakin ingin menghapus?'),
+                            actions: <Widget>[
+                              // Tombol Batal
+                              WidgetButtonCustom(
+                                  FullWidth: width * 0.2,
+                                  FullHeight: height * 0.05,
+                                  title: "Kembali",
+                                  bgColor: PRIMARY_COLOR,
+                                  onpressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: PRIMARY_COLOR),
+                              // Tombol Hapus
+                              WidgetButtonCustom(
+                                  FullWidth: width * 0.2,
+                                  FullHeight: height * 0.05,
+                                  bgColor: SECONDARY_COLOR,
+                                  title: "Hapus",
+                                  onpressed: () async {
+                                    Navigator.pop(context);
+                                    await provider.deleteCradle(
+                                        context, item.idStr);
+                                  },
+                                  color: SECONDARY_COLOR),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    size: 20,
+                    color: SECONDARY_COLOR,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

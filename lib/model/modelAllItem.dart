@@ -18,22 +18,17 @@ class ModelAllItem {
     this.error,
   });
 
-  ModelAllItem copyWith({
-    List<Datum>? data,
-    dynamic error,
-  }) =>
-      ModelAllItem(
-        data: data ?? this.data,
-        error: error ?? this.error,
-      );
-
   factory ModelAllItem.fromJson(Map<String, dynamic> json) => ModelAllItem(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] == null
+            ? []
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
         error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "error": error,
       };
 }
@@ -55,6 +50,7 @@ class Datum {
   String? vendorName;
   String? createdByName;
   int? isRawMaterial;
+  int? isComposition;
 
   Datum({
     this.id,
@@ -73,44 +69,8 @@ class Datum {
     this.vendorName,
     this.createdByName,
     this.isRawMaterial,
+    this.isComposition,
   });
-
-  Datum copyWith({
-    int? id,
-    String? idStr,
-    String? code,
-    String? name,
-    int? categoryId,
-    int? locationId,
-    int? unitId,
-    int? stock,
-    int? price,
-    int? limitStock,
-    int? vendorId,
-    dynamic photo,
-    DateTime? createdAt,
-    String? vendorName,
-    String? createdByName,
-    int? isRawMaterial,
-  }) =>
-      Datum(
-        id: id ?? this.id,
-        idStr: idStr ?? this.idStr,
-        code: code ?? this.code,
-        name: name ?? this.name,
-        categoryId: categoryId ?? this.categoryId,
-        locationId: locationId ?? this.locationId,
-        unitId: unitId ?? this.unitId,
-        stock: stock ?? this.stock,
-        price: price ?? this.price,
-        limitStock: limitStock ?? this.limitStock,
-        vendorId: vendorId ?? this.vendorId,
-        photo: photo ?? this.photo,
-        createdAt: createdAt ?? this.createdAt,
-        vendorName: vendorName ?? this.vendorName,
-        createdByName: createdByName ?? this.createdByName,
-        isRawMaterial: isRawMaterial ?? this.isRawMaterial,
-      );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
@@ -125,10 +85,13 @@ class Datum {
         limitStock: json["limit_stock"],
         vendorId: json["vendor_id"],
         photo: json["photo"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
         vendorName: json["vendor_name"],
         createdByName: json["created_by_name"],
         isRawMaterial: json["is_raw_material"],
+        isComposition: json["is_composition"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -148,5 +111,6 @@ class Datum {
         "vendor_name": vendorName,
         "created_by_name": createdByName,
         "is_raw_material": isRawMaterial,
+        "is_composition": isComposition,
       };
 }

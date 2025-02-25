@@ -1,8 +1,11 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
+import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +25,9 @@ class ComponentTambahPermintaanBarang extends StatefulWidget {
 
 class _ComponentTambahPermintaanBarangState
     extends State<ComponentTambahPermintaanBarang> {
+  int selectPicId = 0;
+  int selectPicId1 = 0;
+  int selectPicId2 = 0;
   late TextEditingController pic;
   TextEditingController quantity = TextEditingController();
   TextEditingController catatan = TextEditingController();
@@ -54,7 +60,6 @@ class _ComponentTambahPermintaanBarangState
         title: 'Tambah Permintaan Barang',
         colorBG: Colors.transparent,
         colorTitle: Colors.black,
-        center: true,
         back: true,
         route: () {
           Navigator.pop(context);
@@ -73,7 +78,7 @@ class _ComponentTambahPermintaanBarangState
                 child: ListTile(
                   title: Text(
                     'Pilih Divisi',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: CustomDropdown(
                     controller: divisi,
@@ -110,7 +115,7 @@ class _ComponentTambahPermintaanBarangState
                       child: ListTile(
                         title: Text(
                           'Item Barang',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
@@ -129,7 +134,7 @@ class _ComponentTambahPermintaanBarangState
                       child: ListTile(
                         title: Text(
                           'Qty',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
@@ -157,7 +162,7 @@ class _ComponentTambahPermintaanBarangState
                 child: ListTile(
                   title: Text(
                     'Stock Tersedia',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -181,22 +186,18 @@ class _ComponentTambahPermintaanBarangState
                 child: ListTile(
                   title: Text(
                     'Catatan',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
-                  subtitle: Expanded(
-                    child: TextField(
-                      maxLines: null,
-                      expands: true,
-                      decoration: InputDecoration(
-                          hintText: 'Masukkan catatan di sini...',
-                          contentPadding: EdgeInsets.all(10),
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
-                              fontFamily: 'Manrope',
-                              color: Colors.grey.shade500)),
-                      style: TextStyle(fontSize: 16),
-                      textAlignVertical: TextAlignVertical.top,
-                    ),
+                  subtitle: TextField(
+                    maxLines: null,
+                    expands: true,
+                    decoration: InputDecoration(
+                        hintText: 'Masukkan catatan di sini...',
+                        contentPadding: EdgeInsets.all(10),
+                        border: OutlineInputBorder(),
+                        hintStyle: subtitleTextNormal),
+                    style: subtitleTextBlack,
+                    textAlignVertical: TextAlignVertical.top,
                   ),
                 ),
               ),
@@ -205,52 +206,111 @@ class _ComponentTambahPermintaanBarangState
               ),
               Container(
                 width: width,
-                height: height * 0.25,
+                height: 250.h,
                 child: ListTile(
                   title: Text(
                     'PIC Approval',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Column(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Verifikasi',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Verifikasi',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId");
+                            },
+                          );
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Mengetahui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      SizedBox(
+                        height: 10.h,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Menyetujui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Mengetahui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId1 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId1");
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Menyetujui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId2 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId2");
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

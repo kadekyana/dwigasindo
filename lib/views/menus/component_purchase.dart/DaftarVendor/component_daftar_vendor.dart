@@ -1,11 +1,13 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/views/menus/component_purchase.dart/DaftarVendor/component_detail_data_vendor.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 class ComponentDaftarVendor extends StatefulWidget {
   const ComponentDaftarVendor({super.key});
@@ -16,11 +18,20 @@ class ComponentDaftarVendor extends StatefulWidget {
 
 class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
   @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+    provider.getDataVendor(context);
+  }
+
+  GroupButtonController? list = GroupButtonController(selectedIndex: 0);
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderDistribusi>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Daftar Vendor',
         center: true,
@@ -87,6 +98,7 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
             Align(
               alignment: Alignment.centerLeft,
               child: GroupButton(
+                  controller: list,
                   isRadio: true,
                   options: GroupButtonOptions(
                     selectedColor: PRIMARY_COLOR,
@@ -102,229 +114,203 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 1,
+                itemCount: provider.vendors?.data?.length,
                 itemBuilder: (context, index) {
-                  print(index);
-                  return cardWidget(height: height, width: width);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class cardWidget extends StatelessWidget {
-  const cardWidget({
-    super.key,
-    required this.height,
-    required this.width,
-  });
-
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      height: height * 0.18,
-      margin: EdgeInsets.only(bottom: height * 0.02),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 1,
-            color: Color(0xffE4E4E4),
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            width: double.maxFinite,
-            height: 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  width: width * 0.3,
-                  decoration: const BoxDecoration(
-                    color: PRIMARY_COLOR,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(30),
-                    ),
-                  ),
-                  child: const FittedBox(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '27 Sep 2024',
-                      style: titleText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.grey.shade300),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          padding: EdgeInsets.all(3),
-                          child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Nomor PO',
-                              style: subtitleTextBlack,
-                            ),
-                          ),
+                  final data = provider.vendors?.data?[index];
+                  return Container(
+                    width: double.maxFinite,
+                    height: 180.h,
+                    margin: EdgeInsets.only(bottom: height * 0.02),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 1,
+                          color: Color(0xffE4E4E4),
+                          offset: Offset(0, 2),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.all(3),
-                          child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            child:
-                                Text(': 198289-AD', style: subtitleTextBlack),
-                          ),
-                        ),
-                      ),
-                      Expanded(child: SizedBox.shrink()),
-                    ],
-                  )),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      ],
+                    ),
+                    child: Column(
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Vendor',
-                                style: subtitleTextBlack,
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: height * 0.05,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: height * 0.1,
+                                width: width * 0.4,
+                                decoration: const BoxDecoration(
+                                  color: PRIMARY_COLOR,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(30),
+                                  ),
+                                ),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '${data?.name ?? "-"}',
+                                    style: titleText,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                         Expanded(
                           flex: 3,
                           child: Container(
-                            padding: EdgeInsets.all(3),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                ': PT Lorem Ipsum',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: height * 0.02,
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.025),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(color: Colors.grey.shade300),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Kategori',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                            ': ${data?.vendorCategoryName ?? '-'}',
+                                            style: subtitleTextBlack),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Alamat',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            ': ${data?.address ?? "-"}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Kota',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              ': ${data?.cityName ?? "-"}',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat oleh',
+                                            style: subtitleTextNormal,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(': User 1',
+                                              style: subtitleTextNormal),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 10.w, right: 10.w, bottom: 5.h),
+                            child: WidgetButtonCustom(
+                                FullWidth: width,
+                                FullHeight: 40.h,
+                                title: "Lihat Barang",
+                                onpressed: () {},
+                                bgColor: PRIMARY_COLOR,
+                                color: Colors.transparent),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Kategori',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(': Bahan Baku',
-                                  style: subtitleTextBlack),
-                            ),
-                          ),
-                        ),
-                        Expanded(child: SizedBox.shrink()),
-                      ],
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(6),
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Create by user 1',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: height * 0.005, right: width * 0.01),
-                  child: WidgetButtonCustom(
-                      FullWidth: width * 0.3,
-                      FullHeight: 25,
-                      title: "Lihat Barang",
-                      onpressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ComponentDetailDataVendor(),
-                          ),
-                        );
-                      },
-                      bgColor: PRIMARY_COLOR,
-                      color: Colors.transparent),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

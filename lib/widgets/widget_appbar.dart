@@ -1,5 +1,6 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetAppbar extends StatelessWidget implements PreferredSizeWidget {
   WidgetAppbar({
@@ -47,7 +48,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-            fontSize: (sizefont != null) ? sizefont : 20,
+            fontSize: (sizefont != null) ? sizefont : 20.sp,
             color: (colorTitle != null) ? colorTitle : Colors.white,
             fontFamily: 'Manrope',
             fontWeight: FontWeight.w700),

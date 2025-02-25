@@ -22,7 +22,6 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
     final provider = Provider.of<ProviderDistribusi>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
         title: 'Verifikasi Surat Jalan',
@@ -57,7 +56,6 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                         ),
                       );
                     },
-                    titleColor: Colors.black,
                     color: PRIMARY_COLOR),
                 SizedBox(
                   height: height * 0.05,
@@ -109,6 +107,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                       ),
                                     ),
                                     child: FittedBox(
+                                      fit: BoxFit.scaleDown,
                                       alignment: Alignment.center,
                                       child: Text(
                                         (data['warna'] == 'sedang')
@@ -126,6 +125,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     width: width * 0.35,
                                     child: FittedBox(
+                                      fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerRight,
                                       child: Text(
                                         '23-09-2024 | 10:30:00',
@@ -160,6 +160,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.bottomLeft,
                                                 child: Text(
                                                   'VSJ-002',
@@ -188,6 +189,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'Driver',
@@ -204,6 +206,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   ': Andi Muhammad',
@@ -228,6 +231,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'Verifikasi',
@@ -244,6 +248,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             child: Container(
                                               padding: EdgeInsets.all(3),
                                               child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   ': Mako , Ozo',
@@ -281,9 +286,6 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    titleColor: (data['warna'] == 'kendala')
-                                        ? Colors.white
-                                        : Colors.black,
                                     bgColor: Colors.transparent,
                                     color: (data['warna'] == 'kendala')
                                         ? Colors.white
@@ -318,9 +320,6 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                       bgColor: (data['warna'] == 'kendala')
                                           ? Colors.white
                                           : PRIMARY_COLOR,
-                                      titleColor: (data['warna'] == 'kendala')
-                                          ? Colors.black
-                                          : Colors.white,
                                       color: Colors.transparent),
                                 ],
                               ),
@@ -363,7 +362,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                         bottomRight: Radius.circular(40),
 //                                       ),
 //                                     ),
-//                                     child: const FittedBox(
+//                                     child: const FittedBox(fit:BoxFit.scaleDown,
 //                                       alignment: Alignment.center,
 //                                       child: Text(
 //                                         'Sedang',
@@ -374,7 +373,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                   Container(
 //                                     padding: EdgeInsets.all(10),
 //                                     width: width * 0.35,
-//                                     child: const FittedBox(
+//                                     child: const FittedBox(fit:BoxFit.scaleDown,
 //                                       alignment: Alignment.centerRight,
 //                                       child: Text(
 //                                         '23-09-2024 | 10:30:00',
@@ -406,7 +405,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                           flex: 1,
 //                                           child: Container(
 //                                             padding: EdgeInsets.all(6),
-//                                             child: const FittedBox(
+//                                             child: const FittedBox(fit:BoxFit.scaleDown,
 //                                               alignment: Alignment.centerLeft,
 //                                               child: Text(
 //                                                 'Driver',
@@ -419,7 +418,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                           flex: 2,
 //                                           child: Container(
 //                                             padding: EdgeInsets.all(6),
-//                                             child: const FittedBox(
+//                                             child: const FittedBox(fit:BoxFit.scaleDown,
 //                                               alignment: Alignment.centerLeft,
 //                                               child: Text(
 //                                                 ': Andi Muhammad',
@@ -439,7 +438,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                           flex: 1,
 //                                           child: Container(
 //                                             padding: EdgeInsets.all(6),
-//                                             child: const FittedBox(
+//                                             child: const FittedBox(fit:BoxFit.scaleDown,
 //                                               alignment: Alignment.centerLeft,
 //                                               child: Text(
 //                                                 'Admin',
@@ -452,7 +451,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
 //                                           flex: 2,
 //                                           child: Container(
 //                                             padding: EdgeInsets.all(6),
-//                                             child: const FittedBox(
+//                                             child: const FittedBox(fit:BoxFit.scaleDown,
 //                                               alignment: Alignment.centerLeft,
 //                                               child: Text(': Udin',
 //                                                   style: titleTextBlack),

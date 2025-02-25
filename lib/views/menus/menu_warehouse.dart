@@ -1,4 +1,5 @@
 import 'package:dwigasindo/const/const_color.dart';
+import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Pb/component_penerimaan_barang.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/PenB/component_permintaan_barang.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_item_stok.dart';
@@ -17,7 +18,6 @@ class MenuWarehouse extends StatelessWidget {
     final titleSize = width * 0.04;
     final subSize = width * 0.02;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Warehouse',
         colorBack: Colors.black,
@@ -53,25 +53,11 @@ class MenuWarehouse extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Total Item\n',
-                                    style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: titleSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                      text: 'Total Item\n', style: titleText),
+                                  TextSpan(text: '1.000\n', style: titleText),
                                   TextSpan(
-                                    text: '1.000\n',
-                                    style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: titleSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: 'Bulan ini',
-                                    style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: subSize),
-                                  ),
+                                      text: 'Bulan ini',
+                                      style: minisubtitleText),
                                 ],
                               ),
                               textAlign: TextAlign.center,
@@ -82,23 +68,12 @@ class MenuWarehouse extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Permintaan Barang\n',
-                                    style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: titleSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: '100\n',
-                                    style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: titleSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                      text: 'Permintaan Barang\n',
+                                      style: titleText),
+                                  TextSpan(text: '100\n', style: titleText),
                                   TextSpan(
                                       text: 'Bulan ini',
-                                      style: TextStyle(
-                                          fontFamily: 'Manrope', fontSize: 10)),
+                                      style: minisubtitleText),
                                 ],
                               ),
                               textAlign: TextAlign.center,
@@ -116,23 +91,11 @@ class MenuWarehouse extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Permintaan Barang\n',
-                                style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: titleSize,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                                  text: 'Permintaan Barang\n',
+                                  style: titleText),
+                              TextSpan(text: '100\n', style: titleText),
                               TextSpan(
-                                text: '100\n',
-                                style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: titleSize,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                  text: 'Bulan ini',
-                                  style: TextStyle(
-                                      fontFamily: 'Manrope', fontSize: 10)),
+                                  text: 'Bulan ini', style: minisubtitleText),
                             ],
                           ),
                           textAlign: TextAlign.center,

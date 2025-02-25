@@ -42,7 +42,7 @@ class ProviderScan with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearResults() {
+  Future<void> clearResults() async {
     _scanResults.clear();
     _qrScannedData.clear();
     notifyListeners();
@@ -92,22 +92,51 @@ class ProviderScan with ChangeNotifier {
     return true;
   }
 
-  Future<bool>? getDataCard(BuildContext context, String code) async {
+  Future<void> getDataCard(BuildContext context, String code) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
 
     final response = await DioServiceAPI()
         .getRequest(url: 'tubes_codes/$code', token: token);
     print(response?.data);
-    if (response!.data['error'] != null) {
-      return false;
-    }
-    final data = ModelCard.fromJson(response.data);
+    final data = ModelCard.fromJson(response!.data);
     _card = data;
     addScanResult(data);
     notifyListeners();
     print(scanResults.length);
-    return true;
+  }
+
+  Future<void> scanTubeLoading(BuildContext context, String code) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'tube_loadings', token: token, data: {"tube_no": code});
+    print(response?.data);
+  }
+
+  Future<void> scanC2H2(BuildContext context, String code) async {
+    List<String> dataCode = [code];
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI()
+        .postRequest(url: 'tube_shelves', token: token, data: {
+      "tubes": dataCode,
+    });
+    print(response?.data);
+  }
+
+  Future<void> ScanMixGas(BuildContext context, int id, String code) async {
+    List<String> dataCode = [code];
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'mix_gas_tube_shelves',
+        token: token,
+        data: {"tubes": dataCode, "mix_gas_shelf_id": id});
+    print(response?.data);
   }
 
   int scanSuccessCount = 0; // Counter untuk scan yang berhasil
@@ -248,7 +277,7 @@ class ProviderScan with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearScannedCount() {
+  Future<void> clearScannedCount() async {
     scanSuccessCount = 0;
     scanFailureCount = 0;
     notifyListeners();

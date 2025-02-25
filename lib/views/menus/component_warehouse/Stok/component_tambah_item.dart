@@ -5,9 +5,10 @@ import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
-import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
+import 'package:dwigasindo/widgets/wigdet_kecamatan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -24,14 +25,45 @@ class ComponentTambahItem extends StatefulWidget {
 class _ComponentTambahItemState extends State<ComponentTambahItem> {
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
+  TextEditingController? controller = TextEditingController();
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   int? selectKategori;
@@ -43,13 +75,11 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
   TextEditingController nama = TextEditingController();
   TextEditingController stok = TextEditingController();
   TextEditingController harga = TextEditingController();
+  TextEditingController lokasi = TextEditingController();
   TextEditingController limit = TextEditingController();
   TextEditingController supplier = TextEditingController();
 
   SingleSelectController<String?> kategori =
-      SingleSelectController<String?>(null);
-
-  SingleSelectController<String?> lokasi =
       SingleSelectController<String?>(null);
 
   SingleSelectController<String?> mou = SingleSelectController<String?>(null);
@@ -79,9 +109,8 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
         .toList();
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
-        title: 'Tambah Tabung',
+        title: 'Tambah Item',
         back: true,
         center: true,
         colorBG: Colors.grey.shade100,
@@ -94,7 +123,8 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: width,
@@ -102,7 +132,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 child: ListTile(
                   title: Text(
                     'Kode Item',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -123,7 +153,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 child: ListTile(
                   title: Text(
                     'Nama Item',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -140,11 +170,14 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(height: height * 0.02),
               Container(
                 width: width,
-                height: height * 0.1,
+                height: 80.h,
                 child: ListTile(
-                  title: Text(
-                    'Kategori Item',
-                    style: subtitleTextBlack,
+                  title: Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    child: Text(
+                      'Kategori Item',
+                      style: subtitleTextBlack,
+                    ),
                   ),
                   subtitle: CustomDropdown(
                     items: categories!.map((e) => e['name']).toList(),
@@ -166,37 +199,40 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(height: height * 0.01),
               Container(
                 width: width,
-                height: height * 0.1,
+                height: 80.h,
                 child: ListTile(
-                  title: Text(
-                    'Lokasi',
-                    style: subtitleTextBlack,
+                  title: Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    child: Text(
+                      'Lokasi',
+                      style: subtitleTextBlack,
+                    ),
                   ),
-                  subtitle: CustomDropdown(
-                    items: locations!.map((e) => e['name']).toList(),
-                    hintText: 'Lokasi',
-                    controller: lokasi,
-                    onChanged: (value) {
-                      if (value != null) {
-                        final ID = locations.firstWhere(
-                          (item) => item['name'] == value,
-                        );
-                        setState(() {
-                          selectLokasi = int.parse(ID['id'].toString());
-                        });
-                      }
+                  subtitle: CustomAutocomplete(
+                    data: locations!.map((e) => e['name']).toList(),
+                    displayString: (item) => item.toString(),
+                    onSelected: (item) {
+                      setState(() {
+                        controller?.text = item.toString();
+                      });
+                      print("Barang dipilih: ${item.toString()}");
                     },
+                    labelText: 'Cari Barang',
+                    controller: controller,
                   ),
                 ),
               ),
               SizedBox(height: height * 0.01),
               Container(
                 width: width,
-                height: height * 0.1,
+                height: 80.h,
                 child: ListTile(
-                  title: Text(
-                    'Satuan (MoU)',
-                    style: subtitleTextBlack,
+                  title: Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    child: Text(
+                      'Satuan (MoU)',
+                      style: subtitleTextBlack,
+                    ),
                   ),
                   subtitle: CustomDropdown(
                     items: units!.map((e) => e['name']).toList(),
@@ -224,7 +260,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 child: ListTile(
                   title: Text(
                     'Stok Item',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -247,7 +283,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 child: ListTile(
                   title: Text(
                     'Harga Stok',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -269,7 +305,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 child: ListTile(
                   title: Text(
                     'Limit Stok',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -288,9 +324,12 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
-                  title: Text(
-                    'Vendors / Supplier',
-                    style: subtitleTextBlack,
+                  title: Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    child: Text(
+                      'Vendors / Supplier',
+                      style: subtitleTextBlack,
+                    ),
                   ),
                   subtitle: CustomDropdown(
                     items: vendorData!.map((e) => e['name']).toList(),
@@ -312,40 +351,41 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(
                 height: height * 0.01,
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: _pickImage, // Panggil fungsi saat button diklik
-                  child: Container(
-                    width: width * 0.55,
-                    height: height * 0.1,
-                    child: ListTile(
-                      title: Text(
-                        'Upload Image',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(12),
+              Container(
+                width: width,
+                height: 80.h,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap:
+                        _showImageSourceDialog, // Panggil fungsi saat button diklik
+                    child: SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Upload Image',
+                          style: subtitleTextBlack,
                         ),
-                        child: ListTile(
-                          leading: _imageFile != null
+                        subtitle: Container(
+                          height: 100.h,
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _imageFile != null
                               ? Image.file(
                                   _imageFile!,
                                   width: 50,
                                   height: 50,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fitHeight,
                                 )
-                              : SvgPicture.asset('assets/images/gambar.svg'),
-                          title: Text(
-                            'Upload Image',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
+                              : Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: SvgPicture.asset(
+                                      'assets/images/gambar.svg'),
+                                ),
                         ),
                       ),
                     ),
@@ -353,7 +393,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(
-                height: height * 0.05,
+                height: 30.h,
               ),
             ],
           ),
@@ -362,28 +402,50 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
       bottomNavigationBar: Container(
         width: width,
         height: height * 0.06,
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: WidgetButtonCustom(
-              FullWidth: width * 0.9,
-              FullHeight: height * 0.05,
+        margin: EdgeInsets.only(bottom: 10.h),
+        child: ListTile(
+          subtitle: WidgetButtonCustom(
+              FullWidth: 340.w,
+              FullHeight: 40.h,
               title: 'Submit',
               onpressed: () async {
-                print(
-                    "${kode.text}, ${nama.text}, ${kategori.value}, ${lokasi.value}, ${mou.value}, ${stok.text}, ${harga.text}, ${limit.text} ,${_imageFile?.path}");
+                if (!mounted) return;
 
-                provider.createItem(
-                    context,
-                    kode.text,
-                    nama.text,
-                    selectKategori!,
-                    selectLokasi!,
-                    selectUnit!,
-                    int.parse(stok.text),
-                    int.parse(harga.text),
-                    int.parse(limit.text),
-                    selectVendor!,
-                    1);
+                // Tampilkan Dialog Loading
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+
+                try {
+                  await Future.wait([
+                    provider.createItem(
+                        context,
+                        kode.text,
+                        nama.text,
+                        selectKategori!,
+                        selectLokasi!,
+                        selectUnit!,
+                        int.parse(stok.text),
+                        int.parse(harga.text),
+                        int.parse(limit.text),
+                        selectVendor!,
+                        1),
+                  ]);
+
+                  // Navigate sesuai kondisi
+                  Navigator.pop(context); // Tutup Dialog Loading
+                  Navigator.pop(context);
+                } catch (e) {
+                  Navigator.of(context).pop(); // Tutup Dialog Loading
+                  print('Error: $e');
+                  // Tambahkan pesan error jika perlu
+                }
               },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),

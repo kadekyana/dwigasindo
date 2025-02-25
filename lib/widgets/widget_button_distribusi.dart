@@ -7,12 +7,14 @@ class WidgetButtonDistribusi extends StatelessWidget {
   final List<Map<String, String>>? dataList;
   final Function(BuildContext context, Map<String, String> data)? onItemTap;
   final Widget? onTap;
+  final Future<void> Function(BuildContext context)? onFunction;
 
   const WidgetButtonDistribusi({
     required this.title,
     required this.dataList,
     this.onItemTap,
     this.onTap,
+    this.onFunction,
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +24,11 @@ class WidgetButtonDistribusi extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (onFunction != null) {
+          await onFunction;
+        }
+
         // Show modal
         if (dataList != null) {
           WoltModalSheet.show(
@@ -87,14 +93,10 @@ class WidgetButtonDistribusi extends StatelessWidget {
                                     Container(
                                       height: 25,
                                       child: FittedBox(
+                                        fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          data['tipe']!,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
+                                        child: Text(data['tipe']!,
+                                            style: titleTextBlack),
                                       ),
                                     ),
                                     SizedBox(
@@ -111,11 +113,13 @@ class WidgetButtonDistribusi extends StatelessWidget {
                                                 children: [
                                                   Expanded(
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       child: Text('Hari Ini'),
                                                     ),
                                                   ),
                                                   Expanded(
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       child: Text('100'),
                                                     ),
                                                   ),
@@ -132,11 +136,13 @@ class WidgetButtonDistribusi extends StatelessWidget {
                                               children: [
                                                 Expanded(
                                                   child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
                                                     child: Text('Bulan Ini'),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
                                                     child: Text('100'),
                                                   ),
                                                 ),
@@ -201,14 +207,9 @@ class WidgetButtonDistribusi extends StatelessWidget {
               child: Container(
                 height: 25,
                 child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
+                  child: Text(title, style: titleTextBlack),
                 ),
               ),
             ),

@@ -54,7 +54,8 @@ class WidgetCardNewTube extends StatelessWidget {
                       bottomRight: Radius.circular(40),
                     ),
                   ),
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Tabung Baru',
@@ -109,7 +110,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Produk',
@@ -122,7 +124,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -138,7 +141,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Type',
@@ -151,7 +155,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -167,7 +172,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Grade',
@@ -180,7 +186,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -196,7 +203,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Milik',
@@ -209,7 +217,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -225,7 +234,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Keterangan',
@@ -238,7 +248,8 @@ class WidgetCardNewTube extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': -', style: titleTextBlack),
                                 ),
@@ -262,14 +273,9 @@ class WidgetCardNewTube extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(13),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '-',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
+                    child: Text('-', style: subtitleTextNormal),
                   ),
                 ),
               ),
@@ -306,6 +312,7 @@ class WidgetCardNewTube extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                       'Lengkapi Data',
                       style: subtitleText,

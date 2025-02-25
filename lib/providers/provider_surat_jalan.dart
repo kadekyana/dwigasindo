@@ -1,12 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
-import 'package:dwigasindo/model/modelAuth.dart';
-import 'package:dwigasindo/views/menus/menu_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../model/modelAllSuratJalan.dart';
 import 'provider_auth.dart';

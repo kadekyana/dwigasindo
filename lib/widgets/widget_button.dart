@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 class WidgetButton extends StatelessWidget {
@@ -44,10 +45,12 @@ class WidgetButton extends StatelessWidget {
         onpressed();
       },
       child: FittedBox(
+        fit: BoxFit.scaleDown,
         child: Text(
           title,
           style: TextStyle(
               fontFamily: 'Manrope',
+              fontSize: 12.sp,
               color: (titleColor != null) ? titleColor : Colors.white,
               fontWeight: FontWeight.w700),
         ),

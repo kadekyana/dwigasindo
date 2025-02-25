@@ -5,6 +5,7 @@ import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/provider_item.dart';
@@ -19,12 +20,16 @@ class ComponentItemStok extends StatefulWidget {
 }
 
 class _ComponentItemStokState extends State<ComponentItemStok> {
+  bool isButtonDisabled = false;
+  GroupButtonController? list = GroupButtonController(selectedIndex: 0);
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<ProviderItem>(context, listen: false);
-    provider.getAllItem(context);
-    provider.getAllCategory(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<ProviderItem>(context, listen: false);
+      provider.getAllItem(context);
+      provider.getAllCategory(context);
+    });
   }
 
   @override
@@ -32,9 +37,9 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderItem>(context);
+    print(provider.allItem?.data?.length);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'List Item',
         center: true,
@@ -48,18 +53,40 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
         actions: [
           IconButton(
             onPressed: () async {
-              final provider =
-                  Provider.of<ProviderItem>(context, listen: false);
-              await provider.getAllCategory(context);
-              await provider.getAllLocation(context);
-              await provider.getAllUnit(context);
-              await provider.getAllVendor(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ComponentTambahItem(),
-                ),
+              if (!mounted) return;
+
+              // Tampilkan Dialog Loading
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               );
+
+              try {
+                await Future.wait([
+                  provider.getAllCategory(context),
+                  provider.getAllLocation(context),
+                  provider.getAllUnit(context),
+                  provider.getAllVendor(context),
+                ]);
+
+                // Navigate sesuai kondisi
+                Navigator.of(context).pop(); // Tutup Dialog Loading
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ComponentTambahItem(),
+                  ),
+                );
+              } catch (e) {
+                Navigator.of(context).pop(); // Tutup Dialog Loading
+                print('Error: $e');
+                // Tambahkan pesan error jika perlu
+              }
             },
             icon: Icon(
               Icons.add_circle_outline_rounded,
@@ -79,7 +106,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
           : Container(
               width: width,
               height: height,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.h),
               child: Column(
                 children: [
                   SizedBox(
@@ -132,6 +159,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                     alignment: Alignment.centerLeft,
                     child: GroupButton(
                         isRadio: true,
+                        controller: list,
                         options: GroupButtonOptions(
                           selectedColor: PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(8),
@@ -152,7 +180,6 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                               final data = provider.allItem!.data![index];
                               return Container(
                                 width: double.maxFinite,
-                                height: height * 0.28,
                                 margin: EdgeInsets.only(bottom: height * 0.02),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -167,15 +194,16 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                 ),
                                 child: Column(
                                   children: [
-                                    Container(
+                                    // Header Row
+                                    SizedBox(
                                       width: double.maxFinite,
-                                      height: 40,
+                                      height: height * 0.05,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.all(10),
+                                            height: height * 0.05,
                                             width: width * 0.3,
                                             decoration: const BoxDecoration(
                                               color: PRIMARY_COLOR,
@@ -185,8 +213,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                                     Radius.circular(30),
                                               ),
                                             ),
-                                            child: FittedBox(
-                                              alignment: Alignment.centerLeft,
+                                            child: Center(
                                               child: Text(
                                                 '${provider.getCategory(2)}',
                                                 style: titleText,
@@ -197,294 +224,158 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                             padding:
                                                 const EdgeInsets.only(right: 5),
                                             child: WidgetButtonCustom(
-                                                FullWidth: width * 0.25,
-                                                FullHeight: 30,
-                                                title: 'Lihat Riwayat',
-                                                onpressed: () {},
-                                                bgColor: PRIMARY_COLOR,
-                                                color: Colors.transparent),
+                                              FullWidth: width * 0.25,
+                                              FullHeight: 30.h,
+                                              title: 'Riwayat',
+                                              onpressed: () {},
+                                              bgColor: PRIMARY_COLOR,
+                                              color: Colors.transparent,
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            top: BorderSide(
-                                                color: Colors.grey.shade300),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: PRIMARY_COLOR,
-                                                        width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                      child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Nama Item',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                                ': ${data.name}',
-                                                                style:
-                                                                    titleTextBlack),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )),
-                                                  Expanded(
-                                                      child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Kode Item',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                                ': ${data.code}',
-                                                                style:
-                                                                    titleTextBlack),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )),
-                                                  Expanded(
-                                                      child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Vendor',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                                ': ${data.vendorName}',
-                                                                style:
-                                                                    titleTextBlack),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )),
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    6),
-                                                            child:
-                                                                const FittedBox(
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                'Stok Tersedia',
-                                                                style:
-                                                                    titleTextBlack,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    6),
-                                                            child: FittedBox(
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                  ': ${data.stock}',
-                                                                  style:
-                                                                      titleTextBlack),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                    // Content Row
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          top: 5.h, left: 10.w, right: 10.w),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: BorderSide(
+                                              color: Colors.grey.shade300),
                                         ),
                                       ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center, // Tambahan
+                                        children: [
+                                          // Image Box
+                                          Container(
+                                            width: 90.w,
+                                            height: 90.h,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: PRIMARY_COLOR,
+                                                  width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          // Detail Column
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                _buildRowDetail(
+                                                    'Nama', data.name!),
+                                                _buildRowDetail(
+                                                    'Kode', data.code!),
+                                                _buildRowDetail(
+                                                    'Vendor', data.vendorName!),
+                                                _buildRowDetail('Tersedia',
+                                                    data.stock.toString()),
+                                                _buildRowDetail('Dibuat oleh',
+                                                    data.createdByName!),
+                                                _buildRowDetail(
+                                                  'Dibuat pada',
+                                                  '${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Expanded(
+                                    // Button Row
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10.h, horizontal: 5.w),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           WidgetButtonCustom(
-                                              FullWidth: width * 0.25,
-                                              FullHeight: 30,
-                                              title: 'Mutasi Stok',
-                                              onpressed: () async {
+                                            FullWidth: 100.w,
+                                            FullHeight: 30.h,
+                                            title: 'Mutasi',
+                                            onpressed: () async {
+                                              if (!mounted) return;
+
+                                              // Tampilkan Dialog Loading
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+
+                                              try {
+                                                await Future.wait([
+                                                  provider.getMutasi(
+                                                      context, data.idStr!),
+                                                ]);
+
+                                                // Navigate sesuai kondisi
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ComponentMutasiStok(),
+                                                        ComponentMutasiStok(
+                                                            vendor: data
+                                                                .vendorName!,
+                                                            nama: data.name!,
+                                                            stokAda: data.stock
+                                                                .toString(),
+                                                            StokTakada: '100'),
                                                   ),
                                                 );
-                                                await provider.getMutasi(
-                                                    context, data.idStr!);
-                                              },
-                                              bgColor: PRIMARY_COLOR,
-                                              color: Colors.transparent),
-                                          WidgetButtonCustom(
-                                              FullWidth: width * 0.3,
-                                              FullHeight: 30,
-                                              title: 'Penyesuaian Stok',
-                                              onpressed: () async {
-                                                await provider
-                                                    .getAllWarehouse(context);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ComponentPenyesuaianStok(
-                                                      itemId: data.id!,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              bgColor: PRIMARY_COLOR,
-                                              color: Colors.transparent),
-                                          WidgetButtonCustom(
-                                              FullWidth: width * 0.25,
-                                              FullHeight: 30,
-                                              title: 'Lihat Data',
-                                              onpressed: () {},
-                                              bgColor: PRIMARY_COLOR,
-                                              color: Colors.transparent),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(6),
-                                            child: FittedBox(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Create by ${data.createdByName}',
-                                                style: TextStyle(
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.grey.shade400,
-                                                ),
-                                              ),
-                                            ),
+                                              } catch (e) {
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                print('Error: $e');
+                                                // Tambahkan pesan error jika perlu
+                                              }
+                                            },
+                                            bgColor: PRIMARY_COLOR,
+                                            color: Colors.transparent,
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.all(2),
-                                            child: FittedBox(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Date ${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
-                                                style: TextStyle(
-                                                  fontFamily: 'Manrope',
-                                                  color: Colors.grey.shade400,
+                                          WidgetButtonCustom(
+                                            FullWidth: width * 0.3,
+                                            FullHeight: 30.h,
+                                            title: 'Penyesuaian',
+                                            onpressed: () async {
+                                              await provider
+                                                  .getAllWarehouse(context);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ComponentPenyesuaianStok(
+                                                    itemId: data.id!,
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
+                                              );
+                                            },
+                                            bgColor: PRIMARY_COLOR,
+                                            color: Colors.transparent,
+                                          ),
+                                          WidgetButtonCustom(
+                                            FullWidth: width * 0.25,
+                                            FullHeight: 30.h,
+                                            title: 'Lihat',
+                                            onpressed: () {},
+                                            bgColor: PRIMARY_COLOR,
+                                            color: Colors.transparent,
                                           ),
                                         ],
                                       ),
@@ -505,4 +396,35 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
             ),
     );
   }
+}
+
+Widget _buildRowDetail(String title, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 2),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            title,
+            style: (title != "Dibuat pada" && title != "Dibuat oleh")
+                ? subtitleTextBlack
+                : subtitleTextNormal,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            ': $value',
+            style: (title != "Dibuat pada" && title != "Dibuat oleh")
+                ? subtitleTextBlack
+                : subtitleTextNormal,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
+  );
 }

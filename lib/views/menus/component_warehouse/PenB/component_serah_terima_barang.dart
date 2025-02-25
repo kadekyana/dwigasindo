@@ -35,17 +35,54 @@ class _ComponentSerahTerimaBarangState
       SingleSelectController<String?>(null);
 
   late int selectWarehouse;
+  bool? tfS = false;
 
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _resetImageFile() {
+    setState(() {
+      _imageFile = null;
+    });
   }
 
   @override
@@ -90,8 +127,9 @@ class _ComponentSerahTerimaBarangState
                 padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: FittedBox(
+                        fit: BoxFit.scaleDown,
                         child: Text(
                           'Qty Pemesanan',
                           style: titleTextBlack,
@@ -99,8 +137,9 @@ class _ComponentSerahTerimaBarangState
                       ),
                     ),
                     SizedBox(width: 5),
-                    const Expanded(
+                    Expanded(
                       child: FittedBox(
+                        fit: BoxFit.scaleDown,
                         alignment: Alignment.center,
                         child: Text(
                           'Qty Diterima',
@@ -109,11 +148,14 @@ class _ComponentSerahTerimaBarangState
                       ),
                     ),
                     SizedBox(width: 5),
-                    const Expanded(
+                    Expanded(
                       child: Center(
-                        child: Text(
-                          'Qty Result',
-                          style: titleTextBlack,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'Qty Result',
+                            style: titleTextBlack,
+                          ),
                         ),
                       ),
                     ),
@@ -125,7 +167,7 @@ class _ComponentSerahTerimaBarangState
                 padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Center(
                         child: Text(
                           '100 (MoU)',
@@ -141,7 +183,7 @@ class _ComponentSerahTerimaBarangState
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Center(
                         child: Text(
                           '-/+1 (MoU)',
@@ -156,24 +198,17 @@ class _ComponentSerahTerimaBarangState
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
-                  title: Text(
-                    'Catatan',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  subtitle: Expanded(
-                    child: TextField(
-                      maxLines: null,
-                      expands: true,
-                      decoration: InputDecoration(
-                          hintText: 'Masukkan catatan di sini...',
-                          contentPadding: EdgeInsets.all(10),
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
-                              fontFamily: 'Manrope',
-                              color: Colors.grey.shade500)),
-                      style: TextStyle(fontSize: 16),
-                      textAlignVertical: TextAlignVertical.top,
-                    ),
+                  title: Text('Catatan', style: subtitleTextBlack),
+                  subtitle: TextField(
+                    maxLines: null,
+                    expands: true,
+                    decoration: InputDecoration(
+                        hintText: 'Masukkan catatan di sini...',
+                        contentPadding: EdgeInsets.all(10),
+                        border: OutlineInputBorder(),
+                        hintStyle: subtitleTextNormal),
+                    style: subtitleTextBlack,
+                    textAlignVertical: TextAlignVertical.top,
                   ),
                 ),
               ),
@@ -183,112 +218,155 @@ class _ComponentSerahTerimaBarangState
               Container(
                 width: width,
                 height: height * 0.05,
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                padding: EdgeInsets.only(right: width * 0.05),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: SizedBox.shrink()),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
                     Expanded(
-                      child: WidgetButtonCustom(
-                          FullWidth: width * 0.3,
-                          FullHeight: 30,
-                          title: "Transfer Stok",
-                          onpressed: () {},
-                          bgColor: PRIMARY_COLOR,
-                          color: Colors.transparent),
+                      flex: 2,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: height * 0.016,
+                          horizontal: width * 0.05,
+                        ),
+                        child: Row(
+                          children: [
+                            // Custom Checkbox
+                            Transform.scale(
+                              scale: 1.5,
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: (tfS == true)
+                                      ? PRIMARY_COLOR // Warna hijau ketika dipilih
+                                      : Colors.grey
+                                          .shade200, // Warna abu ketika tidak dipilih
+                                ),
+                                child: Checkbox(
+                                  value: tfS,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      tfS = value;
+                                    });
+                                  },
+                                  autofocus: true,
+                                  activeColor:
+                                      PRIMARY_COLOR, // Warna ketika dipilih
+                                  checkColor: PRIMARY_COLOR, // Warna centang
+                                  shape: CircleBorder(),
+                                  side: BorderSide(
+                                      color:
+                                          Colors.grey.shade200), // Bentuk bulat
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * 0.25,
+                              child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Transfer Stok',
+                                    style: titleTextBlack,
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    Expanded(
-                      child: WidgetButtonCustom(
-                          FullWidth: width * 0.3,
-                          FullHeight: 30,
-                          title: "Submit",
-                          onpressed: () {},
-                          bgColor: PRIMARY_COLOR,
-                          color: Colors.transparent),
-                    ),
+                    // Expanded(
+                    //   child: WidgetButtonCustom(
+                    //       FullWidth: width * 0.3,
+                    //       FullHeight: 30,
+                    //       title: "Submit",
+                    //       onpressed: () {},
+                    //       bgColor: PRIMARY_COLOR,
+                    //       color: Colors.transparent),
+                    // ),
                   ],
                 ),
               ),
-              Container(
-                width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Pilih Gudang',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  subtitle: CustomDropdown(
-                    controller: gudang,
-                    decoration: CustomDropdownDecoration(
-                        closedBorder: Border.all(color: Colors.grey.shade400),
-                        expandedBorder:
-                            Border.all(color: Colors.grey.shade400)),
-                    hintText: 'Gudang',
-                    items: warehouse?.map((e) => e['name']).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        final ID = warehouse?.firstWhere(
-                          (item) => item['name'] == value,
-                        );
-                        setState(() {
-                          selectWarehouse = int.parse(ID!['id'].toString());
-                        });
-                        print("Selected BPTK ID: $selectWarehouse");
-                      }
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Container(
-                width: width,
-                height: height * 0.05,
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: SizedBox.shrink()),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    Expanded(child: SizedBox.shrink()),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    Expanded(
-                      child: WidgetButtonCustom(
-                          FullWidth: width * 0.3,
-                          FullHeight: 30,
-                          title: "Submit",
-                          onpressed: () {},
-                          bgColor: PRIMARY_COLOR,
-                          color: Colors.transparent),
-                    ),
-                  ],
-                ),
-              ),
+              (tfS == true)
+                  ? Container(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text('Pilih Gudang', style: subtitleTextBlack),
+                        subtitle: CustomDropdown(
+                          controller: gudang,
+                          decoration: CustomDropdownDecoration(
+                              closedBorder:
+                                  Border.all(color: Colors.grey.shade400),
+                              expandedBorder:
+                                  Border.all(color: Colors.grey.shade400)),
+                          hintText: 'Gudang',
+                          items: warehouse?.map((e) => e['name']).toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              final ID = warehouse?.firstWhere(
+                                (item) => item['name'] == value,
+                              );
+                              setState(() {
+                                selectWarehouse =
+                                    int.parse(ID!['id'].toString());
+                              });
+                              print("Selected BPTK ID: $selectWarehouse");
+                            }
+                          },
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+              (tfS == true)
+                  ? SizedBox(
+                      height: height * 0.01,
+                    )
+                  : SizedBox.shrink(),
+              (tfS == true)
+                  ? Container(
+                      width: width,
+                      height: height * 0.05,
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(child: SizedBox.shrink()),
+                          SizedBox(
+                            width: width * 0.01,
+                          ),
+                          Expanded(child: SizedBox.shrink()),
+                          SizedBox(
+                            width: width * 0.01,
+                          ),
+                          Expanded(
+                            child: WidgetButtonCustom(
+                                FullWidth: width * 0.3,
+                                FullHeight: 30,
+                                title: "Submit",
+                                onpressed: () {},
+                                bgColor: PRIMARY_COLOR,
+                                color: Colors.transparent),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox.shrink(),
               Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: _pickImage, // Panggil fungsi saat button diklik
+                  onTap:
+                      _showImageSourceDialog, // Panggil fungsi saat button diklik
                   child: Container(
-                    width: width * 0.55,
+                    width: width,
                     height: height * 0.1,
                     child: ListTile(
-                      title: Text(
-                        'Foto Bukti',
-                        style: TextStyle(color: Colors.black),
-                      ),
+                      title: Text('Foto Bukti', style: subtitleTextBlack),
                       subtitle: Container(
                         margin: EdgeInsets.only(top: height * 0.01),
                         decoration: BoxDecoration(
@@ -304,13 +382,7 @@ class _ComponentSerahTerimaBarangState
                                   fit: BoxFit.cover,
                                 )
                               : SvgPicture.asset('assets/images/gambar.svg'),
-                          title: Text(
-                            'Foto Bukti',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
+                          title: Text('Foto Bukti', style: subtitleTextNormal),
                         ),
                       ),
                     ),

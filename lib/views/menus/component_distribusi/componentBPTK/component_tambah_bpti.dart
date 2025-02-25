@@ -32,7 +32,6 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
     final provider = Provider.of<ProviderDistribusi>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Buat BPTI',
         colorBG: Colors.grey.shade100,
@@ -146,7 +145,8 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
                                 SizedBox(height: 8),
                                 Consumer<ProviderDistribusi>(
                                   builder: (context, provider, child) {
-                                    final tubecustomer = provider.customer?.data
+                                    final tubecustomer = provider
+                                        .customer!.data!
                                         .map((data) =>
                                             {'id': data.id, 'name': data.name})
                                         .toList();
@@ -158,7 +158,7 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
                                           expandedBorder: Border.all(
                                               color: Colors.grey.shade400)),
                                       hintText: 'Pilih Customer',
-                                      items: tubecustomer!
+                                      items: tubecustomer
                                           .map(
                                               (item) => item['name'].toString())
                                           .toList(),

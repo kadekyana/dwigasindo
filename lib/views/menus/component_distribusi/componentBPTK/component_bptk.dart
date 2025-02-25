@@ -8,6 +8,7 @@ import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ComponentBPTK extends StatefulWidget {
@@ -35,7 +36,6 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
     final provider = Provider.of<ProviderDistribusi>(context);
     final dataBPTK = provider.bptk?.data;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
         title: 'Bukti Penerimaan Tabung Kosong',
@@ -59,7 +59,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                 ),
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add_circle_outline_rounded,
               color: Colors.black,
             ),
@@ -143,10 +143,12 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                 margin: EdgeInsets.only(right: width * 0.01),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Color(0xffE5E7EB)),
-                                  color: Color(0xffF9FAFB),
+                                  border: Border.all(
+                                      color: const Color(0xffE5E7EB)),
+                                  color: const Color(0xffF9FAFB),
                                 ),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   child: Text(
                                     data,
                                     style: titleTextBlack,
@@ -180,16 +182,16 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                               ),
                               child: Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: double.maxFinite,
-                                    height: 40,
+                                    height: 40.h,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          padding: EdgeInsets.all(10),
-                                          width: width * 0.3,
+                                          padding: const EdgeInsets.all(10),
+                                          width: 150.w,
                                           decoration: const BoxDecoration(
                                             color: PRIMARY_COLOR,
                                             borderRadius: BorderRadius.only(
@@ -197,8 +199,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                               bottomRight: Radius.circular(30),
                                             ),
                                           ),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
+                                          child: Center(
                                             child: Text(
                                               '${data.no}',
                                               style: titleText,
@@ -206,9 +207,10 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                           ),
                                         ),
                                         Container(
-                                          padding: EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(10),
                                           width: width * 0.3,
                                           child: FittedBox(
+                                            fit: BoxFit.scaleDown,
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               ' ${(data.vehicleNumber == null) ? "-" : data.vehicleNumber}',
@@ -222,6 +224,8 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                   Expanded(
                                     flex: 3,
                                     child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w),
                                       decoration: BoxDecoration(
                                         border: Border.symmetric(
                                           horizontal: BorderSide(
@@ -231,35 +235,74 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                       child: Column(
                                         children: [
                                           Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'Sumber TK',
+                                                    style: subtitleTextBlack,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  child: Text(' : '),
+                                                ),
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: Text('Client',
+                                                      style: subtitleTextBlack),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'Tanggal',
+                                                    style: subtitleTextBlack,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  child: Text(' : '),
+                                                ),
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: Text(
+                                                      provider.formatDate(data
+                                                          .createdAt
+                                                          .toString()),
+                                                      style: subtitleTextBlack),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
                                               child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                 flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Sumber TK',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
+                                                child: Text(
+                                                  'Jenis',
+                                                  style: subtitleTextBlack,
                                                 ),
                                               ),
+                                              const SizedBox(
+                                                child: Text(' : '),
+                                              ),
                                               Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(': Client',
-                                                        style: titleTextBlack),
-                                                  ),
-                                                ),
+                                                flex: 3,
+                                                child: Text(
+                                                    '${(data.gasType == null) ? "-" : data.gasType}',
+                                                    style: subtitleTextBlack),
                                               )
                                             ],
                                           )),
@@ -270,30 +313,18 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                             children: [
                                               Expanded(
                                                 flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Tanggal',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
+                                                child: Text(
+                                                  'Jumlah',
+                                                  style: subtitleTextBlack,
                                                 ),
                                               ),
+                                              const SizedBox(
+                                                child: Text(' : '),
+                                              ),
                                               Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        ': ${provider.formatDate(data.createdAt.toString())}',
-                                                        style: titleTextBlack),
-                                                  ),
-                                                ),
+                                                flex: 3,
+                                                child: Text('${data.gasCount}',
+                                                    style: subtitleTextBlack),
                                               )
                                             ],
                                           )),
@@ -304,93 +335,20 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                             children: [
                                               Expanded(
                                                 flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Jenis Gas',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
+                                                child: Text(
+                                                  'Dibuat Pada',
+                                                  style: subtitleTextNormal,
                                                 ),
                                               ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        ': ${(data.gasType == null) ? "-" : data.gasType}',
-                                                        style: titleTextBlack),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                          Expanded(
-                                              child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Jumlah Tabung',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
-                                                ),
+                                              SizedBox(
+                                                child: Text(' : ',
+                                                    style: subtitleTextNormal),
                                               ),
                                               Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        ': ${data.gasCount}',
-                                                        style: titleTextBlack),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                          Expanded(
-                                              child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      '${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Manrope',
-                                                        color: Colors
-                                                            .grey.shade400,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(),
+                                                flex: 3,
+                                                child: Text(
+                                                    '${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
+                                                    style: subtitleTextNormal),
                                               )
                                             ],
                                           )),
@@ -400,29 +358,58 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                   ),
                                   Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 5.h, horizontal: 10.w),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           WidgetButtonCustom(
                                               FullWidth: width * 0.25,
-                                              FullHeight: 30,
+                                              FullHeight: 30.h,
                                               title: 'Detail',
                                               onpressed: () async {
-                                                provider.clearCount('countT');
-                                                provider.getVerifikasiBPTK(
-                                                    context, data.no!);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ComponentDetail(
-                                                      uuid: data.no!,
-                                                    ),
-                                                  ),
+                                                if (!mounted) return;
+
+                                                // Tampilkan Dialog Loading
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  },
                                                 );
+
+                                                try {
+                                                  await Future.wait([
+                                                    provider
+                                                        .clearCount('countT'),
+                                                    provider.getVerifikasiBPTK(
+                                                        context, data.no!)
+                                                  ]);
+
+                                                  // Navigate sesuai kondisi
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ComponentDetail(
+                                                        uuid: data.no!,
+                                                      ),
+                                                    ),
+                                                  );
+                                                } catch (e) {
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  print('Error: $e');
+                                                  // Tambahkan pesan error jika perlu
+                                                }
                                               },
                                               bgColor: PRIMARY_COLOR,
                                               color: Colors.transparent),
@@ -430,26 +417,102 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                               FullWidth: width * 0.25,
                                               FullHeight: 30,
                                               title: 'Ubah',
-                                              onpressed: () {},
+                                              onpressed: () async {
+                                                if (!mounted) return;
+
+                                                // Tampilkan Dialog Loading
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  },
+                                                );
+
+                                                try {
+                                                  await Future.wait([
+                                                    provider.getAllCostumer(
+                                                        context),
+                                                  ]);
+
+                                                  // Navigate sesuai kondisi
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ComponentEdit(
+                                                        cusId: data.customerId!,
+                                                        dataNo:
+                                                            (data.vehicleNumber !=
+                                                                    null)
+                                                                ? data
+                                                                    .vehicleNumber
+                                                                : '',
+                                                        uuid: data.idStr,
+                                                      ),
+                                                    ),
+                                                  );
+                                                } catch (e) {
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  print('Error: $e');
+                                                  // Tambahkan pesan error jika perlu
+                                                }
+                                              },
                                               bgColor: COMPLEMENTARY_COLOR1,
                                               color: Colors.transparent),
                                           WidgetButtonCustom(
                                               FullWidth: width * 0.25,
                                               FullHeight: 30,
                                               title: 'Verifikasi',
-                                              onpressed: () {
-                                                provider.clearCount('countT');
-                                                provider.getVerifikasiBPTK(
-                                                    context, data.no!);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ComponentVerifikasi(
-                                                      noBptk: data.no!,
-                                                    ),
-                                                  ),
+                                              onpressed: () async {
+                                                if (!mounted) return;
+
+                                                // Tampilkan Dialog Loading
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  },
                                                 );
+
+                                                try {
+                                                  await Future.wait([
+                                                    provider
+                                                        .clearCount('countT'),
+                                                    provider.getVerifikasiBPTK(
+                                                        context, data.no!),
+                                                  ]);
+
+                                                  // Navigate sesuai kondisi
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ComponentVerifikasi(
+                                                        noBptk: data.no!,
+                                                      ),
+                                                    ),
+                                                  );
+                                                } catch (e) {
+                                                  Navigator.of(context)
+                                                      .pop(); // Tutup Dialog Loading
+                                                  print('Error: $e');
+                                                  // Tambahkan pesan error jika perlu
+                                                }
                                               },
                                               bgColor: SECONDARY_COLOR,
                                               color: Colors.transparent),

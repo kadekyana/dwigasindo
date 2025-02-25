@@ -80,12 +80,12 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
         .map((data) => {'id': data.id, 'name': data.name})
         .toList();
 
-    tubecustomer = provider.customer?.data
+    tubecustomer = provider.customer!.data!
         .map((data) => {'id': data.id, 'name': data.name})
         .toList();
 
     tubesupplier = provider.supllier?.data
-        ?.map((data) => {'id': data.id, 'name': data.name})
+        .map((data) => {'id': data.id, 'name': data.name})
         .toList();
 
     // Cek data supplier dan customer
@@ -153,7 +153,6 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
 
     print("DATA TUBE : ${providerS.card?.data} Cek : ${widget.code}");
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Edit Tabung',
         back: true,
@@ -201,7 +200,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                                   if (index == 0) {
                                     // Pilihan Assets, set data supplier
                                     tubesupplier = provider.supllier?.data
-                                        ?.map((data) =>
+                                        .map((data) =>
                                             {'id': data.id, 'name': data.name})
                                         .toList();
                                     selectCustomer = null;
@@ -211,7 +210,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                                     print(tubesupplier);
                                   } else {
                                     // Pilihan Pelanggan, set data customer
-                                    tubecustomer = provider.customer?.data
+                                    tubecustomer = provider.customer!.data!
                                         .map((data) =>
                                             {'id': data.id, 'name': data.name})
                                         .toList();
@@ -337,7 +336,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                             child: ListTile(
                               title: Text(
                                 'Jenis Tabung*',
-                                style: TextStyle(color: Colors.black),
+                                style: subtitleTextBlack,
                               ),
                               subtitle: Align(
                                 alignment: Alignment.topLeft,
@@ -348,8 +347,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                                       selectedColor: PRIMARY_COLOR,
                                       borderRadius: BorderRadius.circular(8),
                                       unselectedColor: Colors.white,
-                                      selectedTextStyle:
-                                          TextStyle(color: Colors.white)),
+                                      selectedTextStyle: titleText),
                                   onSelected: (value, index, isSelected) {
                                     setState(() {
                                       nonSingletubeType = index + 1;
@@ -430,7 +428,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                       child: ListTile(
                         title: Text(
                           'Grade*',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Align(
                           alignment: Alignment.topLeft,
@@ -468,7 +466,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                       child: ListTile(
                         title: Text(
                           'Tahun Tabung',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
@@ -491,7 +489,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                       child: ListTile(
                         title: Text(
                           'Serial Number',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
@@ -515,7 +513,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                       child: ListTile(
                         title: Text(
                           'Lokasi Awal',
-                          style: TextStyle(color: Colors.black),
+                          style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),

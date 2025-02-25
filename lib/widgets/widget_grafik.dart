@@ -1,3 +1,4 @@
+import 'package:dwigasindo/const/const_font.dart';
 import 'package:flutter/material.dart';
 
 class WidgetGrafik extends StatelessWidget {
@@ -42,14 +43,9 @@ class WidgetGrafik extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: FittedBox(
+              fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Text(text, style: subtitleText),
             ),
           ),
         ),

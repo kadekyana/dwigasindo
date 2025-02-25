@@ -1,12 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/model/modelAllLocation.dart';
+import 'package:dwigasindo/model/modelAllSO.dart';
 import 'package:dwigasindo/model/modelAllUnit.dart';
 import 'package:dwigasindo/model/modelAllWarehouse.dart';
+import 'package:dwigasindo/model/modelApprovalVerifikasi.dart';
+import 'package:dwigasindo/model/modelDetailSPB.dart';
+import 'package:dwigasindo/model/modelDetailStock.dart';
+import 'package:dwigasindo/model/modelLihatSO.dart';
+import 'package:dwigasindo/model/modelPO.dart';
+import 'package:dwigasindo/model/modelSpb.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
+import 'package:dwigasindo/views/menus/component_warehouse/So/component_selesai_so.dart';
+import 'package:dwigasindo/views/menus/component_warehouse/So/component_stok_opname.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../model/modelAllCategory.dart';
 import '../model/modelAllItem.dart';
 import '../model/modelMutasi.dart';
@@ -15,6 +26,7 @@ import 'provider_auth.dart';
 class ProviderItem extends ChangeNotifier {
   final dio = Dio();
   bool isLoading = false;
+  int cekLoad = 0;
   ValueNotifier<bool> visible = ValueNotifier<bool>(false);
 
   ModelAllItem? _allItem;
@@ -39,6 +51,29 @@ class ProviderItem extends ChangeNotifier {
 
   ModelMutasi? _mutasi;
   ModelMutasi? get mutasi => _mutasi;
+
+  ModelAllSo? _so;
+  ModelAllSo? get so => _so;
+
+  ModelSpb? _spb;
+  ModelSpb? get spb => _spb;
+
+  ModelPo? _po;
+  ModelPo? get po => _po;
+
+  ModelLihatSo? _lihatSo;
+
+  ModelLihatSo? get lihatSo => _lihatSo;
+
+  ModelDetailStock? _detailStock;
+
+  ModelDetailStock? get detailStock => _detailStock;
+
+  ModelApprovalVerifikasi? _approvalVerifikasi;
+  ModelApprovalVerifikasi? get approvalVerifikasi => _approvalVerifikasi;
+
+  ModelDetailSpb? _detailSpb;
+  ModelDetailSpb? get detailSpb => _detailSpb;
 
   String? getCategory(int idCategory) {
     final category = allcategory?.data.firstWhere(
@@ -68,6 +103,67 @@ class ProviderItem extends ChangeNotifier {
     String formattedTime = DateFormat('HH:mm:ss').format(dateTime);
 
     return formattedTime;
+  }
+
+  Future<void> getAllSPB(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "spbs", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelSpb.fromJson(response!.data);
+      _spb = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getLihatSO(BuildContext context, int id) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "stock_opnames/details/get-by-id/$id", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelLihatSo.fromJson(response!.data);
+      _lihatSo = data;
+      notifyListeners();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailLihatSO(
+                    id: id,
+                  )));
+    }
+  }
+
+  Future<void> getDetailSPB(BuildContext context, String noSPB) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "spbs/$noSPB", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailSpb.fromJson(response!.data);
+      _detailSpb = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAllPo(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().getRequest(url: "po", token: token);
+
+    print(response?.data['data']);
+    if (response?.data['error'] == null) {
+      final data = ModelPo.fromJson(response!.data);
+      _po = data;
+      notifyListeners();
+    }
   }
 
   Future<void> getAllCategory(BuildContext context) async {
@@ -126,6 +222,32 @@ class ProviderItem extends ChangeNotifier {
     }
   }
 
+  Future<void> getApprovalVerifikasi(
+      BuildContext context, int id, int type) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().getRequest(
+        url:
+            "stock_opnames/details/get-detail-item-by-detail-id/$id?type=$type",
+        token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelApprovalVerifikasi.fromJson(response!.data);
+      _approvalVerifikasi = data;
+      notifyListeners();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ApprovalVerifikasi(
+            id: id,
+            type: type,
+          ),
+        ),
+      );
+    }
+  }
+
   Future<void> getAllItem(BuildContext context) async {
     isLoading = true;
     notifyListeners();
@@ -178,7 +300,189 @@ class ProviderItem extends ChangeNotifier {
     print(response?.data['error']);
     if (response?.data['error'] == null) {
       getAllItem(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Tambah Item',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Tambah Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> createSPB(
+    BuildContext context,
+    String spbDate,
+    int spbType,
+    List<Map<String, dynamic>> data,
+  ) async {
+    print({"spb_date": spbDate, "spb_type": spbType, "details": data});
+    data = data
+        .map((item) => {
+              "item_id":
+                  int.parse(item["item_id"].toString()), // Pastikan integer
+              "qty": int.parse(item["qty"].toString()), // Pastikan integer
+              "specification": item["specification"]
+                  .toString()
+                  .trim() // Pastikan string bersih
+            })
+        .toList();
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().postRequest(
+        url: 'spbs',
+        token: token,
+        data: {"spb_date": spbDate, "spb_type": spbType, "details": data});
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      getAllSPB(context);
       Navigator.pop(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Tambah Item',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Tambah Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> approvalDetailStock(
+    BuildContext context,
+    int id,
+    int type,
+    List<Map<String, dynamic>> data,
+  ) async {
+    data = data
+        .map((item) => {
+              "id": int.parse(item["id"].toString()), // Pastikan integer
+              "real_qty":
+                  int.parse(item["real_qty"].toString()), // Pastikan integer
+              "result_qty":
+                  int.parse(item["result_qty"].toString()), // Pastikan integer
+              "status":
+                  int.parse(item["status"].toString()), // Pastikan integer
+            })
+        .toList();
+
+    print(data);
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().putRequest(
+        url: 'stock_opnames/details/update-detail-item-by-id/$id',
+        token: token,
+        data: {"type": type, "details": data});
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      getAllSO(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Tambah Item',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Tambah Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> createPO(
+      BuildContext context,
+      String poDate,
+      String spbNo,
+      int spbType,
+      int categoryId,
+      int vendor,
+      int paymentType,
+      String paymentDeadline,
+      double totalPrice,
+      double totalPpn,
+      double totalPayment,
+      List<Map<String, dynamic>> details) async {
+    details = details
+        .map((item) => {
+              "item_id":
+                  int.parse(item["item_id"].toString()), // Pastikan integer
+              "item_price": double.parse(
+                  item["item_price"].toString()), // Pastikan integer
+              "item_qty":
+                  int.parse(item["item_qty"].toString()), // Pastikan integer
+              "item_note":
+                  item["item_note"].toString().trim() // Pastikan string bersih
+            })
+        .toList();
+
+    print({
+      "po_date": poDate,
+      "spb_no": spbNo,
+      "spb_type": spbType,
+      "category_id": categoryId,
+      "vendor_id": vendor,
+      "payment_type": paymentType,
+      "payment_deadline": paymentDeadline,
+      "total_price": totalPrice,
+      "total_ppn": totalPpn,
+      "total_payment": totalPayment,
+      "details": details
+    });
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().postRequest(url: 'po', token: token, data: {
+      "po_date": poDate,
+      "spb_no": spbNo,
+      "spb_type": spbType,
+      "category_id": categoryId,
+      "vendor_id": vendor,
+      "payment_type": paymentType,
+      "payment_deadline": paymentDeadline,
+      "total_price": totalPrice,
+      "total_ppn": totalPpn,
+      "total_payment": totalPayment,
+      "details": details
+    });
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      getAllPo(context);
+      Navigator.pop(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Tambah PO',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Tambah PO',
+        ),
+      );
     }
   }
 
@@ -221,6 +525,74 @@ class ProviderItem extends ChangeNotifier {
     }
   }
 
+  Future<void> getDetailSO(
+    BuildContext context,
+    List<int> categori,
+    int warehouseId,
+    int soId,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'stock_opnames/get-detail-by-category-warehouse-id',
+        token: token,
+        data: {"categories": categori, "warehouse_id": warehouseId});
+
+    if (response?.data['error'] == null) {
+      final data = ModelDetailStock.fromJson(response!.data);
+      _detailStock = data;
+      notifyListeners();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ComponentSelesaiSo(
+            id: soId,
+            warehouse_id: warehouseId,
+            categori_id: categori,
+          ),
+        ),
+      );
+    } else {
+      print('error update');
+    }
+  }
+
+  Future<void> createDetailStock(
+    BuildContext context,
+    int stockId,
+    int warehouseId,
+    List<int> categori,
+    List<Map<String, dynamic>> details,
+    int approval1,
+    int approval2,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI()
+        .postRequest(url: 'stock_opnames/details/create', token: token, data: {
+      "stock_opname_id": stockId,
+      "warehouse_id": warehouseId,
+      "categories": categori,
+      "details": details,
+      "approval_1": approval1,
+      "approval_2": approval2,
+    });
+
+    if (response?.data['error'] == null) {
+      getAllSO(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ComponentStokOpname(),
+        ),
+      );
+    } else {
+      print('error update');
+    }
+  }
+
   Future<void> getAllWarehouse(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -235,23 +607,67 @@ class ProviderItem extends ChangeNotifier {
   }
 
   Future<void> getMutasi(BuildContext context, String uuid) async {
-    isLoading = true;
     notifyListeners();
 
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response = await DioServiceAPI()
         .getRequest(url: 'item_mutation_by_item_id/$uuid', token: token);
-
+    print(response?.data);
     if (response?.data['error'] == null) {
       final data = ModelMutasi.fromJson(response!.data);
       _mutasi = data;
-      isLoading = false;
       notifyListeners();
     } else {
       Navigator.pop(context);
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAllSO(BuildContext context) async {
+    isLoading = true;
+    notifyListeners();
+    if (cekLoad == 1) {
       isLoading = false;
       notifyListeners();
+    }
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: 'stock_opnames/get-all', token: token);
+
+    if (response?.data['error'] == null) {
+      final data = ModelAllSo.fromJson(response!.data);
+      _so = data;
+      isLoading = false;
+      cekLoad = 1;
+      notifyListeners();
+    } else {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createSO(BuildContext context, String keterangan) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+      url: 'stock_opnames/create',
+      token: token,
+      data: {"note": keterangan},
+    );
+    if (response?.data != null) {
+      getAllSO(context);
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Menambah SO',
+        ),
+      );
     }
   }
 

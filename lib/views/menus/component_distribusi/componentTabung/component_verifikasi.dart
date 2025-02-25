@@ -8,6 +8,7 @@ import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_newCard.dart';
 import 'package:dwigasindo/widgets/widget_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,6 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
         await provider.clearCount('countT');
       },
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
         appBar: WidgetAppbar(
           title: 'Verifikasi Tabung',
           colorBG: Colors.grey.shade100,
@@ -87,7 +87,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                       Container(
                         width: double.maxFinite,
                         height: height * 0.2,
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(20.w),
                         decoration: BoxDecoration(
                           color: PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(12),
@@ -99,6 +99,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                             Expanded(
                                 flex: 2,
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     '${dataVer?.noBptk} | ${(dataVer?.createdAt == null) ? "-" : provider.formatDate(dataVer!.createdAt.toString())}',
@@ -115,41 +116,43 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                   Expanded(
                                     child: Row(
                                       children: [
-                                        const Expanded(
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Jenis Gas',
-                                              style: subtitleText,
-                                            ),
+                                        Expanded(
+                                          child: Text(
+                                            'Jenis Gas',
+                                            style: subtitleTextNormalwhite,
                                           ),
                                         ),
-                                        Expanded(
-                                          child: FittedBox(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              ':\t${dataVer?.gasType}',
-                                              style: subtitleText,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Driver',
-                                              style: subtitleText,
-                                            ),
-                                          ),
+                                        Text(
+                                          ' : ',
+                                          style: subtitleTextNormalwhite,
                                         ),
                                         Expanded(
                                           flex: 2,
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              ': ${dataVer!.driver?.name}',
-                                              style: subtitleText,
-                                            ),
+                                          child: Text(
+                                            '\t${dataVer?.gasType}',
+                                            style: subtitleTextNormalwhite,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Driver',
+                                            style: subtitleTextNormalwhite,
+                                          ),
+                                        ),
+                                        Text(
+                                          ':',
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '\t${dataVer!.driver?.name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalwhite,
                                           ),
                                         ),
                                       ],
@@ -159,39 +162,41 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Jumlah Tabung',
-                                              style: subtitleText,
-                                            ),
+                                          child: Text(
+                                            'Jumlah',
+                                            style: subtitleTextNormalwhite,
                                           ),
                                         ),
-                                        Expanded(
-                                          child: FittedBox(
-                                            child: Text(
-                                              ':\t${dataVer.count}',
-                                              style: subtitleText,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Sumber',
-                                              style: subtitleText,
-                                            ),
-                                          ),
+                                        Text(
+                                          ' : ',
+                                          style: titleTextNormalWhite,
                                         ),
                                         Expanded(
                                           flex: 2,
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              ': ${dataVer.customer?.name}',
-                                              style: subtitleText,
-                                            ),
+                                          child: Text(
+                                            '\t${dataVer.count}',
+                                            style: subtitleTextNormalwhite,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Sumber',
+                                            style: subtitleTextNormalwhite,
+                                          ),
+                                        ),
+                                        Text(
+                                          ' : ',
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '${dataVer.customer?.name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalwhite,
                                           ),
                                         ),
                                       ],
@@ -204,7 +209,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                               height: height * 0.02,
                             ),
                             WidgetProgressBar(),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                       ),
@@ -216,9 +221,9 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                         height: height * 0.05,
                         child: Row(
                           children: [
-                            Container(
-                              width: 25,
-                              height: 25,
+                            SizedBox(
+                              width: 25.w,
+                              height: 25.h,
                               child: SvgPicture.asset(
                                   'assets/images/button_plus.svg'),
                             ),
@@ -228,7 +233,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                             Expanded(
                               child: Text(
                                 'Verifikasi Tabung',
-                                style: subtitleTextBlack,
+                                style: titleTextNormal,
                               ),
                             ),
                             GestureDetector(
@@ -241,13 +246,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Filter',
-                                            style: TextStyle(
-                                                fontFamily: 'Manrope',
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700),
-                                          ),
+                                          Text('Filter', style: titleTextBlack),
                                           TextButton(
                                             onPressed: () {},
                                             child: Text(
@@ -275,12 +274,13 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                                   height: 20,
                                                   margin: EdgeInsets.symmetric(
                                                       horizontal: width * 0.04),
-                                                  child: const FittedBox(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
                                                       'Status',
-                                                      style: titleTextBlack,
+                                                      style: titleTextNormal,
                                                     ),
                                                   ),
                                                 ),
@@ -294,30 +294,16 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                                           buttonWidth:
                                                               width * 0.3,
                                                           unselectedTextStyle:
-                                                              TextStyle(
-                                                                  fontFamily:
-                                                                      'Manrope',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      width *
-                                                                          0.03),
+                                                              subtitleTextBlack,
                                                           selectedTextStyle:
-                                                              TextStyle(
-                                                                  fontFamily:
-                                                                      'Manrope',
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      width *
-                                                                          0.03),
+                                                              subtitleText,
                                                           selectedColor:
                                                               PRIMARY_COLOR,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(50),
                                                         ),
-                                                        buttons: const [
+                                                        buttons: [
                                                           'Terverifikasi',
                                                           'Belum Terverifikasi',
                                                           "Dihapus"
@@ -359,14 +345,14 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                       ),
                       WidgetButtonCustom(
                         FullWidth: width,
-                        FullHeight: height * 0.05,
+                        FullHeight: 40.h,
                         title: 'Tabung Numpang Lewat',
                         onpressed: () {},
                         color: PRIMARY_COLOR,
                         bgColor: PRIMARY_COLOR,
                       ),
                       SizedBox(
-                        height: height * 0.01,
+                        height: 10.h,
                       ),
                       (providerS.isNew == true)
                           ? WidgetCardNewTube(height: height, width: width)
@@ -391,7 +377,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
 // widget verifikasi
 
 class CardVerifikasi extends StatefulWidget {
-  const CardVerifikasi({
+  CardVerifikasi({
     super.key,
     required this.provider,
     required this.height,
@@ -431,9 +417,9 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
         if (data == null) return SizedBox.shrink();
         // Container hasil scan
         return Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
+          margin: EdgeInsets.symmetric(vertical: 5.h),
           width: double.maxFinite,
-          height: widget.height * 0.25,
+          height: 180.h,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
@@ -449,13 +435,13 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
             children: [
               SizedBox(
                 width: double.maxFinite,
-                height: 40,
+                height: 40.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
                       width: widget.width * 0.3,
+                      height: 40.h,
                       decoration: BoxDecoration(
                         color: (data.status == 0)
                             ? PRIMARY_COLOR
@@ -464,11 +450,10 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                                 : SECONDARY_COLOR,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(40),
+                          bottomRight: Radius.circular(20),
                         ),
                       ),
-                      child: FittedBox(
-                        alignment: Alignment.centerLeft,
+                      child: Center(
                         child: Text(
                           '${data.tubeCode}',
                           style: titleText,
@@ -476,13 +461,11 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: widget.height * 0.01,
-                          horizontal: widget.width * 0.05),
+                      padding: const EdgeInsets.only(right: 5),
                       child: WidgetButtonCustom(
-                        FullWidth: widget.width * 0.3,
-                        FullHeight: 30,
-                        title: 'Lihat Riwayat',
+                        FullWidth: widget.width * 0.25,
+                        FullHeight: 30.h,
+                        title: 'Riwayat',
                         onpressed: () {},
                         bgColor: (data.status == 0)
                             ? PRIMARY_COLOR
@@ -504,7 +487,7 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(8)),
+                        const BorderRadius.vertical(bottom: Radius.circular(8)),
                     border: Border(
                       top: BorderSide(color: Colors.grey.shade300),
                     ),
@@ -513,7 +496,7 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10.w),
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: PRIMARY_COLOR),
@@ -530,28 +513,47 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Produk',
-                                        style: titleTextBlack,
-                                      ),
-                                    ),
+                                  child: Text(
+                                    'Produk',
+                                    style: subtitleTextBlack,
                                   ),
+                                ),
+                                Text(
+                                  " : ",
+                                  style: subtitleTextBlack,
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          ': ${(widget.produk == "") ? "-" : widget.produk}',
-                                          style: titleTextBlack),
-                                    ),
+                                  child: Text(
+                                      (widget.produk == "")
+                                          ? "-"
+                                          : widget.produk,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: subtitleTextBlack),
+                                ),
+                              ],
+                            )),
+                            Expanded(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    'Kondisi',
+                                    style: subtitleTextBlack,
+                                  ),
+                                ),
+                                Text(
+                                  " : ",
+                                  style: subtitleTextBlack,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    '-',
+                                    style: subtitleTextBlack,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -562,57 +564,22 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Kondisi',
-                                        style: titleTextBlack,
-                                      ),
-                                    ),
+                                  child: Text(
+                                    'Grade',
+                                    style: subtitleTextBlack,
                                   ),
+                                ),
+                                Text(
+                                  " : ",
+                                  style: subtitleTextBlack,
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(': -', style: titleTextBlack),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                            Expanded(
-                                child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Grade',
-                                        style: titleTextBlack,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          ': ${(data.isHasGrade == false) ? "Non Single" : "Single"}',
-                                          style: titleTextBlack),
-                                    ),
-                                  ),
+                                  child: Text(
+                                      (data.isHasGrade == false)
+                                          ? "Non Single"
+                                          : "Single",
+                                      style: subtitleTextBlack),
                                 )
                               ],
                             )),
@@ -622,28 +589,20 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Lokasi',
-                                        style: titleTextBlack,
-                                      ),
-                                    ),
+                                  child: Text(
+                                    'Lokasi',
+                                    style: subtitleTextBlack,
                                   ),
+                                ),
+                                Text(
+                                  " : ",
+                                  style: subtitleTextBlack,
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          ': ${(data.lastLocation == null) ? "-" : data.lastLocation}',
-                                          style: titleTextBlack),
-                                    ),
-                                  ),
+                                  child: Text(
+                                      '${(data.lastLocation == null) ? "-" : data.lastLocation}',
+                                      style: subtitleTextBlack),
                                 )
                               ],
                             )),
@@ -653,28 +612,24 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: const FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Milik',
-                                        style: titleTextBlack,
-                                      ),
-                                    ),
+                                  child: Text(
+                                    'Milik',
+                                    style: subtitleTextBlack,
                                   ),
+                                ),
+                                Text(
+                                  " : ",
+                                  style: subtitleTextBlack,
                                 ),
                                 Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    child: FittedBox(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          ': ${(data.isOwnership == 0) ? "-" : (data.isOwnership == 1) ? "Assets" : "Pelanggan"}',
-                                          style: titleTextBlack),
-                                    ),
-                                  ),
+                                  child: Text(
+                                      (data.isOwnership == 0)
+                                          ? "-"
+                                          : (data.isOwnership == 1)
+                                              ? "Assets"
+                                              : "Pelanggan",
+                                      style: subtitleTextBlack),
                                 ),
                               ],
                             )),
@@ -691,18 +646,11 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.all(13),
-                      child: FittedBox(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Text(
                           '${(data.verifiedAt == null) ? "-" : provider.formatDate(data.verifiedAt)} | ${(data.verifiedAt == null) ? "-" : provider.formatTime(data.verifiedAt)}',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            color: Colors.grey.shade400,
-                          ),
-                        ),
-                      ),
+                          style: subtitleTextNormal),
                     ),
                   ),
                   // Expanded(

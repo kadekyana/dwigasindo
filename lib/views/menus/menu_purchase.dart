@@ -1,13 +1,14 @@
 import 'package:dwigasindo/const/const_color.dart';
+import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/DaftarVendor/component_daftar_vendor.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_spb.dart';
-import 'package:dwigasindo/views/menus/component_warehouse/Pb/component_penerimaan_barang.dart';
-import 'package:dwigasindo/views/menus/component_warehouse/PenB/component_permintaan_barang.dart';
-import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_item_stok.dart';
-import 'package:dwigasindo/views/menus/component_warehouse/So/component_stok_opname.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'component_purchase.dart/Approval/component_approval.dart';
 import 'component_purchase.dart/Purchase/component_purchase_order.dart';
@@ -19,10 +20,9 @@ class MenuPurchase extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final titleSize = width * 0.04;
-    final subSize = width * 0.02;
+    final provider = Provider.of<ProviderSales>(context);
+    final providerItem = Provider.of<ProviderItem>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Purchase',
         colorBack: Colors.black,
@@ -53,25 +53,9 @@ class MenuPurchase extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(
-                            text: 'Total PO\n',
-                            style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: titleSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: '10\n',
-                            style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: titleSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: 'Bulan ini',
-                            style: TextStyle(
-                                fontFamily: 'Manrope', fontSize: subSize),
-                          ),
+                          TextSpan(text: 'Total PO\n', style: titleText),
+                          TextSpan(text: '10\n', style: titleText),
+                          TextSpan(text: 'Bulan ini', style: minisubtitleText),
                         ],
                       ),
                       textAlign: TextAlign.center,
@@ -81,24 +65,9 @@ class MenuPurchase extends StatelessWidget {
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(
-                            text: 'Total SPB\n',
-                            style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: titleSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: '20\n',
-                            style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: titleSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                              text: 'Bulan ini',
-                              style: TextStyle(
-                                  fontFamily: 'Manrope', fontSize: 10)),
+                          TextSpan(text: 'Total SPB\n', style: titleText),
+                          TextSpan(text: '20\n', style: titleText),
+                          TextSpan(text: 'Bulan ini', style: minisubtitleText),
                         ],
                       ),
                       textAlign: TextAlign.center,

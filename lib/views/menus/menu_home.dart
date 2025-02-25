@@ -1,9 +1,14 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
-import 'package:dwigasindo/views/menus/component_produksi/menu_produksi.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/menu_distribusi.dart';
+import 'package:dwigasindo/views/menus/menu_item_produksi.dart';
+import 'package:dwigasindo/views/menus/menu_order.dart';
 import 'package:dwigasindo/views/menus/menu_purchase.dart';
+import 'package:dwigasindo/views/menus/menu_sales.dart';
 import 'package:dwigasindo/views/menus/menu_warehouse.dart';
 import 'package:dwigasindo/widgets/widget_menu.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +26,11 @@ class MenuHome extends StatelessWidget {
     final auth = Provider.of<ProviderAuth>(context);
     final dataUsers = auth.auth!.data;
     print(dataUsers.name);
+    final providerSales = Provider.of<ProviderSales>(context);
+    final providerItem = Provider.of<ProviderItem>(context);
+    final providerDistribusi = Provider.of<ProviderDistribusi>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Container(
           width: double.maxFinite,
@@ -43,9 +50,10 @@ class MenuHome extends StatelessWidget {
                       height: 30,
                       child: FittedBox(
                         alignment: Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
                         child: Text(
                           'Hi ${dataUsers.name}',
-                          style: titleTextBlack,
+                          style: superTitleTextBlack,
                         ),
                       ),
                     ),
@@ -88,8 +96,9 @@ class MenuHome extends StatelessWidget {
                                     SizedBox(
                                       width: double.maxFinite,
                                       height: height * 0.02,
-                                      child: const FittedBox(
+                                      child: FittedBox(
                                           alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
                                           child: Text(
                                             'Notifikasi',
                                             style: subtitleText,
@@ -98,8 +107,9 @@ class MenuHome extends StatelessWidget {
                                     SizedBox(
                                       width: double.maxFinite,
                                       height: height * 0.03,
-                                      child: const FittedBox(
+                                      child: FittedBox(
                                           alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
                                           child: Text(
                                             'Info Tugas',
                                             style: titleText,
@@ -118,8 +128,9 @@ class MenuHome extends StatelessWidget {
                                         SizedBox(
                                           width: width * 0.2,
                                           height: height * 0.02,
-                                          child: const FittedBox(
+                                          child: FittedBox(
                                               alignment: Alignment.centerLeft,
+                                              fit: BoxFit.scaleDown,
                                               child: Text(
                                                 'Lihat Detail',
                                                 style: titleText,
@@ -130,11 +141,12 @@ class MenuHome extends StatelessWidget {
                                             width: width * 0.05,
                                             height: height * 0.025,
                                             color: Colors.white,
-                                            child: const FittedBox(
+                                            child: FittedBox(
+                                                fit: BoxFit.scaleDown,
                                                 child: Text(
-                                              '5',
-                                              style: subtitleTextBlack,
-                                            )),
+                                                  '5',
+                                                  style: subtitleTextBlack,
+                                                )),
                                           ),
                                         )
                                       ],
@@ -169,12 +181,47 @@ class MenuHome extends StatelessWidget {
                           icon: Image.asset('assets/images/warehouse.png'),
                           isi: "Warehouse",
                           navigator: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuWarehouse(),
-                              ),
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
+
+                            try {
+                              await Future.wait([
+                                providerItem.getAllWarehouse(context),
+                                providerItem.getAllCategory(context),
+                                providerItem.getAllItem(context),
+                                providerItem.getAllCategory(context),
+                                providerItem.getAllVendor(context),
+                                providerDistribusi.getAllTube(context),
+                                providerDistribusi.getAllTubeType(context),
+                                providerDistribusi.getAllTubeGas(context),
+                                providerDistribusi.getAllTubeGrade(context),
+                                providerDistribusi.getAllCradle(context),
+                                providerItem.getAllSO(context),
+                                providerSales.getUsersPic(context),
+                              ]);
+
+                              // Navigate sesuai kondisi
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuWarehouse(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           }),
                       WidgetMenu(
                           HB: height,
@@ -195,12 +242,43 @@ class MenuHome extends StatelessWidget {
                           icon: Image.asset('assets/images/purchase.png'),
                           isi: "Purchase",
                           navigator: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuPurchase(),
-                              ),
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
+
+                            try {
+                              await Future.wait([
+                                providerItem.getAllPo(context),
+                                providerSales.getCMD(context),
+                                providerItem.getAllItem(context),
+                                providerSales.getSummarySales(context),
+                                providerSales.getUsersPic(context),
+                                providerItem.getAllSPB(context),
+                                providerItem.getAllCategory(context),
+                                providerItem.getAllVendor(context),
+                              ]);
+
+                              // Navigate sesuai kondisi
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuPurchase(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           }),
                       WidgetMenu(
                           HB: height,
@@ -211,40 +289,54 @@ class MenuHome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MenuProduksi(),
+                                builder: (context) => MenuItemProduksi(),
+                              ),
+                            );
+                          }),
+                      // WidgetMenu(
+                      //     HB: height,
+                      //     FW: width,
+                      //     icon: Image.asset('assets/images/produksi.png'),
+                      //     isi: "Asset",
+                      //     navigator: () async {}),
+                      WidgetMenu(
+                          HB: height,
+                          FW: width,
+                          icon: Image.asset('assets/images/purchase.png'),
+                          isi: "Order",
+                          navigator: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MenuOrder(),
                               ),
                             );
                           }),
                       WidgetMenu(
                           HB: height,
                           FW: width,
-                          icon: Image.asset('assets/images/produksi.png'),
-                          isi: "Asset",
-                          navigator: () async {}),
-                      WidgetMenu(
-                          HB: height,
-                          FW: width,
-                          icon: Image.asset('assets/images/purchase.png'),
-                          isi: "Order",
-                          navigator: () async {}),
-                      WidgetMenu(
-                          HB: height,
-                          FW: width,
                           icon: Image.asset('assets/images/purchase.png'),
                           isi: "Sales",
-                          navigator: () async {}),
+                          navigator: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MenuSales(),
+                              ),
+                            );
+                          }),
                       WidgetMenu(
                           HB: height,
                           FW: width,
                           icon: Image.asset('assets/images/purchase.png'),
                           isi: "Maintance",
                           navigator: () async {}),
-                      WidgetMenu(
-                          HB: height,
-                          FW: width,
-                          icon: Image.asset('assets/images/purchase.png'),
-                          isi: "Laporan",
-                          navigator: () async {}),
+                      // WidgetMenu(
+                      //     HB: height,
+                      //     FW: width,
+                      //     icon: Image.asset('assets/images/purchase.png'),
+                      //     isi: "Laporan",
+                      //     navigator: () async {}),
                     ],
                   ),
                 ),

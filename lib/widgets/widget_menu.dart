@@ -44,6 +44,7 @@ class WidgetMenu extends StatelessWidget {
               width: FW,
               height: 25,
               child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
                   child: Text(isi, style: titleTextBlack)),
             )

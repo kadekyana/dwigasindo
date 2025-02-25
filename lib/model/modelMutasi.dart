@@ -2,7 +2,6 @@
 //
 //     final modelMutasi = modelMutasiFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ModelMutasi modelMutasiFromJson(String str) =>

@@ -1,13 +1,20 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/model/modelDetailSPB.dart';
+import 'package:dwigasindo/providers/provider_auth.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
-import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class ComponentTambahPo extends StatefulWidget {
   ComponentTambahPo({super.key});
@@ -16,42 +23,68 @@ class ComponentTambahPo extends StatefulWidget {
 }
 
 class _ComponentTambahPoState extends State<ComponentTambahPo> {
-  // Timer? _timer;
-  TextEditingController tahun = TextEditingController();
-  TextEditingController serial = TextEditingController();
-  TextEditingController lokasi = TextEditingController();
+  int selectPicId = 0;
+  int selectPicId1 = 0;
+  int selectPicId2 = 0;
+  int? kategoriId;
+  int? vendorId;
+  double totalPrice = 0;
+  double grandTotal = 0;
 
-  SingleSelectController<String?> jenisTabung =
-      SingleSelectController<String?>(null);
+  TextEditingController tanggal = TextEditingController();
+  TextEditingController ppn = TextEditingController();
+  TextEditingController deadline = TextEditingController();
+  SingleSelectController<Object?>? spb = SingleSelectController(null);
+  GroupButtonController jenisSpb = GroupButtonController();
+  GroupButtonController syarat = GroupButtonController(selectedIndex: 0);
+  bool cek = false;
 
-  SingleSelectController<String?> customer =
-      SingleSelectController<String?>(null);
+  ModelDetailSpb? _detailSpb;
 
-  SingleSelectController<String?> jenisGas =
-      SingleSelectController<String?>(null);
+  // Fungsi untuk memanggil API detail SPB dan mengisi formList secara otomatis
+  Future<void> getDetailSPB(BuildContext context, String noSPB) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "spbs/$noSPB", token: token);
 
-  SingleSelectController<String?> supllier =
-      SingleSelectController<String?>(null);
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailSpb.fromJson(response!.data);
+      setState(() {
+        _detailSpb = data;
+        // Jika terdapat data di spb_detail, otomatis buat formList berdasarkan data tersebut
+        formList = data.data!.spbDetail!.map((detail) {
+          return {
+            "item_id": detail.itemId,
+            "item_name": detail.itemName,
+            "item_price": null,
+            "item_qty": null,
+            "item_note": null,
+            "preselected": detail.itemName,
+            "isSPB":
+                true, // menandakan item berasal dari SPB, harga bisa diubah manual
+          };
+        }).toList();
+      });
+    }
+  }
 
-  String selectTubeGas = '';
-  int? selectCustomer;
-  int? selectSupllier;
+  void _hitungTotalHarga() {
+    double total = 0;
+    for (var item in formList) {
+      if (item['item_price'] != null && item['item_qty'] != null) {
+        double harga = double.tryParse(item['item_price'].toString()) ?? 0;
+        int qty = int.tryParse(item['item_qty'].toString()) ?? 0;
+        total += harga * qty;
+      }
+    }
+    setState(() {
+      totalPrice = total;
+    });
+  }
 
-  int? owner = 0;
-  int? nonSingletubeType;
-  int? selectnonGrade;
-  bool nonGrade = true;
-  int? selectedGradeIndex;
-
-  bool isSingle = false;
-
-  List<String>? tubeGrade;
-  List<String>? tubeType;
-  List<Map<String, dynamic>>? tubeGas;
-  List<Map<String, dynamic>>? tubecustomer;
-  List<Map<String, dynamic>>? tubesupplier;
-
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context, int jenis) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -60,48 +93,69 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
     );
 
     if (pickedDate != null) {
-      setState(() {
-        serial.text =
-            "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
-      });
+      if (jenis == 1) {
+        setState(() {
+          tanggal.text =
+              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+        });
+      } else {
+        setState(() {
+          deadline.text =
+              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+        });
+      }
     }
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
+  List<Map<String, dynamic>> formListB = []; // List untuk menyimpan data form
+  // Fungsi untuk menambah form baru
+  // Fungsi untuk menambah form baru (form bebas)
+  void _addForm() {
+    setState(() {
+      formList.add({
+        "item_id": null,
+        "item_price": null,
+        "item_qty": null,
+        "item_note": null,
+        "preselected": null,
+        "isSPB":
+            false, // item manual, harga diambil otomatis dan tidak bisa diubah
+      });
+    });
+  }
 
-  //   // Ambil data dan cek apakah tidak null
-  //   tubeGrade = provider.tubeGrades?.data.map((data) => data.name).toList();
-  //   tubeType = provider.tubeTypes?.data.map((data) => data.name).toList();
+  // Fungsi untuk menghapus form terakhir
+  void _removeForm(int index) {
+    setState(() {
+      formList.removeAt(index);
+    });
+  }
 
-  //   tubeGas = provider.tubeGas?.data
-  //       .map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
+  void _addFormB() {
+    setState(() {
+      formListB.add({"bertahap": null, "%": null, 'total': null});
+    });
+  }
 
-  //   tubecustomer = provider.customer?.data
-  //       .map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
-
-  //   tubesupplier = provider.supllier?.data
-  //       ?.map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
-
-  //   // Cek data supplier dan customer
-  //   print("Supllier data: ${provider.supllier?.data}");
-  //   print("Customer data: ${provider.customer?.data}");
-  // }
+  // Fungsi untuk menghapus form terakhir
+  void _removeFormB() {
+    if (formListB.isNotEmpty) {
+      setState(() {
+        formListB.removeLast();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
-        title: 'Tambah Tabung',
+        title: 'Tambah PO',
         back: true,
         center: true,
         colorBG: Colors.grey.shade100,
@@ -115,26 +169,28 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width,
-              height: height * 0.1,
-              child: ListTile(
-                title: Text(
-                  'Tanggal',
-                  style: TextStyle(color: Colors.black),
-                ),
-                subtitle: Container(
-                  margin: EdgeInsets.only(top: height * 0.01),
-                  child: GestureDetector(
-                    onTap: () => _selectDate(context),
-                    child: AbsorbPointer(
-                      child: TextField(
-                        controller: serial,
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                          hintText: 'Pilih Tanggal',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+              height: 80.h,
+              child: Center(
+                child: ListTile(
+                  title: Text(
+                    'Tanggal',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Container(
+                    margin: EdgeInsets.only(top: height * 0.01),
+                    child: GestureDetector(
+                      onTap: () => _selectDate(context, 1),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: tanggal,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            hintText: 'Pilih Tanggal',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
@@ -144,30 +200,56 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               ),
             ),
             SizedBox(
-              height: height * 0.02,
+              height: 10.h,
             ),
-            Container(
-              width: width,
-              height: height * 0.1,
-              child: ListTile(
-                title: Text(
-                  'SPB',
-                  style: TextStyle(color: Colors.black),
-                ),
-                subtitle: Container(
-                  margin: EdgeInsets.only(top: height * 0.01),
-                  child: WidgetForm(
-                    controller: tahun,
-                    alert: 'Nama SPB',
-                    hint: 'Nama SPB',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
+            SizedBox(
+              height: 80.h,
+              child: Center(
+                child: ListTile(
+                  title: Text(
+                    'SPB',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Container(
+                    margin: EdgeInsets.only(top: height * 0.01),
+                    child: Consumer<ProviderItem>(
+                      builder: (context, provider, child) {
+                        final spbList = provider.spb!.data!
+                            .map((data) => {'id': data.id, 'name': data.no})
+                            .toList();
+
+                        return CustomDropdown(
+                          controller: spb,
+                          decoration: CustomDropdownDecoration(
+                              closedBorder:
+                                  Border.all(color: Colors.grey.shade400),
+                              expandedBorder:
+                                  Border.all(color: Colors.grey.shade400)),
+                          hintText: 'Pilih SPB',
+                          items: spbList.map((e) => e['name']).toList(),
+                          onChanged: (item) {
+                            print("Selected SPB: $item");
+
+                            final selected = spbList.firstWhere(
+                              (e) => e['name'] == item,
+                            );
+                            // Misal: gunakan field 'id' sebagai noSPB (atau sesuaikan dengan API)
+                            int noSPB = int.parse(selected['id'].toString());
+
+                            // Panggil function getDetailSPB
+                            getDetailSPB(context, item.toString());
+
+                            // Bisa juga menyimpan nilai SPB yang dipilih jika dibutuhkan
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(
-              height: height * 0.02,
+              height: 10.h,
             ),
             Container(
               width: width,
@@ -180,6 +262,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                 subtitle: Align(
                   alignment: Alignment.topLeft,
                   child: GroupButton(
+                      controller: jenisSpb,
                       isRadio: true,
                       options: GroupButtonOptions(
                         selectedColor: PRIMARY_COLOR,
@@ -194,136 +277,342 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             ),
             Container(
               width: width,
-              height: height * 0.1,
+              height: 80.h,
               child: ListTile(
                 title: Text(
-                  'Kategori',
+                  'Categori',
                   style: subtitleTextBlack,
                 ),
-                subtitle: WidgetDropdown(
-                  items: ['PCS'],
-                  hintText: 'Kategori',
-                  controller: jenisGas,
-                  onChanged: (value) {},
+                subtitle: Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
+                  child: Consumer<ProviderItem>(
+                    builder: (context, provider, child) {
+                      final pic = provider.allcategory!.data
+                          .map((data) => {'id': data.id, 'name': data.name})
+                          .toList();
+
+                      return CustomDropdown(
+                        decoration: CustomDropdownDecoration(
+                            closedBorder:
+                                Border.all(color: Colors.grey.shade400),
+                            expandedBorder:
+                                Border.all(color: Colors.grey.shade400)),
+                        hintText: 'Pilih Categori',
+                        items: pic.map((e) => e['name']).toList(),
+                        onChanged: (item) {
+                          print("Selected Item: $item");
+
+                          final selected = pic.firstWhere(
+                            (e) => e['name'] == item,
+                          );
+
+                          setState(() {
+                            kategoriId = int.parse(selected['id'].toString());
+                          });
+
+                          print("Selected ID: $selectPicId2");
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: height * 0.02,
             ),
             Container(
               width: width,
-              height: height * 0.1,
-              child: ListTile(
-                title: Text(
-                  'Supllier',
-                  style: subtitleTextBlack,
-                ),
-                subtitle: WidgetDropdown(
-                  items: ['a', 'b'],
-                  hintText: 'Supplier',
-                  controller: jenisGas,
-                  onChanged: (value) {},
+              height: 100.h,
+              child: Center(
+                child: ListTile(
+                  title: Text(
+                    'Vendors',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Container(
+                    margin: EdgeInsets.only(top: height * 0.01),
+                    child: Consumer<ProviderItem>(
+                      builder: (context, provider, child) {
+                        final pic = provider.supplier!.data
+                            .map((data) => {'id': data.id, 'name': data.name})
+                            .toList();
+
+                        return CustomDropdown(
+                          decoration: CustomDropdownDecoration(
+                              closedBorder:
+                                  Border.all(color: Colors.grey.shade400),
+                              expandedBorder:
+                                  Border.all(color: Colors.grey.shade400)),
+                          hintText: 'Pilih Vendors',
+                          items: pic.map((e) => e['name']).toList(),
+                          onChanged: (item) {
+                            print("Selected Item: $item");
+
+                            final selected = pic.firstWhere(
+                              (e) => e['name'] == item,
+                            );
+
+                            setState(() {
+                              vendorId = int.parse(selected['id'].toString());
+                            });
+
+                            print("Selected ID: $selectPicId2");
+                          },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: formList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    // Container(
+                    //   width: width,
+                    //   height: 80.h,
+                    //   child: ListTile(
+                    //     title: Text(
+                    //       'Item Barang',
+                    //       style: subtitleTextBlack,
+                    //     ),
+                    //     subtitle: Consumer<ProviderItem>(
+                    //       builder: (context, provider, child) {
+                    //         final pic = provider.allItem!.data!
+                    //             .map((data) => {
+                    //                   'id': data.id,
+                    //                   'name': data.name,
+                    //                   'price': data.price,
+                    //                 })
+                    //             .toList();
+
+                    //         return CustomDropdown(
+                    //           decoration: CustomDropdownDecoration(
+                    //               closedBorder:
+                    //                   Border.all(color: Colors.grey.shade400),
+                    //               expandedBorder:
+                    //                   Border.all(color: Colors.grey.shade400)),
+                    //           hintText: 'Pilih Item',
+                    //           items: pic.map((e) => e['name']).toList(),
+                    //           onChanged: (item) {
+                    //             print("Selected Item: $item");
+
+                    //             final selected = pic.firstWhere(
+                    //               (e) => e['name'] == item,
+                    //             );
+
+                    //             setState(() {
+                    //               formList[index]['item_id'] =
+                    //                   int.parse(selected['id'].toString());
+                    //               formList[index]['item_price'] =
+                    //                   selected['price'];
+                    //             });
+
+                    //             print("Selected ID: $selectPicId2");
+                    //           },
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // Di dalam ListView.builder pada form item:
+                    Container(
+                      width: width,
+                      height: 80.h,
+                      child: ListTile(
+                        title: Text(
+                          'Item Barang',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Consumer<ProviderItem>(
+                          builder: (context, provider, child) {
+                            final allItems = provider.allItem!.data!
+                                .map((data) => {
+                                      'id': data.id,
+                                      'name': data.name,
+                                      'price': data.price,
+                                    })
+                                .toList();
+                            // Ambil preselected jika ada (dari data SPB) atau null
+                            String? initialValue =
+                                formList[index]["preselected"];
+                            return CustomDropdown<String>(
+                              initialItem: formList[index]["preselected"],
+                              items: allItems
+                                  .map((e) => e['name'] as String)
+                                  .toList(),
+                              hintText: 'Pilih Item',
+                              decoration: CustomDropdownDecoration(
+                                  closedBorder:
+                                      Border.all(color: Colors.grey.shade400),
+                                  expandedBorder:
+                                      Border.all(color: Colors.grey.shade400)),
+                              onChanged: (item) {
+                                print("Selected Item: $item");
+                                final selected = allItems
+                                    .firstWhere((e) => e['name'] == item);
+                                setState(() {
+                                  formList[index]['item_id'] =
+                                      int.parse(selected['id'].toString());
+                                  formList[index]['item_price'] =
+                                      selected['price'];
+                                  // Jika user memilih secara manual, maka set isSPB menjadi false
+                                  formList[index]["isSPB"] = false;
+                                  // Clear preselected agar dropdown bisa diubah kemudian
+                                  formList[index]["preselected"] = null;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: ListTile(
+                              title: Text(
+                                'Harga',
+                                style: subtitleTextBlack,
+                              ),
+                              subtitle: Container(
+                                margin: EdgeInsets.only(top: height * 0.01),
+                                child: WidgetForm(
+                                  controller: TextEditingController(
+                                    text:
+                                        (formList[index]['item_price'] != null)
+                                            ? providerSales.formatCurrency(
+                                                double.tryParse(formList[index]
+                                                            ['item_price']
+                                                        .toString()) ??
+                                                    0)
+                                            : "",
+                                  ),
+                                  change: (value) {
+                                    setState(() {
+                                      formList[index]['item_price'] = value;
+                                    });
+                                  },
+                                  alert: 'Harga',
+                                  hint: 'Harga',
+                                  enable: formList[index]["isSPB"] ==
+                                      true, // jika dari SPB, harga bisa diubah manual
+                                  typeInput: TextInputType.number,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              title: Text(
+                                'QTY',
+                                style: subtitleTextBlack,
+                              ),
+                              subtitle: Container(
+                                margin: EdgeInsets.only(top: height * 0.01),
+                                child: WidgetForm(
+                                  change: (value) {
+                                    setState(() {
+                                      formList[index]['item_qty'] = value;
+                                      _hitungTotalHarga();
+                                    });
+                                  },
+                                  alert: 'QTY',
+                                  hint: 'QTY',
+                                  typeInput: TextInputType.number,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Container(
+                      width: width,
+                      height: 80.h,
+                      child: ListTile(
+                        title: Text(
+                          'Keterangan',
+                          overflow: TextOverflow.ellipsis,
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            alert: 'Keterangan',
+                            hint: 'Keterangan',
+                            typeInput: TextInputType.text,
+                            change: (value) {
+                              setState(() {
+                                formList[index]['item_note'] = value;
+                              });
+                            },
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Container(
+                      width: width,
+                      height: height * 0.06,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: WidgetButtonCustom(
+                            FullWidth: width * 0.9,
+                            FullHeight: height * 0.05,
+                            title: 'Hapus Form',
+                            onpressed: () {
+                              _removeForm(index);
+                            },
+                            bgColor: SECONDARY_COLOR,
+                            color: SECONDARY_COLOR),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
             SizedBox(
-              height: height * 0.02,
+              height: 20.h,
             ),
             Container(
               width: width,
-              height: height * 0.1,
-              child: ListTile(
-                title: Text(
-                  'Item Barang',
-                  style: subtitleTextBlack,
-                ),
-                subtitle: WidgetDropdown(
-                  items: ['a', 'b'],
-                  hintText: 'Item Barang',
-                  controller: jenisGas,
-                  onChanged: (value) {},
-                ),
+              height: height * 0.06,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: WidgetButtonCustom(
+                    FullWidth: width * 0.9,
+                    FullHeight: height * 0.05,
+                    title: 'Tambah Form',
+                    onpressed: _addForm,
+                    bgColor: PRIMARY_COLOR,
+                    color: PRIMARY_COLOR),
               ),
             ),
             SizedBox(
-              height: height * 0.03,
-            ),
-            Container(
-              width: width,
-              height: height * 0.1,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'Harga',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'Harga',
-                          hint: 'Harga',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'QTY',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'QTY',
-                          hint: 'QTY',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'Total Pembayaran',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'Total Pembayaran',
-                          hint: 'Total Pembayaran',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: WidgetForm(
-                controller: tahun,
-                alert: '2024',
-                hint: '2024',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+              height: 20.h,
             ),
             Container(
               width: width,
@@ -336,6 +625,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                 subtitle: Align(
                   alignment: Alignment.topLeft,
                   child: GroupButton(
+                      controller: syarat,
                       isRadio: true,
                       options: GroupButtonOptions(
                         selectedColor: PRIMARY_COLOR,
@@ -343,6 +633,15 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                       ),
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
+                        if (value == "Bertahap") {
+                          setState(() {
+                            cek = true;
+                          });
+                        } else {
+                          setState(() {
+                            cek = false;
+                          });
+                        }
                       },
                       buttons: ['Tunai', "Bertahap"]),
                 ),
@@ -354,15 +653,15 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               child: ListTile(
                 title: Text(
                   'Deadline Pembayaran',
-                  style: TextStyle(color: Colors.black),
+                  style: subtitleTextBlack,
                 ),
                 subtitle: Container(
                   margin: EdgeInsets.only(top: height * 0.01),
                   child: GestureDetector(
-                    onTap: () => _selectDate(context),
+                    onTap: () => _selectDate(context, 2),
                     child: AbsorbPointer(
                       child: TextField(
-                        controller: serial,
+                        controller: deadline,
                         keyboardType: TextInputType.datetime,
                         decoration: InputDecoration(
                           hintText: 'Pilih Tanggal',
@@ -377,170 +676,304 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               ),
             ),
             SizedBox(
-              height: height * 0.02,
+              height: height * 0.01,
             ),
-            Container(
-              width: width,
-              height: height * 0.1,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'Total Harga',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'Total Harga',
-                          hint: 'Total Harga',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+            if (cek == false)
+              Container(
+                width: width,
+                height: height * 0.1,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: ListTile(
+                        title: Text(
+                          'Harga Total Item',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            controller: TextEditingController(
+                                text: providerSales.formatCurrency(totalPrice)),
+                            alert: 'Harga Total Item',
+                            hint: 'Harga Total Item',
+                            enable: false,
+                            typeInput: TextInputType.number,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'PPN',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'PPN',
-                          hint: 'PPN',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'PPN',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            controller: ppn,
+                            change: (value) {
+                              setState(() {
+                                grandTotal = totalPrice +
+                                    totalPrice * int.parse(value) / 100;
+                              });
+                            },
+                            alert: 'PPN',
+                            hint: 'PPN',
+                            typeInput: TextInputType.number,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+            SizedBox(
+              height: 10.h,
             ),
+            if (cek == true)
+              Container(
+                width: width,
+                height: 30,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: _addFormB, icon: Icon(Icons.add_circle)),
+                    if (formListB.length > 0)
+                      IconButton(
+                          onPressed: _removeFormB, icon: Icon(Icons.delete)),
+                  ],
+                ),
+              ),
+            if (cek == true)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: formListB.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: ListTile(
+                          title: Text(
+                            'Bertahap',
+                            style: subtitleTextBlack,
+                          ),
+                          subtitle: Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: WidgetForm(
+                              alert: 'Bertahap',
+                              hint: 'Bertahap',
+                              change: (value) {
+                                setState(() {
+                                  formListB[index]['bertahap'] = value;
+                                });
+                              },
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ListTile(
+                          title: Text(
+                            '%',
+                            style: subtitleTextBlack,
+                          ),
+                          subtitle: Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: WidgetForm(
+                              alert: '%',
+                              hint: '%',
+                              change: (value) {
+                                setState(() {
+                                  formListB[index]['%'] = value;
+                                });
+                              },
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ListTile(
+                          title: Text(
+                            'Total',
+                            style: subtitleTextBlack,
+                          ),
+                          subtitle: Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: WidgetForm(
+                              alert: 'Total',
+                              hint: 'Total',
+                              change: (value) {
+                                setState(() {
+                                  formListB[index]['total'] = value;
+                                });
+                              },
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             SizedBox(
               height: height * 0.02,
             ),
             Container(
               width: width,
-              height: height * 0.1,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'Bertahap',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'Bertahap',
-                          hint: 'Bertahap',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
+              height: 80.h,
+              child: ListTile(
+                title: Text(
+                  'Grand Total',
+                  style: subtitleTextBlack,
+                ),
+                subtitle: Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
+                  child: WidgetForm(
+                    controller: TextEditingController(
+                        text: providerSales.formatCurrency(grandTotal)),
+                    alert: 'Grand Total',
+                    hint: 'Grand Total',
+                    enable: false,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        '%',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: '%',
-                          hint: '%',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(
-                        'Total',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: WidgetForm(
-                          controller: tahun,
-                          alert: 'Total',
-                          hint: 'Total',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             SizedBox(
-              height: height * 0.02,
+              height: 10.h,
             ),
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
                 width: width,
-                height: height * 0.25,
+                height: 250.h,
                 child: ListTile(
                   title: Text(
                     'PIC Approval',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Column(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Verifikasi',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      SizedBox(
+                        height: 10.h,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Mengetahui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Verifikasi',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId");
+                            },
+                          );
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Menyetujui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Mengetahui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId1 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId1");
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Menyetujui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId2 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId2");
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -561,8 +994,43 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
           child: WidgetButtonCustom(
               FullWidth: width * 0.9,
               FullHeight: height * 0.05,
-              title: 'Simpan',
-              onpressed: () async {},
+              title: 'Buat PO',
+              onpressed: () async {
+                if (kategoriId == null || vendorId == null) {
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    const CustomSnackBar.error(
+                        message: "Pilih kategori dan vendor terlebih dahulu!"),
+                  );
+                  return;
+                }
+
+                if (formList.isEmpty) {
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    const CustomSnackBar.error(
+                        message: "Tambahkan minimal 1 item!"),
+                  );
+                  return;
+                }
+
+                final spbValue = spb?.value?.toString() ?? "";
+                double ppnValue = double.tryParse(ppn.text) ?? 0;
+
+                provider.createPO(
+                    context,
+                    tanggal.text,
+                    spbValue,
+                    jenisSpb.selectedIndex!,
+                    kategoriId!,
+                    vendorId!,
+                    syarat.selectedIndex!,
+                    deadline.text,
+                    totalPrice,
+                    ppnValue,
+                    grandTotal,
+                    formList);
+              },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
         ),

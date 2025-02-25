@@ -1,12 +1,16 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_tambah_spb.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 class ComponentSpb extends StatefulWidget {
   ComponentSpb({super.key});
@@ -17,13 +21,16 @@ class ComponentSpb extends StatefulWidget {
 
 class _ComponentSpbState extends State<ComponentSpb> {
   List<bool> check = [true, false];
+  GroupButtonController controller = GroupButtonController(selectedIndex: 0);
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
+    final data = provider.spb?.data;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'SPB',
         center: true,
@@ -107,6 +114,7 @@ class _ComponentSpbState extends State<ComponentSpb> {
               alignment: Alignment.centerLeft,
               child: GroupButton(
                   isRadio: true,
+                  controller: controller,
                   options: GroupButtonOptions(
                     selectedColor: PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(8),
@@ -121,12 +129,12 @@ class _ComponentSpbState extends State<ComponentSpb> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: check.length,
+                itemCount: data?.length,
                 itemBuilder: (context, index) {
-                  final data = check[index];
+                  final dataCard = data?[index];
                   return Container(
                     width: double.maxFinite,
-                    height: height * 0.18,
+                    height: 165.h,
                     margin: EdgeInsets.only(bottom: height * 0.02),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -141,14 +149,14 @@ class _ComponentSpbState extends State<ComponentSpb> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
-                          height: 40,
+                          height: height * 0.05,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: EdgeInsets.all(10),
+                                height: height * 0.05,
                                 width: width * 0.3,
                                 decoration: const BoxDecoration(
                                   color: PRIMARY_COLOR,
@@ -157,30 +165,33 @@ class _ComponentSpbState extends State<ComponentSpb> {
                                     bottomRight: Radius.circular(30),
                                   ),
                                 ),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
                                   child: Text(
-                                    '27 Sep 2024',
+                                    providerSales.formatDate(
+                                        dataCard!.createdAt.toString()),
                                     style: titleText,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.all(10),
+                                height: height * 0.05,
                                 width: width * 0.3,
                                 decoration: BoxDecoration(
                                   color: (data == true)
-                                      ? SECONDARY_COLOR
+                                      ? COMPLEMENTARY_COLOR2
                                       : Colors.grey.shade500,
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(8),
                                     bottomLeft: Radius.circular(30),
                                   ),
                                 ),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu Approve"}',
+                                    '${(data == true) ? "Approve" : "Menunggu"}',
                                     style: titleText,
                                   ),
                                 ),
@@ -191,6 +202,8 @@ class _ComponentSpbState extends State<ComponentSpb> {
                         Expanded(
                           flex: 3,
                           child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 5.h),
                             decoration: BoxDecoration(
                               border: Border(
                                 top: BorderSide(color: Colors.grey.shade300),
@@ -198,43 +211,93 @@ class _ComponentSpbState extends State<ComponentSpb> {
                             ),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  height: 20,
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Nomor SPB',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(' : '),
+                                    Expanded(
+                                      flex: 2,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text('${dataCard.no}',
+                                            style: subtitleTextBlack),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 110.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/approve4.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/1.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/2.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          (data == true)
+                                              ? SvgPicture.asset(
+                                                  'assets/images/approve3.svg',
+                                                )
+                                              : SvgPicture.asset(
+                                                  'assets/images/approve1.svg',
+                                                ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                                Expanded(
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Expanded(child: SizedBox.shrink()),
-                                      Expanded(child: SizedBox.shrink()),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/approve4.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/1.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/2.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            (data == true)
-                                                ? SvgPicture.asset(
-                                                    'assets/images/approve3.svg',
-                                                  )
-                                                : SvgPicture.asset(
-                                                    'assets/images/approve1.svg',
-                                                  ),
-                                          ],
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Kategori',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                      const Text(' : '),
+                                      Expanded(
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              (dataCard.spbType == 0)
+                                                  ? "Barang"
+                                                  : "Jasa",
+                                              style: subtitleTextBlack),
                                         ),
                                       ),
                                     ],
@@ -245,62 +308,30 @@ class _ComponentSpbState extends State<ComponentSpb> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Nomor SPB',
-                                              style: subtitleTextBlack,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(': 2324253',
-                                                style: subtitleTextBlack),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat Oleh',
+                                            style: subtitleTextNormal,
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Kategori',
-                                              style: subtitleTextBlack,
-                                            ),
-                                          ),
-                                        ),
+                                      Text(
+                                        ' : ',
+                                        style: subtitleTextNormal,
                                       ),
                                       Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(': Bahan Baku',
-                                                style: subtitleTextBlack),
-                                          ),
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              '${dataCard.createdByName}',
+                                              style: subtitleTextNormal),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
                                     ],
                                   ),
                                 ),
@@ -309,35 +340,16 @@ class _ComponentSpbState extends State<ComponentSpb> {
                           ),
                         ),
                         Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Create by user 1',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: height * 0.005,
-                                    right: width * 0.01),
-                                child: WidgetButtonCustom(
-                                    FullWidth: width * 0.3,
-                                    FullHeight: 25,
-                                    title: "Lihat Barang",
-                                    onpressed: () {},
-                                    bgColor: PRIMARY_COLOR,
-                                    color: Colors.transparent),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 10.w, right: 10.w, bottom: 5.h),
+                            child: WidgetButtonCustom(
+                                FullWidth: width,
+                                FullHeight: 50.h,
+                                title: "Lihat Barang",
+                                onpressed: () {},
+                                bgColor: PRIMARY_COLOR,
+                                color: Colors.transparent),
                           ),
                         ),
                       ],

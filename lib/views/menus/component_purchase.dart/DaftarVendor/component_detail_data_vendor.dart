@@ -62,7 +62,6 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Data Vendor',
         center: true,
@@ -105,8 +104,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                       child: Center(
                         child: Text(
                           'Kawasan Industri Karyadeka, Jl.Raya Gemalapik. No.1, Pasirsari, Cikarang Selatan',
-                          style: TextStyle(
-                              fontFamily: 'Manrope', fontSize: width * 0.03),
+                          style: subtitleTextBlack,
                           textAlign: TextAlign.justify,
                         ),
                       ),
@@ -130,17 +128,14 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                             flex: 3,
                             child: Text(
                               'Penilaian',
-                              style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: width * 0.03),
+                              style: subtitleTextBlack,
                               textAlign: TextAlign.justify,
                             ),
                           ),
                           Expanded(
                             child: Text(
                               '7',
-                              style: TextStyle(
-                                  fontFamily: 'Manrope', fontSize: width * 0.1),
+                              style: subtitleTextBlack,
                               textAlign: TextAlign.justify,
                             ),
                           ),
@@ -205,10 +200,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               elevation: 0,
                               groupingType: GroupingType.row,
                               selectedColor: Colors.grey.shade100,
-                              selectedTextStyle:
-                                  const TextStyle(color: Colors.black),
-                              unselectedTextStyle: const TextStyle(
-                                  color: Colors.black, fontSize: 10),
+                              selectedTextStyle: subtitleTextBlack,
+                              unselectedTextStyle: minisubtitleTextBlack,
                               borderRadius: BorderRadius.circular(8),
                               spacing: 2,
                               buttonWidth: (width * 0.16),
@@ -241,7 +234,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                   Center(
                     child: Text(
                       'Review Vendor Content',
-                      style: TextStyle(fontSize: 18),
+                      style: titleTextBlack,
                     ),
                   ),
                 ],
@@ -294,7 +287,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                             bottomRight: Radius.circular(30),
                           ),
                         ),
-                        child: const FittedBox(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
                           child: Text(
                             '27 Sep 2024',
@@ -313,6 +307,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                           ),
                         ),
                         child: FittedBox(
+                          fit: BoxFit.scaleDown,
                           alignment: Alignment.center,
                           child: Text(
                             'Approve',
@@ -379,6 +374,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               child: Container(
                                 padding: EdgeInsets.all(5),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Nomor PO',
@@ -392,6 +388,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               child: Container(
                                 padding: EdgeInsets.all(5),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
                                   child: Text(': 2324253',
                                       style: subtitleTextBlack),
@@ -410,6 +407,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                 child: Container(
                                   padding: EdgeInsets.all(5),
                                   child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       'Vendor',
@@ -423,13 +421,9 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                 child: Container(
                                   padding: EdgeInsets.all(5),
                                   child: Text(
-                                    ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: height * 0.015,
-                                    ),
-                                  ),
+                                      ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: subtitleTextBlack),
                                 ),
                               ),
                               Expanded(
@@ -449,6 +443,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                 child: Container(
                                   padding: EdgeInsets.all(5),
                                   child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       'Kategori',
@@ -462,6 +457,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                 child: Container(
                                   padding: EdgeInsets.all(5),
                                   child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
                                     child: Text(': Bahan Baku',
                                         style: subtitleTextBlack),
@@ -483,14 +479,10 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                       Container(
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
+                          fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Create by user 1',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
+                          child: Text('Create by user 1',
+                              style: subtitleTextNormal),
                         ),
                       ),
                       Container(
@@ -534,9 +526,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
               elevation: 0,
               groupingType: GroupingType.row,
               selectedColor: Colors.grey.shade100,
-              selectedTextStyle: const TextStyle(color: Colors.black),
-              unselectedTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 10),
+              selectedTextStyle: subtitleTextBlack,
+              unselectedTextStyle: minisubtitleTextBlack,
               borderRadius: BorderRadius.circular(8),
               spacing: 2,
               buttonWidth: (width * 0.16),
@@ -566,7 +557,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
               ),
               Text(
                 '28',
-                style: TextStyle(fontFamily: "Manrope", fontSize: width * 0.15),
+                style: subtitleTextBlack,
               ),
             ],
           ),
@@ -632,7 +623,7 @@ class WidgetHeader extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       height: height * 0.125,
-      child: const Column(
+      child: Column(
         children: [
           Expanded(
             child: Row(
@@ -641,6 +632,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Kode Vendor',
@@ -653,6 +645,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': D000000023',
@@ -668,11 +661,11 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'PIC',
-                        style: TextStyle(
-                            fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                        style: subtitleTextBlack,
                       ),
                     ),
                   ),
@@ -681,6 +674,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': Jhon Doe',
@@ -699,6 +693,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Nama Vendor',
@@ -711,6 +706,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text(
                         ': PT Lorem Ipsum',
                         overflow: TextOverflow.ellipsis,
@@ -726,8 +722,8 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
-                      fit: BoxFit.fitHeight,
                       child: Text(
                         'No. Telp',
                         style: titleTextBlack,
@@ -739,6 +735,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': 0812222222',
@@ -757,6 +754,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Kategori',
@@ -769,6 +767,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': Bahan Baku',
@@ -784,7 +783,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Sejak',
@@ -797,6 +796,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': 22-02-2023',
@@ -815,6 +815,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Jenis',
@@ -827,6 +828,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': Barang',
@@ -842,6 +844,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Kota',
@@ -854,6 +857,7 @@ class WidgetHeader extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(
                         ': Bekasi',

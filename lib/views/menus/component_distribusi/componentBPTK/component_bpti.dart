@@ -6,6 +6,7 @@ import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/compon
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ComponentBPTI extends StatefulWidget {
@@ -33,7 +34,6 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
     final provider = Provider.of<ProviderDistribusi>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
         title: 'BPTI',
@@ -68,16 +68,42 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                           FullHeight: height * 0.06,
                           title: 'Buat BPTI',
                           onpressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ComponentBuatBPTI(),
-                              ),
+                            if (!mounted) return;
+
+                            // Tampilkan Dialog Loading
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
-                            await provider.getAllCostumer(context);
-                            await provider.getAllBPTK(context);
+
+                            try {
+                              await Future.wait([
+                                provider.getAllCostumer(context),
+                                provider.getAllBPTK(context),
+                              ]);
+
+                              // Navigate sesuai kondisi
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ComponentBuatBPTI(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           },
-                          titleColor: Colors.black,
+                          bgColor: PRIMARY_COLOR,
                           color: PRIMARY_COLOR),
                       SizedBox(
                         height: height * 0.05,
@@ -104,16 +130,16 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                               ),
                               child: Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: double.maxFinite,
-                                    height: 40,
+                                    height: 40.h,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          padding: EdgeInsets.all(10),
-                                          width: width * 0.4,
+                                          padding: const EdgeInsets.all(10),
+                                          width: width * 0.35,
                                           decoration: const BoxDecoration(
                                             color: PRIMARY_COLOR,
                                             borderRadius: BorderRadius.only(
@@ -121,23 +147,17 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                                               bottomRight: Radius.circular(40),
                                             ),
                                           ),
-                                          child: const FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Sedang Diproses',
-                                              style: titleText,
-                                            ),
+                                          child: Text(
+                                            'Sedang Diproses',
+                                            style: subtitleTextNormalwhite,
                                           ),
                                         ),
                                         Container(
-                                          padding: EdgeInsets.all(10),
+                                          margin: EdgeInsets.only(right: 5.w),
                                           width: width * 0.35,
-                                          child: const FittedBox(
-                                            alignment: Alignment.centerRight,
-                                            child: Text(
-                                              '23-09-2024 | 10:30:00',
-                                              style: titleTextBlack,
-                                            ),
+                                          child: Text(
+                                            '23-09-2024 | 10:30:00',
+                                            style: subtitleTextBlack,
                                           ),
                                         )
                                       ],
@@ -146,7 +166,7 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                                   Expanded(
                                     child: Container(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.025),
+                                          horizontal: 10.w),
                                       decoration: BoxDecoration(
                                         border: Border(
                                           top: BorderSide(
@@ -156,29 +176,12 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                                       child: Column(
                                         children: [
                                           Expanded(
-                                              child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      '${data!.no}',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(),
-                                              )
-                                            ],
+                                              child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              '${data!.no}',
+                                              style: subtitleTextBlack,
+                                            ),
                                           )),
                                           Expanded(
                                               child: Row(
@@ -187,30 +190,19 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                                             children: [
                                               Expanded(
                                                 flex: 1,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Dibuat Oleh',
-                                                      style: titleTextBlack,
-                                                    ),
-                                                  ),
+                                                child: Text(
+                                                  'Dibuat Oleh',
+                                                  style: subtitleTextBlack,
                                                 ),
                                               ),
+                                              Text(
+                                                " : ",
+                                                style: subtitleTextBlack,
+                                              ),
                                               Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(6),
-                                                  child: const FittedBox(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        ': Andi Muhammad',
-                                                        style: titleTextBlack),
-                                                  ),
-                                                ),
+                                                flex: 3,
+                                                child: Text('Andi Muhammad',
+                                                    style: subtitleTextBlack),
                                               )
                                             ],
                                           )),
@@ -220,7 +212,7 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 10),
+                                        vertical: 5.h, horizontal: 10.w),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [

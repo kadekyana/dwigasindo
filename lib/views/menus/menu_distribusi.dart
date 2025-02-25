@@ -19,7 +19,6 @@ class MenuDistribusi extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderDistribusi>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Distribusi',
         colorBack: Colors.black,
@@ -86,38 +85,60 @@ class MenuDistribusi extends StatelessWidget {
                       title: 'Tabung',
                       dataList: provider.Tabung,
                       onItemTap: (context, data) async {
-                        await provider.countClear();
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+
+                        try {
+                          await Future.wait([
+                            provider.countClear(),
+                            provider.getAllTube(context),
+                            provider.getAllTubeGrade(context),
+                            provider.getAllTubeType(context),
+                            provider.getAllTubeGas(context),
+                            provider.getAllCostumer(context),
+                            provider.getAllSupplier(context),
+                            provider.getAllCradle(context),
+                            provider.countTube(),
+                          ]);
+
+                          // Navigate sesuai kondisi
+
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ComponentTabung(),
+                            ),
+                          );
+                        } catch (e) {
+                          Navigator.of(context).pop(); // Tutup Dialog Loading
+                          print('Error: $e');
+                          // Tambahkan pesan error jika perlu
+                        }
+
                         provider.isLoadingTube = true;
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ComponentTabung(),
-                          ),
-                        );
-                        await provider.getAllTube(context);
-                        await provider.countTube();
-                        await provider.getAllTubeGrade(context);
-                        await provider.getAllTubeType(context);
-                        await provider.getAllTubeGas(context);
-                        await provider.getAllCostumer(context);
-                        await provider.getAllSupplier(context);
-                        provider.isLoadingTube = false;
                       },
                     ),
-                    WidgetButtonDistribusi(
-                      title: 'Claim',
-                      dataList: provider.dataBPTK1,
-                      onItemTap: (context, data) {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ComponentBPTK(),
-                          ),
-                        );
-                      },
-                    ),
+                    // WidgetButtonDistribusi(
+                    //   title: 'Claim',
+                    //   dataList: provider.dataBPTK1,
+                    //   onItemTap: (context, data) {
+                    //     Navigator.pop(context);
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => ComponentBPTK(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               ),
@@ -144,11 +165,12 @@ class CardUpDistribusi extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             width: double.maxFinite,
             height: 26,
             child: FittedBox(
               alignment: Alignment.centerLeft,
+              fit: BoxFit.scaleDown,
               child: Text(
                 "Ringkasan",
                 style: titleText,
@@ -159,7 +181,7 @@ class CardUpDistribusi extends StatelessWidget {
           // Row Pertama
           Expanded(
             child: Container(
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                     child: Column(
@@ -169,6 +191,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "BPTK",
                               style: titleText,
@@ -178,6 +201,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Bulan ini",
                               style: titleText,
@@ -187,6 +211,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,
@@ -204,6 +229,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "BPTI",
                               style: titleText,
@@ -213,6 +239,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Bulan ini",
                               style: titleText,
@@ -222,6 +249,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,
@@ -239,7 +267,7 @@ class CardUpDistribusi extends StatelessWidget {
           // Row Kedua
           Expanded(
             child: Container(
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                     child: Column(
@@ -249,6 +277,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Surat Jalan",
                               style: titleText,
@@ -258,6 +287,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Hari ini",
                               style: titleText,
@@ -267,6 +297,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,
@@ -287,6 +318,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Bulan ini",
                               style: titleText,
@@ -296,6 +328,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,
@@ -311,7 +344,7 @@ class CardUpDistribusi extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                     child: Column(
@@ -321,6 +354,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Claim",
                               style: titleText,
@@ -330,6 +364,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Bulan ini",
                               style: titleText,
@@ -339,6 +374,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,
@@ -359,6 +395,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 10,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "Bulan ini",
                               style: titleText,
@@ -368,6 +405,7 @@ class CardUpDistribusi extends StatelessWidget {
                         SizedBox(
                           height: 20,
                           child: FittedBox(
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               "10.000",
                               style: titleText,

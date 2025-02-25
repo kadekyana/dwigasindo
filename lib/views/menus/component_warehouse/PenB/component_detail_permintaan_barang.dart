@@ -23,13 +23,43 @@ class _ComponentDetailPermintaanBarangState
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _resetImageFile() {
@@ -43,7 +73,6 @@ class _ComponentDetailPermintaanBarangState
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Detail Permintaan Barang',
         center: true,
@@ -54,22 +83,6 @@ class _ComponentDetailPermintaanBarangState
         route: () {
           Navigator.pop(context);
         },
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ComponentTambahItem(),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.add_circle_outline_rounded,
-              color: Colors.black,
-            ),
-          ),
-        ],
       ),
       body: Container(
         width: width,
@@ -80,28 +93,32 @@ class _ComponentDetailPermintaanBarangState
             Container(
               width: double.maxFinite,
               height: height * 0.1,
-              child: const Column(
+              child: Column(
                 children: [
                   Expanded(
                     child: Row(
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'No. PB :',
-                                style: titleTextBlack,
+                                'No. PB',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'D000000023',
+                                ': D000000023',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -112,21 +129,25 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'Tanggal :',
-                                style: titleTextBlack,
+                                'Tanggal',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                '09-11-2024',
+                                ': 09-11-2024',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -140,21 +161,25 @@ class _ComponentDetailPermintaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'Kategori :',
-                                style: titleTextBlack,
+                                'Kategori',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'Bahan Baku',
+                                ': Bahan Baku',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -165,21 +190,25 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'Dibuat oleh :',
-                                style: titleTextBlack,
+                                'Dibuat oleh',
+                                style: subtitleTextBlack,
                               ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(2),
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
+                              fit: BoxFit.scaleDown,
                               child: Text(
-                                'Jhon Doe',
+                                ': Jhon Doe',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -259,31 +288,32 @@ class WidgetCard extends StatelessWidget {
             child: Column(
               children: [
                 Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
                   height: 20,
                   child: Row(
                     children: [
-                      Expanded(child: SizedBox.shrink()),
-                      Expanded(child: SizedBox.shrink()),
                       Expanded(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SvgPicture.asset(
                               'assets/images/approve4.svg',
-                              height: 20,
-                              width: 20,
+                              height: 25,
+                              width: 25,
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             SvgPicture.asset(
                               'assets/images/approve3.svg',
-                              height: 20,
-                              width: 20,
+                              height: 25,
+                              width: 25,
                             ),
                           ],
                         ),
                       ),
+                      Expanded(child: SizedBox.shrink()),
+                      Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                 ),
@@ -292,13 +322,13 @@ class WidgetCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
+                      child: Padding(
+                        padding: EdgeInsets.all(2),
                         child: FittedBox(
                           alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
                           child: Text(
-                            'Nama Item',
+                            'No. PB',
                             style: subtitleTextBlack,
                           ),
                         ),
@@ -307,9 +337,10 @@ class WidgetCard extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(2),
                         child: FittedBox(
                           alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
                           child:
                               Text(': Lorem Ipsum', style: subtitleTextBlack),
                         ),
@@ -325,9 +356,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               'Qty',
                               style: subtitleTextBlack,
@@ -338,9 +370,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child: Text(': 100', style: subtitleTextBlack),
                           ),
                         ),
@@ -356,9 +389,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               'Qty diserahkan',
                               style: subtitleTextBlack,
@@ -369,9 +403,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child: Text(': 100', style: subtitleTextBlack),
                           ),
                         ),
@@ -387,9 +422,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child: Text(
                               'Kategori',
                               style: subtitleTextBlack,
@@ -400,9 +436,10 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
                             child:
                                 Text(': Bahan Baku', style: subtitleTextBlack),
                           ),
@@ -413,15 +450,13 @@ class WidgetCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        child: Text(
-                          'Catatan',
-                          style: titleTextBlack,
-                        ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Catatan',
+                        style: titleTextBlack,
                       ),
                     ),
                   ),
@@ -440,7 +475,7 @@ class WidgetCard extends StatelessWidget {
                 contentPadding: EdgeInsets.all(10),
                 border: OutlineInputBorder(),
               ),
-              style: TextStyle(fontSize: 16),
+              style: subtitleTextBlack,
               textAlignVertical: TextAlignVertical.top,
             ),
           ),

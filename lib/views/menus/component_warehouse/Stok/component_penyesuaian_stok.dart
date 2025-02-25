@@ -1,9 +1,11 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +32,9 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
 
   late int selectWarehouse;
 
+  int selectPicId = 0;
+  int selectPicId1 = 0;
+  int selectPicId2 = 0;
   @override
   void initState() {
     super.initState();
@@ -98,7 +103,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 child: ListTile(
                   title: Text(
                     'Nilai Penyesuaian',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -120,7 +125,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 child: ListTile(
                   title: Text(
                     'Gudang',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: CustomDropdown(
                     controller: gudang,
@@ -151,7 +156,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 child: ListTile(
                   title: Text(
                     'Keterangan',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -169,52 +174,111 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
               SizedBox(height: height * 0.02),
               Container(
                 width: width,
-                height: height * 0.25,
+                height: 200.h,
                 child: ListTile(
                   title: Text(
                     'PIC Approval',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Column(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Verifikasi',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Verifikasi',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId");
+                            },
+                          );
+                        },
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Mengetahui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      SizedBox(
+                        height: 10.h,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        child: CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih PIC Menyetujui',
-                          items: ['a'],
-                          onChanged: (value) {},
-                        ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Mengetahui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId1 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId1");
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih PIC Menyetujui',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId2 =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId2");
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

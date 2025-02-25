@@ -1,6 +1,7 @@
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:dwigasindo/const/const_color.dart';
+import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,7 +14,6 @@ class MenuDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Consumer<ProviderBottomBar>(
           builder: (BuildContext context, ProviderBottomBar provider,
@@ -27,7 +27,6 @@ class MenuDashboard extends StatelessWidget {
           builder: (BuildContext context, ProviderBottomBar provider,
               Widget? child) {
             return BottomBarBubble(
-              backgroundColor: Colors.grey.shade100,
               color: PRIMARY_COLOR,
               selectedIndex: provider.currentIndex,
               items: [
@@ -40,27 +39,27 @@ class MenuDashboard extends StatelessWidget {
                               color, // Sesuaikan warna dengan yang diinginkan
                         ),
                     label: 'Beranda',
-                    labelTextStyle: TextStyle(fontSize: 12)),
-                BottomBarItem(
-                    iconBuilder: (color) => SvgPicture.asset(
-                          'assets/images/b.svg',
-                          width: 28,
-                          height: 28,
-                          color:
-                              color, // Sesuaikan warna dengan yang diinginkan
-                        ),
-                    label: 'Laporan',
-                    labelTextStyle: TextStyle(fontSize: 12)),
-                BottomBarItem(
-                    iconBuilder: (color) => SvgPicture.asset(
-                          'assets/images/d.svg',
-                          width: 28,
-                          height: 28,
-                          color:
-                              color, // Sesuaikan warna dengan yang diinginkan
-                        ),
-                    label: 'Notifikasi',
-                    labelTextStyle: TextStyle(fontSize: 12)),
+                    labelTextStyle: subtitleTextNormal),
+                // BottomBarItem(
+                //     iconBuilder: (color) => SvgPicture.asset(
+                //           'assets/images/b.svg',
+                //           width: 28,
+                //           height: 28,
+                //           color:
+                //               color, // Sesuaikan warna dengan yang diinginkan
+                //         ),
+                //     label: 'Laporan',
+                //     labelTextStyle: subtitleTextNormal),
+                // BottomBarItem(
+                //     iconBuilder: (color) => SvgPicture.asset(
+                //           'assets/images/d.svg',
+                //           width: 28,
+                //           height: 28,
+                //           color:
+                //               color, // Sesuaikan warna dengan yang diinginkan
+                //         ),
+                //     label: 'Notifikasi',
+                //     labelTextStyle: subtitleTextNormal),
                 BottomBarItem(
                     iconBuilder: (color) => SvgPicture.asset(
                           'assets/images/f.svg',
@@ -69,8 +68,8 @@ class MenuDashboard extends StatelessWidget {
                           color:
                               color, // Sesuaikan warna dengan yang diinginkan
                         ),
-                    label: 'Pengaturan',
-                    labelTextStyle: TextStyle(fontSize: 12)),
+                    label: 'Akun',
+                    labelTextStyle: subtitleTextNormal),
               ],
               onSelect: (index) {
                 Future.delayed(Duration.zero, () {

@@ -10,6 +10,7 @@ import 'package:dwigasindo/widgets/widget_button.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -61,7 +62,6 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
         Offset(width / 2, height * 0.3); // Posisikan lebih tinggi dari tengah
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Scan Blast MoU',
         colorBG: Colors.grey.shade100,
@@ -221,6 +221,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                           children: [
                             Expanded(
                               child: FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text('Total Tabung\nBerhasil',
                                     textAlign: TextAlign.center,
                                     style: titleText),
@@ -228,14 +229,9 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                             ),
                             Expanded(
                               child: FittedBox(
-                                child: Text(
-                                  '${provider.scanSuccessCount}',
-                                  style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                fit: BoxFit.scaleDown,
+                                child: Text('${provider.scanSuccessCount}',
+                                    style: titleText),
                               ),
                             ),
                           ],
@@ -256,6 +252,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                           children: [
                             Expanded(
                               child: FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text(
                                   'Total Tabung\nDibatalkan',
                                   textAlign: TextAlign.center,
@@ -265,14 +262,9 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                             ),
                             Expanded(
                               child: FittedBox(
-                                child: Text(
-                                  '${provider.scanFailureCount}',
-                                  style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                fit: BoxFit.scaleDown,
+                                child: Text('${provider.scanFailureCount}',
+                                    style: titleText),
                               ),
                             ),
                           ],
@@ -397,6 +389,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                         ),
                                       ),
                                       child: FittedBox(
+                                        fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           '${data.data?.code}',
@@ -445,7 +438,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -460,6 +454,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -480,7 +475,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -495,6 +491,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -515,7 +512,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -530,6 +528,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -550,7 +549,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -565,6 +565,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -585,7 +586,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -599,7 +601,8 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   flex: 2,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(': -',
@@ -627,14 +630,10 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                     child: Container(
                                       padding: EdgeInsets.all(13),
                                       child: FittedBox(
+                                        fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '12-08-2024 10:30:00',
-                                          style: TextStyle(
-                                            fontFamily: 'Manrope',
-                                            color: Colors.grey.shade400,
-                                          ),
-                                        ),
+                                        child: Text('12-08-2024 10:30:00',
+                                            style: subtitleTextNormal),
                                       ),
                                     ),
                                   ),
@@ -681,15 +680,11 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
                                                   // Bagian Atas (Title)
                                                   Center(
                                                     child: Text(
-                                                      'Yakin Ingin Menghapus',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
+                                                        'Yakin Ingin Menghapus',
+                                                        style:
+                                                            subtitleTextBlack),
                                                   ),
-                                                  SizedBox(height: 16),
+                                                  SizedBox(height: 16.h),
                                                   // Bagian Tengah (Form)
                                                   WidgetForm(
                                                       controller: reason,
@@ -774,7 +769,7 @@ class _ComponentScanBlastState extends State<ComponentScanBlast> {
 }
 
 class WidgetCard extends StatelessWidget {
-  const WidgetCard({
+  WidgetCard({
     super.key,
     required this.height,
     required this.width,
@@ -792,7 +787,7 @@ class WidgetCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -811,14 +806,15 @@ class WidgetCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
                       bottomRight: Radius.circular(40),
                     ),
                   ),
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '23G2321',
@@ -832,7 +828,7 @@ class WidgetCard extends StatelessWidget {
                   child: WidgetButton(
                       FullWidth: width * 0.05,
                       FullHeight: height,
-                      title: 'Lihat Riwayat',
+                      title: 'Riwayat',
                       onpressed: () {},
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR),
@@ -853,7 +849,7 @@ class WidgetCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: PRIMARY_COLOR),
@@ -873,7 +869,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Produk',
@@ -886,7 +882,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(': O2', style: titleTextBlack),
                                 ),
@@ -902,7 +898,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Type',
@@ -915,7 +911,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(': VGL', style: titleTextBlack),
                                 ),
@@ -931,7 +927,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Grade',
@@ -944,7 +940,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(': UHP', style: titleTextBlack),
                                 ),
@@ -960,7 +956,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Milik',
@@ -973,7 +969,7 @@ class WidgetCard extends StatelessWidget {
                               flex: 2,
                               child: Container(
                                 padding: EdgeInsets.all(6),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   alignment: Alignment.centerLeft,
                                   child: Text(': Asset', style: titleTextBlack),
                                 ),
@@ -998,13 +994,8 @@ class WidgetCard extends StatelessWidget {
                   padding: EdgeInsets.all(13),
                   child: FittedBox(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '12-08-2024 10:30:00',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
+                    child:
+                        Text('12-08-2024 10:30:00', style: subtitleTextNormal),
                   ),
                 ),
               ),

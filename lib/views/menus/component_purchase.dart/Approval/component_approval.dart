@@ -4,6 +4,7 @@ import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
 
@@ -36,7 +37,6 @@ class _ComponentApprovalState extends State<ComponentApproval> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Approval',
         center: true,
@@ -143,7 +143,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                   final data = displayedData[index];
                   return Container(
                     width: double.maxFinite,
-                    height: height * 0.20,
+                    height: 180.h,
                     margin: EdgeInsets.only(bottom: height * 0.02),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -158,14 +158,14 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
-                          height: 40,
+                          height: height * 0.05,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: EdgeInsets.all(10),
+                                height: height * 0.05,
                                 width: width * 0.3,
                                 decoration: const BoxDecoration(
                                   color: PRIMARY_COLOR,
@@ -174,20 +174,21 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                     bottomRight: Radius.circular(30),
                                   ),
                                 ),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
                                   child: Text(
-                                    '27 Sep 2024',
+                                    '27 - 10 - 2024',
                                     style: titleText,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.all(10),
+                                height: height * 0.05,
                                 width: width * 0.3,
                                 decoration: BoxDecoration(
                                   color: (data == true)
-                                      ? SECONDARY_COLOR
+                                      ? COMPLEMENTARY_COLOR2
                                       : Colors.grey.shade500,
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(8),
@@ -195,9 +196,10 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                   ),
                                 ),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu Approve"}',
+                                    '${(data == true) ? "Approve" : "Menunggu"}',
                                     style: titleText,
                                   ),
                                 ),
@@ -208,6 +210,8 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                         Expanded(
                           flex: 3,
                           child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 5.h),
                             decoration: BoxDecoration(
                               border: Border(
                                 top: BorderSide(color: Colors.grey.shade300),
@@ -215,77 +219,65 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                             ),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  height: 20,
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: SizedBox.shrink()),
-                                      Expanded(child: SizedBox.shrink()),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/approve4.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/1.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/2.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            (data == true)
-                                                ? SvgPicture.asset(
-                                                    'assets/images/approve3.svg',
-                                                  )
-                                                : SvgPicture.asset(
-                                                    'assets/images/approve1.svg',
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 Expanded(
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Expanded(
                                       flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.all(3),
-                                        child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Kode Permintaan',
-                                            style: subtitleTextBlack,
-                                          ),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Kode Permintaan',
+                                          style: subtitleTextBlack,
                                         ),
                                       ),
                                     ),
+                                    const Text(' : '),
                                     Expanded(
                                       flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.all(3),
-                                        child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(': 2324253',
-                                              style: subtitleTextBlack),
-                                        ),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text('2324253',
+                                            style: subtitleTextBlack),
                                       ),
                                     ),
-                                    Expanded(child: SizedBox.shrink()),
+                                    SizedBox(
+                                      width: 100.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/approve4.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/1.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/2.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          (data == true)
+                                              ? SvgPicture.asset(
+                                                  'assets/images/approve3.svg',
+                                                )
+                                              : SvgPicture.asset(
+                                                  'assets/images/approve1.svg',
+                                                ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 )),
                                 Expanded(
@@ -294,33 +286,23 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                     children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Divisi',
-                                              style: subtitleTextBlack,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 5),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
                                           child: Text(
-                                            ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: height * 0.015,
-                                            ),
+                                            'Divisi',
+                                            style: subtitleTextBlack,
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
+                                      const Text(' : '),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Text(
+                                            'Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextBlack),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -330,29 +312,56 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                     children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Kategori',
-                                              style: subtitleTextBlack,
-                                            ),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Kategori',
+                                            style: subtitleTextBlack,
                                           ),
                                         ),
                                       ),
+                                      const Text(' : '),
+                                      Expanded(
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('Bahan Baku',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(': Bahan Baku',
-                                                style: subtitleTextBlack),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat Oleh',
+                                            style: subtitleTextNormal,
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
+                                      Text(
+                                        ' : ',
+                                        style: subtitleTextNormal,
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('User 1',
+                                              style: subtitleTextNormal),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -361,35 +370,16 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                           ),
                         ),
                         Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Create by user 1',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: height * 0.005,
-                                    right: width * 0.01),
-                                child: WidgetButtonCustom(
-                                    FullWidth: width * 0.3,
-                                    FullHeight: 25,
-                                    title: "Lihat Barang",
-                                    onpressed: () {},
-                                    bgColor: PRIMARY_COLOR,
-                                    color: Colors.transparent),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 10.w, right: 10.w, bottom: 5.h),
+                            child: WidgetButtonCustom(
+                                FullWidth: width,
+                                FullHeight: 40.h,
+                                title: "Lihat Barang",
+                                onpressed: () {},
+                                bgColor: PRIMARY_COLOR,
+                                color: Colors.transparent),
                           ),
                         ),
                       ],

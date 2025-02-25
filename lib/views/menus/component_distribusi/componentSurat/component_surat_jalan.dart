@@ -32,7 +32,6 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
     final provider = Provider.of<ProviderSuratJalan>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
         title: 'Surat Jalan',
@@ -74,7 +73,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                               ),
                             );
                           },
-                          titleColor: Colors.black,
+                          bgColor: PRIMARY_COLOR,
                           color: PRIMARY_COLOR),
                       SizedBox(
                         height: height * 0.05,
@@ -84,7 +83,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                               child: Center(
                                 child: Text(
                                   'Data Kosong',
-                                  style: titleTextBlack,
+                                  style: titleTextNormal,
                                 ),
                               ),
                             )
@@ -114,14 +113,14 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                       children: [
                                         Container(
                                           width: double.maxFinite,
-                                          height: 40,
+                                          height: height * 0.05,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                padding: EdgeInsets.all(8),
-                                                width: width * 0.4,
+                                                width: width * 0.35,
+                                                height: height * 0.05,
                                                 decoration: const BoxDecoration(
                                                   color: PRIMARY_COLOR,
                                                   borderRadius:
@@ -132,6 +131,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                   ),
                                                 ),
                                                 child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   alignment: Alignment.center,
                                                   child: Text(
                                                     data.no!,
@@ -143,12 +143,14 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                               Container(
                                                 padding: EdgeInsets.all(10),
                                                 width: width * 0.35,
-                                                child: const FittedBox(
+                                                height: height * 0.05,
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Text(
                                                     '23-09-2024 | 10:30:00',
-                                                    style: titleTextBlack,
+                                                    style: titleTextNormal,
                                                   ),
                                                 ),
                                               )
@@ -158,7 +160,8 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                         Expanded(
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: width * 0.02),
+                                                horizontal: width * 0.02,
+                                                vertical: height * 0.01),
                                             decoration: BoxDecoration(
                                               border: Border(
                                                 top: BorderSide(
@@ -175,34 +178,28 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                     children: [
                                                       Expanded(
                                                         flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Driver',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Driver',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       ),
+                                                      Text(':'),
                                                       Expanded(
                                                         flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              ': ${data.name}',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\t${data.name}',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       )
@@ -216,36 +213,29 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                     children: [
                                                       Expanded(
                                                         flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Admin',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Admin',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       ),
+                                                      Text(':'),
                                                       // Kurang Admin Pada API
                                                       Expanded(
                                                         flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              ': Udin',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\tUdin',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       )
@@ -259,34 +249,28 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                     children: [
                                                       Expanded(
                                                         flex: 1,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child:
-                                                              const FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Nomor Kendaraan',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Nomor Kendaraan',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       ),
+                                                      Text(':'),
                                                       Expanded(
                                                         flex: 2,
-                                                        child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(6),
-                                                          child: FittedBox(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              ': ${data.vehicleNumber}',
-                                                              style:
-                                                                  titleTextBlack,
-                                                            ),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\t${data.vehicleNumber}',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       )
@@ -300,72 +284,50 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                   children: [
                                                     Expanded(
                                                       flex: 1,
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(6),
-                                                        child: const FittedBox(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                            'Type',
+                                                      child: FittedBox(
+                                                        fit: BoxFit.scaleDown,
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                          'Type',
+                                                          style:
+                                                              subtitleTextBlack,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(':'),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: FittedBox(
+                                                        fit: BoxFit.scaleDown,
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                            '\t${(data.type == 0) ? "User" : "Non User"}',
                                                             style:
-                                                                titleTextBlack,
-                                                          ),
-                                                        ),
+                                                                subtitleTextBlack),
                                                       ),
                                                     ),
                                                     Expanded(
                                                       flex: 1,
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(6),
-                                                        child: FittedBox(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                              ': ${(data.type == 0) ? "User" : "Non User"}',
-                                                              style:
-                                                                  titleTextBlack),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          // IconButton(
-                                                          //   alignment:
-                                                          //       Alignment.centerRight,
-                                                          //   onPressed: () {},
-                                                          //   icon: SvgPicture.asset(
-                                                          //     'assets/images/edit.svg',
-                                                          //   ),
-                                                          // ),
-                                                          IconButton(
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          ComponentUpdateDriver(
-                                                                    uuid: data
-                                                                        .idStr!,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                            icon: SvgPicture
-                                                                .asset(
-                                                              'assets/images/edit.svg',
+                                                      child: IconButton(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ComponentUpdateDriver(
+                                                                uuid:
+                                                                    data.idStr!,
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          );
+                                                        },
+                                                        icon: SvgPicture.asset(
+                                                          'assets/images/edit.svg',
+                                                        ),
                                                       ),
                                                     )
                                                   ],

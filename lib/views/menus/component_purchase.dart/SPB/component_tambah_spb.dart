@@ -1,12 +1,15 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
-import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ComponentTambahSpb extends StatefulWidget {
@@ -16,40 +19,11 @@ class ComponentTambahSpb extends StatefulWidget {
 }
 
 class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
-  // Timer? _timer;
-  TextEditingController tahun = TextEditingController();
   TextEditingController serial = TextEditingController();
-  TextEditingController lokasi = TextEditingController();
-
-  SingleSelectController<String?> jenisTabung =
-      SingleSelectController<String?>(null);
-
-  SingleSelectController<String?> customer =
-      SingleSelectController<String?>(null);
-
-  SingleSelectController<String?> jenisGas =
-      SingleSelectController<String?>(null);
-
-  SingleSelectController<String?> supllier =
-      SingleSelectController<String?>(null);
-
-  String selectTubeGas = '';
-  int? selectCustomer;
-  int? selectSupllier;
-
-  int? owner = 0;
-  int? nonSingletubeType;
-  int? selectnonGrade;
-  bool nonGrade = true;
-  int? selectedGradeIndex;
-
-  bool isSingle = false;
-
-  List<String>? tubeGrade;
-  List<String>? tubeType;
-  List<Map<String, dynamic>>? tubeGas;
-  List<Map<String, dynamic>>? tubecustomer;
-  List<Map<String, dynamic>>? tubesupplier;
+  GroupButtonController jenis = GroupButtonController();
+  int selectPicId = 0;
+  int selectPicId1 = 0;
+  int selectPicId2 = 0;
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -62,46 +36,41 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
     if (pickedDate != null) {
       setState(() {
         serial.text =
-            "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+            "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
       });
     }
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
+  // Fungsi untuk menambah form baru
+  void _addForm() {
+    setState(() {
+      formList.add({
+        "item_id": null,
+        "qty": null,
+        "specification": null,
+      });
+    });
+  }
 
-  //   // Ambil data dan cek apakah tidak null
-  //   tubeGrade = provider.tubeGrades?.data.map((data) => data.name).toList();
-  //   tubeType = provider.tubeTypes?.data.map((data) => data.name).toList();
-
-  //   tubeGas = provider.tubeGas?.data
-  //       .map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
-
-  //   tubecustomer = provider.customer?.data
-  //       .map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
-
-  //   tubesupplier = provider.supllier?.data
-  //       ?.map((data) => {'id': data.id, 'name': data.name})
-  //       .toList();
-
-  //   // Cek data supplier dan customer
-  //   print("Supllier data: ${provider.supllier?.data}");
-  //   print("Customer data: ${provider.customer?.data}");
-  // }
+  // Fungsi untuk menghapus form terakhir
+  void _removeForm(int index) {
+    print(index);
+    if (formList.isNotEmpty) {
+      setState(() {
+        formList.removeAt(index);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderItem>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
-        title: 'Tambah Tabung',
+        title: 'Tambah SPB',
         back: true,
         center: true,
         colorBG: Colors.grey.shade100,
@@ -122,7 +91,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                 child: ListTile(
                   title: Text(
                     'Tanggal',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
@@ -144,9 +113,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.02,
-              ),
+              SizedBox(height: height * 0.02),
               Container(
                 width: width,
                 height: height * 0.1,
@@ -159,6 +126,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                     alignment: Alignment.topLeft,
                     child: GroupButton(
                         isRadio: true,
+                        controller: jenis,
                         options: GroupButtonOptions(
                           selectedColor: PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(8),
@@ -170,58 +138,147 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                   ),
                 ),
               ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: formList.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        width: width,
+                        height: height * 0.1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: ListTile(
+                                title: Text(
+                                  'Item Barang',
+                                  style: subtitleTextBlack,
+                                ),
+                                subtitle: Container(
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  child: Consumer<ProviderItem>(
+                                    builder: (context, provider, child) {
+                                      final pic = provider.allItem!.data!
+                                          .map((data) => {
+                                                'id': data.id,
+                                                'name': data.name,
+                                                'price': data.price,
+                                              })
+                                          .toList();
+
+                                      return CustomDropdown(
+                                        decoration: CustomDropdownDecoration(
+                                            closedBorder: Border.all(
+                                                color: Colors.grey.shade400),
+                                            expandedBorder: Border.all(
+                                                color: Colors.grey.shade400)),
+                                        hintText: 'Pilih Item',
+                                        items:
+                                            pic.map((e) => e['name']).toList(),
+                                        onChanged: (item) {
+                                          print("Selected Item: $item");
+
+                                          final selected = pic.firstWhere(
+                                            (e) => e['name'] == item,
+                                          );
+
+                                          setState(() {
+                                            formList[index]['item_id'] =
+                                                int.parse(
+                                                    selected['id'].toString());
+                                          });
+
+                                          print("Selected ID: $selectPicId2");
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListTile(
+                                title: Text(
+                                  'Qty',
+                                  style: subtitleTextBlack,
+                                ),
+                                subtitle: Container(
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  child: WidgetForm(
+                                    alert: 'Qty',
+                                    hint: 'Qty',
+                                    change: (value) {
+                                      setState(() {
+                                        formList[index]['qty'] = value;
+                                      });
+                                    },
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15.h),
+                        child: WidgetForm(
+                          alert: 'Isi Spesifikasi',
+                          hint: 'Isi Spesifikasi',
+                          change: (value) {
+                            setState(() {
+                              formList[index]['specification'] = value;
+                            });
+                          },
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Container(
+                        width: width,
+                        height: height * 0.06,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: WidgetButtonCustom(
+                              FullWidth: width * 0.9,
+                              FullHeight: height * 0.05,
+                              title: 'Hapus Form',
+                              onpressed: () async {
+                                _removeForm(index);
+                              },
+                              bgColor: SECONDARY_COLOR,
+                              color: SECONDARY_COLOR),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
               Container(
                 width: width,
-                height: height * 0.1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: ListTile(
-                        title: Text(
-                          'Item Barang',
-                          style: subtitleTextBlack,
-                        ),
-                        subtitle: WidgetDropdown(
-                          items: ['a', 'b'],
-                          hintText: 'Item Barang',
-                          controller: jenisGas,
-                          onChanged: (value) {},
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: const Text(
-                          'Qty',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        subtitle: Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: WidgetForm(
-                            controller: tahun,
-                            alert: 'Qty',
-                            hint: 'Qty',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: height * 0.04,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: width * 0.04),
-                child: WidgetForm(
-                  controller: tahun,
-                  alert: 'Isi Spesifikasi',
-                  hint: 'Isi Spesifikasi',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                height: height * 0.06,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: WidgetButtonCustom(
+                      FullWidth: width * 0.9,
+                      FullHeight: height * 0.05,
+                      title: 'Tambah Form',
+                      onpressed: () async {
+                        _addForm();
+                      },
+                      bgColor: PRIMARY_COLOR,
+                      color: PRIMARY_COLOR),
                 ),
               ),
               SizedBox(
@@ -231,52 +288,83 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                 alignment: Alignment.centerLeft,
                 child: Container(
                   width: width,
-                  height: height * 0.25,
+                  height: 250.h,
                   child: ListTile(
                     title: Text(
                       'PIC Approval',
-                      style: TextStyle(color: Colors.black),
+                      style: subtitleTextBlack,
                     ),
                     subtitle: Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: CustomDropdown(
-                            decoration: CustomDropdownDecoration(
-                                closedBorder:
-                                    Border.all(color: Colors.grey.shade400),
-                                expandedBorder:
-                                    Border.all(color: Colors.grey.shade400)),
-                            hintText: 'Pilih PIC Verifikasi',
-                            items: ['a'],
-                            onChanged: (value) {},
-                          ),
+                        SizedBox(
+                          height: 10.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: CustomDropdown(
-                            decoration: CustomDropdownDecoration(
-                                closedBorder:
-                                    Border.all(color: Colors.grey.shade400),
-                                expandedBorder:
-                                    Border.all(color: Colors.grey.shade400)),
-                            hintText: 'Pilih PIC Mengetahui',
-                            items: ['a'],
-                            onChanged: (value) {},
-                          ),
+                        Consumer<ProviderSales>(
+                          builder: (context, provider, child) {
+                            final pic = provider.modelUsersPic!.data!
+                                .map((data) =>
+                                    {'id': data.id, 'name': data.name})
+                                .toList();
+
+                            return CustomDropdown(
+                              decoration: CustomDropdownDecoration(
+                                  closedBorder:
+                                      Border.all(color: Colors.grey.shade400),
+                                  expandedBorder:
+                                      Border.all(color: Colors.grey.shade400)),
+                              hintText: 'Pilih PIC Mengetahui',
+                              items: pic.map((e) => e['name']).toList(),
+                              onChanged: (item) {
+                                print("Selected Item: $item");
+
+                                final selected = pic.firstWhere(
+                                  (e) => e['name'] == item,
+                                );
+
+                                setState(() {
+                                  selectPicId1 =
+                                      int.parse(selected['id'].toString());
+                                });
+
+                                print("Selected ID: $selectPicId1");
+                              },
+                            );
+                          },
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: CustomDropdown(
-                            decoration: CustomDropdownDecoration(
-                                closedBorder:
-                                    Border.all(color: Colors.grey.shade400),
-                                expandedBorder:
-                                    Border.all(color: Colors.grey.shade400)),
-                            hintText: 'Pilih PIC Menyetujui',
-                            items: ['a'],
-                            onChanged: (value) {},
-                          ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Consumer<ProviderSales>(
+                          builder: (context, provider, child) {
+                            final pic = provider.modelUsersPic!.data!
+                                .map((data) =>
+                                    {'id': data.id, 'name': data.name})
+                                .toList();
+
+                            return CustomDropdown(
+                              decoration: CustomDropdownDecoration(
+                                  closedBorder:
+                                      Border.all(color: Colors.grey.shade400),
+                                  expandedBorder:
+                                      Border.all(color: Colors.grey.shade400)),
+                              hintText: 'Pilih PIC Menyetujui',
+                              items: pic.map((e) => e['name']).toList(),
+                              onChanged: (item) {
+                                print("Selected Item: $item");
+
+                                final selected = pic.firstWhere(
+                                  (e) => e['name'] == item,
+                                );
+
+                                setState(() {
+                                  selectPicId2 =
+                                      int.parse(selected['id'].toString());
+                                });
+
+                                print("Selected ID: $selectPicId2");
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -296,7 +384,13 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
               FullWidth: width * 0.9,
               FullHeight: height * 0.05,
               title: 'Simpan',
-              onpressed: () async {},
+              onpressed: () async {
+                print(serial.text);
+                print(jenis.selectedIndex);
+                print(formList);
+                await provider.createSPB(
+                    context, serial.text, jenis.selectedIndex!, formList);
+              },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
         ),

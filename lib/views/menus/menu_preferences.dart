@@ -12,7 +12,6 @@ class MenuPreferences extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       body: Center(
           child: WidgetButtonCustom(
         FullWidth: width * 0.8,

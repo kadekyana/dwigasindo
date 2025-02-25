@@ -32,7 +32,6 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Surat Jalan',
         back: true,
@@ -47,7 +46,6 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 width: width,
@@ -101,20 +99,23 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
               ),
               Container(
                 width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Nama',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  subtitle: Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    child: WidgetForm(
-                      alert: 'Nama',
-                      hint: 'Nama',
-                      controller: nama,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
+                height: height * 0.12,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ListTile(
+                    title: Text(
+                      'Nama',
+                      style: subtitleTextBlack,
+                    ),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: height * 0.01),
+                      child: WidgetForm(
+                        alert: 'Nama',
+                        hint: 'Nama',
+                        controller: nama,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
                     ),
                   ),
                 ),
@@ -128,7 +129,7 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
                 child: ListTile(
                   title: Text(
                     'Nomor Kendaraan',
-                    style: TextStyle(color: Colors.black),
+                    style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),

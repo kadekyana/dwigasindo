@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
@@ -7,6 +9,8 @@ import 'package:dwigasindo/model/modelAllCostumer.dart';
 import 'package:dwigasindo/model/modelAllTubeGas.dart';
 import 'package:dwigasindo/model/modelAllTubeGrade.dart';
 import 'package:dwigasindo/model/modelAllTubeType.dart';
+import 'package:dwigasindo/model/modelAllVendor.dart';
+import 'package:dwigasindo/model/modelCradle.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelTube.dart';
@@ -14,8 +18,9 @@ import 'package:dwigasindo/model/modelVerifikasiBPTK.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bpti.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bptk.dart';
-import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_tabung.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
+import 'package:flutter_thermal_printer/utils/printer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -76,6 +81,50 @@ class ProviderDistribusi extends ChangeNotifier {
   // Supplier
   ModelSupplier? _supplier;
   ModelSupplier? get supllier => _supplier;
+
+  // Cradle
+  ModelCradle? _cradle;
+  ModelCradle? get cradle => _cradle;
+
+  ModelAllVendor? _vendors;
+  ModelAllVendor? get vendors => _vendors;
+
+  Future<void> getDataVendor(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "vendors", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelAllVendor.fromJson(response!.data);
+      _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createVendor(BuildContext context, String nama, String alamat,
+      int category, int type, int city) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().postRequest(url: "vendors", token: token, data: {
+      "name": "Supplier PT ABD",
+      "address": "BDO",
+      "vendor_category_id": 1,
+      "type": 0,
+      "city_id": 1
+
+      // PIC, no telp
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelAllVendor.fromJson(response!.data);
+      _vendors = data;
+      notifyListeners();
+    }
+  }
 
   //clear data
   Future<void> clearVerifikaisBPTK() async {
@@ -195,6 +244,47 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+  Future<void> editBptk(
+      String id, String no, String uuid, BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    isLoading = true;
+    notifyListeners();
+    final data = int.parse(id);
+
+    final response = await DioServiceAPI().putRequest(
+        url: 'bptks/$uuid',
+        token: token,
+        data: {"customer_id": data, "vehicle_number": no});
+
+    if (response?.data['error'] == null) {
+      Navigator.pop(context);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ComponentBPTK(),
+        ),
+      );
+
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Buat BPTK Berhasil',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Buat BPTK GagalSilahkan Coba Kembali',
+        ),
+      );
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
   String formatDate(String dateTimeString) {
     // Ubah string ke DateTime
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -224,6 +314,80 @@ class ProviderDistribusi extends ChangeNotifier {
         Overlay.of(context),
         const CustomSnackBar.error(
           message: 'Gagal Mendapat BPTK',
+        ),
+      );
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getAllCradle(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response =
+        await DioServiceAPI().getRequest(url: 'cradles', token: token);
+
+    if (response!.data['error'] == null) {
+      final data = ModelCradle.fromJson(response.data);
+      print("RESPONSE : ${response}");
+      _cradle = data;
+      notifyListeners();
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Mendapat Cradle',
+        ),
+      );
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> createCradle(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI()
+        .postRequest(url: 'cradles', token: token, data: {});
+
+    if (response!.data['error'] == null) {
+      getAllCradle(context);
+      notifyListeners();
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Mendapat Cradle',
+        ),
+      );
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> createCradleDetails(
+      BuildContext context, int id, int tubeId) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'cradle-details',
+        token: token,
+        data: {"tube_id": tubeId, "cradle_id": id});
+
+    if (response!.data['error'] == null) {
+      getAllCradle(context);
+      notifyListeners();
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Mendapat Cradle',
         ),
       );
     }
@@ -283,6 +447,61 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteTube(BuildContext context, String noBptk) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response =
+        await DioServiceAPI().deleteRequest(url: 'tubes/$noBptk', token: token);
+
+    if (response?.data != null) {
+      print(response!.data);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Menghapus Tabung',
+        ),
+      );
+      getAllTube(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Menghapus Tabung',
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteCradle(BuildContext context, String idCradle) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().deleteRequest(
+      url: 'cradles/$idCradle',
+      token: token,
+    );
+
+    if (response?.data != null) {
+      print(response!.data);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Menghapus Cradle',
+        ),
+      );
+      getAllCradle(context);
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Menghapus Cradle',
+        ),
+      );
+    }
+  }
+
   Future<void> deleteDetailBPTI(
       BuildContext context, String noBPTI, int tube, String reason) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
@@ -318,7 +537,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelAllCostumer.fromJson(response.data);
-      // print("RESPONSE : ${response}");
+      print("RESPONSE : ${response}");
       _customer = data;
       notifyListeners();
     } else {
@@ -425,27 +644,16 @@ class ProviderDistribusi extends ChangeNotifier {
   Future<void> getAllTube(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
-    // if (count != maxcount) {
-    //   isLoadingTube = true;
-    //   count = 1;
-    //   notifyListeners();
-    // }
 
     final response =
         await DioServiceAPI().getRequest(url: 'tubes', token: token);
 
     if (response!.data['error'] == null) {
       final data = ModelTube.fromJson(response.data);
-      // print("RESPONSE : ${data}");
+      // print("RESPONSE : ${data.data?.length}");
       _tube = data;
       notifyListeners();
     } else {
-      // showTopSnackBar(
-      //   Overlay.of(context),
-      //   const CustomSnackBar.success(
-      //     message: 'Gagal Mendapat Data Tube',
-      //   ),
-      // );
       print("error get");
     }
     Future.delayed(Duration(seconds: 1), () {
@@ -502,19 +710,21 @@ class ProviderDistribusi extends ChangeNotifier {
   }
 
   //Tambah Tabung
-  Future<void> createTabung(
-      BuildContext context,
-      int owner,
-      bool isSingle,
-      int? nonSingletubeType,
-      int idjenisGas,
-      bool nonGrade,
-      int? selectedGradeIndex,
-      int? tahun,
-      String? serial,
-      int? intCustomer,
-      int? intVendor,
-      String? lokasi) async {
+  Future<dynamic> createTabung(
+    BuildContext context,
+    int owner,
+    Printer printer,
+    bool isSingle,
+    int? nonSingletubeType,
+    int idjenisGas,
+    bool nonGrade,
+    int? selectedGradeIndex,
+    int? tahun,
+    String? serial,
+    int? intCustomer,
+    int? intVendor,
+    String? lokasi,
+  ) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     isLoading = true;
@@ -540,6 +750,12 @@ class ProviderDistribusi extends ChangeNotifier {
     );
 
     if (response?.data != null) {
+      if (response?.data['data']['owner_ship_type'] == 1) {
+        await printZPL(printer, response?.data['data']['tube_gas_name'],
+            response?.data['data']['code']);
+      } else {
+        await printZPLCustomer(printer, response?.data['data']['code']);
+      }
       await countClear();
       showTopSnackBar(
         Overlay.of(context),
@@ -547,16 +763,7 @@ class ProviderDistribusi extends ChangeNotifier {
           message: 'Berhasil Membuat Tube Gas',
         ),
       );
-      isLoadingTube = true;
-      Navigator.pop(context);
-      await getAllTube(context);
-      await countTube();
-      await getAllTubeGrade(context);
-      await getAllTubeType(context);
-      await getAllTubeGas(context);
-      await getAllCostumer(context);
-      await getAllSupplier(context);
-      isLoadingTube = false;
+      return response!.data;
     } else {
       showTopSnackBar(
         Overlay.of(context),
@@ -564,6 +771,83 @@ class ProviderDistribusi extends ChangeNotifier {
           message: 'Gagal Membuat Tube Gas',
         ),
       );
+    }
+  }
+
+// Fungsi untuk mencetak label menggunakan ZPL
+  Future<void> printZPL(
+      Printer printer, String name, String serialNumber) async {
+    final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+    String zplData = '''
+^XA
+^CF0,25^FO340,68^FD${name}^FS
+^CFB,15^FO340,93^FDIndustrial Grade 2^FS
+^AN,15^FO340,107^FDNo telp^FS
+^AN,15^FO400,107^FD:^FS
+^AN,15^FO410,107^FD021 - 89117509^FS
+^AN,15^FO340,123^FDNo wa^FS
+^AN,15^FO400,123^FD:^FS
+^AN,15^FO410,123^FD0812 8000 0429^FS
+^AN,15^FO340,137^FDEmail^FS
+^AN,15^FO400,137^FD:^FS
+^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
+^FO225,5
+^BQN,2,5
+^FD5xx${serialNumber}^FS
+^CF0,18
+^FB130,1,0,C
+^FO215,123
+^FD${serialNumber}^FS
+^CF0N,10
+^FB130,1,0,C
+^FO213,143
+^FDPT. Dwigasindo Abadi^FS
+^FO340,15
+^BY2
+^BCN,50,N,N,N,A^FD${serialNumber}^FS
+^XZ
+  ''';
+
+    try {
+      log("Mengirim data ZPL ke printer: ${printer.name}");
+      await _flutterThermalPrinterPlugin.printData(
+        printer,
+        zplData.codeUnits,
+      );
+      log("Cetak ZPL berhasil.");
+    } catch (e) {
+      log("Error saat mencetak ZPL: $e");
+    }
+  }
+
+  Future<void> printZPLCustomer(Printer printer, String serialNumber) async {
+    final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+    String zplData = '''
+^XA
+
+^FO8,0
+^BQN,2,6
+^FD5xx${serialNumber}^FS,,
+
+^FO145,10
+^BY3
+^BCN,80,Y,N,N,A^FD${serialNumber}^FS
+
+
+^XZ
+  ''';
+
+    try {
+      log("Mengirim data ZPL ke printer: ${printer.name}");
+      await _flutterThermalPrinterPlugin.printData(
+        printer,
+        zplData.codeUnits,
+      );
+      log("Cetak ZPL berhasil.");
+    } catch (e) {
+      log("Error saat mencetak ZPL: $e");
     }
   }
 
@@ -583,6 +867,7 @@ class ProviderDistribusi extends ChangeNotifier {
       String? lokasi) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
+
     isLoading = true;
     notifyListeners();
 
@@ -605,14 +890,17 @@ class ProviderDistribusi extends ChangeNotifier {
       },
     );
 
+    print("Hasil Create ${response?.data}");
     if (response?.data != null) {
       await countClear();
+
       showTopSnackBar(
         Overlay.of(context),
         const CustomSnackBar.success(
           message: 'Berhasil Membuat Tube Gas',
         ),
       );
+
       isLoadingTube = true;
       Navigator.pop(context);
       await getAllTube(context);
@@ -623,6 +911,7 @@ class ProviderDistribusi extends ChangeNotifier {
       await getAllCostumer(context);
       await getAllSupplier(context);
       isLoadingTube = false;
+      return response?.data;
     } else {
       showTopSnackBar(
         Overlay.of(context),
@@ -706,11 +995,6 @@ class ProviderDistribusi extends ChangeNotifier {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     print(countT);
-    if (countT != maxcount) {
-      isLoadingVer = true;
-      countT = 1;
-      notifyListeners();
-    }
 
     final response = await DioServiceAPI()
         .postRequest(url: "verification_bptk/${no_bptk}", token: token, data: {

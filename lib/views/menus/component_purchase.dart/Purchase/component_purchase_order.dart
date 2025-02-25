@@ -1,15 +1,19 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/Purchase/component_tambah_po.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 class ComponentPurchaseOrder extends StatefulWidget {
-  ComponentPurchaseOrder({super.key});
+  const ComponentPurchaseOrder({super.key});
 
   @override
   State<ComponentPurchaseOrder> createState() => _ComponentPurchaseOrderState();
@@ -17,13 +21,23 @@ class ComponentPurchaseOrder extends StatefulWidget {
 
 class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
   List<bool> check = [true, false];
+  GroupButtonController controller = GroupButtonController(selectedIndex: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    final providerItem = Provider.of<ProviderItem>(context, listen: false);
+    providerItem.getAllPo(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderSales>(context);
+    final providerItem = Provider.of<ProviderItem>(context);
+    final item = providerItem.po?.data;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Purchase Order',
         center: true,
@@ -37,14 +51,42 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
         actions: [
           IconButton(
             onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ComponentTambahPo(),
-                ),
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               );
+
+              try {
+                await Future.wait([
+                  provider.getCMD(context),
+                  providerItem.getAllItem(context),
+                  provider.getSummarySales(context),
+                  provider.getUsersPic(context),
+                  providerItem.getAllSPB(context),
+                  providerItem.getAllCategory(context),
+                  providerItem.getAllVendor(context),
+                ]);
+
+                // Navigate sesuai kondisi
+                Navigator.of(context).pop(); // Tutup Dialog Loading
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ComponentTambahPo(),
+                  ),
+                );
+              } catch (e) {
+                Navigator.of(context).pop(); // Tutup Dialog Loading
+                print('Error: $e');
+                // Tambahkan pesan error jika perlu
+              }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add_circle_outline_rounded,
               color: Colors.black,
             ),
@@ -54,7 +96,7 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           children: [
             SizedBox(
@@ -106,6 +148,7 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
             Align(
               alignment: Alignment.centerLeft,
               child: GroupButton(
+                  controller: controller,
                   isRadio: true,
                   options: GroupButtonOptions(
                     selectedColor: PRIMARY_COLOR,
@@ -121,12 +164,12 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: check.length,
+                itemCount: item?.length,
                 itemBuilder: (context, index) {
-                  final data = check[index];
+                  final data = item?[index];
                   return Container(
                     width: double.maxFinite,
-                    height: height * 0.20,
+                    height: 180.h,
                     margin: EdgeInsets.only(bottom: height * 0.02),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -141,15 +184,15 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
-                          height: 40,
+                          height: height * 0.05,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: EdgeInsets.all(10),
                                 width: width * 0.3,
+                                height: height * 0.05,
                                 decoration: const BoxDecoration(
                                   color: PRIMARY_COLOR,
                                   borderRadius: BorderRadius.only(
@@ -157,20 +200,24 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                     bottomRight: Radius.circular(30),
                                   ),
                                 ),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
                                   child: Text(
-                                    '27 Sep 2024',
+                                    (data?.createdAt != null)
+                                        ? provider.formatDate(
+                                            data!.createdAt.toString())
+                                        : '-',
                                     style: titleText,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.all(10),
+                                height: height * 0.05,
                                 width: width * 0.3,
                                 decoration: BoxDecoration(
                                   color: (data == true)
-                                      ? SECONDARY_COLOR
+                                      ? COMPLEMENTARY_COLOR2
                                       : Colors.grey.shade500,
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(8),
@@ -178,9 +225,10 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                   ),
                                 ),
                                 child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu Approve"}',
+                                    '${(data == true) ? "Approve" : "Menunggu"}',
                                     style: titleText,
                                   ),
                                 ),
@@ -191,6 +239,8 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                         Expanded(
                           flex: 3,
                           child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 5.h),
                             decoration: BoxDecoration(
                               border: Border(
                                 top: BorderSide(color: Colors.grey.shade300),
@@ -198,77 +248,65 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                             ),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  height: 20,
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: SizedBox.shrink()),
-                                      Expanded(child: SizedBox.shrink()),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/approve4.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/1.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            SvgPicture.asset(
-                                              'assets/images/2.svg',
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            (data == true)
-                                                ? SvgPicture.asset(
-                                                    'assets/images/approve3.svg',
-                                                  )
-                                                : SvgPicture.asset(
-                                                    'assets/images/approve1.svg',
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 Expanded(
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Expanded(
                                       flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.all(3),
-                                        child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Kode Permintaan',
-                                            style: subtitleTextBlack,
-                                          ),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Kode Permintaan',
+                                          style: subtitleTextBlack,
                                         ),
                                       ),
                                     ),
+                                    const Text(': '),
                                     Expanded(
                                       flex: 2,
-                                      child: Container(
-                                        padding: EdgeInsets.all(3),
-                                        child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(': 2324253',
-                                              style: subtitleTextBlack),
-                                        ),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(data?.no ?? '-',
+                                            style: subtitleTextBlack),
                                       ),
                                     ),
-                                    Expanded(child: SizedBox.shrink()),
+                                    SizedBox(
+                                      width: 100.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/approve4.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/1.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/2.svg',
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                          (data == true)
+                                              ? SvgPicture.asset(
+                                                  'assets/images/approve3.svg',
+                                                )
+                                              : SvgPicture.asset(
+                                                  'assets/images/approve1.svg',
+                                                ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 )),
                                 Expanded(
@@ -277,33 +315,22 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                     children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Divisi',
-                                              style: subtitleTextBlack,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 5),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
                                           child: Text(
-                                            ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: height * 0.015,
-                                            ),
+                                            'Vendor',
+                                            style: subtitleTextBlack,
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
+                                      const Text(' : '),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Text(data?.vendorName ?? '-',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextBlack),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -313,29 +340,57 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                     children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Kategori',
-                                              style: subtitleTextBlack,
-                                            ),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Kategori',
+                                            style: subtitleTextBlack,
                                           ),
                                         ),
                                       ),
+                                      const Text(' : '),
+                                      Expanded(
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(data?.categoryName ?? '-',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
                                       Expanded(
                                         flex: 2,
-                                        child: Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: FittedBox(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(': Bahan Baku',
-                                                style: subtitleTextBlack),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat Oleh',
+                                            style: subtitleTextNormal,
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
+                                      Text(
+                                        ' : ',
+                                        style: subtitleTextNormal,
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              data?.createdByName ?? '-',
+                                              style: subtitleTextNormal),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -344,35 +399,16 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                           ),
                         ),
                         Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Create by user 1',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: height * 0.005,
-                                    right: width * 0.01),
-                                child: WidgetButtonCustom(
-                                    FullWidth: width * 0.3,
-                                    FullHeight: 25,
-                                    title: "Lihat Barang",
-                                    onpressed: () {},
-                                    bgColor: PRIMARY_COLOR,
-                                    color: Colors.transparent),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 10.w, right: 10.w, bottom: 5.h),
+                            child: WidgetButtonCustom(
+                                FullWidth: width,
+                                FullHeight: 40.h,
+                                title: "Lihat Barang",
+                                onpressed: () {},
+                                bgColor: PRIMARY_COLOR,
+                                color: Colors.transparent),
                           ),
                         ),
                       ],

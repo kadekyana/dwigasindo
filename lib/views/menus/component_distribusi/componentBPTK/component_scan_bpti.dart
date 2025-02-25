@@ -72,7 +72,6 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
     final scanWindowOffset =
         Offset(width / 2, height * 0.3); // Posisikan lebih tinggi dari tengah
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Scan BPTI',
         colorBG: Colors.grey.shade100,
@@ -269,6 +268,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                         ),
                                       ),
                                       child: FittedBox(
+                                        fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           '${data.data?.code}',
@@ -317,7 +317,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -332,6 +333,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -352,7 +354,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -367,6 +370,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -387,7 +391,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -402,6 +407,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -422,7 +428,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -437,6 +444,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
                                                     child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -457,7 +465,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 1,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(
@@ -471,7 +480,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   flex: 2,
                                                   child: Container(
                                                     padding: EdgeInsets.all(6),
-                                                    child: const FittedBox(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: Text(': -',
@@ -499,14 +509,10 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                     child: Container(
                                       padding: EdgeInsets.all(13),
                                       child: FittedBox(
+                                        fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '12-08-2024 10:30:00',
-                                          style: TextStyle(
-                                            fontFamily: 'Manrope',
-                                            color: Colors.grey.shade400,
-                                          ),
-                                        ),
+                                        child: Text('12-08-2024 10:30:00',
+                                            style: subtitleTextBlack),
                                       ),
                                     ),
                                   ),
@@ -553,13 +559,9 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                   // Bagian Atas (Title)
                                                   Center(
                                                     child: Text(
-                                                      'Yakin Ingin Menghapus',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
+                                                        'Yakin Ingin Menghapus',
+                                                        style:
+                                                            subtitleTextBlack),
                                                   ),
                                                   SizedBox(height: 16),
                                                   // Bagian Tengah (Form)

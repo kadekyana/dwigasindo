@@ -4,7 +4,6 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/services/permission_service.dart';
-import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_verifikasi_surat_jalan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -53,7 +52,6 @@ class _ComponentBuatVerifikasiSuratJalanState
     final scanWindowOffset =
         Offset(width / 2, height * 0.3); // Posisikan lebih tinggi dari tengah
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Verifikasi Surat Jalan',
         colorBG: Colors.grey.shade100,
@@ -175,6 +173,7 @@ class _ComponentBuatVerifikasiSuratJalanState
                 height: 26,
                 width: width,
                 child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Preview Surat Jalan',
@@ -272,7 +271,8 @@ class CardVerifikasi extends StatelessWidget {
                       bottomRight: Radius.circular(25),
                     ),
                   ),
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
                     child: Text(
                       'SJ-002',
@@ -283,7 +283,8 @@ class CardVerifikasi extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   width: width * 0.35,
-                  child: const FittedBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.centerRight,
                     child: Text(
                       '23-09-2024 | 10:30:00',
@@ -317,7 +318,8 @@ class CardVerifikasi extends StatelessWidget {
                             Expanded(
                               flex: 3,
                               child: Container(
-                                child: const FittedBox(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
                                   child: Text(
                                     'CV Solusi Teknologi Bangsa',
                                     style: titleTextBlack,
@@ -341,7 +343,8 @@ class CardVerifikasi extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Container(
-                                  child: const FittedBox(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       'Driver',
@@ -353,7 +356,8 @@ class CardVerifikasi extends StatelessWidget {
                               Expanded(
                                 flex: 5,
                                 child: Container(
-                                  child: const FittedBox(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
                                     alignment: Alignment.topLeft,
                                     child: Text(': Santoso',
                                         style: titleTextBlack),

@@ -1,4 +1,5 @@
 import 'package:dwigasindo/const/const_color.dart';
+import 'package:dwigasindo/const/const_font.dart';
 // import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -38,30 +39,27 @@ class AuthLupaPassword extends StatelessWidget {
                           flex: 1,
                           child: Column(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 30,
                                 child: FittedBox(
                                   alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
                                   child: Text(
                                     'Reset Password',
-                                    style: TextStyle(
-                                        fontFamily: "Manrope",
-                                        fontWeight: FontWeight.w700),
+                                    style: subtitleTextBlack,
                                   ),
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 20,
                                 child: FittedBox(
                                   alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
                                   child: Text(
-                                    'Silahkan masukkan email untuk reset password',
-                                    style: TextStyle(
-                                        fontFamily: "Manrope",
-                                        fontWeight: FontWeight.w300),
-                                  ),
+                                      'Silahkan masukkan email untuk reset password',
+                                      style: subtitleTextBlack),
                                 ),
                               ),
                               SizedBox(

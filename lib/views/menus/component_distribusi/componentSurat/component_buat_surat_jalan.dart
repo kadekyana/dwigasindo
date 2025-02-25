@@ -18,7 +18,6 @@ class ComponentBuatSuratJalan extends StatelessWidget {
     final provider = Provider.of<ProviderDistribusi>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
         title: 'Buat Surat Jalan',
@@ -47,6 +46,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                   height: 25,
                   width: width,
                   child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     alignment: Alignment.bottomLeft,
                     child: Text('Pilih BPTI'),
                   ),
@@ -69,6 +69,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                               height: 30,
                               width: width,
                               child: FittedBox(
+                                fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   date,
@@ -160,6 +161,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                                                             .start,
                                                     children: [
                                                       FittedBox(
+                                                        fit: BoxFit.scaleDown,
                                                         child: Text(
                                                             item['tipe'],
                                                             style:
@@ -168,6 +170,8 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                                                       SizedBox(
                                                         width: width * 0.4,
                                                         child: FittedBox(
+                                                            fit: BoxFit
+                                                                .scaleDown,
                                                             child: Text(
                                                                 item['nama'])),
                                                       ),
@@ -195,6 +199,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                                                   ),
                                                 ),
                                                 child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   child: Text(
                                                     "Total Tabung: ${item['total']}",
                                                     style: subtitleText,
@@ -305,6 +310,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                                                           style:
                                                               titleTextBlack),
                                                       FittedBox(
+                                                        fit: BoxFit.scaleDown,
                                                         child: Text(
                                                             selectedItem[
                                                                 'nama']),
@@ -333,6 +339,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                                                   ),
                                                 ),
                                                 child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
                                                   child: Text(
                                                     "Total Tabung: ${selectedItem['total']}",
                                                     style: subtitleText,

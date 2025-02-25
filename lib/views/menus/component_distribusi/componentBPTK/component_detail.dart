@@ -6,10 +6,10 @@ import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_scan_qrcode.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
-import 'package:dwigasindo/widgets/widget_button.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ComponentDetail extends StatefulWidget {
@@ -59,7 +59,6 @@ class _ComponentDetailState extends State<ComponentDetail> {
         await provider.clearCount('countT');
       },
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
         appBar: WidgetAppbar(
           title: 'Detail',
           colorBG: Colors.grey.shade100,
@@ -88,186 +87,197 @@ class _ComponentDetailState extends State<ComponentDetail> {
                     Container(
                       width: width,
                       height: height * 0.2,
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
                       decoration: BoxDecoration(
                         color: PRIMARY_COLOR,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: height * 0.02, horizontal: width * 0.05),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 24,
-                              child: FittedBox(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  '${data?.noBptk} | ${(data?.createdAt == null) ? "-" : provider.formatDate(data!.createdAt.toString())}',
-                                  style: titleText,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 24.h,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                '${data?.noBptk} | ${(data?.createdAt == null) ? "-" : provider.formatDate(data!.createdAt.toString())}',
+                                style: titleText,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Jenis',
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' : ',
+                                        style: subtitleTextNormalwhite,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          '\t${data?.gasType}',
+                                          style: subtitleTextNormalwhite,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Driver',
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                      ),
+                                      Text(
+                                        ':',
+                                        style: subtitleTextNormalwhite,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          '\t${data!.driver?.name}',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  //Row Pertama
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  'Jenis Gas',
-                                                  textAlign: TextAlign.left,
-                                                  style: minisubtitleText,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  ': ${data?.gasType}',
-                                                  textAlign: TextAlign.start,
-                                                  style: minisubtitleText,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Jumlah',
+                                          style: subtitleTextNormalwhite,
                                         ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Driver',
-                                                  textAlign: TextAlign.left,
-                                                  style: minisubtitleText,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  ': ${data?.driver?.name}',
-                                                  textAlign: TextAlign.start,
-                                                  style: minisubtitleText,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                      ),
+                                      Text(
+                                        ' : ',
+                                        style: titleTextNormalWhite,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          '\t${data.count}',
+                                          style: subtitleTextNormalwhite,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Sumber',
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' : ',
+                                        style: subtitleTextNormalwhite,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          '${data.customer?.name}',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: subtitleTextNormalwhite,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 2,
-                                                child: FittedBox(
-                                                  child: Text(
-                                                    'Jumlah Tabung',
-                                                    textAlign: TextAlign.left,
-                                                    style: minisubtitleText,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  ': ${data?.count}',
-                                                  textAlign: TextAlign.start,
-                                                  style: minisubtitleText,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Sumber',
-                                                  textAlign: TextAlign.left,
-                                                  style: minisubtitleText,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  ': ${data?.customer?.name}',
-                                                  textAlign: TextAlign.start,
-                                                  style: minisubtitleText,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  WidgetButtonCustom(
-                                      FullWidth: width * 0.2,
-                                      FullHeight: height * 0.04,
-                                      title: 'Tambah',
-                                      onpressed: () {
-                                        providerS.clearResults();
-                                        providerS.clearScannedCount();
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                WidgetButtonCustom(
+                                    FullWidth: width * 0.2,
+                                    FullHeight: 30.h,
+                                    title: 'Tambah',
+                                    onpressed: () async {
+                                      if (!mounted) return;
+
+                                      // Tampilkan Dialog Loading
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      );
+
+                                      try {
+                                        await Future.wait([
+                                          providerS.clearResults(),
+                                          providerS.clearScannedCount(),
+                                        ]);
+
+                                        // Navigate sesuai kondisi
+                                        Navigator.of(context)
+                                            .pop(); // Tutup Dialog Loading
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ComponentScanQrCode(
-                                                    noBptk: data!.noBptk!,
+                                                    noBptk: data.noBptk!,
                                                   )),
                                         );
-                                      },
-                                      bgColor: Color.fromARGB(255, 55, 72, 199),
-                                      color: Colors.transparent),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  WidgetButtonCustom(
-                                      FullWidth: width * 0.15,
-                                      FullHeight: height * 0.04,
-                                      title: 'Ubah',
-                                      onpressed: () {},
-                                      bgColor: Color.fromARGB(255, 55, 72, 199),
-                                      color: Colors.transparent),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  WidgetButtonCustom(
-                                      FullWidth: width * 0.2,
-                                      FullHeight: height * 0.04,
-                                      title: 'Selesai',
-                                      onpressed: () {},
-                                      bgColor: SECONDARY_COLOR,
-                                      color: Colors.transparent)
-                                ],
-                              ),
+                                      } catch (e) {
+                                        Navigator.of(context)
+                                            .pop(); // Tutup Dialog Loading
+                                        print('Error: $e');
+                                        // Tambahkan pesan error jika perlu
+                                      }
+                                    },
+                                    bgColor:
+                                        const Color.fromARGB(255, 55, 72, 199),
+                                    color: Colors.transparent),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                WidgetButtonCustom(
+                                    FullWidth: 60.w,
+                                    FullHeight: 30.h,
+                                    title: 'Ubah',
+                                    onpressed: () {},
+                                    bgColor: Color.fromARGB(255, 55, 72, 199),
+                                    color: Colors.transparent),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                WidgetButtonCustom(
+                                    FullWidth: 80.w,
+                                    FullHeight: 30.h,
+                                    title: 'Selesai',
+                                    onpressed: () {},
+                                    bgColor: SECONDARY_COLOR,
+                                    color: Colors.transparent)
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const Spacer(),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -304,7 +314,7 @@ class WidgetCard extends StatelessWidget {
           final details = data?.details?[index];
           return Container(
             width: double.maxFinite,
-            height: height * 0.2,
+            height: 200.h,
             margin: EdgeInsets.only(bottom: height * 0.01),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -321,26 +331,25 @@ class WidgetCard extends StatelessWidget {
               children: [
                 Container(
                   width: double.maxFinite,
-                  height: 40,
+                  height: 40.h,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
                         width: width * 0.3,
+                        height: 40.h,
                         decoration: BoxDecoration(
                           color: (details?.status == 0)
                               ? PRIMARY_COLOR
                               : (details?.status == 1)
                                   ? COMPLEMENTARY_COLOR2
                                   : SECONDARY_COLOR,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(40),
+                            bottomRight: Radius.circular(20),
                           ),
                         ),
-                        child: FittedBox(
-                          alignment: Alignment.centerLeft,
+                        child: Center(
                           child: Text(
                             '${details?.tubeCode}',
                             style: titleText,
@@ -348,12 +357,11 @@ class WidgetCard extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: height * 0.015, horizontal: width * 0.05),
-                        child: WidgetButton(
-                            FullWidth: width * 0.05,
-                            FullHeight: height,
-                            title: 'Lihat Riwayat',
+                        padding: EdgeInsets.only(right: 5.w),
+                        child: WidgetButtonCustom(
+                            FullWidth: width * 0.25,
+                            FullHeight: 30,
+                            title: 'Riwayat',
                             onpressed: () {},
                             bgColor: (details?.status == 0)
                                 ? PRIMARY_COLOR
@@ -372,9 +380,10 @@ class WidgetCard extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(8)),
+                      borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(8)),
                       border: Border.fromBorderSide(
                         BorderSide(color: Colors.grey.shade300),
                       ),
@@ -386,55 +395,22 @@ class WidgetCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Produk',
-                                    style: titleTextBlack,
-                                  ),
-                                ),
+                              child: Text(
+                                'Produk',
+                                style: subtitleTextBlack,
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      ': ${(data?.customer == null) ? "-" : data?.customer?.name}',
-                                      style: titleTextBlack),
-                                ),
-                              ),
+                            Text(
+                              " : ",
+                              style: subtitleTextBlack,
                             ),
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Grade',
-                                    style: titleTextBlack,
-                                  ),
-                                ),
-                              ),
+                              flex: 3,
+                              child: Text(
+                                  '${(data?.customer == null) ? "-" : data?.customer?.name}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: subtitleTextBlack),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      ': ${(details?.isHasGrade == false) ? "Single" : (details?.tubeGrade == null) ? '-' : details?.tubeGrade}',
-                                      style: titleTextBlack),
-                                ),
-                              ),
-                            )
                           ],
                         )),
                         Expanded(
@@ -443,52 +419,95 @@ class WidgetCard extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Kondisi',
-                                    style: titleTextBlack,
-                                  ),
-                                ),
+                              child: Text(
+                                'Grade',
+                                style: subtitleTextBlack,
                               ),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(': -', style: titleTextBlack),
-                                ),
-                              ),
+                            Text(
+                              " : ",
+                              style: subtitleTextBlack,
                             ),
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Lokasi',
-                                    style: titleTextBlack,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      ': ${(details?.lastLocation == null) ? "-" : details!.lastLocation}',
-                                      style: titleTextBlack),
-                                ),
-                              ),
+                              flex: 3,
+                              child: Text(
+                                  '${(details?.isHasGrade == false) ? "Single" : (details?.tubeGrade == null) ? '-' : details?.tubeGrade}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: subtitleTextBlack),
                             )
+                          ],
+                        )),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  'Kondisi',
+                                  style: subtitleTextBlack,
+                                ),
+                              ),
+                              Text(
+                                ' : ',
+                                style: subtitleTextBlack,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  '-',
+                                  style: subtitleTextBlack,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Lokasi',
+                                  style: subtitleTextBlack,
+                                ),
+                              ),
+                              Text(
+                                ' : ',
+                                style: subtitleTextBlack,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  '${(details?.lastLocation == null) ? "-" : details!.lastLocation}',
+                                  style: subtitleTextBlack,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Milik',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                            Text(
+                              ' : ',
+                              style: subtitleTextBlack,
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                  (details?.isOwnership == 0)
+                                      ? "-"
+                                      : (details?.isOwnership == 1)
+                                          ? "Assets"
+                                          : "Pelanggan",
+                                  style: subtitleTextBlack),
+                            ),
                           ],
                         )),
                         Expanded(
@@ -497,70 +516,32 @@ class WidgetCard extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: const FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Milik',
-                                    style: titleTextBlack,
-                                  ),
-                                ),
+                              child: Text(
+                                'Dibuat pada',
+                                style: subtitleTextNormal,
                               ),
+                            ),
+                            Text(
+                              ' : ',
+                              style: subtitleTextNormal,
                             ),
                             Expanded(
                               flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      ': ${(details?.isOwnership == 0) ? "-" : (details?.isOwnership == 1) ? "Assets" : "Pelanggan"}',
-                                      style: titleTextBlack),
-                                ),
-                              ),
+                              child: Text(
+                                  "${(details?.createdAt != null) ? provider.formatDate(details!.createdAt.toString()) : "-"} | ${(details?.createdAt != null) ? provider.formatTime(details!.createdAt.toString()) : "-"}",
+                                  style: subtitleTextNormal),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(),
-                            )
-                          ],
-                        )),
-                        Expanded(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(6),
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${(details?.createdAt != null) ? provider.formatDate(details!.createdAt.toString()) : "-"} | ${(details?.createdAt != null) ? provider.formatTime(details!.createdAt.toString()) : "-"}',
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: (details?.status == 9)
-                                    ? SizedBox.shrink()
-                                    : IconButton(
+                            Container(
+                              width: 80.w,
+                              child: (details?.status == 9)
+                                  ? const SizedBox.shrink()
+                                  : Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
                                         onPressed: () async {
                                           showModalBottomSheet(
                                             context: context,
-                                            shape: RoundedRectangleBorder(
+                                            shape: const RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.vertical(
                                                       top: Radius.circular(20)),
@@ -575,7 +556,7 @@ class WidgetCard extends StatelessWidget {
                                                   bottom: MediaQuery.of(context)
                                                           .viewInsets
                                                           .bottom +
-                                                      16,
+                                                      16.h,
                                                 ),
                                                 child: Column(
                                                   mainAxisSize:
@@ -586,15 +567,11 @@ class WidgetCard extends StatelessWidget {
                                                     // Bagian Atas (Title)
                                                     Center(
                                                       child: Text(
-                                                        'Yakin Ingin Menghapus',
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
+                                                          'Yakin Ingin Menghapus',
+                                                          style:
+                                                              titleTextBlack),
                                                     ),
-                                                    SizedBox(height: 16),
+                                                    SizedBox(height: 16.h),
                                                     // Bagian Tengah (Form)
                                                     WidgetForm(
                                                         controller: reason,
@@ -602,7 +579,7 @@ class WidgetCard extends StatelessWidget {
                                                             'Harus di isi jika ingin menghapus data',
                                                         hint:
                                                             "Masukkan Alasan"),
-                                                    SizedBox(height: 16),
+                                                    SizedBox(height: 16.h),
                                                     // Bagian Bawah (Button Kembali dan Hapus)
                                                     Row(
                                                       mainAxisAlignment:
@@ -710,13 +687,13 @@ class WidgetCard extends StatelessWidget {
                                             },
                                           );
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.delete,
                                           size: 20,
                                           color: SECONDARY_COLOR,
                                         ),
                                       ),
-                              ),
+                                    ),
                             ),
                           ],
                         )),

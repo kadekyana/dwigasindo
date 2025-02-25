@@ -6,6 +6,7 @@ import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
 
@@ -25,7 +26,6 @@ class _ComponentPermintaanBarangState extends State<ComponentPermintaanBarang> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: WidgetAppbar(
         title: 'Permintaan Barang',
         center: true,
@@ -154,8 +154,8 @@ class widgetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: height * 0.2,
-      margin: EdgeInsets.only(bottom: height * 0.02),
+      height: 200.h,
+      margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -171,13 +171,13 @@ class widgetCard extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            height: 40,
+            height: height * 0.05,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
                   width: width * 0.3,
+                  height: height * 0.05,
                   decoration: const BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
@@ -185,29 +185,28 @@ class widgetCard extends StatelessWidget {
                       bottomRight: Radius.circular(30),
                     ),
                   ),
-                  child: const FittedBox(
-                    alignment: Alignment.centerLeft,
+                  child: Center(
                     child: Text(
-                      '27 Sep 2024',
+                      '27 - 11 - 2024',
                       style: titleText,
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
                   width: width * 0.3,
+                  height: height * 0.05,
                   decoration: BoxDecoration(
-                    color:
-                        (data == true) ? SECONDARY_COLOR : Colors.grey.shade500,
-                    borderRadius: BorderRadius.only(
+                    color: (data == true)
+                        ? COMPLEMENTARY_COLOR2
+                        : Colors.grey.shade500,
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(8),
                       bottomLeft: Radius.circular(30),
                     ),
                   ),
-                  child: FittedBox(
-                    alignment: Alignment.center,
+                  child: Center(
                     child: Text(
-                      '${(data == true) ? "Approve" : "Menunggu Approve"}',
+                      (data == true) ? "Approve" : "Menunggu",
                       style: titleText,
                     ),
                   ),
@@ -218,6 +217,8 @@ class widgetCard extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.025, vertical: 5.h),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
@@ -225,96 +226,125 @@ class widgetCard extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Container(
-                    height: 20,
-                    child: Row(
-                      children: [
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/approve2.svg',
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              (data == true)
-                                  ? SvgPicture.asset(
-                                      'assets/images/approve3.svg',
-                                    )
-                                  : SvgPicture.asset(
-                                      'assets/images/approve1.svg',
-                                    ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Expanded(
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Kode Permintaan',
-                              style: subtitleTextBlack,
+                        flex: 4,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Kode Permintaan',
+                                style: subtitleTextBlack,
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              child: Text(' : ', style: subtitleTextBlack),
+                            ),
+                            Expanded(
+                              child:
+                                  Text('198289-AD', style: subtitleTextBlack),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
-                        flex: 3,
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            child: Text(': 2324253', style: subtitleTextBlack),
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/images/approve2.svg',
+                              width: 30.w,
+                              height: 20.h,
+                            ),
+                            SizedBox(
+                              width: 10.h,
+                            ),
+                            (data == true)
+                                ? SvgPicture.asset(
+                                    'assets/images/approve3.svg',
+                                    width: 20.w,
+                                    height: 20.h,
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/images/approve1.svg',
+                                    width: 20.w,
+                                    height: 20.h,
+                                  ),
+                          ],
                         ),
                       ),
                     ],
                   )),
+                  // Expanded(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Expanded(
+                  //         flex: 2,
+                  //         child: Text(
+                  //           'Kode Permintaan',
+                  //           style: subtitleTextBlack,
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         child: Text(
+                  //           ' : ',
+                  //           style: subtitleTextBlack,
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         flex: 2,
+                  //         child: Text('2324253', style: subtitleTextBlack),
+                  //       ),
+                  //       SvgPicture.asset(
+                  //         'assets/images/approve2.svg',
+                  //         width: 20.w,
+                  //         height: 20.h,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 5.w,
+                  //       ),
+                  //       (data == true)
+                  //           ? SvgPicture.asset(
+                  //               'assets/images/approve3.svg',
+                  //               width: 20.w,
+                  //               height: 20.h,
+                  //             )
+                  //           : SvgPicture.asset(
+                  //               'assets/images/approve1.svg',
+                  //               width: 20.w,
+                  //               height: 20.h,
+                  //             ),
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 2,
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Divisi',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
+                          child: Text(
+                            'Divisi',
+                            style: subtitleTextBlack,
+                          ),
+                        ),
+                        SizedBox(
+                          child: Text(
+                            ' : ',
+                            style: subtitleTextBlack,
                           ),
                         ),
                         Expanded(
                           flex: 3,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Text(
-                              ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: height * 0.015,
-                              ),
-                            ),
+                          child: Text(
+                            ' Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.justify,
+                            style: subtitleTextBlack,
                           ),
                         ),
                       ],
@@ -326,27 +356,44 @@ class widgetCard extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 2,
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Kategori',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
+                          child: Text(
+                            'Kategori',
+                            style: subtitleTextBlack,
+                          ),
+                        ),
+                        SizedBox(
+                          child: Text(
+                            ' : ',
+                            style: subtitleTextBlack,
                           ),
                         ),
                         Expanded(
                           flex: 3,
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              alignment: Alignment.centerLeft,
-                              child: Text(': Bahan Baku',
-                                  style: subtitleTextBlack),
-                            ),
+                          child: Text('Bahan Baku', style: subtitleTextBlack),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            'Dibuat Oleh',
+                            style: subtitleTextNormal,
                           ),
+                        ),
+                        SizedBox(
+                          child: Text(
+                            ' : ',
+                            style: subtitleTextNormal,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text('User 1', style: subtitleTextNormal),
                         ),
                       ],
                     ),
@@ -355,29 +402,15 @@ class widgetCard extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          Padding(
+            padding: EdgeInsets.only(bottom: 10.h, left: 10.w, right: 10.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.all(6),
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Create by user 1',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: height * 0.005, right: width * 0.01),
+                Expanded(
                   child: WidgetButtonCustom(
                       FullWidth: width * 0.3,
-                      FullHeight: 25,
+                      FullHeight: 30.h,
                       title: "Lihat Barang",
                       onpressed: () {
                         Navigator.push(
