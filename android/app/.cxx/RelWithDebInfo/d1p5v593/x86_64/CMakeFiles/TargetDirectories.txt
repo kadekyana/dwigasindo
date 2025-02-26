@@ -1,0 +1,2 @@
+D:/Project/dwigasindo/dwigasindo/android/app/.cxx/RelWithDebInfo/d1p5v593/x86_64/CMakeFiles/edit_cache.dir
+D:/Project/dwigasindo/dwigasindo/android/app/.cxx/RelWithDebInfo/d1p5v593/x86_64/CMakeFiles/rebuild_cache.dir
