@@ -157,7 +157,7 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List SO', 'History']),
+                  buttons: const ['List SO', 'History']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -219,7 +219,7 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                   color: (data == true)
                                       ? COMPLEMENTARY_COLOR2
                                       : Colors.grey.shade500,
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(8),
                                     bottomLeft: Radius.circular(30),
                                   ),
@@ -228,7 +228,7 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu"}',
+                                    (data == true) ? "Approve" : "Menunggu",
                                     style: titleText,
                                   ),
                                 ),

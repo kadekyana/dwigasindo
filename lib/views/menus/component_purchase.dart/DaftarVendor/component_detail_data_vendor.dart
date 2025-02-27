@@ -83,11 +83,11 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             WidgetHeader(height: height),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.07,
               child: Row(
@@ -146,7 +146,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               child: Row(
                 children: [
@@ -192,7 +192,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                       itemCount: 1,
                       itemBuilder: (index, context) {
                         return Container(
-                          margin: EdgeInsets.only(top: 10),
+                          margin: const EdgeInsets.only(top: 10),
                           child: GroupButton(
                             isRadio: true,
                             options: GroupButtonOptions(
@@ -211,7 +211,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: [
+                            buttons: const [
                               'No',
                               'Nama Item',
                               'Kategori',
@@ -224,7 +224,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
 
                   // History PO Tab
                   AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     child: selectedPO == null
                         ? _buildHistoryPOList(height, width)
                         : _buildPODetail(selectedPO!, width, height),
@@ -271,14 +271,14 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
             ),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: double.maxFinite,
                   height: 40,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         width: width * 0.3,
                         decoration: const BoxDecoration(
                           color: PRIMARY_COLOR,
@@ -297,9 +297,9 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         width: width * 0.3,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: SECONDARY_COLOR,
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(8),
@@ -332,8 +332,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                           height: 20,
                           child: Row(
                             children: [
-                              Expanded(child: SizedBox.shrink()),
-                              Expanded(child: SizedBox.shrink()),
+                              const Expanded(child: SizedBox.shrink()),
+                              const Expanded(child: SizedBox.shrink()),
                               Expanded(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -341,19 +341,19 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                     SvgPicture.asset(
                                       'assets/images/approve4.svg',
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     SvgPicture.asset(
                                       'assets/images/1.svg',
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     SvgPicture.asset(
                                       'assets/images/2.svg',
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     SvgPicture.asset(
@@ -372,7 +372,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -386,7 +386,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -395,7 +395,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                 ),
                               ),
                             ),
-                            Expanded(child: SizedBox.shrink()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         )),
                         Expanded(
@@ -405,7 +405,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               Expanded(
                                 flex: 1,
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
@@ -419,7 +419,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               Expanded(
                                 flex: 2,
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   child: Text(
                                       ': Lorem Ipsum adwadawdbadhbawudbadbaubdawu',
                                       overflow: TextOverflow.ellipsis,
@@ -441,7 +441,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               Expanded(
                                 flex: 1,
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
@@ -455,7 +455,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                               Expanded(
                                 flex: 2,
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     alignment: Alignment.centerLeft,
@@ -464,7 +464,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                                   ),
                                 ),
                               ),
-                              Expanded(child: SizedBox.shrink()),
+                              const Expanded(child: SizedBox.shrink()),
                             ],
                           ),
                         ),
@@ -477,7 +477,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
@@ -518,7 +518,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           child: GroupButton(
             isRadio: true,
             options: GroupButtonOptions(
@@ -536,7 +536,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
             onSelected: (value, index, isSelected) {
               print('DATA KLIK : $value - $index - $isSelected');
             },
-            buttons: ['No', 'Nama Item', 'Kategori', 'MoU', 'Harga'],
+            buttons: const ['No', 'Nama Item', 'Kategori', 'MoU', 'Harga'],
           ),
         ),
         SizedBox(
@@ -573,7 +573,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             width: width,
             height: height * 0.03,
             child: Row(
@@ -597,8 +597,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
             backgroundColor: SECONDARY_COLOR,
             borderRadius: BorderRadius.circular(12),
           ),
-          SizedBox(height: 8),
-          TextField(
+          const SizedBox(height: 8),
+          const TextField(
             decoration: InputDecoration(
               labelText: 'Isi Keterangan',
               border: OutlineInputBorder(),
@@ -630,7 +630,7 @@ class WidgetHeader extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -643,7 +643,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -654,12 +654,12 @@ class WidgetHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -672,7 +672,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -691,7 +691,7 @@ class WidgetHeader extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -704,7 +704,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
@@ -715,12 +715,12 @@ class WidgetHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -733,7 +733,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -752,7 +752,7 @@ class WidgetHeader extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -765,7 +765,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -776,12 +776,12 @@ class WidgetHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -794,7 +794,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -813,7 +813,7 @@ class WidgetHeader extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -826,7 +826,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -837,12 +837,12 @@ class WidgetHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
@@ -855,7 +855,7 @@ class WidgetHeader extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,

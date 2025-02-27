@@ -139,10 +139,10 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
       ),
       body: (provider.isLoadingT == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SingleChildScrollView(
@@ -150,7 +150,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -175,12 +175,12 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                   }
                                 });
                               },
-                              buttons: ['Blast', "Satuan"]),
+                              buttons: const ['Blast', "Satuan"]),
                         ),
                       ),
                     ),
                     if (isBlast == true)
-                      Container(
+                      SizedBox(
                         width: width,
                         height: 100.h,
                         child: ListTile(
@@ -200,7 +200,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                           ),
                         ),
                       ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -222,7 +222,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                   if (index == 0) {
                                     // Pilihan Assets, set data supplier
                                     tubesupplier = provider.supllier?.data
-                                        ?.map((data) =>
+                                        .map((data) =>
                                             {'id': data.id, 'name': data.name})
                                         .toList();
                                     selectCustomer = null;
@@ -246,12 +246,12 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                       'DATA KLIK : $value - $index - $isSelected');
                                 });
                               },
-                              buttons: ['Assets', "Pelanggan"]),
+                              buttons: const ['Assets', "Pelanggan"]),
                         ),
                       ),
                     ),
                     (owner == 1)
-                        ? Container(
+                        ? SizedBox(
                             width: width,
                             height: height * 0.1,
                             child: ListTile(
@@ -281,9 +281,9 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                               ),
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     (owner == 2)
-                        ? Container(
+                        ? SizedBox(
                             width: width,
                             height: height * 0.1,
                             child: ListTile(
@@ -313,8 +313,8 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                               ),
                             ),
                           )
-                        : SizedBox.shrink(),
-                    Container(
+                        : const SizedBox.shrink(),
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -343,12 +343,12 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                 print(
                                     'DATA KLIK : $value - $index - $isSelected');
                               },
-                              buttons: ['Single', "Non Single"]),
+                              buttons: const ['Single', "Non Single"]),
                         ),
                       ),
                     ),
                     (!isSingle)
-                        ? Container(
+                        ? SizedBox(
                             width: width,
                             height: height * 0.1,
                             child: ListTile(
@@ -378,8 +378,8 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                               ),
                             ),
                           )
-                        : SizedBox(),
-                    Container(
+                        : const SizedBox(),
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -406,7 +406,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -435,11 +435,11 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                 print(
                                     'DATA KLIK : $value - $index - $isSelected');
                               },
-                              buttons: ['Ya', "Tidak"]),
+                              buttons: const ['Ya', "Tidak"]),
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -476,7 +476,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -499,7 +499,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                     SizedBox(
                       height: height * 0.03,
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -523,7 +523,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -550,7 +550,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                       onPressed: startScan,
                       child: const Text('Scan Printers'),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: 200.h,
                       child: ListView.builder(
@@ -566,11 +566,11 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                               onPressed: () async {
                                 if (printer.isConnected ?? false) {
                                   if (owner == 2) {
-                                    print("A : ${selectSupllier}");
-                                    print("B : ${selectCustomer}");
+                                    print("A : $selectSupllier");
+                                    print("B : $selectCustomer");
                                   } else {
-                                    print("A : ${selectSupllier}");
-                                    print("B : ${selectCustomer}");
+                                    print("A : $selectSupllier");
+                                    print("B : $selectCustomer");
                                   }
 
                                   // Atur nilai null sesuai kondisi

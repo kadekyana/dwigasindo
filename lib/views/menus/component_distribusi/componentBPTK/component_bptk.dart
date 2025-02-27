@@ -68,10 +68,10 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
       ),
       body: (provider.isLoading == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SafeArea(
@@ -162,9 +162,9 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: dataBPTK!.length,
+                          itemCount: dataBPTK?.length,
                           itemBuilder: (context, index) {
-                            final data = dataBPTK[index];
+                            final data = dataBPTK?[index];
                             return Container(
                               width: double.maxFinite,
                               height: height * 0.28,
@@ -201,7 +201,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              '${data.no}',
+                                              '${data?.no}',
                                               style: titleText,
                                             ),
                                           ),
@@ -213,7 +213,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                             fit: BoxFit.scaleDown,
                                             alignment: Alignment.centerRight,
                                             child: Text(
-                                              ' ${(data.vehicleNumber == null) ? "-" : data.vehicleNumber}',
+                                              ' ${(data?.vehicleNumber == null) ? "-" : data!.vehicleNumber}',
                                               style: titleTextBlack,
                                             ),
                                           ),
@@ -276,7 +276,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                                   flex: 3,
                                                   child: Text(
                                                       provider.formatDate(data
-                                                          .createdAt
+                                                          ?.createdAt
                                                           .toString()),
                                                       style: subtitleTextBlack),
                                                 )
@@ -301,7 +301,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                               Expanded(
                                                 flex: 3,
                                                 child: Text(
-                                                    '${(data.gasType == null) ? "-" : data.gasType}',
+                                                    '${(data?.gasType == null) ? "-" : data!.gasType}',
                                                     style: subtitleTextBlack),
                                               )
                                             ],
@@ -323,7 +323,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                               ),
                                               Expanded(
                                                 flex: 3,
-                                                child: Text('${data.gasCount}',
+                                                child: Text('${data?.gasCount}',
                                                     style: subtitleTextBlack),
                                               )
                                             ],
@@ -347,7 +347,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                               Expanded(
                                                 flex: 3,
                                                 child: Text(
-                                                    '${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
+                                                    '${provider.formatDate(data?.createdAt.toString())} | ${provider.formatTime(data?.createdAt.toString())}',
                                                     style: subtitleTextNormal),
                                               )
                                             ],
@@ -389,7 +389,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                                     provider
                                                         .clearCount('countT'),
                                                     provider.getVerifikasiBPTK(
-                                                        context, data.no!)
+                                                        context, data!.no!)
                                                   ]);
 
                                                   // Navigate sesuai kondisi
@@ -447,7 +447,8 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ComponentEdit(
-                                                        cusId: data.customerId!,
+                                                        cusId:
+                                                            data!.customerId!,
                                                         dataNo:
                                                             (data.vehicleNumber !=
                                                                     null)
@@ -492,7 +493,7 @@ class _ComponentBPTKState extends State<ComponentBPTK> {
                                                     provider
                                                         .clearCount('countT'),
                                                     provider.getVerifikasiBPTK(
-                                                        context, data.no!),
+                                                        context, data!.no!),
                                                   ]);
 
                                                   // Navigate sesuai kondisi

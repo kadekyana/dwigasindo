@@ -37,7 +37,7 @@ class _ComponentDataMasterCustomerState
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -108,7 +108,7 @@ class _ComponentDataMasterCustomerState
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
                           height: 40.h,
                           child: Stack(
@@ -129,7 +129,8 @@ class _ComponentDataMasterCustomerState
                                     ),
                                   ),
                                   alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Text("Good", style: titleText),
                                 ),
                               ),
@@ -210,7 +211,7 @@ class _ComponentDataMasterCustomerState
                                                 ),
                                               ),
                                             ),
-                                            Text(':'),
+                                            const Text(':'),
                                             Expanded(
                                               flex: 3,
                                               child: Text('\t${dataCard.nik}',
@@ -237,7 +238,7 @@ class _ComponentDataMasterCustomerState
                                                 ),
                                               ),
                                             ),
-                                            Text(':'),
+                                            const Text(':'),
                                             Expanded(
                                               flex: 3,
                                               child: Text(
@@ -265,7 +266,7 @@ class _ComponentDataMasterCustomerState
                                                 ),
                                               ),
                                             ),
-                                            Text(':'),
+                                            const Text(':'),
                                             Expanded(
                                               flex: 3,
                                               child: Text(
@@ -293,7 +294,7 @@ class _ComponentDataMasterCustomerState
                                                 ),
                                               ),
                                             ),
-                                            Text(':'),
+                                            const Text(':'),
                                             Expanded(
                                               flex: 3,
                                               child: Text(
@@ -356,7 +357,9 @@ class _ComponentDataMasterCustomerState
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                    "${provider.formatCurrency(dataCard.totalSales as num)}"
+                                                    provider
+                                                        .formatCurrency(dataCard
+                                                            .totalSales as num)
                                                         .toString(),
                                                     style:
                                                         minisubtitleTextBlack),
@@ -372,7 +375,7 @@ class _ComponentDataMasterCustomerState
                                                 CircularStrokeCap.round,
                                           ),
                                         ),
-                                        SizedBox(height: 5.0),
+                                        const SizedBox(height: 5.0),
                                       ],
                                     ),
                                   ),

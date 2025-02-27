@@ -47,10 +47,10 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
       ),
       body: (provider.isLoading == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SafeArea(
@@ -69,7 +69,8 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ComponentBuatSuratJalan(),
+                                builder: (context) =>
+                                    const ComponentBuatSuratJalan(),
                               ),
                             );
                           },
@@ -111,7 +112,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: double.maxFinite,
                                           height: height * 0.05,
                                           child: Row(
@@ -141,7 +142,8 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                               ),
                                               // kurang create at pada API
                                               Container(
-                                                padding: EdgeInsets.all(10),
+                                                padding:
+                                                    const EdgeInsets.all(10),
                                                 width: width * 0.35,
                                                 height: height * 0.05,
                                                 child: FittedBox(
@@ -189,7 +191,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 2,
                                                         child: FittedBox(
@@ -224,7 +226,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       // Kurang Admin Pada API
                                                       Expanded(
                                                         flex: 2,
@@ -260,7 +262,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 2,
                                                         child: FittedBox(
@@ -295,7 +297,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Text(':'),
+                                                    const Text(':'),
                                                     Expanded(
                                                       flex: 1,
                                                       child: FittedBox(

@@ -32,7 +32,7 @@ class MenuItemProduksi extends StatelessWidget {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
@@ -62,7 +62,7 @@ class MenuItemProduksi extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                         blurRadius: 2,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                         color: Colors.grey.shade300),
                   ],
                 ),
@@ -114,7 +114,7 @@ class MenuItemProduksi extends StatelessWidget {
                                         style: titleTextBlack),
                                   ),
                                 ),
-                                Expanded(child: SizedBox.expand())
+                                const Expanded(child: SizedBox.expand())
                               ],
                             ),
                           ),

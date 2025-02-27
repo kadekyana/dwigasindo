@@ -38,15 +38,15 @@ class ComponentTambah extends StatelessWidget {
       ),
       body: (provider.isLoadingC == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : Column(
               children: [
-                Container(
+                SizedBox(
                   width: width + 0.01,
                   height: height * 0.1,
                   child: ListTile(
@@ -66,7 +66,7 @@ class ComponentTambah extends StatelessWidget {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Container(
+                SizedBox(
                   width: double.maxFinite,
                   child: ListTile(
                     title: Text('Sumber', style: subtitleTextBlack),
@@ -128,7 +128,7 @@ class ComponentTambah extends StatelessWidget {
 }
 
 class ComponentEdit extends StatefulWidget {
-  ComponentEdit(
+  const ComponentEdit(
       {super.key, this.dataNo, required this.cusId, required this.uuid});
 
   final String? dataNo;
@@ -160,11 +160,9 @@ class _ComponentEditState extends State<ComponentEdit> {
         (customer) => customer.id == widget.cusId,
       );
 
-      if (selectedCustomer != null) {
-        // Set the initial selected value in dropdown (customer's name)
-        sumber.value = selectedCustomer.name;
-        provider.setSelectedItem(selectedCustomer.id.toString());
-      }
+      // Set the initial selected value in dropdown (customer's name)
+      sumber.value = selectedCustomer.name;
+      provider.setSelectedItem(selectedCustomer.id.toString());
     });
   }
 
@@ -189,16 +187,16 @@ class _ComponentEditState extends State<ComponentEdit> {
       ),
       body: (provider.isLoadingC == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : Column(
               children: [
                 // No Kendaraan input field (editable)
-                Container(
+                SizedBox(
                   width: width + 0.01,
                   height: height * 0.1,
                   child: ListTile(
@@ -218,7 +216,7 @@ class _ComponentEditState extends State<ComponentEdit> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Container(
+                SizedBox(
                   width: double.maxFinite,
                   child: ListTile(
                     title: Text('Sumber', style: subtitleTextBlack),

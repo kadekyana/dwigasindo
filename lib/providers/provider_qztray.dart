@@ -27,7 +27,7 @@ class ProviderQZTray extends ChangeNotifier {
       return;
     }
 
-    final zplData = '''
+    const zplData = '''
       ^XA
       ^FO50,50^A0N,50,50^FDHello, QZ Tray!^FS
       ^FO50,120^B3N,N,100,Y,N^FD1234567890^FS

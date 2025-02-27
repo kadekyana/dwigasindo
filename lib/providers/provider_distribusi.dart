@@ -163,9 +163,9 @@ class ProviderDistribusi extends ChangeNotifier {
     return grade?.name;
   }
 
-  String formatTime(String dateTimeString) {
+  String formatTime(String? dateTimeString) {
     // Parse string menjadi DateTime
-    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime dateTime = DateTime.parse(dateTimeString!);
 
     // Format waktu sesuai kebutuhan, hanya menampilkan jam, menit, dan detik
     String formattedTime = DateFormat('HH:mm:ss').format(dateTime);
@@ -222,7 +222,7 @@ class ProviderDistribusi extends ChangeNotifier {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ComponentBPTK(),
+          builder: (context) => const ComponentBPTK(),
         ),
       );
 
@@ -263,7 +263,7 @@ class ProviderDistribusi extends ChangeNotifier {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ComponentBPTK(),
+          builder: (context) => const ComponentBPTK(),
         ),
       );
 
@@ -285,9 +285,9 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
-  String formatDate(String dateTimeString) {
+  String formatDate(String? dateTimeString) {
     // Ubah string ke DateTime
-    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime dateTime = DateTime.parse(dateTimeString!);
 
     // Format DateTime menjadi dd-MM-yyyy
     String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
@@ -306,7 +306,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelAllBptk.fromJson(response.data);
-      print("RESPONSE : ${response}");
+      print("RESPONSE : $response");
       _bptk = data;
       notifyListeners();
     } else {
@@ -331,7 +331,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelCradle.fromJson(response.data);
-      print("RESPONSE : ${response}");
+      print("RESPONSE : $response");
       _cradle = data;
       notifyListeners();
     } else {
@@ -537,7 +537,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelAllCostumer.fromJson(response.data);
-      print("RESPONSE : ${response}");
+      print("RESPONSE : $response");
       _customer = data;
       notifyListeners();
     } else {
@@ -656,7 +656,7 @@ class ProviderDistribusi extends ChangeNotifier {
     } else {
       print("error get");
     }
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isLoadingTube = false;
       notifyListeners();
     });
@@ -777,11 +777,11 @@ class ProviderDistribusi extends ChangeNotifier {
 // Fungsi untuk mencetak label menggunakan ZPL
   Future<void> printZPL(
       Printer printer, String name, String serialNumber) async {
-    final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+    final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
 
     String zplData = '''
 ^XA
-^CF0,25^FO340,68^FD${name}^FS
+^CF0,25^FO340,68^FD$name^FS
 ^CFB,15^FO340,93^FDIndustrial Grade 2^FS
 ^AN,15^FO340,107^FDNo telp^FS
 ^AN,15^FO400,107^FD:^FS
@@ -794,24 +794,24 @@ class ProviderDistribusi extends ChangeNotifier {
 ^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
 ^FO225,5
 ^BQN,2,5
-^FD5xx${serialNumber}^FS
+^FD5xx$serialNumber^FS
 ^CF0,18
 ^FB130,1,0,C
 ^FO215,123
-^FD${serialNumber}^FS
+^FD$serialNumber^FS
 ^CF0N,10
 ^FB130,1,0,C
 ^FO213,143
 ^FDPT. Dwigasindo Abadi^FS
 ^FO340,15
 ^BY2
-^BCN,50,N,N,N,A^FD${serialNumber}^FS
+^BCN,50,N,N,N,A^FD$serialNumber^FS
 ^XZ
   ''';
 
     try {
       log("Mengirim data ZPL ke printer: ${printer.name}");
-      await _flutterThermalPrinterPlugin.printData(
+      await flutterThermalPrinterPlugin.printData(
         printer,
         zplData.codeUnits,
       );
@@ -822,18 +822,18 @@ class ProviderDistribusi extends ChangeNotifier {
   }
 
   Future<void> printZPLCustomer(Printer printer, String serialNumber) async {
-    final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+    final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
 
     String zplData = '''
 ^XA
 
 ^FO8,0
 ^BQN,2,6
-^FD5xx${serialNumber}^FS,,
+^FD5xx$serialNumber^FS,,
 
 ^FO145,10
 ^BY3
-^BCN,80,Y,N,N,A^FD${serialNumber}^FS
+^BCN,80,Y,N,N,A^FD$serialNumber^FS
 
 
 ^XZ
@@ -841,7 +841,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     try {
       log("Mengirim data ZPL ke printer: ${printer.name}");
-      await _flutterThermalPrinterPlugin.printData(
+      await flutterThermalPrinterPlugin.printData(
         printer,
         zplData.codeUnits,
       );
@@ -991,13 +991,13 @@ class ProviderDistribusi extends ChangeNotifier {
 
   // verifikasi by BPTK
 
-  Future<void> getVerifikasiBPTK(BuildContext context, String no_bptk) async {
+  Future<void> getVerifikasiBPTK(BuildContext context, String noBptk) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     print(countT);
 
     final response = await DioServiceAPI()
-        .postRequest(url: "verification_bptk/${no_bptk}", token: token, data: {
+        .postRequest(url: "verification_bptk/$noBptk", token: token, data: {
       "status": [0, 1],
     });
 
@@ -1014,7 +1014,7 @@ class ProviderDistribusi extends ChangeNotifier {
         ),
       );
     }
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isLoadingVer = false;
       notifyListeners();
     });
@@ -1043,8 +1043,8 @@ class ProviderDistribusi extends ChangeNotifier {
       // Navigasi kembali ke halaman BPTI
       Navigator.pop(context);
       Navigator.pop(context);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ComponentBPTI()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const ComponentBPTI()));
     } else {
       // Tampilkan snack bar error
       showTopSnackBar(
@@ -1079,7 +1079,7 @@ class ProviderDistribusi extends ChangeNotifier {
         ),
       );
     }
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isLoadingTI = false;
       notifyListeners();
     });
@@ -1185,8 +1185,7 @@ class ProviderDistribusi extends ChangeNotifier {
   ];
 
   // Set untuk menyimpan item yang dipilih
-  Set<String> selectedItems =
-      Set<String>(); // Untuk menyimpan item yang dicentang
+  Set<String> selectedItems = <String>{}; // Untuk menyimpan item yang dicentang
 
   // Daftar untuk menyimpan item yang dipilih
   List<Map<String, dynamic>> selectedItemsList = [];

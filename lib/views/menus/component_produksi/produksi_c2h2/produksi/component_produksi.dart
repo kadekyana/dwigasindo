@@ -99,7 +99,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
     return Container(
       width: width,
       height: height,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           SizedBox(
@@ -169,7 +169,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                     });
                   }
                 },
-                buttons: ['List PO', "List Non PO", 'History']),
+                buttons: const ['List PO', "List Non PO", 'History']),
           ),
           SizedBox(
             height: height * 0.01,
@@ -218,7 +218,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: double.maxFinite,
                                           height: 40,
                                           child: Stack(
@@ -248,7 +248,9 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                     alignment:
                                                         Alignment.centerRight,
                                                     child: Text(
-                                                        "${data?.isActive == 0 ? 'Non Active' : 'Active'}",
+                                                        data?.isActive == 0
+                                                            ? 'Non Active'
+                                                            : 'Active',
                                                         style: subtitleText),
                                                   ),
                                                 ),
@@ -274,7 +276,8 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                     ),
                                                   ),
                                                   alignment: Alignment.center,
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 10),
                                                   child: Text(data!.name!,
                                                       style: titleText),
@@ -371,7 +374,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(':'),
+                                                            const Text(':'),
                                                             Expanded(
                                                               flex: 3,
                                                               child: Text(
@@ -402,7 +405,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(':'),
+                                                            const Text(':'),
                                                             Expanded(
                                                               flex: 3,
                                                               child: Text(
@@ -545,7 +548,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 1,
                                     color: Color(0xffE4E4E4),
@@ -555,7 +558,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                               ),
                               child: Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: double.maxFinite,
                                     height: 40,
                                     child: Stack(
@@ -569,7 +572,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             height: double.infinity,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: width * 0.05),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color:
                                                   SECONDARY_COLOR, // Warna hijau
                                               borderRadius: BorderRadius.only(
@@ -581,7 +584,9 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             child: Align(
                                               alignment: Alignment.centerRight,
                                               child: Text(
-                                                  "${data?.isActive == 0 ? 'Non Active' : 'Active'}",
+                                                  data?.isActive == 0
+                                                      ? 'Non Active'
+                                                      : 'Active',
                                                   style: subtitleText),
                                             ),
                                           ),
@@ -594,7 +599,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             width: width *
                                                 0.3, // 30% dari lebar layar
                                             height: double.infinity,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color: Color(
                                                   0xFF12163A), // Warna biru tua
                                               borderRadius: BorderRadius.only(
@@ -604,7 +609,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                               ),
                                             ),
                                             alignment: Alignment.center,
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 10),
                                             child: Text(
                                               '${data!.name}',
@@ -667,7 +672,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -694,7 +699,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                               subtitleTextBlack,
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -726,7 +731,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -758,7 +763,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -865,7 +870,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
     return Container(
       width: width,
       height: height,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           SizedBox(
@@ -886,7 +891,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                       alert: 'Search',
                       hint: 'Search',
                       border: InputBorder.none,
-                      preicon: Icon(
+                      preicon: const Icon(
                         Icons.search_rounded,
                         color: Colors.grey,
                       ),
@@ -905,7 +910,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                   ),
                   child: IconButton(
                     onPressed: () {},
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.filter_list,
                       color: Colors.white,
                     ),
@@ -935,7 +940,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                     });
                   }
                 },
-                buttons: ['List PO', "List Non PO", 'History']),
+                buttons: const ['List PO', "List Non PO", 'History']),
           ),
           SizedBox(
             height: height * 0.01,
@@ -974,7 +979,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8),
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
                                           blurRadius: 1,
                                           color: Color(0xffE4E4E4),
@@ -984,7 +989,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: double.maxFinite,
                                           height: 40,
                                           child: Stack(
@@ -998,7 +1003,8 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                   height: double.infinity,
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: width * 0.05),
-                                                  decoration: BoxDecoration(
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     color:
                                                         SECONDARY_COLOR, // Warna hijau
                                                     borderRadius:
@@ -1013,7 +1019,9 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                     alignment:
                                                         Alignment.centerRight,
                                                     child: Text(
-                                                        "${data?.isActive == 0 ? 'Non Active' : 'Active'}",
+                                                        data?.isActive == 0
+                                                            ? 'Non Active'
+                                                            : 'Active',
                                                         style: subtitleText),
                                                   ),
                                                 ),
@@ -1026,7 +1034,8 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                   width: width *
                                                       0.3, // 30% dari lebar layar
                                                   height: double.infinity,
-                                                  decoration: BoxDecoration(
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     color: Color(
                                                         0xFF12163A), // Warna biru tua
                                                     borderRadius:
@@ -1038,7 +1047,8 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                     ),
                                                   ),
                                                   alignment: Alignment.center,
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 10),
                                                   child: Text(data!.name!,
                                                       style: titleText),
@@ -1104,7 +1114,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(':'),
+                                                            const Text(':'),
                                                             Expanded(
                                                               flex: 3,
                                                               child: Text(
@@ -1135,7 +1145,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(':'),
+                                                            const Text(':'),
                                                             Expanded(
                                                               flex: 3,
                                                               child: Text(
@@ -1166,7 +1176,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            Text(':'),
+                                                            const Text(':'),
                                                             Expanded(
                                                               flex: 3,
                                                               child: Text(
@@ -1252,8 +1262,9 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           FullHeight: 25,
                                                           title: "Lanjut",
                                                           onpressed: () async {
-                                                            if (!mounted)
+                                                            if (!mounted) {
                                                               return;
+                                                            }
 
                                                             // Tampilkan Dialog Loading
                                                             showDialog(
@@ -1263,7 +1274,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
-                                                                return Center(
+                                                                return const Center(
                                                                   child:
                                                                       CircularProgressIndicator(),
                                                                 );
@@ -1383,7 +1394,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 1,
                                     color: Color(0xffE4E4E4),
@@ -1393,7 +1404,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                               ),
                               child: Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: double.maxFinite,
                                     height: 40,
                                     child: Stack(
@@ -1407,7 +1418,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             height: double.infinity,
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: width * 0.05),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color:
                                                   SECONDARY_COLOR, // Warna hijau
                                               borderRadius: BorderRadius.only(
@@ -1419,7 +1430,9 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             child: Align(
                                               alignment: Alignment.centerRight,
                                               child: Text(
-                                                  "${data?.isActive == 0 ? 'Non Active' : 'Active'}",
+                                                  data?.isActive == 0
+                                                      ? 'Non Active'
+                                                      : 'Active',
                                                   style: subtitleText),
                                             ),
                                           ),
@@ -1432,7 +1445,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                             width: width *
                                                 0.3, // 30% dari lebar layar
                                             height: double.infinity,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color: Color(
                                                   0xFF12163A), // Warna biru tua
                                               borderRadius: BorderRadius.only(
@@ -1442,7 +1455,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                               ),
                                             ),
                                             alignment: Alignment.center,
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 10),
                                             child: Text(
                                               '${data!.name}',
@@ -1505,7 +1518,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -1532,7 +1545,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                               subtitleTextBlack,
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -1564,7 +1577,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(':'),
+                                                      const Text(':'),
                                                       Expanded(
                                                         flex: 3,
                                                         child: Text(
@@ -1669,7 +1682,7 @@ class _ComponentProduksiState extends State<ComponentProduksi> {
                                                             false,
                                                         builder: (BuildContext
                                                             context) {
-                                                          return Center(
+                                                          return const Center(
                                                             child:
                                                                 CircularProgressIndicator(),
                                                           );

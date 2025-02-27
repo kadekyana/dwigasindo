@@ -48,7 +48,7 @@ class _ComponentMutasiStokState extends State<ComponentMutasiStok> {
     final provider = Provider.of<ProviderItem>(context);
     final dataMutasi = provider.mutasi;
     return Scaffold(
-      appBar: AppBar(title: Text('Data Lengkap')),
+      appBar: AppBar(title: const Text('Data Lengkap')),
       body: Container(
         width: width,
         height: height,
@@ -112,7 +112,7 @@ class _ComponentMutasiStokState extends State<ComponentMutasiStok> {
                             child: FittedBox(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                'Stok Terpakai : ${StokKeluar} ',
+                                'Stok Terpakai : $StokKeluar ',
                                 style: subtitleText,
                               ),
                             ),
@@ -126,11 +126,11 @@ class _ComponentMutasiStokState extends State<ComponentMutasiStok> {
             ),
             Expanded(
               child: SfCartesianChart(
-                legend: Legend(isVisible: true),
-                primaryXAxis: NumericAxis(
+                legend: const Legend(isVisible: true),
+                primaryXAxis: const NumericAxis(
                   title: AxisTitle(text: 'Bulan'),
                 ),
-                primaryYAxis: NumericAxis(
+                primaryYAxis: const NumericAxis(
                   title: AxisTitle(text: 'Stok'),
                 ),
                 series: <CartesianSeries<dynamic, dynamic>>[
@@ -138,13 +138,13 @@ class _ComponentMutasiStokState extends State<ComponentMutasiStok> {
                     dataSource: data,
                     xValueMapper: (_ChartData sales, _) => sales.month,
                     yValueMapper: (_ChartData sales, _) => sales.sales,
-                    markerSettings: MarkerSettings(isVisible: true),
+                    markerSettings: const MarkerSettings(isVisible: true),
                     name: 'Item',
                   ),
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.05,
               child: Row(
@@ -176,7 +176,7 @@ class _ComponentMutasiStokState extends State<ComponentMutasiStok> {
             ),
             Expanded(
               flex: 2,
-              child: (dataMutasi?.data.length == 0)
+              child: (dataMutasi!.data.isEmpty)
                   ? const Center(
                       child: Text('Belum Terdapat Data Mutasi'),
                     )
@@ -227,7 +227,9 @@ class CardBiru extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              offset: Offset(0, 2), color: Colors.grey.shade400, blurRadius: 1)
+              offset: const Offset(0, 2),
+              color: Colors.grey.shade400,
+              blurRadius: 1)
         ],
       ),
       child: Column(
@@ -282,7 +284,7 @@ class CardBiru extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(8),
                         ),
@@ -350,7 +352,9 @@ class CardOrange extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              offset: Offset(0, 2), color: Colors.grey.shade400, blurRadius: 1)
+              offset: const Offset(0, 2),
+              color: Colors.grey.shade400,
+              blurRadius: 1)
         ],
       ),
       child: Column(
@@ -405,7 +409,7 @@ class CardOrange extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(8),
                         ),
@@ -477,7 +481,9 @@ class CardKeluar extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              offset: Offset(0, 2), color: Colors.grey.shade400, blurRadius: 1)
+              offset: const Offset(0, 2),
+              color: Colors.grey.shade400,
+              blurRadius: 1)
         ],
       ),
       child: Column(
@@ -531,7 +537,7 @@ class CardKeluar extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(8),
                       ),
@@ -603,7 +609,9 @@ class CardMasuk extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              offset: Offset(0, 2), color: Colors.grey.shade400, blurRadius: 1)
+              offset: const Offset(0, 2),
+              color: Colors.grey.shade400,
+              blurRadius: 1)
         ],
       ),
       child: Column(
@@ -659,7 +667,7 @@ class CardMasuk extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(8),
                         ),

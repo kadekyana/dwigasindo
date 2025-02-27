@@ -95,7 +95,7 @@ class ControlHighPressure extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 2,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                               color: Colors.grey.shade300),
                         ],
                       ),
@@ -189,7 +189,7 @@ class _ControlMenuHighPressureState extends State<ControlMenuHighPressure> {
                             index != 1; // False jika "BB Lainnya" dipilih
                       });
                     },
-                    buttons: ['Tanki', "BB Lainnya"]),
+                    buttons: const ['Tanki', "BB Lainnya"]),
               ),
               SizedBox(
                 height: 10.h,
@@ -224,7 +224,7 @@ class _ControlMenuHighPressureState extends State<ControlMenuHighPressure> {
                     onSelected: (value, index, isSelected) {
                       print('DATA KLIK : $value - $index - $isSelected');
                     },
-                    buttons: ['Kartu Stok']),
+                    buttons: const ['Kartu Stok']),
               ),
               SizedBox(
                 height: 10.h,
@@ -353,7 +353,7 @@ class _ControlMenuHighPressureState extends State<ControlMenuHighPressure> {
                                               width: width * 0.18,
                                               height: height * 0.04,
                                               decoration: BoxDecoration(
-                                                color: Color(
+                                                color: const Color(
                                                     0xFF003366), // Warna biru (Vendor B)
                                                 borderRadius:
                                                     BorderRadius.circular(8),
@@ -551,7 +551,7 @@ class _ControlMenuHighPressureState extends State<ControlMenuHighPressure> {
                                   child: Row(
                                     children: [
                                       // Stack untuk Tanki
-                                      Container(
+                                      SizedBox(
                                         width: 80.w,
                                         height: 80.h,
                                         child: SvgPicture.asset(

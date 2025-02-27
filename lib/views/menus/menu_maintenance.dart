@@ -1,34 +1,29 @@
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/providers/provider_Order.dart';
-import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/views/menus/component_maintenance/component_list_maintenance.dart';
 import 'package:dwigasindo/views/menus/component_sales/component_data_crm.dart';
-import 'package:dwigasindo/views/menus/component_sales/component_data_master_customer.dart';
 import 'package:dwigasindo/views/menus/component_sales/component_data_sales_information.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MenuSales extends StatelessWidget {
-  const MenuSales({super.key});
+class MenuMaintenance extends StatelessWidget {
+  const MenuMaintenance({super.key});
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderSales>(context);
-    final providerPro = Provider.of<ProviderOrder>(context);
-    final providerItem = Provider.of<ProviderItem>(context);
     // List map untuk data
     final List<Map<String, dynamic>> items = [
-      {'title': 'Data Master Customer'},
-      {'title': 'Sales Information'},
-      {'title': 'CRM'},
+      {'title': 'List Maintenance'},
+      {'title': 'Item Penunjang'},
     ];
 
     return Scaffold(
       appBar: WidgetAppbar(
-        title: 'Markening & Sales',
+        title: 'Maintenance',
         colorBack: Colors.black,
         center: true,
         back: true,
@@ -61,25 +56,23 @@ class MenuSales extends StatelessWidget {
 
                 try {
                   await Future.wait([
-                    provider.getCMD(context),
-                    providerItem.getAllItem(context),
-                    provider.getSummarySales(context),
+                    provider.getListMaintenance(context, 1, 0),
+                    provider.getSummaryMaintenance(context),
                     provider.getUsersPic(context),
-                    providerPro.getMasterProduk(context),
                   ]);
 
                   // Navigate sesuai kondisi
                   Navigator.of(context).pop(); // Tutup Dialog Loading
-                  (item['title'] == "Data Master Customer")
+                  (item['title'] == "List Maintenance")
                       ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ComponentDataMasterCustomer(
-                              title: item['title'],
+                            builder: (context) => ComponentListMaintenance(
+                              title: 'List Maintenance',
                             ),
                           ),
                         )
-                      : (item['title'] == "Sales Information")
+                      : (item['title'] == "Item Penunjang")
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(

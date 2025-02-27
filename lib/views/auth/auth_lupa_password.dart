@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 
 class AuthLupaPassword extends StatelessWidget {
-  AuthLupaPassword({super.key});
+  const AuthLupaPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,13 @@ class AuthLupaPassword extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
           ),
         ),
         body: Container(
           width: double.maxFinite,
           height: double.maxFinite,
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Expanded(
@@ -62,7 +62,7 @@ class AuthLupaPassword extends StatelessWidget {
                                       style: subtitleTextBlack),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 50,
                               ),
                               SizedBox(
@@ -72,16 +72,16 @@ class AuthLupaPassword extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: double.maxFinite,
                                       height: 20,
-                                      child: Text('Email'),
+                                      child: const Text('Email'),
                                     ),
                                     Container(
                                       width: double.maxFinite,
                                       height: 60,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(

@@ -16,10 +16,8 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-import '../../../../model/modelTube.dart';
-
 class ComponentTabung extends StatefulWidget {
-  ComponentTabung({super.key});
+  const ComponentTabung({super.key});
 
   @override
   State<ComponentTabung> createState() => _ComponentTabungState();
@@ -135,7 +133,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                             selectedColor: PRIMARY_COLOR,
                             mainGroupAlignment: MainGroupAlignment.start,
                             crossGroupAlignment: CrossGroupAlignment.start),
-                        buttons: ["Tabung", "Cradle"],
+                        buttons: const ["Tabung", "Cradle"],
                         onSelected: (value, index, isSelected) {
                           if (index == 0) {
                             setState(() {
@@ -196,7 +194,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                             ),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                             width: double.maxFinite,
                                             height: 80,
                                             child: GroupButton(
@@ -212,7 +210,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                   borderRadius:
                                                       BorderRadius.circular(50),
                                                 ),
-                                                buttons: [
+                                                buttons: const [
                                                   'Terverifikasi',
                                                   'Belum Terverifikasi',
                                                   "Dihapus"
@@ -233,7 +231,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                   },
                                 ),
                                 // Tambahkan spacer di bagian bawah
-                                SliverToBoxAdapter(
+                                const SliverToBoxAdapter(
                                   child: SizedBox(
                                       height:
                                           50), // Sesuaikan height dengan kebutuhan
@@ -243,10 +241,10 @@ class _ComponentTabungState extends State<ComponentTabung> {
                           ],
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: 25,
                         height: 25,
-                        child: Icon(Icons.filter_list),
+                        child: const Icon(Icons.filter_list),
                       ),
                     ),
                   ],
@@ -358,7 +356,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                       final data = provider.tube
                           ?.data; // Fetch the latest data inside the Consumer
                       if (data == null || data.isEmpty) {
-                        return Center(child: Text('No data available'));
+                        return const Center(child: Text('No data available'));
                       } else {
                         print(data);
                       }
@@ -378,7 +376,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 1,
                                   color: Color(0xffE4E4E4),
@@ -396,9 +394,9 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         width: width * 0.3,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: PRIMARY_COLOR,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
@@ -421,7 +419,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                   flex: 3,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(
+                                      borderRadius: const BorderRadius.vertical(
                                           bottom: Radius.circular(8)),
                                       border: Border(
                                         top: BorderSide(
@@ -432,7 +430,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                       children: [
                                         Expanded(
                                           child: Padding(
-                                            padding: EdgeInsets.all(10),
+                                            padding: const EdgeInsets.all(10),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   border: Border.all(
@@ -456,7 +454,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -473,13 +472,14 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${item?.ownerShipType ?? "-"}',
+                                                              ': ${(item?.ownerShipType == 1) ? "Asset" : "Customer"}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),
@@ -496,7 +496,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -513,7 +514,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -536,7 +538,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -553,7 +556,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -576,7 +580,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -593,13 +598,14 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${item?.tubeGradeId}',
+                                                              ': ${item?.tubeGradeName}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),
@@ -616,7 +622,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -633,7 +640,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -656,7 +664,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 1,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -673,7 +682,8 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                       flex: 2,
                                                       child: Container(
                                                         padding:
-                                                            EdgeInsets.all(3),
+                                                            const EdgeInsets
+                                                                .all(3),
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
@@ -703,7 +713,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                     Expanded(
                                       flex: 1,
                                       child: Container(
-                                        padding: EdgeInsets.all(13),
+                                        padding: const EdgeInsets.all(13),
                                         child: FittedBox(
                                           fit: BoxFit.scaleDown,
                                           alignment: Alignment.centerLeft,
@@ -763,7 +773,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                 // Tambahkan pesan error jika perlu
                                               }
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.edit,
                                               size: 20,
                                               color: PRIMARY_COLOR,
@@ -775,11 +785,11 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return Container(
+                                                  return SizedBox(
                                                     width: width * 0.8,
                                                     height: height * 0.1,
                                                     child: AlertDialog(
-                                                      title: Text(
+                                                      title: const Text(
                                                           'Yakin ingin menghapus?'),
                                                       actions: <Widget>[
                                                         // Tombol Batal
@@ -828,7 +838,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                 },
                                               );
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.delete,
                                               size: 20,
                                               color: SECONDARY_COLOR,
@@ -855,16 +865,496 @@ class _ComponentTabungState extends State<ComponentTabung> {
                       final data = provider.cradle
                           ?.data; // Fetch the latest data inside the Consumer
                       if (data == null || data.isEmpty) {
-                        return Center(child: Text('No data available'));
+                        return const Center(child: Text('No data available'));
                       }
 
                       return ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (context, index) {
-                          return WidgetCardCradle(
-                            width: width,
-                            height: height,
-                            item: data[index],
+                          final item = data[index];
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: width * 0.05),
+                            width: double.maxFinite,
+                            height: height * 0.25,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 1,
+                                  color: Color(0xffE4E4E4),
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  height: 40,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(10),
+                                        width: width * 0.3,
+                                        decoration: const BoxDecoration(
+                                          color: PRIMARY_COLOR,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            bottomRight: Radius.circular(40),
+                                          ),
+                                        ),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            item.no ?? "-",
+                                            style: titleText,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.vertical(
+                                          bottom: Radius.circular(8)),
+                                      border: Border(
+                                        top: BorderSide(
+                                            color: Colors.grey.shade300),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: PRIMARY_COLOR),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Milik',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${(item.ownerShipType == 1) ? "Asset" : "Customer"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Sumber',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item.name ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Jenis Gas',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item.tubeGasName ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Grade',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item.tubeGradeName}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Type Gas',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item.tubeTypeName ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Lokasi',
+                                                            style:
+                                                                subtitleTextBoldBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(3),
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                              ': ${item.location ?? "-"}',
+                                                              style:
+                                                                  subtitleTextBoldBlack),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(13),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('12-08-2024 10:30:00',
+                                              style: subtitleTextNormal),
+                                        ),
+                                      ),
+                                    ),
+                                    // Expanded(
+                                    //   flex: 1,
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.end,
+                                    //     children: [
+                                    //       IconButton(
+                                    //         onPressed: () async {
+                                    //           // Tampilkan Dialog Loading
+                                    //           showDialog(
+                                    //             context: context,
+                                    //             barrierDismissible: false,
+                                    //             builder:
+                                    //                 (BuildContext context) {
+                                    //               return const Center(
+                                    //                 child:
+                                    //                     CircularProgressIndicator(),
+                                    //               );
+                                    //             },
+                                    //           );
+                                    //           _timer?.cancel();
+                                    //           final provider =
+                                    //               Provider.of<ProviderScan>(
+                                    //                   context,
+                                    //                   listen: false);
+
+                                    //           try {
+                                    //             await Future.wait([
+                                    //               provider.getDataCard(
+                                    //                   context, item.code!),
+                                    //             ]);
+
+                                    //             // Navigate sesuai kondisi
+                                    //             Navigator.of(context)
+                                    //                 .pop(); // Tutup Dialog Loading
+                                    //             Navigator.push(
+                                    //               context,
+                                    //               MaterialPageRoute(
+                                    //                 builder: (context) =>
+                                    //                     ComponentUpdateTabung(
+                                    //                   code: item.idStr!,
+                                    //                 ),
+                                    //               ),
+                                    //             );
+                                    //           } catch (e) {
+                                    //             Navigator.of(context)
+                                    //                 .pop(); // Tutup Dialog Loading
+                                    //             print('Error: $e');
+                                    //             // Tambahkan pesan error jika perlu
+                                    //           }
+                                    //         },
+                                    //         icon: const Icon(
+                                    //           Icons.edit,
+                                    //           size: 20,
+                                    //           color: PRIMARY_COLOR,
+                                    //         ),
+                                    //       ),
+                                    //       IconButton(
+                                    //         onPressed: () {
+                                    //           showDialog(
+                                    //             context: context,
+                                    //             builder:
+                                    //                 (BuildContext context) {
+                                    //               return SizedBox(
+                                    //                 width: width * 0.8,
+                                    //                 height: height * 0.1,
+                                    //                 child: AlertDialog(
+                                    //                   title: const Text(
+                                    //                       'Yakin ingin menghapus?'),
+                                    //                   actions: <Widget>[
+                                    //                     // Tombol Batal
+                                    //                     WidgetButtonCustom(
+                                    //                         FullWidth:
+                                    //                             width * 0.2,
+                                    //                         FullHeight:
+                                    //                             height * 0.05,
+                                    //                         title: "Kembali",
+                                    //                         bgColor:
+                                    //                             PRIMARY_COLOR,
+                                    //                         onpressed: () {
+                                    //                           Navigator.pop(
+                                    //                               context);
+                                    //                         },
+                                    //                         color:
+                                    //                             PRIMARY_COLOR),
+                                    //                     // Tombol Hapus
+                                    //                     WidgetButtonCustom(
+                                    //                         FullWidth:
+                                    //                             width * 0.2,
+                                    //                         FullHeight:
+                                    //                             height * 0.05,
+                                    //                         bgColor:
+                                    //                             SECONDARY_COLOR,
+                                    //                         title: "Hapus",
+                                    //                         onpressed:
+                                    //                             () async {
+                                    //                           Navigator.pop(
+                                    //                               context);
+                                    //                           print(
+                                    //                               item?.idStr);
+                                    //                           // print(
+                                    //                           //     "No BPTK : ${item!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
+                                    //                           await provider
+                                    //                               .deleteTube(
+                                    //                             context,
+                                    //                             item!.idStr!,
+                                    //                           );
+                                    //                         },
+                                    //                         color:
+                                    //                             SECONDARY_COLOR),
+                                    //                   ],
+                                    //                 ),
+                                    //               );
+                                    //             },
+                                    //           );
+                                    //         },
+                                    //         icon: const Icon(
+                                    //           Icons.delete,
+                                    //           size: 20,
+                                    //           color: SECONDARY_COLOR,
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                  ],
+                                )),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -880,7 +1370,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
 }
 
 class WidgetCardCradle extends StatelessWidget {
-  WidgetCardCradle({
+  const WidgetCardCradle({
     super.key,
     required this.width,
     required this.height,
@@ -901,7 +1391,7 @@ class WidgetCardCradle extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -918,9 +1408,9 @@ class WidgetCardCradle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -943,7 +1433,8 @@ class WidgetCardCradle extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),
@@ -952,7 +1443,7 @@ class WidgetCardCradle extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: PRIMARY_COLOR),
@@ -972,7 +1463,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -986,7 +1477,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -1005,7 +1496,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -1019,7 +1510,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -1038,7 +1529,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -1052,7 +1543,7 @@ class WidgetCardCradle extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       alignment: Alignment.centerLeft,
@@ -1111,7 +1602,7 @@ class WidgetCardCradle extends StatelessWidget {
                       // Tambahkan pesan error jika perlu
                     }
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.edit,
                     size: 20,
                     color: PRIMARY_COLOR,
@@ -1122,11 +1613,11 @@ class WidgetCardCradle extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return Container(
+                        return SizedBox(
                           width: width * 0.8,
                           height: height * 0.1,
                           child: AlertDialog(
-                            title: Text('Yakin ingin menghapus?'),
+                            title: const Text('Yakin ingin menghapus?'),
                             actions: <Widget>[
                               // Tombol Batal
                               WidgetButtonCustom(
@@ -1156,7 +1647,7 @@ class WidgetCardCradle extends StatelessWidget {
                       },
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete,
                     size: 20,
                     color: SECONDARY_COLOR,

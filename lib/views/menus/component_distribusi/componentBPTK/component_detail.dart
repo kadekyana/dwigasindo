@@ -74,10 +74,10 @@ class _ComponentDetailState extends State<ComponentDetail> {
         ),
         body: (provider.isLoadingVer == true)
             ? Center(
-                child: Container(
+                child: SizedBox(
                   width: 50,
                   height: 50,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
               )
             : Padding(
@@ -261,7 +261,8 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                     FullHeight: 30.h,
                                     title: 'Ubah',
                                     onpressed: () {},
-                                    bgColor: Color.fromARGB(255, 55, 72, 199),
+                                    bgColor:
+                                        const Color.fromARGB(255, 55, 72, 199),
                                     color: Colors.transparent),
                                 SizedBox(
                                   width: 10.w,
@@ -323,13 +324,13 @@ class WidgetCard extends StatelessWidget {
                 BoxShadow(
                   blurRadius: 5,
                   color: Colors.grey.shade300,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: double.maxFinite,
                   height: 40.h,
                   child: Row(
@@ -531,7 +532,7 @@ class WidgetCard extends StatelessWidget {
                                   "${(details?.createdAt != null) ? provider.formatDate(details!.createdAt.toString()) : "-"} | ${(details?.createdAt != null) ? provider.formatTime(details!.createdAt.toString()) : "-"}",
                                   style: subtitleTextNormal),
                             ),
-                            Container(
+                            SizedBox(
                               width: 80.w,
                               child: (details?.status == 9)
                                   ? const SizedBox.shrink()
@@ -620,10 +621,11 @@ class WidgetCard extends StatelessWidget {
                                                                       (BuildContext
                                                                           context) {
                                                                     return AlertDialog(
-                                                                      title: Text(
+                                                                      title: const Text(
                                                                           'Tabung sudah diverifikasi'),
-                                                                      content: Text(
-                                                                          'Yakin ingin menghapus?'),
+                                                                      content:
+                                                                          const Text(
+                                                                              'Yakin ingin menghapus?'),
                                                                       actions: <Widget>[
                                                                         // Tombol Batal
                                                                         WidgetButtonCustom(

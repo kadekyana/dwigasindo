@@ -28,7 +28,7 @@ class _ComponentMenuDetailSalesInformasiState
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int? _selectedCardIndex;
-  bool _showForm = false;
+  final bool _showForm = false;
   Set<int> expandedCards = {};
 
   final TextEditingController tare = TextEditingController();
@@ -68,7 +68,7 @@ class _ComponentMenuDetailSalesInformasiState
   }
 
   void _startStream(int status) {
-    Timer.periodic(Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (!_streamControllers[status]!.isClosed) {
         final data = await Provider.of<ProviderProduksi>(context, listen: false)
             .getTubeLoading(context, status);
@@ -166,7 +166,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Nama Sales',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child: Text("Jhon Doe",
                                           style: subtitleTextBlack),
@@ -182,7 +182,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('NIK',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child: Text("2200202021318",
                                           style: subtitleTextBlack),
@@ -198,7 +198,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Status Karyawan',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child: Text("Tetap",
                                           style: subtitleTextBlack),
@@ -214,7 +214,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Pencapaian Sales',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child: Text("Rp.100.000.000",
                                           style: subtitleTextBlack),
@@ -271,7 +271,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Jumlah Leads',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child:
                                           Text("5", style: subtitleTextBlack),
@@ -287,7 +287,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Jumlah Customer',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child:
                                           Text("18", style: subtitleTextBlack),
@@ -303,7 +303,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Jumlah Order',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child:
                                           Text("15", style: subtitleTextBlack),
@@ -319,7 +319,7 @@ class _ComponentMenuDetailSalesInformasiState
                                             alignment: Alignment.centerLeft,
                                             child: Text('Jumlah Closing',
                                                 style: subtitleTextBoldBlack))),
-                                    Text(':\t'),
+                                    const Text(':\t'),
                                     Expanded(
                                       child:
                                           Text("5", style: subtitleTextBlack),
@@ -418,7 +418,7 @@ class _ComponentMenuDetailSalesInformasiState
               padding: EdgeInsets.symmetric(horizontal: width * 0.05),
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // (data.tubeLoadingDetail?.length != 0)
                   //     ? Expanded(
                   //         child: ListView.builder(
@@ -467,7 +467,7 @@ class _ComponentMenuDetailSalesInformasiState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -570,7 +570,7 @@ class _ComponentMenuDetailSalesInformasiState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -580,7 +580,6 @@ class _ComponentMenuDetailSalesInformasiState
     required double width,
     required double height,
     required Map<String, dynamic> data,
-    bool isKondisi = false,
     bool showMaintenanceButton =
         true, // Default untuk menampilkan tombol Maintenance
     bool showIsiDataButton =
@@ -646,7 +645,7 @@ class _ComponentMenuDetailSalesInformasiState
                           color: Colors.transparent,
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -661,7 +660,7 @@ class _ComponentMenuDetailSalesInformasiState
                           color: Colors.transparent,
                         ),
                       )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),
@@ -761,7 +760,7 @@ class _ComponentMenuDetailSalesInformasiState
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Column(
                     children: [
-                      Divider(),
+                      const Divider(),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -807,7 +806,7 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Tabung Bawah',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -817,7 +816,7 @@ class _ComponentMenuDetailSalesInformasiState
                                     alignment: Alignment.centerLeft,
                                     child: Text('Safety Flug',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -825,14 +824,14 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Tekanan (17 - 19) bar',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child: Text('18', style: minisubtitleTextBlack),
                             ),
                             Expanded(
                                 child:
                                     Text('Pen', style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -846,7 +845,7 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Body Tabung',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -856,7 +855,7 @@ class _ComponentMenuDetailSalesInformasiState
                                     alignment: Alignment.centerLeft,
                                     child: Text('Isi Gas(Kg)',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   Text('10000', style: minisubtitleTextBlack),
@@ -864,7 +863,7 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Teflon',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -872,7 +871,7 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Kaki Tabung',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -886,7 +885,7 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child:
                                     Text('Krop', style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -896,7 +895,7 @@ class _ComponentMenuDetailSalesInformasiState
                                     alignment: Alignment.centerLeft,
                                     child: Text('Tutup Tabung',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -904,14 +903,14 @@ class _ComponentMenuDetailSalesInformasiState
                             Expanded(
                                 child: Text('Draft Valve',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
                             ),
                             Expanded(
                                 child: Text('', style: minisubtitleTextBlack)),
-                            Text(''),
+                            const Text(''),
                             Expanded(
                               child: Text(
                                 "",
@@ -931,7 +930,7 @@ class _ComponentMenuDetailSalesInformasiState
                                     style: minisubtitleTextNormal),
                               ),
                             ),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               flex: 2,
                               child: Align(
@@ -946,7 +945,7 @@ class _ComponentMenuDetailSalesInformasiState
                               child: Text('Dibuat pada',
                                   style: minisubtitleTextNormal),
                             )),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               flex: 2,
                               child: Align(
@@ -1173,14 +1172,14 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('EW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['EW'] ?? "-"}',
                               style: subtitleTextBlack),
                         ),
                         Expanded(
                             child: Text('Solven', style: subtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: Text('\t -', style: subtitleTextBlack),
                         ),
@@ -1219,7 +1218,7 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('FW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['FW'] ?? "-"}',
                               style: subtitleTextBlack),
@@ -1227,14 +1226,14 @@ class _ComponentMenuDetailSalesInformasiState
                         (fm == true)
                             ? Expanded(
                                 child: Text('FM', style: subtitleTextBlack))
-                            : Expanded(child: SizedBox.shrink()),
-                        (fm == true) ? Text(':') : const Text(''),
+                            : const Expanded(child: SizedBox.shrink()),
+                        (fm == true) ? const Text(':') : const Text(''),
                         (fm == true)
                             ? Expanded(
                                 child: Text('\t${data['FM'] ?? "-"}',
                                     style: subtitleTextBlack),
                               )
-                            : Expanded(child: SizedBox.shrink()),
+                            : const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1249,9 +1248,9 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('-', style: subtitleTextNormal))),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1299,14 +1298,14 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('EW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['EW'] ?? "-"}',
                               style: subtitleTextBlack),
                         ),
                         Expanded(
                             child: Text('Solven', style: subtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: Text('\t -', style: subtitleTextBlack),
                         ),
@@ -1345,7 +1344,7 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('FW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['FW'] ?? "-"}',
                               style: subtitleTextBlack),
@@ -1353,14 +1352,14 @@ class _ComponentMenuDetailSalesInformasiState
                         (fm == true)
                             ? Expanded(
                                 child: Text('FM', style: subtitleTextBlack))
-                            : Expanded(child: SizedBox.shrink()),
-                        (fm == true) ? Text(':') : const Text(''),
+                            : const Expanded(child: SizedBox.shrink()),
+                        (fm == true) ? const Text(':') : const Text(''),
                         (fm == true)
                             ? Expanded(
                                 child: Text('\t${data['FM'] ?? "-"}',
                                     style: subtitleTextBlack),
                               )
-                            : Expanded(child: SizedBox.shrink()),
+                            : const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1375,9 +1374,9 @@ class _ComponentMenuDetailSalesInformasiState
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('-', style: subtitleTextNormal))),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),

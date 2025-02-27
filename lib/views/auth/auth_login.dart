@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class AuthLogin extends StatelessWidget {
-  AuthLogin({super.key});
+  const AuthLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +22,16 @@ class AuthLogin extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: (auth.isLoading == true)
             ? Center(
-                child: Container(
+                child: SizedBox(
                   width: 50,
                   height: 50,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
               )
             : Container(
                 width: double.maxFinite,
                 height: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     Expanded(
@@ -66,7 +66,7 @@ class AuthLogin extends StatelessWidget {
                                         style: titleTextBlack),
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 SizedBox(
                                   width: double.maxFinite,
                                   height: 90,
@@ -74,7 +74,7 @@ class AuthLogin extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: double.maxFinite,
                                         height: 20,
                                         child: Text(
@@ -85,7 +85,7 @@ class AuthLogin extends StatelessWidget {
                                       Container(
                                         width: double.maxFinite,
                                         height: 60,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -116,7 +116,7 @@ class AuthLogin extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: double.maxFinite,
                                         height: 20,
                                         child: Text(
@@ -130,7 +130,7 @@ class AuthLogin extends StatelessWidget {
                                           return Container(
                                             width: double.maxFinite,
                                             height: 60,
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -150,9 +150,10 @@ class AuthLogin extends StatelessWidget {
                                                     auth.toggleVisible();
                                                   },
                                                   icon: auth.visible.value
-                                                      ? Icon(
+                                                      ? const Icon(
                                                           Icons.visibility_off)
-                                                      : Icon(Icons.visibility),
+                                                      : const Icon(
+                                                          Icons.visibility),
                                                 ),
                                                 obscure: !auth.visible.value,
                                               ),
@@ -163,7 +164,7 @@ class AuthLogin extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Container(
+                                SizedBox(
                                   width: double.maxFinite,
                                   height: 50,
                                   child: Align(

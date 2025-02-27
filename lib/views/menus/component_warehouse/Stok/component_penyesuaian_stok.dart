@@ -73,7 +73,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
           height: height,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -93,11 +93,11 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Penambahan', "Pengurangan"]),
+                        buttons: const ['Penambahan', "Pengurangan"]),
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -119,7 +119,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -150,7 +150,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -172,7 +172,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: 200.h,
                 child: ListTile(
@@ -288,7 +288,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

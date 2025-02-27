@@ -75,7 +75,7 @@ class _ReusableZPLPrinterState extends State<ReusableZPLPrinter> {
     return '''
 ^XA
 
-^CF0,25^FO340,68^FD${namaProduk}^FS
+^CF0,25^FO340,68^FD$namaProduk^FS
 ^CFB,15^FO340,93^FDIndustrial Grade 2^FS
 
 ^AN,15^FO340,107^FDNo telp^FS
@@ -92,12 +92,12 @@ class _ReusableZPLPrinterState extends State<ReusableZPLPrinter> {
 
 ^FO225,5
 ^BQN,2,5
-^FD5xx${qrCode}^FS
+^FD5xx$qrCode^FS
 
 ^CF0,18
 ^FB130,1,0,C
 ^FO215,123
-^FD${serialNumber}^FS
+^FD$serialNumber^FS
 
 ^CF0N,10
 ^FB130,1,0,C
@@ -106,7 +106,7 @@ class _ReusableZPLPrinterState extends State<ReusableZPLPrinter> {
 
 ^FO340,15
 ^BY2
-^BCN,50,N,N,N,A^FD${barcode}^FS
+^BCN,50,N,N,N,A^FD$barcode^FS
 
 ^XZ
   ''';

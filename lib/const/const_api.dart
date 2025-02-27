@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:retry/retry.dart';
 
 const baseUrl = "https://api.gas.devku.xyz/api/v1";
@@ -16,6 +18,12 @@ class DioServiceAPI {
     int timeoutSeconds = 3,
   }) async {
     try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       return await retry(
         () async {
           // Set headers dengan Bearer Token
@@ -48,6 +56,12 @@ class DioServiceAPI {
     int timeoutSeconds = 10,
   }) async {
     try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       return await retry(
         () async {
           _dio.options.headers['Authorization'] = 'Bearer $token';
@@ -83,6 +97,12 @@ class DioServiceAPI {
     int timeoutSeconds = 1,
   }) async {
     try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       return await retry(
         () async {
           _dio.options.headers['Authorization'] = 'Bearer $token';
@@ -111,6 +131,12 @@ class DioServiceAPI {
     int timeoutSeconds = 3,
   }) async {
     try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       return await retry(
         () async {
           _dio.options.headers['Authorization'] = 'Bearer $token';
@@ -138,6 +164,12 @@ class DioServiceAPI {
     int timeoutSeconds = 3,
   }) async {
     try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       return await retry(
         () async {
           _dio.options.headers['Authorization'] = 'Bearer $token';

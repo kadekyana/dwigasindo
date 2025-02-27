@@ -41,16 +41,16 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -105,7 +105,7 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -138,7 +138,7 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -174,7 +174,7 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
                   ),
                 ),
               if (cek == true)
-                Container(
+                SizedBox(
                   width: width,
                   height: 60.h,
                   child: Row(
@@ -218,7 +218,7 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
                   ),
                 ),
               if (cek == true)
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -254,7 +254,7 @@ class _IsiPemakaianHopperState extends State<IsiPemakaianHopper> {
                   ),
                 ),
               if (cek == true)
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -381,16 +381,16 @@ class _IsiWaktuDrainState extends State<IsiWaktuDrain> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -445,7 +445,7 @@ class _IsiWaktuDrainState extends State<IsiWaktuDrain> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(

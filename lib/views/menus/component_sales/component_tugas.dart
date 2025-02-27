@@ -90,7 +90,7 @@ class _ComponentDataMasterCustomerState extends State<ComponentTugas> {
               ),
             ),
             (data == null)
-                ? Expanded(
+                ? const Expanded(
                     child: Center(
                       child: Text("Belum Terdapat Data"),
                     ),
@@ -117,7 +117,7 @@ class _ComponentDataMasterCustomerState extends State<ComponentTugas> {
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: height * 0.05,
                                 child: Row(
@@ -405,7 +405,7 @@ class _ComponentDataMasterCustomerState extends State<ComponentTugas> {
                                         FullHeight: 30.h,
                                         title: "Lihat Tugas",
                                         onpressed: () async {
-                                          if (!mounted)
+                                          if (!mounted) {
                                             return
                                                 // Tampilkan Dialog Loading
                                                 showDialog(
@@ -418,6 +418,7 @@ class _ComponentDataMasterCustomerState extends State<ComponentTugas> {
                                                 );
                                               },
                                             );
+                                          }
 
                                           try {
                                             await Future.wait([
@@ -688,8 +689,8 @@ class _ComponentDetailTugasState extends State<ComponentDetailTugas> {
                 ),
               ),
             ),
-            Divider(),
-            Container(
+            const Divider(),
+            SizedBox(
               width: width,
               height: height * 0.7,
               child: SingleChildScrollView(
@@ -718,7 +719,7 @@ class _ComponentDetailTugasState extends State<ComponentDetailTugas> {
                       duration: const Duration(milliseconds: 300),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Timeline.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           markerBuilder: (context, index) =>
                               _buildTimelineItem(data!.histories![index]),
                           context: context,
@@ -821,7 +822,7 @@ class _ComponentDetailTugasState extends State<ComponentDetailTugas> {
                                   longitude: item.long!,
                                 )));
                   },
-                  child: Text("TrackingPage")),
+                  child: const Text("TrackingPage")),
           ],
         ),
       ),
@@ -898,7 +899,7 @@ class _TambahTugasState extends State<TambahTugas> {
 
   // Ambil lokasi saat ini
 
-  final LocationSettings locationSettings = LocationSettings(
+  LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.high,
     distanceFilter: 100,
   );
@@ -924,10 +925,10 @@ class _TambahTugasState extends State<TambahTugas> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: ListTile(
-                title: Align(
+                title: const Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Pilih Tugas"),
                 ),
@@ -947,11 +948,16 @@ class _TambahTugasState extends State<TambahTugas> {
                         selectId = index;
                       });
                     },
-                    buttons: ['Check In', "Catatan", "Check Out", "Disposisi"]),
+                    buttons: const [
+                      'Check In',
+                      "Catatan",
+                      "Check Out",
+                      "Disposisi"
+                    ]),
               ),
             ),
             if (selectId == 0 || selectId == 2)
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: ListTile(
                   title: Text(
@@ -972,7 +978,7 @@ class _TambahTugasState extends State<TambahTugas> {
                 ),
               ),
             if (selectId == 0 || selectId == 2)
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: ListTile(
                   title: Text(
@@ -993,7 +999,7 @@ class _TambahTugasState extends State<TambahTugas> {
                 ),
               ),
             if (selectId == 1 || selectId == 3)
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 250.h,
                 child: ListTile(

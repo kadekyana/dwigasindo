@@ -13,7 +13,7 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 class ComponentSpb extends StatefulWidget {
-  ComponentSpb({super.key});
+  const ComponentSpb({super.key});
 
   @override
   State<ComponentSpb> createState() => _ComponentSpbState();
@@ -47,11 +47,11 @@ class _ComponentSpbState extends State<ComponentSpb> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ComponentTambahSpb(),
+                  builder: (context) => const ComponentTambahSpb(),
                 ),
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add_circle_outline_rounded,
               color: Colors.black,
             ),
@@ -61,7 +61,7 @@ class _ComponentSpbState extends State<ComponentSpb> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -122,7 +122,7 @@ class _ComponentSpbState extends State<ComponentSpb> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List SPB', 'History']),
+                  buttons: const ['List SPB', 'History']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -191,7 +191,7 @@ class _ComponentSpbState extends State<ComponentSpb> {
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu"}',
+                                    (data == true) ? "Approve" : "Menunggu",
                                     style: titleText,
                                   ),
                                 ),

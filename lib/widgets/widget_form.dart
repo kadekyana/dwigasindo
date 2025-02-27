@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: must_be_immutable
 class WidgetForm extends StatelessWidget {
   WidgetForm(
-      {Key? key,
+      {super.key,
       required this.alert,
       required this.hint,
       this.preicon,
@@ -22,8 +22,7 @@ class WidgetForm extends StatelessWidget {
       this.typeInput,
       this.initV,
       this.change,
-      this.enable = true})
-      : super(key: key);
+      this.enable = true});
 
   final String alert;
   final String hint;
@@ -86,7 +85,7 @@ class WidgetForm extends StatelessWidget {
         // If the field is disabled, change the hintText color
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey),
+          borderSide: const BorderSide(color: Colors.grey),
         ),
       ),
     );

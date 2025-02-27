@@ -8,7 +8,7 @@ class ProviderScan with ChangeNotifier {
   ModelCard? _card;
   ModelCard? get card => _card;
 
-  List<ModelCard> _scanResults = [];
+  final List<ModelCard> _scanResults = [];
 
   List<ModelCard> get scanResults => _scanResults;
 
@@ -48,16 +48,16 @@ class ProviderScan with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> verifikasiBPTK(BuildContext context, String no_bptk, int is_new,
+  Future<bool> verifikasiBPTK(BuildContext context, String noBptk, int isNew,
       String tube, String note) async {
     try {
       final auth = Provider.of<ProviderAuth>(context, listen: false);
       final token = auth.auth!.data.accessToken;
 
       final response = await DioServiceAPI().postRequest(
-        url: 'bptks_detail/$no_bptk',
+        url: 'bptks_detail/$noBptk',
         token: token,
-        data: {"is_new": is_new, "tube_no": tube, "note": note},
+        data: {"is_new": isNew, "tube_no": tube, "note": note},
       );
 
       if (response?.data['error'] != null) return false;
@@ -145,11 +145,11 @@ class ProviderScan with ChangeNotifier {
       false; // Flag untuk memastikan pesan hanya muncul sekali
 
   // List untuk menyimpan data yang di-scan berdasarkan kategori
-  List<String> _bptiScannedData = [];
-  List<String> _qrScannedData = [];
-  List<String> _blastScannedData = [];
-  List<String> _verfikasiScannedData = [];
-  List<String> _mencurigakanScannedData = [];
+  final List<String> _bptiScannedData = [];
+  final List<String> _qrScannedData = [];
+  final List<String> _blastScannedData = [];
+  final List<String> _verfikasiScannedData = [];
+  final List<String> _mencurigakanScannedData = [];
 
   String?
       _lastScannedCode; // Variable untuk menyimpan kode terakhir yang di-scan
@@ -304,7 +304,6 @@ class ProviderScan with ChangeNotifier {
     _isDuplicateMessageShown = false;
   }
 }
-
 
 // import 'package:flutter/material.dart';
 

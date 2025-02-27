@@ -52,7 +52,7 @@ class MenuOrder extends StatelessWidget {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
@@ -121,7 +121,7 @@ class MenuOrder extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                         blurRadius: 2,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                         color: Colors.grey.shade300),
                   ],
                 ),
@@ -167,7 +167,7 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int? _selectedCardIndex;
-  bool _showForm = false;
+  final bool _showForm = false;
   Set<int> expandedCards = {};
 
   final TextEditingController tare = TextEditingController();
@@ -373,7 +373,7 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
 }
 
 class ComponentMenuListPO extends StatefulWidget {
-  ComponentMenuListPO({
+  const ComponentMenuListPO({
     super.key,
   });
 
@@ -474,7 +474,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
                           height: 40.h,
                           child: Row(
@@ -734,7 +734,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
 }
 
 class ComponentMenuListRetail extends StatefulWidget {
-  ComponentMenuListRetail({
+  const ComponentMenuListRetail({
     super.key,
   });
 
@@ -748,6 +748,7 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
   bool non = false;
   GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
 
+  @override
   void initState() {
     super.initState();
     final provider = Provider.of<ProviderOrder>(context, listen: false);
@@ -836,7 +837,7 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
                           height: 40.h,
                           child: Row(
@@ -1002,7 +1003,8 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                            '${provider.formatCurrency(dataCard.totalTransaction as num)}',
+                                            provider.formatCurrency(dataCard
+                                                .totalTransaction as num),
                                             style: subtitleTextBlack),
                                       ),
                                     ],
@@ -1053,7 +1055,8 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                            '${provider.formatDate(dataCard.createdAt.toString())}',
+                                            provider.formatDate(
+                                                dataCard.createdAt.toString()),
                                             style: subtitleTextNormal),
                                       ),
                                     ],
@@ -1130,7 +1133,7 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
 }
 
 class ComponentTambahOrder extends StatefulWidget {
-  ComponentTambahOrder({
+  const ComponentTambahOrder({
     super.key,
   });
   @override
@@ -1245,7 +1248,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -1288,7 +1291,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -1308,12 +1311,12 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['PO', "Retail"]),
+                      buttons: const ['PO', "Retail"]),
                 ),
               ),
             ),
 
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -1333,7 +1336,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['PO', "Retail"]),
+                      buttons: const ['PO', "Retail"]),
                 ),
               ),
             ),
@@ -1357,7 +1360,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                   children: [
                     Text(
                         'PDF Uploaded: ${pdfPath != null ? path.basename(pdfPath!) : 'No file selected'}',
-                        style: TextStyle(color: Colors.red)),
+                        style: const TextStyle(color: Colors.red)),
                     SizedBox(height: 10.h),
                     WidgetButtonCustom(
                       title: 'Ganti File',
@@ -1376,7 +1379,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
             // Gas
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: formList.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -1398,7 +1401,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                             alignment: Alignment.bottomCenter,
                             child: IconButton(
                               onPressed: () => _removeForm(index),
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ),
                         ],
@@ -1421,13 +1424,13 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                   .toList();
 
                               return CustomAutocomplete(
-                                data: produk?.map((e) => e['name']).toList() ??
-                                    [],
+                                data:
+                                    produk.map((e) => e['name']).toList() ?? [],
                                 displayString: (item) => item.toString(),
                                 onSelected: (item) {
                                   print("Selected Item: $item");
 
-                                  final selected = produk?.firstWhere(
+                                  final selected = produk.firstWhere(
                                     (e) => e['name'] == item,
                                   );
 
@@ -1575,7 +1578,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
             SizedBox(
               height: 10.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Align(
@@ -1591,7 +1594,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: formListB.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -1613,7 +1616,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                             alignment: Alignment.bottomCenter,
                             child: IconButton(
                               onPressed: () => _removeFormB(index),
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ),
                         ],
@@ -1636,13 +1639,12 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                   .toList();
 
                               return CustomAutocomplete(
-                                data:
-                                    item?.map((e) => e['name']).toList() ?? [],
+                                data: item.map((e) => e['name']).toList() ?? [],
                                 displayString: (item) => item.toString(),
                                 onSelected: (value) {
                                   print("Selected Item: $item");
 
-                                  final selected = item?.firstWhere(
+                                  final selected = item.firstWhere(
                                     (e) => e['name'] == value,
                                   );
 
@@ -1786,7 +1788,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 );
               },
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Align(
@@ -1802,7 +1804,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: 250.h,
                 child: ListTile(
@@ -1922,7 +1924,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

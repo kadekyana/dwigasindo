@@ -4,7 +4,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 class NoteForm extends StatefulWidget {
   final quill.QuillController controller;
 
-  NoteForm({Key? key, required this.controller}) : super(key: key);
+  const NoteForm({super.key, required this.controller});
 
   @override
   _NoteFormState createState() => _NoteFormState();
@@ -16,7 +16,7 @@ class _NoteFormState extends State<NoteForm> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Container(
+    return SizedBox(
       width: width,
       height: height * 0.3,
       child: Column(
@@ -49,10 +49,10 @@ class _NoteFormState extends State<NoteForm> {
               showSubscript: false,
             ),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Container(
             height: height * 0.2,
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1.0),
               borderRadius: BorderRadius.circular(12),

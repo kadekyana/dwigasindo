@@ -90,7 +90,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.3,
                 child: Stack(
@@ -149,7 +149,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                               }
 
                               // Set cooldown selama 5 detik
-                              Future.delayed(Duration(seconds: 5), () {
+                              Future.delayed(const Duration(seconds: 5), () {
                                 setState(() {
                                   isCooldown = false; // Akhiri cooldown
                                   scanCount = 0; // Reset hitungan scan
@@ -164,7 +164,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                           // Jika tidak ada barcode yang terdeteksi
                           context.read<ProviderScan>().scanFailureCountF();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content:
                                     Text('Tidak ada barcode yang terdeteksi')),
                           );
@@ -199,10 +199,10 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                               provider.toggleFlash();
                             },
                             icon: (provider.isFlashOn)
-                                ? Icon(
+                                ? const Icon(
                                     Icons.flashlight_on_outlined,
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.flashlight_off_outlined,
                                   )),
                       ),
@@ -234,7 +234,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                         print(intGas);
 
                         return Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
                           width: double.maxFinite,
                           height: height * 0.25,
                           decoration: BoxDecoration(
@@ -258,7 +258,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       width: width * 0.3,
                                       decoration: const BoxDecoration(
                                         color: PRIMARY_COLOR,
@@ -283,7 +283,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                 flex: 3,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(
+                                    borderRadius: const BorderRadius.vertical(
                                         bottom: Radius.circular(8)),
                                     border: Border(
                                       top: BorderSide(
@@ -316,7 +316,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -331,7 +332,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -353,7 +355,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -368,7 +371,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -390,7 +394,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -405,7 +410,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -427,7 +433,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -442,7 +449,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -464,7 +472,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -479,7 +488,8 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
-                                                    padding: EdgeInsets.all(6),
+                                                    padding:
+                                                        const EdgeInsets.all(6),
                                                     child: FittedBox(
                                                       fit: BoxFit.scaleDown,
                                                       alignment:
@@ -507,7 +517,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                   Expanded(
                                     flex: 2,
                                     child: Container(
-                                      padding: EdgeInsets.all(13),
+                                      padding: const EdgeInsets.all(13),
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
                                         alignment: Alignment.centerLeft,
@@ -516,26 +526,26 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                       ),
                                     ),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     height: 50,
                                     width: 50,
                                     child: IconButton(
                                       onPressed: () {},
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.edit,
                                         size: 20,
                                         color: SECONDARY_COLOR,
                                       ),
                                     ),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     height: 50,
                                     width: 50,
                                     child: IconButton(
                                       onPressed: () {
                                         showModalBottomSheet(
                                           context: context,
-                                          shape: RoundedRectangleBorder(
+                                          shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.vertical(
                                                 top: Radius.circular(20)),
                                           ),
@@ -563,14 +573,14 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                                         style:
                                                             subtitleTextBlack),
                                                   ),
-                                                  SizedBox(height: 16),
+                                                  const SizedBox(height: 16),
                                                   // Bagian Tengah (Form)
                                                   WidgetForm(
                                                       controller: reason,
                                                       alert:
                                                           'Harus di isi jika ingin menghapus data',
                                                       hint: "Masukkan Alasan"),
-                                                  SizedBox(height: 16),
+                                                  const SizedBox(height: 16),
                                                   // Bagian Bawah (Button Kembali dan Hapus)
                                                   Row(
                                                     mainAxisAlignment:
@@ -622,7 +632,7 @@ class _ComponentScanBPTIState extends State<ComponentScanBPTI> {
                                           },
                                         );
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.delete,
                                         size: 20,
                                         color: SECONDARY_COLOR,

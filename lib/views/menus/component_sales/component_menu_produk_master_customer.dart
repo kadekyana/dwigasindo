@@ -47,7 +47,7 @@ class ComponentMenuSalesInformationDetail extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios_new)),
+                icon: const Icon(Icons.arrow_back_ios_new)),
             bottom: TabBar(
               isScrollable: true,
               labelColor: Colors.black,
@@ -93,7 +93,7 @@ class _ComponentMenuProdukMasterCustomerState
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -164,7 +164,7 @@ class _ComponentMenuProdukMasterCustomerState
               height: 12.h,
             ),
             (data?.length == 0)
-                ? Expanded(
+                ? const Expanded(
                     child: Center(
                       child: Text("Belum Terdapat Data"),
                     ),
@@ -192,7 +192,7 @@ class _ComponentMenuProdukMasterCustomerState
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 40.h,
                                 child: Stack(
@@ -211,9 +211,9 @@ class _ComponentMenuProdukMasterCustomerState
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
-                                        child: Text(dataC?.name ?? "No Name",
+                                        child: Text(dataC.name ?? "No Name",
                                             style: titleText),
                                       ),
                                     ),
@@ -226,7 +226,7 @@ class _ComponentMenuProdukMasterCustomerState
                                           alignment: Alignment.centerRight,
                                           fit: BoxFit.scaleDown,
                                           child: Text(
-                                            "Dibuat Oleh : ${dataC?.createdBy ?? "Unknown"}",
+                                            "Dibuat Oleh : ${dataC.createdBy ?? "Unknown"}",
                                             style: minisubtitleTextGrey,
                                           ),
                                         ),
@@ -281,7 +281,7 @@ class _ComponentMenuProdukMasterCustomerState
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                      '\t${(dataC?.isGrade == true) ? providerDis.getGrade(dataC!.gradeId ?? 0) : "-"}',
+                                                      '\t${(dataC.isGrade == true) ? providerDis.getGrade(dataC.gradeId ?? 0) : "-"}',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style:
@@ -305,11 +305,11 @@ class _ComponentMenuProdukMasterCustomerState
                                                               subtitleTextNormalblack),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                      '\t${dataC?.note ?? "-"}',
+                                                      '\t${dataC.note ?? "-"}',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style:
@@ -333,7 +333,7 @@ class _ComponentMenuProdukMasterCustomerState
                                                               subtitleTextNormalblack),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
@@ -367,7 +367,7 @@ class _ComponentMenuProdukMasterCustomerState
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                      '\t${provider.formatDate(dataC?.createdAt?.toString() ?? "")} | ${provider.formatTime(dataC?.createdAt?.toString() ?? "")}',
+                                                      '\t${provider.formatDate(dataC.createdAt?.toString() ?? "")} | ${provider.formatTime(dataC.createdAt?.toString() ?? "")}',
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style:
@@ -451,7 +451,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -478,7 +478,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
                           }
                         });
                       },
-                      buttons: ['Gas', "Jasa", "Item"]),
+                      buttons: const ['Gas', "Jasa", "Item"]),
                 ),
               ),
             ),
@@ -645,7 +645,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuSplashScreen extends StatefulWidget {
-  MenuSplashScreen({super.key});
+  const MenuSplashScreen({super.key});
 
   @override
   State<MenuSplashScreen> createState() => _MenuSplashScreenState();
@@ -27,7 +27,8 @@ class _MenuSplashScreenState extends State<MenuSplashScreen> {
     final username = preferences.getString('username');
     final password = preferences.getString('password');
 
-    await Future.delayed(Duration(seconds: 2)); // Delay agar logo bisa terlihat
+    await Future.delayed(
+        const Duration(seconds: 2)); // Delay agar logo bisa terlihat
 
     if (mounted) {
       if (username != null && password != null) {

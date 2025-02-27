@@ -104,16 +104,16 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera, isLevelStart, isStartImage);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery, isLevelStart, isStartImage);
@@ -150,7 +150,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
         child: Column(
           children: [
             // Pilih Jenis Pengisian
-            Container(
+            SizedBox(
               width: width,
               child: ListTile(
                 title: Text(
@@ -164,7 +164,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
                     selectedColor: PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  buttons: ["Filling", "Refilling"],
+                  buttons: const ["Filling", "Refilling"],
                 ),
               ),
             ),
@@ -212,7 +212,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
               ),
             ),
             // Isi Level Awal
-            Container(
+            SizedBox(
               width: width,
               child: ListTile(
                 title: Text('Isi Level Awal', style: subtitleTextBlack),
@@ -270,7 +270,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
               ),
             ),
             // Isi Tekanan Awal
-            Container(
+            SizedBox(
               width: width,
               child: ListTile(
                 title: Text('Isi Tekanan Awal', style: subtitleTextBlack),
@@ -297,7 +297,8 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
                   onpressed: () async {
                     if (photoLevelStart == null || photoPressureStart == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Harap pilih semua gambar')),
+                        const SnackBar(
+                            content: Text('Harap pilih semua gambar')),
                       );
                       return;
                     }
@@ -305,7 +306,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
                     if (levelAwalController!.text.isEmpty ||
                         tekananAwalController!.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Harap isi semua field')),
+                        const SnackBar(content: Text('Harap isi semua field')),
                       );
                       return;
                     }
@@ -325,7 +326,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Center(
@@ -379,7 +380,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
               ),
             ),
             // Isi Level Akhir
-            Container(
+            SizedBox(
               width: width,
               child: ListTile(
                 title: Text('Isi Level Akhir', style: subtitleTextBlack),
@@ -437,7 +438,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
               ),
             ),
             // Isi Tekanan Akhir
-            Container(
+            SizedBox(
               width: width,
               child: ListTile(
                 title: Text('Isi Tekanan Akhir', style: subtitleTextBlack),
@@ -464,7 +465,7 @@ class _ComponentIsiDataState extends State<ComponentIsiData> {
                   onpressed: () async {
                     if (photoLevelEnd == null || photoPressureEnd == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                             content: Text(
                                 'Harap pilih gambar level dan tekanan akhir')),
                       );

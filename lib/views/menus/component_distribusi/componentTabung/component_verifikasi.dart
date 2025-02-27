@@ -73,10 +73,10 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
         ),
         body: (provider.isLoadingVer == true)
             ? Center(
-                child: Container(
+                child: SizedBox(
                   width: 50,
                   height: 50,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
               )
             : SafeArea(
@@ -208,7 +208,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                             SizedBox(
                               height: height * 0.02,
                             ),
-                            WidgetProgressBar(),
+                            const WidgetProgressBar(),
                             const Spacer(),
                           ],
                         ),
@@ -216,7 +216,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Container(
+                      SizedBox(
                         width: double.maxFinite,
                         height: height * 0.05,
                         child: Row(
@@ -249,7 +249,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                           Text('Filter', style: titleTextBlack),
                                           TextButton(
                                             onPressed: () {},
-                                            child: Text(
+                                            child: const Text(
                                               'Reset',
                                               style: TextStyle(
                                                   color: COMPLEMENTARY_COLOR3,
@@ -284,7 +284,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                                     ),
                                                   ),
                                                 ),
-                                                Container(
+                                                SizedBox(
                                                     width: double.maxFinite,
                                                     height: 80,
                                                     child: GroupButton(
@@ -303,7 +303,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                                               BorderRadius
                                                                   .circular(50),
                                                         ),
-                                                        buttons: [
+                                                        buttons: const [
                                                           'Terverifikasi',
                                                           'Belum Terverifikasi',
                                                           "Dihapus"
@@ -324,7 +324,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                           },
                                         ),
                                         // Tambahkan spacer di bagian bawah
-                                        SliverToBoxAdapter(
+                                        const SliverToBoxAdapter(
                                           child: SizedBox(
                                               height:
                                                   50), // Sesuaikan height dengan kebutuhan
@@ -334,10 +334,10 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                                   ],
                                 );
                               },
-                              child: Container(
+                              child: SizedBox(
                                 width: 25,
                                 height: 25,
-                                child: Icon(Icons.filter_list),
+                                child: const Icon(Icons.filter_list),
                               ),
                             ),
                           ],
@@ -356,7 +356,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
                       ),
                       (providerS.isNew == true)
                           ? WidgetCardNewTube(height: height, width: width)
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                       Expanded(
                         child: CardVerifikasi(
                           provider: provider,
@@ -377,7 +377,7 @@ class _ComponentVerifikasiState extends State<ComponentVerifikasi> {
 // widget verifikasi
 
 class CardVerifikasi extends StatefulWidget {
-  CardVerifikasi({
+  const CardVerifikasi({
     super.key,
     required this.provider,
     required this.height,
@@ -414,7 +414,7 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
       itemBuilder: (context, index) {
         // title: Text(providerScan.scannedData[index]),
         final data = widget.provider.verifikasiBptk?.data?.details?[index];
-        if (data == null) return SizedBox.shrink();
+        if (data == null) return const SizedBox.shrink();
         // Container hasil scan
         return Container(
           margin: EdgeInsets.symmetric(vertical: 5.h),
@@ -427,7 +427,7 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
               BoxShadow(
                 blurRadius: 5,
                 color: Colors.grey.shade300,
-                offset: Offset(0, 2),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -448,7 +448,7 @@ class _CardVerifikasiState extends State<CardVerifikasi> {
                             : (data.status == 1)
                                 ? COMPLEMENTARY_COLOR2
                                 : SECONDARY_COLOR,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           bottomRight: Radius.circular(20),
                         ),

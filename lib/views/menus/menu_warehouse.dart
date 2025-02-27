@@ -31,7 +31,7 @@ class MenuWarehouse extends StatelessWidget {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             Container(
@@ -111,17 +111,17 @@ class MenuWarehouse extends StatelessWidget {
               dataList: null,
               onTap: ComponentItemStok(),
             ),
-            WidgetButtonDistribusi(
+            const WidgetButtonDistribusi(
               title: 'Stok Opname',
               dataList: null,
               onTap: ComponentStokOpname(),
             ),
-            WidgetButtonDistribusi(
+            const WidgetButtonDistribusi(
               title: 'Penerimaan Barang',
               dataList: null,
               onTap: ComponentPenerimaanBarang(),
             ),
-            WidgetButtonDistribusi(
+            const WidgetButtonDistribusi(
               title: 'Permintaan Barang',
               dataList: null,
               onTap: ComponentPermintaanBarang(),

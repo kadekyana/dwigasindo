@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/main.dart';
 import 'package:dwigasindo/model/modelAuth.dart';
@@ -36,7 +39,7 @@ class ProviderAuth extends ChangeNotifier {
       Navigator.pushReplacement(
         navigatorKey.currentContext!,
         MaterialPageRoute(
-          builder: (context) => MenuDashboard(),
+          builder: (context) => const MenuDashboard(),
         ),
       );
     } else {
@@ -56,6 +59,12 @@ class ProviderAuth extends ChangeNotifier {
   Future<bool> loginService(
       String user, String pass, BuildContext context) async {
     try {
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
       final response = await dio.post(
         "$baseUrl/login",
         data: {"username": user, "password": pass},
@@ -84,7 +93,7 @@ class ProviderAuth extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       return true;
-    } on DioException catch (e) {
+    } on DioException {
       showTopSnackBar(
         // ignore: use_build_context_synchronously
         Overlay.of(context),

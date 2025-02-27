@@ -10,14 +10,14 @@ class CustomAutocomplete<T> extends StatefulWidget {
   final TextEditingController? controller;
 
   const CustomAutocomplete({
-    Key? key,
+    super.key,
     required this.data,
     required this.displayString,
     required this.onSelected,
     required this.labelText,
     this.controller,
     this.decoration,
-  }) : super(key: key);
+  });
 
   @override
   _CustomAutocompleteState<T> createState() => _CustomAutocompleteState<T>();

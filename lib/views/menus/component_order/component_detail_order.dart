@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 
 class ComponentDetailOrder extends StatefulWidget {
-  ComponentDetailOrder({
+  const ComponentDetailOrder({
     super.key,
   });
 

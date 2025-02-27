@@ -43,7 +43,7 @@ class _ComponentMulaiSoState extends State<ComponentMulaiSo> {
           Navigator.pop(context);
         },
       ),
-      body: Container(
+      body: SizedBox(
         width: width,
         height: height,
         child: Column(

@@ -5,10 +5,10 @@ class FooterCard extends StatelessWidget {
   final VoidCallback onViewItems;
 
   const FooterCard({
-    Key? key,
+    super.key,
     required this.createdBy,
     required this.onViewItems,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,12 @@ class FooterCard extends StatelessWidget {
       children: [
         Text(
           'Created by $createdBy',
-          style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+          style:
+              const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
         ),
         ElevatedButton(
           onPressed: onViewItems,
-          child: Text('Lihat Barang'),
+          child: const Text('Lihat Barang'),
         ),
       ],
     );

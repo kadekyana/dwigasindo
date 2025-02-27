@@ -69,7 +69,7 @@ class _ComponentBuatVerifikasiSuratJalanState
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.3,
                 child: Stack(
@@ -111,7 +111,7 @@ class _ComponentBuatVerifikasiSuratJalanState
                             // Jika tidak ada code yang terbaca
                             context.read<ProviderScan>().scanFailureCountF();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                   content: Text(
                                       'Gagal membaca barcode atau QR code')),
                             );
@@ -120,7 +120,7 @@ class _ComponentBuatVerifikasiSuratJalanState
                           // Jika tidak ada barcode yang terdeteksi
                           context.read<ProviderScan>().scanFailureCountF();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content:
                                     Text('Tidak ada barcode yang terdeteksi')),
                           );
@@ -155,10 +155,10 @@ class _ComponentBuatVerifikasiSuratJalanState
                               providerScan.toggleFlash();
                             },
                             icon: (providerScan.isFlashOn)
-                                ? Icon(
+                                ? const Icon(
                                     Icons.flashlight_on_outlined,
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.flashlight_off_outlined,
                                   )),
                       ),
@@ -169,7 +169,7 @@ class _ComponentBuatVerifikasiSuratJalanState
               SizedBox(
                 height: height * 0.01,
               ),
-              Container(
+              SizedBox(
                 height: 26,
                 width: width,
                 child: FittedBox(
@@ -211,7 +211,7 @@ class _ComponentBuatVerifikasiSuratJalanState
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ComponentVerifikasiSuratJalan(),
+                  builder: (context) => const ComponentVerifikasiSuratJalan(),
                 ),
               );
             },
@@ -239,7 +239,7 @@ class CardVerifikasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: double.maxFinite,
       height: height * 0.125,
       decoration: BoxDecoration(
@@ -249,7 +249,7 @@ class CardVerifikasi extends StatelessWidget {
           BoxShadow(
             blurRadius: 5,
             color: Colors.grey.shade300,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -262,9 +262,9 @@ class CardVerifikasi extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -281,7 +281,7 @@ class CardVerifikasi extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.35,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
@@ -299,7 +299,8 @@ class CardVerifikasi extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),

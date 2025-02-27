@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ComponentProyeksiProfitUI extends StatefulWidget {
-  ComponentProyeksiProfitUI({
+  const ComponentProyeksiProfitUI({
     super.key,
     required this.id,
   });
@@ -57,7 +57,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                           index != 1; // False jika "BB Lainnya" dipilih
                     });
                   },
-                  buttons: ['Proyeksi', "Alokasi"]),
+                  buttons: const ['Proyeksi', "Alokasi"]),
             ),
             SizedBox(
               height: 10.h,
@@ -87,7 +87,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                           height: 10.h,
                         ),
                         (data == null)
-                            ? Expanded(
+                            ? const Expanded(
                                 child: Center(
                                   child: Text('Belum Terdapat Data'),
                                 ),
@@ -116,7 +116,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                       ),
                                       child: Column(
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             width: double.maxFinite,
                                             height: 40.h,
                                             child: Stack(
@@ -141,11 +141,11 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                       ),
                                                     ),
                                                     alignment: Alignment.center,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10),
                                                     child: Text(
-                                                        dataCard?.productName ??
+                                                        dataCard.productName ??
                                                             "No Name",
                                                         style: titleText),
                                                   ),
@@ -207,7 +207,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
-                                                                  '\t${dataCard?.productName}',
+                                                                  '\t${dataCard.productName}',
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -243,7 +243,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
-                                                                  '\t${dataCard?.createdBy}',
+                                                                  '\t${dataCard.createdBy}',
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -272,11 +272,11 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                                           subtitleTextNormalblack),
                                                                 ),
                                                               ),
-                                                              Text(':'),
+                                                              const Text(':'),
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
-                                                                  '\t${provider.formatDate(dataCard!.createdAt.toString())} | ${provider.formatTime(dataCard.createdAt.toString())}',
+                                                                  '\t${provider.formatDate(dataCard.createdAt.toString())} | ${provider.formatTime(dataCard.createdAt.toString())}',
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -343,7 +343,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 40.h,
                                 child: Stack(
@@ -362,7 +362,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Text(
                                             dataC.productName ?? "No Name",
@@ -466,7 +466,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                               subtitleTextNormalblack),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
@@ -495,7 +495,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                               subtitleTextNormalblack),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
@@ -523,7 +523,7 @@ class _ComponentProyeksiProfitUIState extends State<ComponentProyeksiProfitUI> {
                                                               subtitleTextNormalblack),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(

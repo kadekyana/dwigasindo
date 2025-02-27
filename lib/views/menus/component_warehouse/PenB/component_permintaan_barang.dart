@@ -42,7 +42,7 @@ class _ComponentPermintaanBarangState extends State<ComponentPermintaanBarang> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ComponentTambahPermintaanBarang(),
+                  builder: (context) => const ComponentTambahPermintaanBarang(),
                 ),
               );
             },
@@ -116,7 +116,7 @@ class _ComponentPermintaanBarangState extends State<ComponentPermintaanBarang> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List SO', 'History']),
+                  buttons: const ['List SO', 'History']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -169,7 +169,7 @@ class widgetCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: double.maxFinite,
             height: height * 0.05,
             child: Row(
@@ -417,7 +417,7 @@ class widgetCard extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                ComponentDetailPermintaanBarang(),
+                                const ComponentDetailPermintaanBarang(),
                           ),
                         );
                       },

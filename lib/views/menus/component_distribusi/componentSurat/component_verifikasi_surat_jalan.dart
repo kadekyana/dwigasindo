@@ -52,7 +52,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ComponentBuatVerifikasiSuratJalan(),
+                              const ComponentBuatVerifikasiSuratJalan(),
                         ),
                       );
                     },
@@ -72,9 +72,9 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: height * 0.02),
                         decoration: BoxDecoration(
                           color: (data['warna'] == 'sedang')
-                              ? Color(0xffF2B862)
+                              ? const Color(0xffF2B862)
                               : (data['warna'] == 'selesai')
-                                  ? Color(0xff60D57D)
+                                  ? const Color(0xff60D57D)
                                   : Colors.black,
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: const [
@@ -87,7 +87,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: double.maxFinite,
                               height: 40,
                               child: Row(
@@ -95,13 +95,13 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     width: width * 0.4,
                                     decoration: BoxDecoration(
                                       color: (data['warna'] == 'kendala')
                                           ? Colors.white
                                           : PRIMARY_COLOR,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(8),
                                         bottomRight: Radius.circular(40),
                                       ),
@@ -122,7 +122,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     width: width * 0.35,
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
@@ -158,7 +158,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: const EdgeInsets.all(3),
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.bottomLeft,
@@ -187,7 +187,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: const EdgeInsets.all(3),
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
@@ -204,7 +204,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                           Expanded(
                                             flex: 2,
                                             child: Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: const EdgeInsets.all(3),
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
@@ -229,7 +229,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: const EdgeInsets.all(3),
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
@@ -246,7 +246,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                           Expanded(
                                             flex: 2,
                                             child: Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: const EdgeInsets.all(3),
                                               child: FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.centerLeft,
@@ -268,7 +268,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -282,7 +282,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ComponentScanDetailVerifikasiSuratJalan(),
+                                              const ComponentScanDetailVerifikasiSuratJalan(),
                                         ),
                                       );
                                     },
@@ -304,7 +304,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ComponentScanMencurigakanVerifikasiSuratJalan(),
+                                                  const ComponentScanMencurigakanVerifikasiSuratJalan(),
                                             ),
                                           );
                                         } else {
@@ -312,7 +312,7 @@ class ComponentVerifikasiSuratJalan extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ComponentScanVerifikasiSuratJalan(),
+                                                  const ComponentScanVerifikasiSuratJalan(),
                                             ),
                                           );
                                         }

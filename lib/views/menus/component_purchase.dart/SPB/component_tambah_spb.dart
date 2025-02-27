@@ -85,7 +85,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -114,7 +114,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -134,18 +134,18 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Barang', "Jasa"]),
+                        buttons: const ['Barang', "Jasa"]),
                   ),
                 ),
               ),
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: formList.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: width,
                         height: height * 0.1,
                         child: Row(
@@ -245,7 +245,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Container(
+                      SizedBox(
                         width: width,
                         height: height * 0.06,
                         child: Align(
@@ -265,7 +265,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
                   );
                 },
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.06,
                 child: Align(
@@ -286,7 +286,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Container(
+                child: SizedBox(
                   width: width,
                   height: 250.h,
                   child: ListTile(
@@ -375,7 +375,7 @@ class _ComponentTambahSpbState extends State<ComponentTambahSpb> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

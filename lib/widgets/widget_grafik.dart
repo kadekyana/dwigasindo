@@ -8,7 +8,8 @@ class WidgetGrafik extends StatelessWidget {
   final double height; // Tinggi dari container
 
   // Constructor untuk widget
-  WidgetGrafik({
+  const WidgetGrafik({
+    super.key,
     required this.percentage,
     required this.text,
     required this.width,
@@ -41,7 +42,7 @@ class WidgetGrafik extends StatelessWidget {
         // Teks di atas kedua layer
         Positioned.fill(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,

@@ -44,7 +44,7 @@ class TrackingPage extends StatelessWidget {
                 width: 50.0,
                 height: 50.0,
                 point: LatLng(latitude, longitude),
-                child: Icon(
+                child: const Icon(
                   Icons.location_pin,
                   color: Colors.red,
                   size: 40.0,

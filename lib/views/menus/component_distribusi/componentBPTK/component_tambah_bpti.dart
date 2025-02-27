@@ -9,7 +9,7 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 class ComponentBuatBPTI extends StatefulWidget {
-  ComponentBuatBPTI({super.key});
+  const ComponentBuatBPTI({super.key});
 
   @override
   State<ComponentBuatBPTI> createState() => _ComponentBuatBPTIState();
@@ -46,15 +46,15 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
       ),
       body: (provider.isLoadingVer == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : Column(
               children: [
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -86,18 +86,18 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
                               });
                             }
                           },
-                          buttons: ['Non BPTK', "BPTK"]),
+                          buttons: const ['Non BPTK', "BPTK"]),
                     ),
                   ),
                 ),
                 (check == false)
                     ? Container(
                         width: double.maxFinite,
-                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Consumer<ProviderDistribusi>(
                               builder: (context, provider, child) {
                                 final bptks = provider.bptk?.data
@@ -138,11 +138,11 @@ class _ComponentBuatBPTIState extends State<ComponentBuatBPTI> {
                     : (check == true)
                         ? Container(
                             width: double.maxFinite,
-                            margin: EdgeInsets.symmetric(horizontal: 15),
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 Consumer<ProviderDistribusi>(
                                   builder: (context, provider, child) {
                                     final tubecustomer = provider

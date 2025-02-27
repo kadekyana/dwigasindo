@@ -57,10 +57,10 @@ class _ComponentDataSalesInformationState
       ),
       body: (provider.isLoading == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : Container(
@@ -69,7 +69,7 @@ class _ComponentDataSalesInformationState
               padding: EdgeInsets.symmetric(horizontal: width * 0.05),
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: width,
                     height: 100.h,
                     child: Row(
@@ -182,7 +182,7 @@ class _ComponentDataSalesInformationState
                   SizedBox(
                     height: 10.h,
                   ),
-                  Container(
+                  SizedBox(
                     width: width,
                     height: 300.h,
                     child: SfCartesianChart(
@@ -218,7 +218,7 @@ class _ComponentDataSalesInformationState
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (!mounted)
+                      if (!mounted) {
                         return
                             // Tampilkan Dialog Loading
                             showDialog(
@@ -230,6 +230,7 @@ class _ComponentDataSalesInformationState
                             );
                           },
                         );
+                      }
 
                       try {
                         await Future.wait([
@@ -275,7 +276,7 @@ class _ComponentDataSalesInformationState
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 2,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                               color: Colors.grey.shade300),
                         ],
                       ),

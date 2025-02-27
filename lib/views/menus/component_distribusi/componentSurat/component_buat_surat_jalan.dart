@@ -42,10 +42,10 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Container(
+                SizedBox(
                   height: 25,
                   width: width,
-                  child: FittedBox(
+                  child: const FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.bottomLeft,
                     child: Text('Pilih BPTI'),
@@ -65,7 +65,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: height * 0.01),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               height: 30,
                               width: width,
                               child: FittedBox(
@@ -78,13 +78,13 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                               ),
                             ),
                             ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: items.length,
                               itemBuilder: (context, itemIndex) {
                                 final item = items[itemIndex];
                                 final itemId =
-                                    "${date}-${item['tipe']}"; // Unique ID untuk setiap item
+                                    "$date-${item['tipe']}"; // Unique ID untuk setiap item
 
                                 return SizedBox(
                                   height: height * 0.1,
@@ -360,7 +360,7 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                       ),
                       SliverToBoxAdapter(
                           child: Container(
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         child: WidgetButtonCustom(
                           FullWidth: width,
                           FullHeight: height * 0.05,

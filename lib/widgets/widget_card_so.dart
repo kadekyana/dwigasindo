@@ -25,8 +25,8 @@ class ListItemWidget extends StatelessWidget {
     required this.routeNav,
     this.hideTanggal = false,
     this.hideButton = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +224,7 @@ class ListItemWidget extends StatelessWidget {
               ? SizedBox(
                   width: 5.w,
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           Expanded(
             child: WidgetButtonCustom(
               FullWidth: width * 0.2,

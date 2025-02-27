@@ -48,7 +48,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               width: width,
               height: height,
               child: Column(
@@ -64,7 +64,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: width,
                           height: 26,
                           child: FittedBox(
@@ -79,7 +79,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                         Expanded(
                           child: Row(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
@@ -91,7 +91,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
@@ -109,7 +109,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                         Expanded(
                           child: Row(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
@@ -121,7 +121,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: 100,
                                 height: 16,
                                 child: FittedBox(
@@ -158,7 +158,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                     height: height * 0.01,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     width: double.maxFinite,
                     height: height * 0.2,
                     decoration: BoxDecoration(
@@ -168,7 +168,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                         BoxShadow(
                           blurRadius: 5,
                           color: Colors.grey.shade300,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -197,7 +197,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                           flex: 3,
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
+                              borderRadius: const BorderRadius.vertical(
                                   bottom: Radius.circular(8)),
                               border: Border(
                                 top: BorderSide(color: Colors.grey.shade300),
@@ -216,7 +216,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                         Container(
                                           width: width,
                                           height: height * 0.05,
-                                          padding: EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -224,7 +224,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.grey.shade200,
-                                                  offset: Offset(0, 2),
+                                                  offset: const Offset(0, 2),
                                                 )
                                               ]),
                                           child: Row(
@@ -240,7 +240,8 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(2.0),
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
                                                 child: FittedBox(
                                                   fit: BoxFit.scaleDown,
                                                   alignment:
@@ -260,7 +261,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                         Container(
                                           width: width,
                                           height: height * 0.05,
-                                          padding: EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -268,7 +269,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.grey.shade200,
-                                                  offset: Offset(0, 2),
+                                                  offset: const Offset(0, 2),
                                                 )
                                               ]),
                                           child: Row(
@@ -284,7 +285,8 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(2.0),
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
                                                 child: FittedBox(
                                                   fit: BoxFit.scaleDown,
                                                   alignment:
@@ -332,7 +334,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
                       builder: (context, providerScan, child) {
                         return ListView.builder(
                           itemCount: 2,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return CardVerifikasi(
                                 provider: providerScan,
@@ -350,7 +352,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: WidgetButtonCustom(
             FullWidth: width,
             FullHeight: height * 0.06,
@@ -366,7 +368,7 @@ class _ComponentScanDetailVerifikasiSuratJalanState
 // widget verifikasi
 
 class CardVerifikasi extends StatelessWidget {
-  CardVerifikasi({
+  const CardVerifikasi({
     super.key,
     required this.provider,
     required this.height,
@@ -380,7 +382,7 @@ class CardVerifikasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: double.maxFinite,
       height: height * 0.25,
       decoration: BoxDecoration(
@@ -390,7 +392,7 @@ class CardVerifikasi extends StatelessWidget {
           BoxShadow(
             blurRadius: 5,
             color: Colors.grey.shade300,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -403,9 +405,9 @@ class CardVerifikasi extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: PRIMARY_COLOR,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -422,7 +424,7 @@ class CardVerifikasi extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 18,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
@@ -444,7 +446,8 @@ class CardVerifikasi extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),
@@ -461,14 +464,14 @@ class CardVerifikasi extends StatelessWidget {
                           Container(
                             width: width,
                             height: height * 0.05,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: COMPLEMENTARY_COLOR2,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade200,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   )
                                 ]),
                             child: Row(
@@ -502,14 +505,14 @@ class CardVerifikasi extends StatelessWidget {
                           Container(
                             width: width,
                             height: height * 0.05,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade200,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   )
                                 ]),
                             child: FittedBox(
@@ -527,14 +530,14 @@ class CardVerifikasi extends StatelessWidget {
                           Container(
                             width: width,
                             height: height * 0.05,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade200,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   )
                                 ]),
                             child: FittedBox(

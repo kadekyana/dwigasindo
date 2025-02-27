@@ -17,7 +17,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class ComponentTambahPo extends StatefulWidget {
-  ComponentTambahPo({super.key});
+  const ComponentTambahPo({super.key});
   @override
   State<ComponentTambahPo> createState() => _ComponentTambahPoState();
 }
@@ -251,7 +251,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             SizedBox(
               height: 10.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.1,
               child: ListTile(
@@ -271,11 +271,11 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Barang', "Jasa"]),
+                      buttons: const ['Barang', "Jasa"]),
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -318,7 +318,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Center(
@@ -365,7 +365,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: formList.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -421,7 +421,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                     //   ),
                     // ),
                     // Di dalam ListView.builder pada form item:
-                    Container(
+                    SizedBox(
                       width: width,
                       height: 80.h,
                       child: ListTile(
@@ -547,7 +547,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: 80.h,
                       child: ListTile(
@@ -574,7 +574,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.06,
                       child: Align(
@@ -597,7 +597,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             SizedBox(
               height: 20.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Align(
@@ -614,7 +614,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             SizedBox(
               height: 20.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.1,
               child: ListTile(
@@ -643,11 +643,11 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                           });
                         }
                       },
-                      buttons: ['Tunai', "Bertahap"]),
+                      buttons: const ['Tunai', "Bertahap"]),
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.1,
               child: ListTile(
@@ -679,7 +679,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               height: height * 0.01,
             ),
             if (cek == false)
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: Row(
@@ -741,21 +741,23 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               Container(
                 width: width,
                 height: 30,
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
                   children: [
                     IconButton(
-                        onPressed: _addFormB, icon: Icon(Icons.add_circle)),
-                    if (formListB.length > 0)
+                        onPressed: _addFormB,
+                        icon: const Icon(Icons.add_circle)),
+                    if (formListB.isNotEmpty)
                       IconButton(
-                          onPressed: _removeFormB, icon: Icon(Icons.delete)),
+                          onPressed: _removeFormB,
+                          icon: const Icon(Icons.delete)),
                   ],
                 ),
               ),
             if (cek == true)
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: formListB.length,
                 itemBuilder: (context, index) {
                   return Row(
@@ -836,7 +838,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             SizedBox(
               height: height * 0.02,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -863,7 +865,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: 250.h,
                 child: ListTile(
@@ -986,7 +988,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

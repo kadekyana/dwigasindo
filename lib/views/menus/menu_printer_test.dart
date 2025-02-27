@@ -20,7 +20,7 @@ class MenuPrintScreen extends StatelessWidget {
               providerQZTray.isConnected
                   ? "✅ Connected to QZ Tray"
                   : "❌ Not Connected",
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

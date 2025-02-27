@@ -11,25 +11,21 @@ String modelCradleToJson(ModelCradle data) => json.encode(data.toJson());
 
 class ModelCradle {
   List<Datum>? data;
-  dynamic error;
 
   ModelCradle({
     this.data,
-    this.error,
   });
 
   factory ModelCradle.fromJson(Map<String, dynamic> json) => ModelCradle(
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-        error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? []
             : List<dynamic>.from(data!.map((x) => x.toJson())),
-        "error": error,
       };
 }
 
@@ -37,16 +33,19 @@ class Datum {
   int? id;
   String? idStr;
   String? no;
-  Name? name;
+  String? name;
   int? ownerShipType;
   int? customerId;
   dynamic vendorId;
   bool? isHasTubeType;
-  int? tubeTypeId;
+  dynamic tubeTypeId;
+  dynamic tubeTypeName;
   bool? isHasGrade;
   dynamic tubeGradeId;
-  String? location;
+  dynamic tubeGradeName;
+  dynamic location;
   int? tubeGasId;
+  String? tubeGasName;
 
   Datum({
     this.id,
@@ -58,57 +57,50 @@ class Datum {
     this.vendorId,
     this.isHasTubeType,
     this.tubeTypeId,
+    this.tubeTypeName,
     this.isHasGrade,
     this.tubeGradeId,
+    this.tubeGradeName,
     this.location,
     this.tubeGasId,
+    this.tubeGasName,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         idStr: json["id_str"],
         no: json["no"],
-        name: nameValues.map[json["name"]]!,
+        name: json["name"],
         ownerShipType: json["owner_ship_type"],
         customerId: json["customer_id"],
         vendorId: json["vendor_id"],
         isHasTubeType: json["is_has_tube_type"],
         tubeTypeId: json["tube_type_id"],
+        tubeTypeName: json["tube_type_name"],
         isHasGrade: json["is_has_grade"],
         tubeGradeId: json["tube_grade_id"],
+        tubeGradeName: json["tube_grade_name"],
         location: json["location"],
         tubeGasId: json["tube_gas_id"],
+        tubeGasName: json["tube_gas_name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "id_str": idStr,
         "no": no,
-        "name": nameValues.reverse[name],
+        "name": name,
         "owner_ship_type": ownerShipType,
         "customer_id": customerId,
         "vendor_id": vendorId,
         "is_has_tube_type": isHasTubeType,
         "tube_type_id": tubeTypeId,
+        "tube_type_name": tubeTypeName,
         "is_has_grade": isHasGrade,
         "tube_grade_id": tubeGradeId,
+        "tube_grade_name": tubeGradeName,
         "location": location,
         "tube_gas_id": tubeGasId,
+        "tube_gas_name": tubeGasName,
       };
-}
-
-enum Name { CUSTOMER_PT_ABD }
-
-final nameValues = EnumValues({"Customer PT ABD": Name.CUSTOMER_PT_ABD});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

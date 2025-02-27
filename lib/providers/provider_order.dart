@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/model/modelAllOrder.dart';
-import 'package:dwigasindo/model/modelDetailOrder.dart';
 import 'package:dwigasindo/model/modelMasterProduk.dart';
 import 'package:dwigasindo/model/modelSatuanProduk.dart';
 import 'package:dwigasindo/model/modelSummary.dart';

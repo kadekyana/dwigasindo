@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../widgets/widget_form.dart';
 
 class ComponentDetailPenerimaanBarang extends StatefulWidget {
-  ComponentDetailPenerimaanBarang({super.key});
+  const ComponentDetailPenerimaanBarang({super.key});
 
   @override
   State<ComponentDetailPenerimaanBarang> createState() =>
@@ -42,16 +42,16 @@ class _ComponentDetailPenerimaanBarangState
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera, setState);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery, setState);
@@ -79,13 +79,13 @@ class _ComponentDetailPenerimaanBarangState
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: Container(
+              title: SizedBox(
                 width: width * 5,
                 child: Center(
                   child: Text('Return Barang', style: titleTextBlack),
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 width: width,
                 height: 300.h,
                 child: Column(
@@ -105,7 +105,7 @@ class _ComponentDetailPenerimaanBarangState
                         typeInput: TextInputType.number,
                         alert: '(MoU)',
                         hint: '(MoU)',
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     Expanded(
@@ -154,7 +154,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 50,
                       child: TextField(
                         maxLines: null,
@@ -216,7 +216,7 @@ class _ComponentDetailPenerimaanBarangState
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: Container(
+              title: SizedBox(
                 width: width * 5,
                 child: Center(
                   child: Text('Terima Barang', style: titleTextBlack),
@@ -233,14 +233,14 @@ class _ComponentDetailPenerimaanBarangState
                             child: Text('Qty Pemesanan', style: titleTextBlack),
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Expanded(
                           child: FittedBox(
                             alignment: Alignment.center,
                             child: Text('Qty Diterima', style: titleTextBlack),
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Expanded(
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
@@ -329,7 +329,7 @@ class _ComponentDetailPenerimaanBarangState
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: height * 0.2),
                       child: CustomDropdown(
-                        items: ['a', 'b'],
+                        items: const ['a', 'b'],
                         hintText: 'Tipe',
                         onChanged: (value) {},
                       ),
@@ -344,7 +344,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 50,
                       child: TextField(
                         maxLines: null,
@@ -407,13 +407,13 @@ class _ComponentDetailPenerimaanBarangState
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: Container(
+              title: SizedBox(
                 width: width * 5,
                 child: Center(
                   child: Text('Pembatalan Barang', style: titleTextBlack),
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 width: width,
                 height: height * 2.5,
                 child: Column(
@@ -499,10 +499,10 @@ class _ComponentDetailPenerimaanBarangState
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: double.maxFinite,
               height: height * 0.15,
               child: Column(
@@ -512,7 +512,7 @@ class _ComponentDetailPenerimaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -525,7 +525,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(3),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
@@ -535,12 +535,12 @@ class _ComponentDetailPenerimaanBarangState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -553,7 +553,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -572,7 +572,7 @@ class _ComponentDetailPenerimaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(3),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -585,7 +585,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(3),
                             child: Text(
                               ': PT Lorem Ipsum',
                               overflow: TextOverflow.ellipsis,
@@ -593,12 +593,12 @@ class _ComponentDetailPenerimaanBarangState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -611,7 +611,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -630,7 +630,7 @@ class _ComponentDetailPenerimaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -643,7 +643,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -654,12 +654,12 @@ class _ComponentDetailPenerimaanBarangState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -672,7 +672,7 @@ class _ComponentDetailPenerimaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
@@ -689,7 +689,7 @@ class _ComponentDetailPenerimaanBarangState
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Align(
               alignment: Alignment.centerLeft,
               child: GroupButton(
@@ -701,7 +701,7 @@ class _ComponentDetailPenerimaanBarangState
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List Item']),
+                  buttons: const ['List Item']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -751,7 +751,7 @@ class _ComponentDetailPenerimaanBarangState
                                                 height: 20,
                                                 width: 20,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               SvgPicture.asset(
@@ -762,8 +762,10 @@ class _ComponentDetailPenerimaanBarangState
                                             ],
                                           ),
                                         ),
-                                        Expanded(child: SizedBox.shrink()),
-                                        Expanded(child: SizedBox.shrink()),
+                                        const Expanded(
+                                            child: SizedBox.shrink()),
+                                        const Expanded(
+                                            child: SizedBox.shrink()),
                                       ],
                                     ),
                                   ),
@@ -774,7 +776,7 @@ class _ComponentDetailPenerimaanBarangState
                                       Expanded(
                                         flex: 1,
                                         child: Container(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           child: FittedBox(
                                             alignment: Alignment.centerLeft,
                                             fit: BoxFit.scaleDown,
@@ -788,7 +790,7 @@ class _ComponentDetailPenerimaanBarangState
                                       Expanded(
                                         flex: 2,
                                         child: Container(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           child: FittedBox(
                                             alignment: Alignment.centerLeft,
                                             fit: BoxFit.scaleDown,
@@ -797,7 +799,7 @@ class _ComponentDetailPenerimaanBarangState
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox.shrink()),
+                                      const Expanded(child: SizedBox.shrink()),
                                     ],
                                   )),
                                   Expanded(
@@ -808,7 +810,7 @@ class _ComponentDetailPenerimaanBarangState
                                         Expanded(
                                           flex: 1,
                                           child: Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
@@ -822,7 +824,7 @@ class _ComponentDetailPenerimaanBarangState
                                         Expanded(
                                           flex: 2,
                                           child: Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
@@ -831,7 +833,8 @@ class _ComponentDetailPenerimaanBarangState
                                             ),
                                           ),
                                         ),
-                                        Expanded(child: SizedBox.shrink()),
+                                        const Expanded(
+                                            child: SizedBox.shrink()),
                                       ],
                                     ),
                                   ),
@@ -843,7 +846,7 @@ class _ComponentDetailPenerimaanBarangState
                                         Expanded(
                                           flex: 1,
                                           child: Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
@@ -857,7 +860,7 @@ class _ComponentDetailPenerimaanBarangState
                                         Expanded(
                                           flex: 2,
                                           child: Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             child: FittedBox(
                                               fit: BoxFit.scaleDown,
                                               alignment: Alignment.centerLeft,
@@ -866,7 +869,8 @@ class _ComponentDetailPenerimaanBarangState
                                             ),
                                           ),
                                         ),
-                                        Expanded(child: SizedBox.shrink()),
+                                        const Expanded(
+                                            child: SizedBox.shrink()),
                                       ],
                                     ),
                                   ),
@@ -897,7 +901,7 @@ class _ComponentDetailPenerimaanBarangState
                                 null, // Membuat text field untuk teks panjang
                             expands:
                                 true, // Memperluas TextField agar sesuai dengan ukuran Container
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Masukkan keterangan di sini...',
                               contentPadding: EdgeInsets.all(10),
                               border: OutlineInputBorder(),

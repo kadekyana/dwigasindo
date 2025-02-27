@@ -7,21 +7,21 @@ class HeaderCard extends StatelessWidget {
   final Color statusColor;
 
   const HeaderCard({
-    Key? key,
+    super.key,
     required this.date,
     required this.status,
     required this.statusColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.only(
@@ -32,7 +32,7 @@ class HeaderCard extends StatelessWidget {
             child: Text(date, style: subtitleText),
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: statusColor,
               borderRadius: const BorderRadius.only(

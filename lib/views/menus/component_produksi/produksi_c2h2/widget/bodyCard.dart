@@ -7,11 +7,11 @@ class BodyCard extends StatelessWidget {
   final String kategori;
 
   const BodyCard({
-    Key? key,
+    super.key,
     required this.kodePermintaan,
     required this.divisi,
     required this.kategori,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

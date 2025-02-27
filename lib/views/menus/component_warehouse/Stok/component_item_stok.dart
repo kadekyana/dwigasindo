@@ -88,7 +88,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                 // Tambahkan pesan error jika perlu
               }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add_circle_outline_rounded,
               color: Colors.black,
             ),
@@ -97,10 +97,10 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
       ),
       body: (provider.isLoading == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : Container(
@@ -167,7 +167,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['List Item']),
+                        buttons: const ['List Item']),
                   ),
                   SizedBox(
                     height: height * 0.01,
@@ -386,7 +386,7 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                             },
                           ),
                         )
-                      : Expanded(
+                      : const Expanded(
                           child: Center(
                             child: Text('Data Kosong'),
                           ),

@@ -71,7 +71,7 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
         },
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: width,
           height: height,
           child: Column(
@@ -138,7 +138,7 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: DataTable(
-                    columns: [
+                    columns: const [
                       DataColumn(label: Text('No')),
                       DataColumn(label: Text('Item')),
                       DataColumn(label: Text('Qty')),
@@ -157,8 +157,8 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                           DataCell(
                             TextField(
                               controller: fisik,
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 updateDetails(
@@ -176,7 +176,7 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               ListTile(
                 title: Text(
                   'PIC Approval',
@@ -413,7 +413,7 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                   "Belum Terdapat Data Yang Akan di ${(widget.type == 3) ? 'Revisi' : 'Approve'}"),
             )
           : SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: height,
                 child: Column(
@@ -448,7 +448,7 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                           const DataColumn(label: Text('Fisik')),
                           const DataColumn(label: Text('Hasil')),
                           if (widget.type != 3)
-                            DataColumn(label: Text('Approval')),
+                            const DataColumn(label: Text('Approval')),
                         ],
                         rows: List<DataRow>.generate(
                           data!.length,
@@ -472,8 +472,8 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                               DataCell(
                                 TextField(
                                   controller: controller,
-                                  decoration:
-                                      InputDecoration(border: InputBorder.none),
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none),
                                   keyboardType: TextInputType.number,
                                   onChanged: (value) {
                                     updateDetails(
@@ -522,7 +522,7 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                         ),
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                   ],
                 ),
               ),
@@ -537,7 +537,7 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                 children: [
                   if (widget.type != 3)
                     Expanded(
-                      child: Container(
+                      child: SizedBox(
                         width: width,
                         height: 50.h,
                         child: WidgetButtonCustom(

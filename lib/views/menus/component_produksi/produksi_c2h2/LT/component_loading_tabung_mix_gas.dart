@@ -47,7 +47,7 @@ class ComponentLoadingTabungMixGas extends StatelessWidget {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: items.isNotEmpty
             ? ListView.builder(
                 itemCount: items.length,
@@ -83,7 +83,7 @@ class ComponentLoadingTabungMixGas extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 2,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                               color: Colors.grey.shade300),
                         ],
                       ),
@@ -104,7 +104,7 @@ class ComponentLoadingTabungMixGas extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(title, style: titleTextBlack),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text(subtitle, style: subtitleTextBlack),
                               ],
                             ),
@@ -181,7 +181,7 @@ class _ComponentLoadingTabungMixGasDetailState
   }
 
   void _startStream(int status) {
-    Timer.periodic(Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (!_streamControllers[status]!.isClosed) {
         final data = await Provider.of<ProviderProduksi>(context, listen: false)
             .getLoadingTubeMixGas(context, status, widget.fill);
@@ -270,7 +270,7 @@ class _ComponentLoadingTabungMixGasDetailState
                   });
                   print(selectMenu);
                 },
-                buttons: ['Produksi', "QC"]),
+                buttons: const ['Produksi', "QC"]),
           ),
           SizedBox(
             height: height * 0.01,
@@ -363,12 +363,12 @@ class _ComponentLoadingTabungMixGasDetailState
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi')
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data?.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -405,7 +405,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                     },
                                     onIsiDataPressed: () {
                                       // if (_selectedCardIndex != index ||
-                                      //     !_showForm) {
+                                      // !_showForm) {
                                       //   setState(() {
                                       //     _selectedCardIndex = index;
                                       //     _showForm = true;
@@ -443,7 +443,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -496,16 +496,16 @@ class _ComponentLoadingTabungMixGasDetailState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
+                            const Expanded(
                                 flex: 1, child: Center(child: Text('Status'))),
-                            Expanded(child: Center(child: Text('OK'))),
+                            const Expanded(child: Center(child: Text('OK'))),
                             Expanded(
                                 child: Center(
                                     child: Text("${data?.tubeOkCount}"))),
                             Expanded(
                                 child: Center(
                                     child: Text("${data?.tubeNoCount}"))),
-                            Expanded(
+                            const Expanded(
                               child: Center(child: Text('NO')),
                             ),
                           ],
@@ -513,7 +513,7 @@ class _ComponentLoadingTabungMixGasDetailState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(flex: 1, child: SizedBox.shrink()),
+                            const Expanded(flex: 1, child: SizedBox.shrink()),
                             Expanded(
                               flex: 4,
                               child: LinearProgressIndicator(
@@ -526,7 +526,7 @@ class _ComponentLoadingTabungMixGasDetailState
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Expanded(
@@ -546,18 +546,17 @@ class _ComponentLoadingTabungMixGasDetailState
                                     width: width,
                                     height: height,
                                     data: {
-                                      "id": dataTube?.idStr ?? "-",
-                                      "tube": dataTube?.tubeId ?? "-",
-                                      "no": dataTube?.tubeNo ?? "-",
-                                      'CB': dataTube?.prefillCheckBody ?? "-",
-                                      'CV': dataTube?.prefillCheckValve ?? "-",
-                                      'VENT': dataTube?.prefillVent ?? "-",
-                                      'HT': dataTube?.prefillHammerTest ?? "-",
-                                      'CT': dataTube?.postfillColdTest ?? "-",
-                                      'TBI':
-                                          dataTube?.productionT0Weight ?? "-",
-                                      'TBII': dataTube?.postfillT2Weight ?? "-",
-                                      'Rak': dataTube?.tubeShelfName ?? "-",
+                                      "id": dataTube.idStr ?? "-",
+                                      "tube": dataTube.tubeId ?? "-",
+                                      "no": dataTube.tubeNo ?? "-",
+                                      'CB': dataTube.prefillCheckBody ?? "-",
+                                      'CV': dataTube.prefillCheckValve ?? "-",
+                                      'VENT': dataTube.prefillVent ?? "-",
+                                      'HT': dataTube.prefillHammerTest ?? "-",
+                                      'CT': dataTube.postfillColdTest ?? "-",
+                                      'TBI': dataTube.productionT0Weight ?? "-",
+                                      'TBII': dataTube.postfillT2Weight ?? "-",
+                                      'Rak': dataTube.tubeShelfName ?? "-",
                                       'status': "OK",
                                       'date': "-",
                                       'time': "-",
@@ -611,7 +610,7 @@ class _ComponentLoadingTabungMixGasDetailState
                   ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -644,7 +643,7 @@ class _ComponentLoadingTabungMixGasDetailState
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -733,7 +732,7 @@ class _ComponentLoadingTabungMixGasDetailState
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Column(
                     children: [
-                      Divider(),
+                      const Divider(),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -780,7 +779,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                 flex: 2,
                                 child: Text('Berat Isi TWI',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   Text('10000', style: minisubtitleTextBlack),
@@ -791,7 +790,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                     alignment: Alignment.centerLeft,
                                     child: Text('Badan Tabung',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -800,7 +799,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                 flex: 2,
                                 child:
                                     Text('Pen', style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -815,7 +814,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                 flex: 2,
                                 child: Text('Safety Valve',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -826,7 +825,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                     alignment: Alignment.centerLeft,
                                     child: Text('Mulut Valve',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -835,7 +834,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                 flex: 2,
                                 child: Text('Leher Tabung',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -973,7 +972,7 @@ class _ComponentLoadingTabungMixGasDetailState
                         ),
                         const SizedBox(width: 5),
                         const Text('Scan Isi'),
-                        Expanded(child: const SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
                         WidgetButtonCustom(
                             FullWidth: width * 0.35,
                             FullHeight: height * 0.05,
@@ -984,7 +983,7 @@ class _ComponentLoadingTabungMixGasDetailState
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data!.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -1002,18 +1001,17 @@ class _ComponentLoadingTabungMixGasDetailState
                                     width: width,
                                     height: height,
                                     data: {
-                                      "id": dataTube?.idStr ?? "-",
-                                      "tube": dataTube?.tubeId ?? "-",
-                                      "no": dataTube?.tubeNo ?? "-",
-                                      'CB': dataTube?.prefillCheckBody ?? "-",
-                                      'CV': dataTube?.prefillCheckValve ?? "-",
-                                      'VENT': dataTube?.prefillVent ?? "-",
-                                      'HT': dataTube?.prefillHammerTest ?? "-",
-                                      'CT': dataTube?.postfillColdTest ?? "-",
-                                      'TBI':
-                                          dataTube?.productionT0Weight ?? "-",
-                                      'TBII': dataTube?.postfillT2Weight ?? "-",
-                                      'Rak': dataTube?.tubeShelfName ?? "-",
+                                      "id": dataTube.idStr ?? "-",
+                                      "tube": dataTube.tubeId ?? "-",
+                                      "no": dataTube.tubeNo ?? "-",
+                                      'CB': dataTube.prefillCheckBody ?? "-",
+                                      'CV': dataTube.prefillCheckValve ?? "-",
+                                      'VENT': dataTube.prefillVent ?? "-",
+                                      'HT': dataTube.prefillHammerTest ?? "-",
+                                      'CT': dataTube.postfillColdTest ?? "-",
+                                      'TBI': dataTube.productionT0Weight ?? "-",
+                                      'TBII': dataTube.postfillT2Weight ?? "-",
+                                      'Rak': dataTube.tubeShelfName ?? "-",
                                       'status': "OK",
                                       'date': "-",
                                       'time': "-",
@@ -1067,7 +1065,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -1090,7 +1088,7 @@ class _ComponentLoadingTabungMixGasDetailState
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.1,
-          child: Center(child: Text(":")),
+          child: const Center(child: Text(":")),
         ),
         Expanded(
           flex: 4,
@@ -1104,7 +1102,7 @@ class _ComponentLoadingTabungMixGasDetailState
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Masukkan $label',
-                contentPadding: EdgeInsets.all(8.0),
+                contentPadding: const EdgeInsets.all(8.0),
               ),
               keyboardType: TextInputType.number,
             ),
@@ -1119,7 +1117,7 @@ class _ComponentLoadingTabungMixGasDetailState
       stream: _streamControllers[1]!.stream, // Status untuk Empty Weight
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
@@ -1152,16 +1150,16 @@ class _ComponentLoadingTabungMixGasDetailState
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi'),
-                        Expanded(child: SizedBox.shrink()),
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi'),
+                        const Expanded(child: SizedBox.shrink()),
                         SvgPicture.asset(
                           'assets/images/scan.svg',
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi BPTK'),
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi BPTK'),
                       ],
                     ),
                   ),
@@ -1183,17 +1181,17 @@ class _ComponentLoadingTabungMixGasDetailState
                                 width: width,
                                 height: height,
                                 data: {
-                                  "id": dataTube?.idStr ?? "-",
-                                  "tube": dataTube?.tubeId ?? "-",
-                                  "no": dataTube?.tubeNo ?? "-",
-                                  'CB': dataTube?.prefillCheckBody ?? "-",
-                                  'CV': dataTube?.prefillCheckValve ?? "-",
-                                  'VENT': dataTube?.prefillVent ?? "-",
-                                  'HT': dataTube?.prefillHammerTest ?? "-",
-                                  'CT': dataTube?.postfillColdTest ?? "-",
-                                  'TBI': dataTube?.productionT0Weight ?? "-",
-                                  'TBII': dataTube?.postfillT2Weight ?? "-",
-                                  'Rak': dataTube?.tubeShelfName ?? "-",
+                                  "id": dataTube.idStr ?? "-",
+                                  "tube": dataTube.tubeId ?? "-",
+                                  "no": dataTube.tubeNo ?? "-",
+                                  'CB': dataTube.prefillCheckBody ?? "-",
+                                  'CV': dataTube.prefillCheckValve ?? "-",
+                                  'VENT': dataTube.prefillVent ?? "-",
+                                  'HT': dataTube.prefillHammerTest ?? "-",
+                                  'CT': dataTube.postfillColdTest ?? "-",
+                                  'TBI': dataTube.productionT0Weight ?? "-",
+                                  'TBII': dataTube.postfillT2Weight ?? "-",
+                                  'Rak': dataTube.tubeShelfName ?? "-",
                                   'status': "OK",
                                   'date': "-",
                                   'time': "-",
@@ -1239,7 +1237,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -1250,7 +1248,7 @@ class _ComponentLoadingTabungMixGasDetailState
       stream: _streamControllers[2]!.stream, // Status untuk Empty Weight
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
@@ -1282,12 +1280,12 @@ class _ComponentLoadingTabungMixGasDetailState
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi')
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data!.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -1305,18 +1303,17 @@ class _ComponentLoadingTabungMixGasDetailState
                                     width: width,
                                     height: height,
                                     data: {
-                                      "id": dataTube?.idStr ?? "-",
-                                      "tube": dataTube?.tubeId ?? "-",
-                                      "no": dataTube?.tubeNo ?? "-",
-                                      'CB': dataTube?.prefillCheckBody ?? "-",
-                                      'CV': dataTube?.prefillCheckValve ?? "-",
-                                      'VENT': dataTube?.prefillVent ?? "-",
-                                      'HT': dataTube?.prefillHammerTest ?? "-",
-                                      'CT': dataTube?.postfillColdTest ?? "-",
-                                      'TBI':
-                                          dataTube?.productionT0Weight ?? "-",
-                                      'TBII': dataTube?.postfillT2Weight ?? "-",
-                                      'Rak': dataTube?.tubeShelfName ?? "-",
+                                      "id": dataTube.idStr ?? "-",
+                                      "tube": dataTube.tubeId ?? "-",
+                                      "no": dataTube.tubeNo ?? "-",
+                                      'CB': dataTube.prefillCheckBody ?? "-",
+                                      'CV': dataTube.prefillCheckValve ?? "-",
+                                      'VENT': dataTube.prefillVent ?? "-",
+                                      'HT': dataTube.prefillHammerTest ?? "-",
+                                      'CT': dataTube.postfillColdTest ?? "-",
+                                      'TBI': dataTube.productionT0Weight ?? "-",
+                                      'TBII': dataTube.postfillT2Weight ?? "-",
+                                      'Rak': dataTube.tubeShelfName ?? "-",
                                       'status': "OK",
                                       'date': "-",
                                       'time': "-",
@@ -1371,7 +1368,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -1382,7 +1379,7 @@ class _ComponentLoadingTabungMixGasDetailState
       stream: _streamControllers[3]!.stream, // Status untuk Empty Weight
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
@@ -1398,7 +1395,7 @@ class _ComponentLoadingTabungMixGasDetailState
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
@@ -1414,7 +1411,7 @@ class _ComponentLoadingTabungMixGasDetailState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(flex: 1, child: SizedBox.shrink()),
+                            const Expanded(flex: 1, child: SizedBox.shrink()),
                             Expanded(
                               flex: 4,
                               child: LinearProgressIndicator(
@@ -1427,7 +1424,7 @@ class _ComponentLoadingTabungMixGasDetailState
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Expanded(
@@ -1448,23 +1445,23 @@ class _ComponentLoadingTabungMixGasDetailState
                                         width: width,
                                         height: height,
                                         data: {
-                                          "id": dataTube?.idStr ?? "-",
-                                          "tube": dataTube?.tubeId ?? "-",
-                                          "no": dataTube?.tubeNo ?? "-",
+                                          "id": dataTube.idStr ?? "-",
+                                          "tube": dataTube.tubeId ?? "-",
+                                          "no": dataTube.tubeNo ?? "-",
                                           'CB':
-                                              dataTube?.prefillCheckBody ?? "-",
-                                          'CV': dataTube?.prefillCheckValve ??
-                                              "-",
-                                          'VENT': dataTube?.prefillVent ?? "-",
-                                          'HT': dataTube?.prefillHammerTest ??
-                                              "-",
+                                              dataTube.prefillCheckBody ?? "-",
+                                          'CV':
+                                              dataTube.prefillCheckValve ?? "-",
+                                          'VENT': dataTube.prefillVent ?? "-",
+                                          'HT':
+                                              dataTube.prefillHammerTest ?? "-",
                                           'CT':
-                                              dataTube?.postfillColdTest ?? "-",
-                                          'TBI': dataTube?.productionT0Weight ??
+                                              dataTube.postfillColdTest ?? "-",
+                                          'TBI': dataTube.productionT0Weight ??
                                               "-",
                                           'TBII':
-                                              dataTube?.postfillT2Weight ?? "-",
-                                          'Rak': dataTube?.tubeShelfName ?? "-",
+                                              dataTube.postfillT2Weight ?? "-",
+                                          'Rak': dataTube.tubeShelfName ?? "-",
                                           'status': "OK",
                                           'date': "-",
                                           'time': "-",
@@ -1489,7 +1486,7 @@ class _ComponentLoadingTabungMixGasDetailState
                                         },
                                       ),
                                       if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
-                                        SizedBox(height: 16),
+                                        const SizedBox(height: 16),
                                       // if (_showForm)
                                       //   _buildWeightFormFilled(
                                       //       dataTube.tareWeight!,
@@ -1510,7 +1507,7 @@ class _ComponentLoadingTabungMixGasDetailState
                   ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -1531,6 +1528,7 @@ class _ComponentLoadingTabungMixGasDetailState
     required bool postfill,
     required bool finish,
   }) {
+    final provider = Provider.of<ProviderProduksi>(context);
     return Container(
       width: width,
       height: (finish == true) ? 200.h : 180.h,
@@ -1541,7 +1539,7 @@ class _ComponentLoadingTabungMixGasDetailState
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -1599,7 +1597,10 @@ class _ComponentLoadingTabungMixGasDetailState
                         (showIsiDataButton) ? width * 0.25 : width * 0.35,
                     FullHeight: 30.h,
                     title: 'Maintenance',
-                    onpressed: () {},
+                    onpressed: () async {
+                      await provider.createMaintenance(
+                          context, 1, data['no'].toString());
+                    },
                     bgColor: PRIMARY_COLOR,
                     color: Colors.transparent,
                   ),
@@ -1708,9 +1709,9 @@ class _ComponentLoadingTabungMixGasDetailState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             width: width * 0.3,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: PRIMARY_COLOR,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8),
@@ -1767,7 +1768,7 @@ class _ComponentLoadingTabungMixGasDetailState
           Container(
             width: width * 0.3, // 30% dari lebar layar
             height: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFF12163A), // Warna biru tua
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8),
@@ -1775,7 +1776,7 @@ class _ComponentLoadingTabungMixGasDetailState
               ),
             ),
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(data['no'].toString(), style: titleText),
           ),
 
@@ -2042,7 +2043,7 @@ class _ComponentLoadingTabungMixGasDetailState
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 20.h,
                     child: Row(
                       children: [
@@ -2304,7 +2305,7 @@ class _ComponentLoadingTabungMixGasDetailState
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 20.h,
                     child: Row(
                       children: [
@@ -2522,7 +2523,7 @@ class _ComponentLoadingTabungMixGasDetailState
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 20.h,
                     child: Row(
                       children: [
@@ -2598,13 +2599,13 @@ class _ComponentLoadingTabungMixGasDetailState
                                 child: FittedBox(
                                     child: Text('CB',
                                         style: minisubtitleTextBlack)))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: SvgPicture.asset('assets/images/ceklist.svg'),
                         ),
                         Expanded(
                             child: Text('CV', style: minisubtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: SvgPicture.asset('assets/images/ceklist.svg'),
                         ),
@@ -2612,13 +2613,13 @@ class _ComponentLoadingTabungMixGasDetailState
                             child: FittedBox(
                                 child: Text('Vent',
                                     style: minisubtitleTextBlack))),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: SvgPicture.asset('assets/images/ceklist.svg'),
                         ),
                         Expanded(
                             child: Text('HT', style: minisubtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: SvgPicture.asset('assets/images/ceklist.svg'),
                         ),
@@ -2635,25 +2636,25 @@ class _ComponentLoadingTabungMixGasDetailState
                                 style: minisubtitleTextBoldBlack)),
                         Expanded(
                             child: Text('RAK', style: minisubtitleTextBlack)),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text("-", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(" ", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(" ", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(' ', style: minisubtitleTextBlack),
                         ),
@@ -2670,25 +2671,25 @@ class _ComponentLoadingTabungMixGasDetailState
                                 style: minisubtitleTextBoldBlack)),
                         Expanded(
                             child: Text('TBll', style: minisubtitleTextBlack)),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text("-", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(" ", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(" ", style: minisubtitleTextBlack),
                         ),
                         Expanded(
                             child: Text(' ', style: minisubtitleTextBlack)),
-                        Text(' '),
+                        const Text(' '),
                         Expanded(
                           child: Text(' ', style: minisubtitleTextBlack),
                         ),
@@ -2752,7 +2753,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Container(
@@ -2848,7 +2849,7 @@ class _ComponentLoadingTabungMixGasDetailState
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Align(
@@ -2862,7 +2863,7 @@ class _ComponentLoadingTabungMixGasDetailState
                     onSelected: (value, index, isSelected) {
                       print('DATA KLIK : $value - $index - $isSelected');
                     },
-                    buttons: ['OK', "NO"]),
+                    buttons: const ['OK', "NO"]),
               ),
             ),
           ],

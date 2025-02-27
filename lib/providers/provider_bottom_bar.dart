@@ -21,9 +21,9 @@ class ProviderBottomBar extends ChangeNotifier {
 
   final List<Widget> pages = [
     MenuHome(),
-    MenuReport(),
-    MenuNotifikasi(),
-    MenuPreferences(),
+    const MenuReport(),
+    const MenuNotifikasi(),
+    const MenuPreferences(),
   ];
 
   final ImagePicker _picker = ImagePicker();
@@ -45,16 +45,16 @@ class ProviderBottomBar extends ChangeNotifier {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.gallery);

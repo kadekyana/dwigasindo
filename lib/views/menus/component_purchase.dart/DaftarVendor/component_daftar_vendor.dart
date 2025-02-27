@@ -46,7 +46,7 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -107,7 +107,7 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List Vendor']),
+                  buttons: const ['List Vendor']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -154,7 +154,7 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${data?.name ?? "-"}',
+                                    data?.name ?? "-",
                                     style: titleText,
                                   ),
                                 ),

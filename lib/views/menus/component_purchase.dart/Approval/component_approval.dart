@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
 
 class ComponentApproval extends StatefulWidget {
-  ComponentApproval({super.key});
+  const ComponentApproval({super.key});
 
   @override
   State<ComponentApproval> createState() => _ComponentApprovalState();
@@ -50,7 +50,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
         actions: [
           IconButton(
             onPressed: () async {},
-            icon: Icon(
+            icon: const Icon(
               Icons.add_circle_outline_rounded,
               color: Colors.black,
             ),
@@ -60,7 +60,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -130,7 +130,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                   });
                   print('DATA KLIK : $value - $index - $isSelected');
                 },
-                buttons: ['List PO', 'List SPB', 'History'],
+                buttons: const ['List PO', 'List SPB', 'History'],
               ),
             ),
             SizedBox(
@@ -190,7 +190,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                   color: (data == true)
                                       ? COMPLEMENTARY_COLOR2
                                       : Colors.grey.shade500,
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(8),
                                     bottomLeft: Radius.circular(30),
                                   ),
@@ -199,7 +199,7 @@ class _ComponentApprovalState extends State<ComponentApproval> {
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${(data == true) ? "Approve" : "Menunggu"}',
+                                    (data == true) ? "Approve" : "Menunggu",
                                     style: titleText,
                                   ),
                                 ),

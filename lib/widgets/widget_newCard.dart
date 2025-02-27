@@ -22,7 +22,7 @@ class WidgetCardNewTube extends StatelessWidget {
     final provider = Provider.of<ProviderDistribusi>(context);
     final dataVer = provider.verifikasiBptk?.data;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: double.maxFinite,
       height: height * 0.25,
       decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class WidgetCardNewTube extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
                   decoration: const BoxDecoration(
                     color: COMPLEMENTARY_COLOR3,
@@ -81,7 +81,8 @@ class WidgetCardNewTube extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),
@@ -109,7 +110,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -123,7 +124,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -140,7 +141,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -154,7 +155,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -171,7 +172,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -185,7 +186,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -202,7 +203,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -216,7 +217,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -233,7 +234,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -247,7 +248,7 @@ class WidgetCardNewTube extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -271,7 +272,7 @@ class WidgetCardNewTube extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Container(
-                  padding: EdgeInsets.all(13),
+                  padding: const EdgeInsets.all(13),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,

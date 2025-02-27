@@ -585,7 +585,7 @@ class ProviderItem extends ChangeNotifier {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ComponentStokOpname(),
+          builder: (context) => const ComponentStokOpname(),
         ),
       );
     } else {

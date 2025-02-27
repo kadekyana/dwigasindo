@@ -36,7 +36,7 @@ class MenuDistribusi extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Column(
             children: [
-              Expanded(
+              const Expanded(
                 flex: 1,
                 child: CardUpDistribusi(),
               ),
@@ -59,14 +59,14 @@ class MenuDistribusi extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ComponentBPTK(),
+                              builder: (context) => const ComponentBPTK(),
                             ),
                           );
                         } else {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ComponentBPTI(),
+                              builder: (context) => const ComponentBPTI(),
                             ),
                           );
                           final provider = Provider.of<ProviderDistribusi>(
@@ -158,7 +158,7 @@ class CardUpDistribusi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: PRIMARY_COLOR,
         borderRadius: BorderRadius.circular(12),
@@ -312,7 +312,7 @@ class CardUpDistribusi extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         SizedBox(
@@ -389,7 +389,7 @@ class CardUpDistribusi extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         SizedBox(

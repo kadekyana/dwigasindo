@@ -47,7 +47,7 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
         child: SafeArea(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -75,11 +75,11 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
                           //   type = index;
                           // });
                         },
-                        buttons: ['User', "Non User"]),
+                        buttons: const ['User', "Non User"]),
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -88,16 +88,16 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
                     style: subtitleTextBlack,
                   ),
                   subtitle: WidgetDropdown(
-                    items: ['Andi Muhammad', 'Dwi', 'Anda'],
+                    items: const ['Andi Muhammad', 'Dwi', 'Anda'],
                     hintText: 'Tipe',
                     controller: driver,
                     onChanged: (value) {
-                      print("Select : ${value}");
+                      print("Select : $value");
                     },
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.12,
                 child: Align(
@@ -123,7 +123,7 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -146,7 +146,7 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
               SizedBox(
                 height: height * 0.05,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.06,
                 child: Align(

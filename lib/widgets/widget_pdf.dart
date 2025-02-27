@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PdfUploadWidget extends StatefulWidget {
   final Function(String) onFilePicked; // Callback for when a file is picked
 
-  PdfUploadWidget({required this.onFilePicked, Key? key}) : super(key: key);
+  const PdfUploadWidget({required this.onFilePicked, super.key});
 
   @override
   _PdfUploadWidgetState createState() => _PdfUploadWidgetState();
@@ -38,9 +38,9 @@ class _PdfUploadWidgetState extends State<PdfUploadWidget> {
             borderRadius: BorderRadius.circular(12)),
         child: Column(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ListTile(
-              title: Text('Upload PDF',
+              title: const Text('Upload PDF',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text(
                 _filePath == null ? 'No file selected' : _filePath!,
@@ -48,7 +48,7 @@ class _PdfUploadWidgetState extends State<PdfUploadWidget> {
                     color: _filePath == null ? Colors.red : Colors.green),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.upload_file),
+                icon: const Icon(Icons.upload_file),
                 onPressed: _pickFile,
               ),
             ),
@@ -62,10 +62,10 @@ class _PdfUploadWidgetState extends State<PdfUploadWidget> {
                           null; // Reset the file path when user decides to remove it
                     });
                   },
-                  child: Text('Remove PDF'),
+                  child: const Text('Remove PDF'),
                 ),
               ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),

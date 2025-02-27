@@ -64,7 +64,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
           height: height,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -84,11 +84,11 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['PO', "Stokies"]),
+                        buttons: const ['PO', "Stokies"]),
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -108,7 +108,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -128,7 +128,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -146,7 +146,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
                 ),
               ),
               if (widget.title != "C2H2")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -173,7 +173,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -195,7 +195,7 @@ class _ComponentTambahProduksiState extends State<ComponentTambahProduksi> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: WidgetButtonCustom(
             FullWidth: width * 0.93,
             FullHeight: height * 0.06,

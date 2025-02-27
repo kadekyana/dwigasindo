@@ -11,7 +11,8 @@ class WidgetDropdown extends StatelessWidget {
   final dynamic Function(String?)? onChanged;
 
   WidgetDropdown(
-      {required this.items,
+      {super.key,
+      required this.items,
       required this.hintText,
       required this.controller,
       required this.onChanged,
@@ -22,7 +23,7 @@ class WidgetDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Consumer<ProviderDistribusi>(
           builder: (context, provider, child) {
             return CustomDropdown(

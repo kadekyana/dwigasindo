@@ -16,7 +16,7 @@ class PermissionService {
     bool granted = await requestCameraPermission();
     if (!granted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Camera permission is required to scan QR/Barcodes'),
         ),
       );

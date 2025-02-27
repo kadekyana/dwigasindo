@@ -32,7 +32,7 @@ const FAILED_COLOR = Color.fromARGB(255, 194, 14, 14);
 const WARNING_COLOR = Color.fromARGB(255, 255, 206, 12);
 
 LinearGradient gradientPrimary = const LinearGradient(
-  colors: [Color(0xff11163E), Color(0xff)],
+  colors: [Color(0xff11163E), Color(0x000000ff)],
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
 );

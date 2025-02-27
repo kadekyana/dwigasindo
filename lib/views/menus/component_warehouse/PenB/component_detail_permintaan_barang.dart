@@ -40,16 +40,16 @@ class _ComponentDetailPermintaanBarangState
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -90,7 +90,7 @@ class _ComponentDetailPermintaanBarangState
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: double.maxFinite,
               height: height * 0.1,
               child: Column(
@@ -100,7 +100,7 @@ class _ComponentDetailPermintaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -113,7 +113,7 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -124,12 +124,12 @@ class _ComponentDetailPermintaanBarangState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -142,7 +142,7 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -161,7 +161,7 @@ class _ComponentDetailPermintaanBarangState
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -174,7 +174,7 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -185,12 +185,12 @@ class _ComponentDetailPermintaanBarangState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -203,7 +203,7 @@ class _ComponentDetailPermintaanBarangState
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: FittedBox(
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
@@ -220,7 +220,7 @@ class _ComponentDetailPermintaanBarangState
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Align(
               alignment: Alignment.centerLeft,
               child: GroupButton(
@@ -232,7 +232,7 @@ class _ComponentDetailPermintaanBarangState
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List Item']),
+                  buttons: const ['List Item']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -301,7 +301,7 @@ class WidgetCard extends StatelessWidget {
                               height: 25,
                               width: 25,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             SvgPicture.asset(
@@ -312,8 +312,8 @@ class WidgetCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Expanded(child: SizedBox.shrink()),
-                      Expanded(child: SizedBox.shrink()),
+                      const Expanded(child: SizedBox.shrink()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                 ),
@@ -323,7 +323,7 @@ class WidgetCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(2),
                         child: FittedBox(
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.scaleDown,
@@ -337,7 +337,7 @@ class WidgetCard extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Container(
-                        padding: EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(2),
                         child: FittedBox(
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.scaleDown,
@@ -346,7 +346,7 @@ class WidgetCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(child: SizedBox.shrink()),
+                    const Expanded(child: SizedBox.shrink()),
                   ],
                 )),
                 Expanded(
@@ -356,7 +356,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -370,7 +370,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -378,7 +378,7 @@ class WidgetCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(child: SizedBox.shrink()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                 ),
@@ -389,7 +389,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -403,7 +403,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -411,7 +411,7 @@ class WidgetCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(child: SizedBox.shrink()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                 ),
@@ -422,7 +422,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -436,7 +436,7 @@ class WidgetCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           child: FittedBox(
                             alignment: Alignment.centerLeft,
                             fit: BoxFit.scaleDown,
@@ -445,7 +445,7 @@ class WidgetCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(child: SizedBox.shrink()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                 ),
@@ -470,7 +470,7 @@ class WidgetCard extends StatelessWidget {
               maxLines: null, // Membuat text field untuk teks panjang
               expands:
                   true, // Memperluas TextField agar sesuai dengan ukuran Container
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Masukkan catatan di sini...',
                 contentPadding: EdgeInsets.all(10),
                 border: OutlineInputBorder(),
@@ -479,17 +479,17 @@ class WidgetCard extends StatelessWidget {
               textAlignVertical: TextAlignVertical.top,
             ),
           ),
-          Container(
+          SizedBox(
             width: width,
             height: height * 0.05,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: SizedBox.shrink()),
+                const Expanded(child: SizedBox.shrink()),
                 SizedBox(
                   width: width * 0.01,
                 ),
-                Expanded(child: SizedBox.shrink()),
+                const Expanded(child: SizedBox.shrink()),
                 SizedBox(
                   width: width * 0.01,
                 ),

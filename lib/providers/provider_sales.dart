@@ -13,10 +13,12 @@ import 'package:dwigasindo/model/modelDocumentationLeads.dart';
 import 'package:dwigasindo/model/modelKunjungan.dart';
 import 'package:dwigasindo/model/modelLeads.dart';
 import 'package:dwigasindo/model/modelListSales.dart';
+import 'package:dwigasindo/model/modelMaintenance.dart';
 import 'package:dwigasindo/model/modelMasterProduk.dart';
 import 'package:dwigasindo/model/modelProductCMD.dart';
 import 'package:dwigasindo/model/modelProyeksi.dart';
 import 'package:dwigasindo/model/modelSummaryLead.dart';
+import 'package:dwigasindo/model/modelSummaryMaintenance.dart';
 import 'package:dwigasindo/model/modelSummaryOrder.dart';
 import 'package:dwigasindo/model/modelSummarySales.dart';
 import 'package:dwigasindo/model/modelUsersPic.dart';
@@ -118,6 +120,15 @@ class ProviderSales extends ChangeNotifier {
 
   ModelListSales? get listSales => _listSales;
 
+  ModelMaintenance? _maintenance;
+
+  ModelMaintenance? get maintenance => _maintenance;
+
+  ModelSummaryMaintenance? _modelSummaryMaintenance;
+
+  ModelSummaryMaintenance? get modelSummaryMaintenance =>
+      _modelSummaryMaintenance;
+
   String getRemarksLabel(String remarks) {
     List<String> values =
         remarks.split(',').map((e) => e.trim()).toList(); // Hapus spasi
@@ -168,6 +179,37 @@ class ProviderSales extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelDetailKunjungan.fromJson(response!.data);
       _detailKunjungan = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getListMaintenance(
+      BuildContext context, int type, int status) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().getRequest(
+        url: "maintenances/get-all?type=$type&status=$status", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelMaintenance.fromJson(response!.data);
+      _maintenance = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getSummaryMaintenance(
+    BuildContext context,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "maintenances/summary", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelSummaryMaintenance.fromJson(response!.data);
+      _modelSummaryMaintenance = data;
       notifyListeners();
     }
   }
@@ -294,8 +336,9 @@ class ProviderSales extends ChangeNotifier {
   String convertToApiDateFormat(String date) {
     try {
       List<String> parts = date.split("-");
-      if (parts.length != 3)
+      if (parts.length != 3) {
         return ""; // Jika format salah, kembalikan string kosong
+      }
 
       int day = int.parse(parts[0]);
       int month = int.parse(parts[1]);

@@ -47,7 +47,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             // Fungsi untuk mengatur logika tombol
-            void _handleButtonClick(int index) {
+            void handleButtonClick(int index) {
               if (index == 0) {
                 // Logika untuk Start Produksi
                 setModalState(() {
@@ -97,9 +97,9 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                                   Navigator.pop(context); // Lanjut Produksi
                                   Navigator.pop(context); // Lanjut Produksi
                                 },
-                                child: Text('Lanjut Produksi'),
+                                child: const Text('Lanjut Produksi'),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               ElevatedButton(
                                 onPressed: () {
                                   Provider.of<ProviderProduksi>(context,
@@ -117,7 +117,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                                           listen: false)
                                       .getAllProduksi(context);
                                 },
-                                child: Text('Off Compressor'),
+                                child: const Text('Off Compressor'),
                               ),
                             ],
                           ),
@@ -168,7 +168,8 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                   GridView.builder(
                     shrinkWrap: true,
                     itemCount: buttonStates.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,
@@ -183,7 +184,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                       ];
                       return ElevatedButton(
                         onPressed: buttonStates[index]
-                            ? () => _handleButtonClick(index)
+                            ? () => handleButtonClick(index)
                             : null, // Disable tombol jika false
                         style: ElevatedButton.styleFrom(
                           backgroundColor: buttonStates[index]
@@ -239,7 +240,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             // Fungsi untuk Filling
-            void _handleFilling() async {
+            void handleFilling() async {
               final provider =
                   Provider.of<ProviderProduksi>(context, listen: false);
 
@@ -250,7 +251,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
             }
 
             // Fungsi untuk menampilkan form isi gas (Refilling)
-            void _showRefillingForm() {
+            void showRefillingForm() {
               showModalBottomSheet(
                 context: context,
                 shape: const RoundedRectangleBorder(
@@ -316,7 +317,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
             }
 
             // Fungsi untuk menampilkan konfirmasi hapus (Empty)
-            void _showEmptyConfirmation() {
+            void showEmptyConfirmation() {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -373,9 +374,9 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                     itemBuilder: (BuildContext context, int index) {
                       final labels = ['Filling', 'Refilling', 'Empty'];
                       final functions = [
-                        _handleFilling, // Filling
-                        _showRefillingForm, // Refilling
-                        _showEmptyConfirmation, // Empty
+                        handleFilling, // Filling
+                        showRefillingForm, // Refilling
+                        showEmptyConfirmation, // Empty
                       ];
                       final isEnabled = [
                         isFillingEnabled, // Kondisi Filling
@@ -427,7 +428,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
           buttonStates[i] = false; // Nonaktifkan semua tombol
         }
       });
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         setModalState(() {
           for (int i = 0; i < buttonStates.length; i++) {
             buttonStates[i] = i < 6; // Reset tombol ke kondisi awal
@@ -469,7 +470,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
             : Container(
                 width: width,
                 height: height,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     SizedBox(
@@ -529,7 +530,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['List', 'History']),
+                          buttons: const ['List', 'History']),
                     ),
                     SizedBox(
                       height: height * 0.01,
@@ -555,7 +556,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text('Scan Isi')
+                          const Text('Scan Isi')
                         ],
                       ),
                     ),
@@ -608,7 +609,7 @@ class _ComponentDetailRakState extends State<ComponentDetailRak> {
                 ),
               ),
         bottomNavigationBar: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: WidgetButtonCustom(
               FullWidth: width * 0.93,
               FullHeight: height * 0.06,

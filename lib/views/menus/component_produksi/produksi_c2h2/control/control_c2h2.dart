@@ -70,7 +70,7 @@ class ControlC2h2 extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 2,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                               color: Colors.grey.shade300),
                         ],
                       ),

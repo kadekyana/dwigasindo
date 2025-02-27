@@ -66,7 +66,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
   }
 
   void _startStream(int status) {
-    Timer.periodic(Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (!_streamControllers[status]!.isClosed) {
         final data = await Provider.of<ProviderProduksi>(context, listen: false)
             .getTubeLoading(context, status);
@@ -155,7 +155,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                   });
                   print(selectMenu);
                 },
-                buttons: ['Produksi', "QC"]),
+                buttons: const ['Produksi', "QC"]),
           ),
           SizedBox(
             height: height * 0.01,
@@ -249,12 +249,12 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi')
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -322,7 +322,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -373,16 +373,16 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
+                            const Expanded(
                                 flex: 1, child: Center(child: Text('Status'))),
-                            Expanded(child: Center(child: Text('OK'))),
+                            const Expanded(child: Center(child: Text('OK'))),
                             Expanded(
                                 child:
                                     Center(child: Text("${data.tubeOkCount}"))),
                             Expanded(
                                 child:
                                     Center(child: Text("${data.tubeNoCount}"))),
-                            Expanded(
+                            const Expanded(
                               child: Center(child: Text('NO')),
                             ),
                           ],
@@ -390,7 +390,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(flex: 1, child: SizedBox.shrink()),
+                            const Expanded(flex: 1, child: SizedBox.shrink()),
                             Expanded(
                               flex: 4,
                               child: LinearProgressIndicator(
@@ -403,7 +403,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Expanded(
@@ -483,7 +483,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                   ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -526,12 +526,12 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi')
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -597,7 +597,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -620,7 +620,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.1,
-          child: Center(child: Text(":")),
+          child: const Center(child: Text(":")),
         ),
         Expanded(
           flex: 4,
@@ -713,7 +713,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -756,12 +756,12 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                           width: 30,
                           height: 30,
                         ),
-                        SizedBox(width: 5),
-                        Text('Scan Isi')
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   (data.tubeLoadingDetail?.length != 0)
                       ? Expanded(
                           child: ListView.builder(
@@ -828,7 +828,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -858,16 +858,16 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
+                            const Expanded(
                                 flex: 1, child: Center(child: Text('Status'))),
-                            Expanded(child: Center(child: Text('OK'))),
+                            const Expanded(child: Center(child: Text('OK'))),
                             Expanded(
                                 child:
                                     Center(child: Text('${data.tubeOkCount}'))),
                             Expanded(
                                 child:
                                     Center(child: Text('${data.tubeNoCount}'))),
-                            Expanded(
+                            const Expanded(
                               child: Center(child: Text('NO')),
                             ),
                           ],
@@ -875,7 +875,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(flex: 1, child: SizedBox.shrink()),
+                            const Expanded(flex: 1, child: SizedBox.shrink()),
                             Expanded(
                               flex: 4,
                               child: LinearProgressIndicator(
@@ -888,7 +888,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Expanded(
@@ -960,7 +960,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                   ),
           );
         } else {
-          return Center(child: Text('No data found'));
+          return const Center(child: Text('No data found'));
         }
       },
     );
@@ -970,7 +970,6 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
     required double width,
     required double height,
     required Map<String, dynamic> data,
-    bool isKondisi = false,
     bool showMaintenanceButton =
         true, // Default untuk menampilkan tombol Maintenance
     bool showIsiDataButton =
@@ -978,6 +977,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
     bool isOkay = false,
     required VoidCallback onIsiDataPressed,
   }) {
+    final provider = Provider.of<ProviderProduksi>(context);
     return Container(
       width: width,
       height: 160.h,
@@ -1031,12 +1031,15 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                               (showIsiDataButton) ? width * 0.25 : width * 0.35,
                           FullHeight: 30,
                           title: 'Maintenance',
-                          onpressed: () {},
+                          onpressed: () async {
+                            await provider.createMaintenance(
+                                context, 2, data['no'].toString());
+                          },
                           bgColor: PRIMARY_COLOR,
                           color: Colors.transparent,
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -1051,7 +1054,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                           color: Colors.transparent,
                         ),
                       )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),
@@ -1151,7 +1154,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Column(
                     children: [
-                      Divider(),
+                      const Divider(),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1197,7 +1200,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Tabung Bawah',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1207,7 +1210,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                     alignment: Alignment.centerLeft,
                                     child: Text('Safety Flug',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1215,14 +1218,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Tekanan (17 - 19) bar',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child: Text('18', style: minisubtitleTextBlack),
                             ),
                             Expanded(
                                 child:
                                     Text('Pen', style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1236,7 +1239,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Body Tabung',
                                     style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1246,7 +1249,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                     alignment: Alignment.centerLeft,
                                     child: Text('Isi Gas(Kg)',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   Text('10000', style: minisubtitleTextBlack),
@@ -1254,7 +1257,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Teflon',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1262,7 +1265,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Kaki Tabung',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1276,7 +1279,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child:
                                     Text('Krop', style: minisubtitleTextBlack)),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1286,7 +1289,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                     alignment: Alignment.centerLeft,
                                     child: Text('Tutup Tabung',
                                         style: minisubtitleTextBlack))),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
@@ -1294,14 +1297,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             Expanded(
                                 child: Text('Draft Valve',
                                     style: minisubtitleTextBlack)),
-                            Text(':'),
+                            const Text(':'),
                             Expanded(
                               child:
                                   SvgPicture.asset('assets/images/ceklist.svg'),
                             ),
                             Expanded(
                                 child: Text('', style: minisubtitleTextBlack)),
-                            Text(''),
+                            const Text(''),
                             Expanded(
                               child: Text(
                                 "",
@@ -1321,7 +1324,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                     style: minisubtitleTextNormal),
                               ),
                             ),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               flex: 2,
                               child: Align(
@@ -1336,7 +1339,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                               child: Text('Dibuat pada',
                                   style: minisubtitleTextNormal),
                             )),
-                            Text(':\t'),
+                            const Text(':\t'),
                             Expanded(
                               flex: 2,
                               child: Align(
@@ -1563,14 +1566,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('EW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['EW'] ?? "-"}',
                               style: subtitleTextBlack),
                         ),
                         Expanded(
                             child: Text('Solven', style: subtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: Text('\t -', style: subtitleTextBlack),
                         ),
@@ -1609,7 +1612,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('FW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['FW'] ?? "-"}',
                               style: subtitleTextBlack),
@@ -1617,14 +1620,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         (fm == true)
                             ? Expanded(
                                 child: Text('FM', style: subtitleTextBlack))
-                            : Expanded(child: SizedBox.shrink()),
-                        (fm == true) ? Text(':') : const Text(''),
+                            : const Expanded(child: SizedBox.shrink()),
+                        (fm == true) ? const Text(':') : const Text(''),
                         (fm == true)
                             ? Expanded(
                                 child: Text('\t${data['FM'] ?? "-"}',
                                     style: subtitleTextBlack),
                               )
-                            : Expanded(child: SizedBox.shrink()),
+                            : const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1639,9 +1642,9 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('-', style: subtitleTextNormal))),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1689,14 +1692,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('EW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['EW'] ?? "-"}',
                               style: subtitleTextBlack),
                         ),
                         Expanded(
                             child: Text('Solven', style: subtitleTextBlack)),
-                        Text(':'),
+                        const Text(':'),
                         Expanded(
                           child: Text('\t -', style: subtitleTextBlack),
                         ),
@@ -1735,7 +1738,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('FW', style: subtitleTextBlack))),
-                        Text(':\t'),
+                        const Text(':\t'),
                         Expanded(
                           child: Text('${data['FW'] ?? "-"}',
                               style: subtitleTextBlack),
@@ -1743,14 +1746,14 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                         (fm == true)
                             ? Expanded(
                                 child: Text('FM', style: subtitleTextBlack))
-                            : Expanded(child: SizedBox.shrink()),
-                        (fm == true) ? Text(':') : const Text(''),
+                            : const Expanded(child: SizedBox.shrink()),
+                        (fm == true) ? const Text(':') : const Text(''),
                         (fm == true)
                             ? Expanded(
                                 child: Text('\t${data['FM'] ?? "-"}',
                                     style: subtitleTextBlack),
                               )
-                            : Expanded(child: SizedBox.shrink()),
+                            : const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1765,9 +1768,9 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text('-', style: subtitleTextNormal))),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
-                        Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                   ),
@@ -1796,7 +1799,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Container(
@@ -1814,7 +1817,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             )
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
@@ -1828,7 +1831,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Container(
@@ -1895,7 +1898,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Container(
@@ -1913,7 +1916,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             )
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
@@ -1924,7 +1927,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
             ),
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.1,
-                child: Center(child: Text(":"))),
+                child: const Center(child: Text(":"))),
             Expanded(
               flex: 4,
               child: Align(
@@ -1938,7 +1941,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                     onSelected: (value, index, isSelected) {
                       print('DATA KLIK : $value - $index - $isSelected');
                     },
-                    buttons: ['OK', "NO"]),
+                    buttons: const ['OK', "NO"]),
               ),
             ),
           ],
@@ -2031,7 +2034,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
         child: Column(
           children: [
             if (widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text('Berat Isi TW1 (Kg)', style: subtitleTextBlack),
@@ -2048,7 +2051,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                 ),
               ),
             if (widget.title == "Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text('Tekanan (Bar/Psi)', style: subtitleTextBlack),
@@ -2065,7 +2068,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2083,12 +2086,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2106,12 +2109,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2129,12 +2132,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2152,12 +2155,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2175,12 +2178,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Pass', "Fail"]),
+                        buttons: const ['Pass', "Fail"]),
                   ),
                 ),
               ),
             if (widget.title == "Inspeksi" || widget.title == "CO2 Inspeksi")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text('Keterangan', style: subtitleTextBlack),
@@ -2198,7 +2201,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2216,12 +2219,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2239,12 +2242,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2262,12 +2265,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2285,12 +2288,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2308,12 +2311,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2331,12 +2334,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2354,12 +2357,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2377,12 +2380,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2400,12 +2403,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Good', "Not Good"]),
+                        buttons: const ['Good', "Not Good"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title:
@@ -2423,7 +2426,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text('Isi Gas (Kg)', style: subtitleTextBlack),
@@ -2440,7 +2443,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text(
@@ -2458,12 +2461,12 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Pass', "Fail"]),
+                        buttons: const ['Pass', "Fail"]),
                   ),
                 ),
               ),
             if (widget.title == "C2H2 QC")
-              Container(
+              SizedBox(
                 width: width,
                 child: ListTile(
                   title: Text('Keterangan', style: subtitleTextBlack),
@@ -2483,7 +2486,7 @@ class _IsiDataLoadingTubeQCState extends State<IsiDataLoadingTubeQC> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: WidgetButtonCustom(
             FullWidth: width * 0.93,
             FullHeight: height * 0.06,

@@ -80,7 +80,7 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                         onSelected: (value, index, isSelected) {
                           print('DATA KLIK : $value - $index - $isSelected');
                         },
-                        buttons: ['Karbit', "DMF", "ACT"]),
+                        buttons: const ['Karbit', "DMF", "ACT"]),
                   )
                 : (widget.title == "Pemakaian CaCl2")
                     ? Align(
@@ -97,12 +97,12 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['CaCl2', "CaC2"]),
+                            buttons: const ['CaCl2', "CaC2"]),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
             if (widget.title == 'Stok Bahan Baku' ||
                 widget.title == "Pemakaian CaCl2")
-              Divider(),
+              const Divider(),
             SizedBox(
               width: width,
               height: 50.h,
@@ -183,7 +183,7 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
             ),
             (widget.title == "Pemakaian CaCl2" ||
                     widget.title == "Stok Bahan Baku")
-                ? Container(
+                ? SizedBox(
                     width: width,
                     height: 50.h,
                     child: Row(
@@ -241,7 +241,7 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                                     1; // False jika "BB Lainnya" dipilih
                               });
                             },
-                            buttons: [
+                            buttons: const [
                               'Pemakaian\nCalcium Carbidest',
                               "Control Air &\n Waktu Drain"
                             ]),
@@ -262,14 +262,14 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['List\nControl Compressor']),
+                            buttons: const ['List\nControl Compressor']),
                       ),
             SizedBox(
               height: 10.h,
             ),
             if (widget.title == "Pemakaian Generator")
               (selectButton == true)
-                  ? Container(
+                  ? SizedBox(
                       width: width,
                       height: 40.h,
                       child: WidgetButtonCustom(
@@ -290,7 +290,7 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                         bgColor: PRIMARY_COLOR,
                       ),
                     )
-                  : Container(
+                  : SizedBox(
                       width: width,
                       height: 40.h,
                       child: WidgetButtonCustom(
@@ -325,7 +325,7 @@ class _DetailControlC2H2State extends State<DetailControlC2H2> {
                           ? cardControl(
                               width: width,
                               height: 190.h,
-                              data: [
+                              data: const [
                                 {
                                   'shift': '1',
                                   'controlJam': '09:15',
@@ -435,7 +435,7 @@ class cardControlAir extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(),
+                  const Divider(),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Timeline.builder(
@@ -499,7 +499,7 @@ class cardControlAir extends StatelessWidget {
   }
 
   Widget _buildRow(Map<String, String> item) {
-    return Container(
+    return SizedBox(
       width: 300.w,
       child: Row(
         children: [
@@ -595,11 +595,11 @@ class CardPemakaianGenerator extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(),
+                  const Divider(),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Timeline.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       properties: TimelineProperties(
                         markerGap: 10.h,
                         iconGap: 0.h,
@@ -662,7 +662,7 @@ class CardPemakaianGenerator extends StatelessWidget {
   }
 
   Widget _buildRow(Map<String, String> item) {
-    return Container(
+    return SizedBox(
       width: 300.w,
       child: Row(
         children: [
@@ -930,7 +930,7 @@ class cardStokPemakaian extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             width: width,
             height: 40.h,
             child: Row(
@@ -1113,7 +1113,7 @@ class cardControl extends StatelessWidget {
           Expanded(
             // Gunakan Expanded untuk mencegah overflow
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: data.length.clamp(1, 5), // Minimal 1, maksimal 5
               itemBuilder: (context, index) {
                 final item = data[index];
@@ -1210,16 +1210,16 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -1296,7 +1296,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['Karbit', "DMF", "ACT"]),
+                            buttons: const ['Karbit', "DMF", "ACT"]),
                       ),
                     )
                   : Padding(
@@ -1316,7 +1316,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['CaCl2', "CaC2"]),
+                            buttons: const ['CaCl2', "CaC2"]),
                       ),
                     ),
               // Container(
@@ -1343,7 +1343,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
               SizedBox(
                 height: height * 0.005,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(

@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:timeline_list/timeline_list.dart';
 
 class ComponentMenuCatatanMasterCustomer extends StatefulWidget {
-  ComponentMenuCatatanMasterCustomer({
+  const ComponentMenuCatatanMasterCustomer({
     super.key,
     required this.id,
   });
@@ -64,7 +64,7 @@ class _ComponentMenuCatatanMasterCustomerState
                           index != 1; // False jika "BB Lainnya" dipilih
                     });
                   },
-                  buttons: ['Catatan', "Dokumentasi"]),
+                  buttons: const ['Catatan', "Dokumentasi"]),
             ),
             SizedBox(
               height: 10.h,
@@ -186,7 +186,7 @@ class _CardCatatanState extends State<CardCatatan> {
             duration: const Duration(milliseconds: 300),
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Timeline.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 markerBuilder: (context, index) =>
                     _buildTimelineItem(widget.dataCatatan?[index]),
                 context: context,
@@ -514,7 +514,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 250.h,
               child: ListTile(
@@ -534,7 +534,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

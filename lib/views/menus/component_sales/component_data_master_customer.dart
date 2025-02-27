@@ -94,7 +94,7 @@ class _ComponentDataMasterCustomerState
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -144,7 +144,7 @@ class _ComponentDataMasterCustomerState
               ),
             ),
             Expanded(
-              child: (provider.cmd!.data!.length == 0)
+              child: (provider.cmd!.data!.isEmpty)
                   ? Center(
                       child: Text(
                         'Belum Terdapat Data',
@@ -157,8 +157,9 @@ class _ComponentDataMasterCustomerState
                       itemBuilder: (context, index) {
                         final data = provider.cmd?.data[index];
 
-                        if (data == null)
-                          return SizedBox(); // Handle jika data null
+                        if (data == null) {
+                          return const SizedBox(); // Handle jika data null
+                        }
 
                         return Container(
                           width: double.maxFinite,
@@ -177,7 +178,7 @@ class _ComponentDataMasterCustomerState
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 40.h,
                                 child: Stack(
@@ -195,7 +196,7 @@ class _ComponentDataMasterCustomerState
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Text("Good", style: titleText),
                                       ),
@@ -377,10 +378,9 @@ class _ComponentDataMasterCustomerState
                                                 percent: (data.limitPlatform ==
                                                         0)
                                                     ? 1.0
-                                                    : (data.remaining != null &&
-                                                            data.remaining! > 0
-                                                        ? data.remaining! /
-                                                            (data.limitPlatform!
+                                                    : (data.remaining > 0
+                                                        ? data.remaining /
+                                                            (data.limitPlatform
                                                                 .toDouble())
                                                         : 0.0),
                                                 center: Column(
@@ -388,9 +388,7 @@ class _ComponentDataMasterCustomerState
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      data.remaining != null &&
-                                                              data.remaining! >
-                                                                  0
+                                                      data.remaining > 0
                                                           ? "${data.remaining}"
                                                           : "Habis",
                                                       style:
@@ -784,7 +782,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -804,7 +802,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Perorangan', "Perusahaan"]),
+                      buttons: const ['Perorangan', "Perusahaan"]),
                 ),
               ),
             ),
@@ -857,7 +855,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -875,7 +873,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                         child: Consumer<ProviderSales>(
                           builder: (context, provider, child) {
                             final grade = provider.district?.data
-                                ?.map((data) =>
+                                .map((data) =>
                                     {'id': data.id, 'name': data.name})
                                 .toList();
 
@@ -927,7 +925,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -956,7 +954,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                           });
                         }
                       },
-                      buttons: ['Terbatas', "Tidak Terbatas"]),
+                      buttons: const ['Terbatas', "Tidak Terbatas"]),
                 ),
               ),
             ),
@@ -985,7 +983,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
               ),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: formList.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -1007,13 +1005,13 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                             alignment: Alignment.bottomCenter,
                             child: IconButton(
                               onPressed: () => _removeForm(index),
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: Row(
@@ -1074,7 +1072,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: Row(
@@ -1142,7 +1140,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
             SizedBox(
               height: 10.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Align(
@@ -1156,7 +1154,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                     color: PRIMARY_COLOR),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -1185,14 +1183,14 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                           });
                         }
                       },
-                      buttons: ['Dikirim', "Diambil Sendiri"]),
+                      buttons: const ['Dikirim', "Diambil Sendiri"]),
                 ),
               ),
             ),
             if (p == true)
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: formListB.length,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1214,13 +1212,13 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                               alignment: Alignment.bottomCenter,
                               child: IconButton(
                                 onPressed: () => _removeFormB(),
-                                icon: Icon(Icons.delete),
+                                icon: const Icon(Icons.delete),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: width,
                         height: 100.h,
                         child: ListTile(
@@ -1262,7 +1260,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 height: 10.h,
               ),
             if (p == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.06,
                 child: Align(
@@ -1276,7 +1274,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                       color: PRIMARY_COLOR),
                 ),
               ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -1305,7 +1303,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                           });
                         }
                       },
-                      buttons: ['PO', "Via Telp"]),
+                      buttons: const ['PO', "Via Telp"]),
                 ),
               ),
             ),
@@ -1332,7 +1330,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                   ),
                 ),
               ),
-            Container(
+            SizedBox(
               width: width,
               height: 120.h,
               child: ListTile(
@@ -1354,7 +1352,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: [
+                      buttons: const [
                         'Cash',
                         "COD",
                         "Credit",
@@ -1364,7 +1362,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -1395,7 +1393,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                           });
                         }
                       },
-                      buttons: [
+                      buttons: const [
                         'Bertahap',
                         "Tutup PO",
                       ]),
@@ -1403,12 +1401,12 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
               ),
             ),
             if (b == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: 100.h,
                 child: Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 210.w,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 16.w, right: 5.w),
@@ -1429,7 +1427,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 150.w,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 0, right: 0.w),
@@ -1454,7 +1452,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                                   print(
                                       'DATA KLIK : $value - $index - $isSelected');
                                 },
-                                buttons: [
+                                buttons: const [
                                   'Hari',
                                   "Bulan",
                                 ]),
@@ -1515,7 +1513,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -1537,7 +1535,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: [
+                      buttons: const [
                         'Ya',
                         "Tidak",
                       ]),
@@ -1546,7 +1544,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: 420.h,
                 child: ListTile(
@@ -1770,7 +1768,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(
@@ -1846,7 +1844,7 @@ class _ComponentDetailSalesState extends State<ComponentDetailSales> {
 }
 
 class ComponentEditDetail extends StatefulWidget {
-  ComponentEditDetail({super.key, required this.id});
+  const ComponentEditDetail({super.key, required this.id});
   final int id;
   @override
   State<ComponentEditDetail> createState() => _ComponentEditDetailState();
@@ -2230,7 +2228,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2250,7 +2248,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Perorangan', "Perusahaan"]),
+                      buttons: const ['Perorangan', "Perusahaan"]),
                 ),
               ),
             ),
@@ -2303,7 +2301,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -2321,7 +2319,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                         child: Consumer<ProviderSales>(
                           builder: (context, provider, child) {
                             final grade = provider.district?.data
-                                ?.map((data) =>
+                                .map((data) =>
                                     {'id': data.id, 'name': data.name})
                                 .toList();
 
@@ -2373,7 +2371,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2402,7 +2400,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                           });
                         }
                       },
-                      buttons: ['Terbatas', "Tidak Terbatas"]),
+                      buttons: const ['Terbatas', "Tidak Terbatas"]),
                 ),
               ),
             ),
@@ -2451,13 +2449,13 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                             alignment: Alignment.bottomCenter,
                             child: IconButton(
                               onPressed: () => _removeForm(index),
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: Row(
@@ -2520,7 +2518,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: Row(
@@ -2590,7 +2588,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
             SizedBox(
               height: 10.h,
             ),
-            Container(
+            SizedBox(
               width: width,
               height: height * 0.06,
               child: Align(
@@ -2604,7 +2602,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                     color: PRIMARY_COLOR),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2633,7 +2631,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                           });
                         }
                       },
-                      buttons: ['Dikirim', "Diambil Sendiri"]),
+                      buttons: const ['Dikirim', "Diambil Sendiri"]),
                 ),
               ),
             ),
@@ -2660,13 +2658,13 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                               alignment: Alignment.bottomCenter,
                               child: IconButton(
                                 onPressed: () => _removeFormB(index),
-                                icon: Icon(Icons.delete),
+                                icon: const Icon(Icons.delete),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: width,
                         height: 100.h,
                         child: ListTile(
@@ -2709,7 +2707,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 height: 10.h,
               ),
             if (p == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.06,
                 child: Align(
@@ -2723,7 +2721,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                       color: PRIMARY_COLOR),
                 ),
               ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2752,7 +2750,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                           });
                         }
                       },
-                      buttons: ['PO', "Via Telp"]),
+                      buttons: const ['PO', "Via Telp"]),
                 ),
               ),
             ),
@@ -2779,7 +2777,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                   ),
                 ),
               ),
-            Container(
+            SizedBox(
               width: width,
               height: 120.h,
               child: ListTile(
@@ -2801,7 +2799,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: [
+                      buttons: const [
                         'Cash',
                         "COD",
                         "Credit",
@@ -2811,7 +2809,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2842,7 +2840,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                           });
                         }
                       },
-                      buttons: [
+                      buttons: const [
                         'Bertahap',
                         "Tutup PO",
                       ]),
@@ -2850,12 +2848,12 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
               ),
             ),
             if (b == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: 100.h,
                 child: Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 210.w,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 16.w, right: 5.w),
@@ -2876,7 +2874,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 150.w,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 0, right: 0.w),
@@ -2901,7 +2899,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                                   print(
                                       'DATA KLIK : $value - $index - $isSelected');
                                 },
-                                buttons: [
+                                buttons: const [
                                   'Hari',
                                   "Bulan",
                                 ]),
@@ -2962,7 +2960,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: ListTile(
@@ -2984,7 +2982,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: [
+                      buttons: const [
                         'Ya',
                         "Tidak",
                       ]),
@@ -2993,7 +2991,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: 420.h,
                 child: ListTile(
@@ -3178,7 +3176,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(
@@ -3255,7 +3253,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
 }
 
 class ComponentProyeksiProfit extends StatefulWidget {
-  ComponentProyeksiProfit({super.key, required this.id});
+  const ComponentProyeksiProfit({super.key, required this.id});
   final int id;
   @override
   State<ComponentProyeksiProfit> createState() =>
@@ -3359,7 +3357,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                           );
 
                           setState(() {
-                            selectId = int.parse(selected!['id'].toString());
+                            selectId = int.parse(selected['id'].toString());
                           });
 
                           print("Selected ID: $selectId");
@@ -3480,7 +3478,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -3528,7 +3526,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['Lt', "M3", "Kg"]),
+                            buttons: const ['Lt', "M3", "Kg"]),
                       ),
                     ),
                   ),
@@ -3623,7 +3621,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -3671,7 +3669,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['%', "Rp"]),
+                            buttons: const ['%', "Rp"]),
                       ),
                     ),
                   ),
@@ -3700,7 +3698,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -3748,7 +3746,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
                               print(
                                   'DATA KLIK : $value - $index - $isSelected');
                             },
-                            buttons: ['%', "Rp"]),
+                            buttons: const ['%', "Rp"]),
                       ),
                     ),
                   ),
@@ -3877,7 +3875,7 @@ class _ComponentProyeksiProfitState extends State<ComponentProyeksiProfit> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

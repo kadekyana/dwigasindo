@@ -44,16 +44,16 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -126,7 +126,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -147,7 +147,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -168,7 +168,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: ListTile(
@@ -197,7 +197,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.01),
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: ListTile(
@@ -223,7 +223,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.01),
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: ListTile(
@@ -254,7 +254,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(
                 height: height * 0.01,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -277,7 +277,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -299,7 +299,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -320,7 +320,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 ),
               ),
               SizedBox(height: height * 0.02),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -351,7 +351,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               SizedBox(
                 height: height * 0.01,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: Align(

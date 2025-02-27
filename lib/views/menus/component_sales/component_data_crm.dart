@@ -54,7 +54,7 @@ class _ComponentDataCrmState extends State<ComponentDataCrm> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
@@ -126,7 +126,7 @@ class _ComponentDataCrmState extends State<ComponentDataCrm> {
                   boxShadow: [
                     BoxShadow(
                         blurRadius: 2,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                         color: Colors.grey.shade300),
                   ],
                 ),
@@ -198,7 +198,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Row(
@@ -270,7 +270,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             SizedBox(
               width: double.maxFinite,
               height: 50.h,
@@ -544,7 +544,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
                       // Tampilkan _buildWeightForm jika item ini yang diklik
                       if (_showForm && _selectedCardIndex == index)
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child:
                               _buildWeightForm("ID-${index + 1}", dataCard.id),
                         ),
@@ -578,7 +578,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: 120.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -617,7 +617,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
               closedBorder: Border.all(color: Colors.grey.shade400),
               expandedBorder: Border.all(color: Colors.grey.shade400)),
           hintText: 'Pilih Status',
-          items: ['Low Potential', 'Med Potential', 'High Potential'],
+          items: const ['Low Potential', 'Med Potential', 'High Potential'],
           onChanged: (value) {},
         ),
         SizedBox(height: 10.h),
@@ -757,7 +757,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 120.h,
               child: ListTile(
@@ -778,7 +778,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: [
+                      buttons: const [
                         'Low Potential',
                         "Med Potential",
                         "High Potential"
@@ -786,7 +786,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -799,7 +799,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                   child: Consumer<ProviderSales>(
                     builder: (context, provider, child) {
                       final grade = provider.district?.data
-                          ?.map((data) => {'id': data.id, 'name': data.name})
+                          .map((data) => {'id': data.id, 'name': data.name})
                           .toList();
 
                       return CustomAutocomplete(
@@ -827,7 +827,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 120.h,
               child: ListTile(
@@ -848,7 +848,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Perusahaan', "Perorangan"]),
+                      buttons: const ['Perusahaan', "Perorangan"]),
                 ),
               ),
             ),
@@ -858,7 +858,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(
@@ -943,7 +943,7 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 100.h,
               child: Padding(
@@ -966,7 +966,7 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
                 ),
               ),
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: ListView.builder(
                 itemCount: data.length,
@@ -1204,7 +1204,7 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
                       // Tampilkan _buildWeightForm jika item ini yang diklik
                       if (_showForm && _selectedCardIndex == index)
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: _buildWeightForm("ID-${index + 1}"),
                         ),
                     ],
@@ -1237,7 +1237,7 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: 120.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -1273,7 +1273,7 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
               closedBorder: Border.all(color: Colors.grey.shade400),
               expandedBorder: Border.all(color: Colors.grey.shade400)),
           hintText: 'Pilih Status',
-          items: ['Low Potential', 'High Potential'],
+          items: const ['Low Potential', 'High Potential'],
           onChanged: (value) {},
         ),
         SizedBox(height: 10.h),
@@ -1361,12 +1361,12 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                     horizontal: width * 0.025, vertical: 5.h),
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 100.h,
                       width: width,
                       child: Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: 50.w,
                             height: 50.h,
                             child: Image.asset('assets/images/customer.png'),
@@ -1393,7 +1393,7 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 100.w,
                             height: 20,
                             child: FittedBox(
@@ -1431,7 +1431,7 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                                           ? "Negotiation"
                                           : "Visiting"),
                     ),
-                    Divider(),
+                    const Divider(),
                     SizedBox(
                       height: 40.h,
                       width: width,
@@ -1456,14 +1456,14 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                               });
                             }
                           },
-                          buttons: ['Follow Up', "Dokumentasi"]),
+                          buttons: const ['Follow Up', "Dokumentasi"]),
                     ),
                   ],
                 ),
               ),
             ),
             if (selectButton == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.55,
                 child: Column(
@@ -1532,7 +1532,7 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                 ),
               ),
             if (selectButton == false)
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.55,
                 child: Container(
@@ -1735,7 +1735,7 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: 120.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -1937,7 +1937,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                         expandedBorder:
                             Border.all(color: Colors.grey.shade400)),
                     hintText: 'Pilih Follow Up',
-                    items: [
+                    items: const [
                       'Product Knowledge',
                       'Send Quotation',
                       'Reminder Response',
@@ -1955,7 +1955,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 250.h,
               child: ListTile(
@@ -1988,7 +1988,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: formList.length,
                       itemBuilder: (context, index) {
                         return Container(
@@ -2013,7 +2013,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                               const Divider(
                                 color: Colors.black,
                               ),
-                              Container(
+                              SizedBox(
                                 width: width,
                                 height: 80.h,
                                 child: ListTile(
@@ -2052,7 +2052,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                                 index + 1;
                                           });
                                         },
-                                        buttons: ['Gas', 'Jasa']),
+                                        buttons: const ['Gas', 'Jasa']),
                                   ),
                                 ),
                               ),
@@ -2077,7 +2077,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
 
                                         return CustomAutocomplete(
                                           data: produk
-                                                  ?.map((e) => e['name'])
+                                                  .map((e) => e['name'])
                                                   .toList() ??
                                               [],
                                           displayString: (item) =>
@@ -2085,7 +2085,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                           onSelected: (item) {
                                             print("Selected Item: $item");
 
-                                            final selected = produk?.firstWhere(
+                                            final selected = produk.firstWhere(
                                               (e) => e['name'] == item,
                                             );
 
@@ -2161,12 +2161,12 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: width,
                                 height: 100.h,
                                 child: Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 210.w,
                                       child: ListTile(
                                         contentPadding: EdgeInsets.only(
@@ -2195,7 +2195,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: 150.w,
                                       child: ListTile(
                                         contentPadding: EdgeInsets.only(
@@ -2228,7 +2228,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                                         index + 1;
                                                   });
                                                 },
-                                                buttons: [
+                                                buttons: const [
                                                   'Psi',
                                                   "Bar",
                                                 ]),
@@ -2239,7 +2239,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                   ],
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: width,
                                 height: 80.h,
                                 child: ListTile(
@@ -2320,7 +2320,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: width * 0.8,
                                 height: 40.h,
                                 child: Align(
@@ -2362,7 +2362,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                 ),
               ),
             ] else
-              SizedBox.shrink(),
+              const SizedBox.shrink(),
             SizedBox(
               height: 10.h,
             ),
@@ -2384,7 +2384,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: formListB.length,
                       itemBuilder: (context, index) {
                         return Container(
@@ -2406,10 +2406,10 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                   style: superTitleTextBlack,
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.black,
                               ),
-                              Container(
+                              SizedBox(
                                 width: width,
                                 height: 80.h,
                                 child: ListTile(
@@ -2490,7 +2490,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: width * 0.8,
                                 height: 40.h,
                                 child: Align(
@@ -2532,7 +2532,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
                 ),
               ),
             ] else
-              SizedBox.shrink(),
+              const SizedBox.shrink(),
             SizedBox(
               height: 20.h,
             ),
@@ -2551,7 +2551,7 @@ class _ComponentTambahFollowUpState extends State<ComponentTambahFollowUp> {
             onpressed: () async {
               if (follow.value == null || controller == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                       content: Text("Harap isi semua field yang diperlukan")),
                 );
                 return;

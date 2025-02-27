@@ -8,7 +8,7 @@ class WidgetButtonCustom extends StatelessWidget {
       required this.FullWidth,
       required this.FullHeight,
       required this.title,
-      required this.onpressed,
+      this.onpressed,
       this.titleColor,
       this.bgColor,
       this.shadowColor,
@@ -17,7 +17,7 @@ class WidgetButtonCustom extends StatelessWidget {
   final double FullWidth;
   final double FullHeight;
   final String title;
-  final Function onpressed;
+  Function? onpressed;
   final Color color;
   TextStyle? titleColor;
   Color? bgColor;
@@ -28,7 +28,7 @@ class WidgetButtonCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onpressed();
+        onpressed!();
       },
       child: Container(
         width: FullWidth,

@@ -40,7 +40,7 @@ class WidgetMenu extends StatelessWidget {
             SizedBox(
               height: HB * 0.01,
             ),
-            Container(
+            SizedBox(
               width: FW,
               height: 25,
               child: FittedBox(

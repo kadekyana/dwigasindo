@@ -36,7 +36,7 @@ class MenuPurchase extends StatelessWidget {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             Container(
@@ -76,7 +76,7 @@ class MenuPurchase extends StatelessWidget {
                 ],
               ),
             ),
-            WidgetButtonDistribusi(
+            const WidgetButtonDistribusi(
               title: 'Purchase Order',
               dataList: null,
               onTap: ComponentPurchaseOrder(),

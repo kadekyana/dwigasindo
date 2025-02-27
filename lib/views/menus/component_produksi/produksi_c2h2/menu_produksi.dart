@@ -22,6 +22,7 @@ class MenuProduksi extends StatefulWidget {
 }
 
 class _MenuProduksiState extends State<MenuProduksi> {
+  @override
   void initState() {
     // TODO: implement initState
     awaitData();
@@ -53,7 +54,7 @@ class _MenuProduksiState extends State<MenuProduksi> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             (widget.title == 'C2H2')
@@ -74,7 +75,7 @@ class _MenuProduksiState extends State<MenuProduksi> {
                     ? ComponentLoadingTabung(
                         title: widget.title,
                       )
-                    : ComponentLoadingTabungMixGas()),
+                    : const ComponentLoadingTabungMixGas()),
             WidgetButtonDistribusi(
               title: 'Produksi',
               dataList: null,
@@ -278,7 +279,7 @@ class WidgetCard_HighPreasure extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   buttonWidth: width * 0.3),
               isRadio: true,
-              buttons: ['Gain', 'Loss']),
+              buttons: const ['Gain', 'Loss']),
           Expanded(
             child: Container(
               child: Row(
@@ -324,6 +325,8 @@ class WidgetCard_HighPreasure extends StatelessWidget {
 }
 
 class tes extends StatelessWidget {
+  const tes({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -335,7 +338,7 @@ class tes extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      body: Center(
+      body: const Center(
         child: Text('Pending'),
       ),
     );

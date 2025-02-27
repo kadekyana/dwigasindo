@@ -6,6 +6,7 @@ import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/menu_distribusi.dart';
 import 'package:dwigasindo/views/menus/menu_item_produksi.dart';
+import 'package:dwigasindo/views/menus/menu_maintenance.dart';
 import 'package:dwigasindo/views/menus/menu_order.dart';
 import 'package:dwigasindo/views/menus/menu_purchase.dart';
 import 'package:dwigasindo/views/menus/menu_sales.dart';
@@ -15,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MenuHome extends StatelessWidget {
-  MenuHome({super.key});
+  const MenuHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class MenuHome extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: double.maxFinite,
           height: double.maxFinite - kBottomNavigationBarHeight,
           child: Column(
@@ -213,7 +214,7 @@ class MenuHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MenuWarehouse(),
+                                  builder: (context) => const MenuWarehouse(),
                                 ),
                               );
                             } catch (e) {
@@ -232,7 +233,7 @@ class MenuHome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MenuDistribusi(),
+                                builder: (context) => const MenuDistribusi(),
                               ),
                             );
                           }),
@@ -270,7 +271,7 @@ class MenuHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MenuPurchase(),
+                                  builder: (context) => const MenuPurchase(),
                                 ),
                               );
                             } catch (e) {
@@ -289,7 +290,7 @@ class MenuHome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MenuItemProduksi(),
+                                builder: (context) => const MenuItemProduksi(),
                               ),
                             );
                           }),
@@ -308,7 +309,7 @@ class MenuHome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MenuOrder(),
+                                builder: (context) => const MenuOrder(),
                               ),
                             );
                           }),
@@ -321,7 +322,7 @@ class MenuHome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MenuSales(),
+                                builder: (context) => const MenuSales(),
                               ),
                             );
                           }),
@@ -329,8 +330,46 @@ class MenuHome extends StatelessWidget {
                           HB: height,
                           FW: width,
                           icon: Image.asset('assets/images/purchase.png'),
-                          isi: "Maintance",
-                          navigator: () async {}),
+                          isi: "Maintenance",
+                          navigator: () async {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+
+                            try {
+                              await Future.wait([
+                                // providerItem.getAllPo(context),
+                                // providerSales.getCMD(context),
+                                // providerItem.getAllItem(context),
+                                // providerSales.getSummarySales(context),
+                                // providerSales.getUsersPic(context),
+                                // providerItem.getAllSPB(context),
+                                // providerItem.getAllCategory(context),
+                                // providerItem.getAllVendor(context),
+                              ]);
+
+                              // Navigate sesuai kondisi
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MenuMaintenance(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
+                          }),
                       // WidgetMenu(
                       //     HB: height,
                       //     FW: width,

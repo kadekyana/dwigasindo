@@ -215,7 +215,8 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
   void _addForm() {
     if (selectTank == null || selectVendor == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Pilih tangki dan vendor terlebih dahulu')),
+        const SnackBar(
+            content: Text('Pilih tangki dan vendor terlebih dahulu')),
       );
       return;
     }
@@ -242,7 +243,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.17,
           child: ListTile(
@@ -263,11 +264,11 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['CO2', "GAS", "VGL/DEWAR", "Mix Gas"]),
+                  buttons: const ['CO2', "GAS", "VGL/DEWAR", "Mix Gas"]),
             ),
           ),
         ),
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.12,
           child: ListTile(
@@ -303,7 +304,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
         SizedBox(
           height: widget.height * 0.01,
         ),
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.1,
           child: ListTile(
@@ -334,7 +335,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
             ),
           ),
         ),
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.1,
           child: ListTile(
@@ -362,12 +363,12 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
         ),
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: formList.length,
           itemBuilder: (context, index) {
             return Column(
               children: [
-                Container(
+                SizedBox(
                   width: widget.width,
                   child: Row(
                     children: [
@@ -415,7 +416,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: widget.width * 0.15,
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -423,7 +424,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
                               onPressed: () {
                                 _removeForm(index);
                               },
-                              icon: Icon(Icons.delete)),
+                              icon: const Icon(Icons.delete)),
                         ),
                       )
                     ],
@@ -439,17 +440,18 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
         Container(
           width: widget.width,
           height: 30,
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(
             children: [
-              IconButton(onPressed: _addForm, icon: Icon(Icons.add_circle)),
+              IconButton(
+                  onPressed: _addForm, icon: const Icon(Icons.add_circle)),
             ],
           ),
         ),
         SizedBox(
           height: widget.height * 0.01,
         ),
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.1,
           child: ListTile(
@@ -475,7 +477,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
         SizedBox(
           height: widget.height * 0.01,
         ),
-        Container(
+        SizedBox(
           width: widget.width,
           height: widget.height * 0.1,
           child: ListTile(
@@ -502,7 +504,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
           height: widget.height * 0.02,
         ),
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -541,7 +543,8 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
                           width: widget.width * 0.2,
                           height: widget.height * 0.06,
                           decoration: BoxDecoration(
-                            color: Color(0xFF003366), // Warna biru (Vendor B)
+                            color: const Color(
+                                0xFF003366), // Warna biru (Vendor B)
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
@@ -605,7 +608,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
                   selectTypeGas == null ||
                   formList.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                       content:
                           Text('Harap lengkapi semua data sebelum submit!')),
                 );
@@ -616,7 +619,7 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
               for (var form in formList) {
                 if (form['komposisi'] == null || form['qty'] == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                         content:
                             Text('Harap lengkapi semua form sebelum submit!')),
                   );
@@ -626,9 +629,9 @@ class _widgetHighPreasureState extends State<widgetHighPreasure> {
               print("c2h2_production_id = ${widget.id}");
               print("fill_type = ${pengisian!.selectedIndex}");
               print("mix_gas_shelf_group_id = ${selectGroupRak!}");
-              print("mix_gas_shelf_id = ${selectMixRak}");
-              print("tube_gas_id = ${selectTypeGas}");
-              print("items = ${formList}");
+              print("mix_gas_shelf_id = $selectMixRak");
+              print("tube_gas_id = $selectTypeGas");
+              print("items = $formList");
               widget.provider.createRakMixGas(
                   context,
                   widget.id,

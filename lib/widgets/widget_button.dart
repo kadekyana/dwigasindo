@@ -22,22 +22,22 @@ class WidgetButton extends StatelessWidget {
   Color? titleColor;
   Color? bgColor;
   Color? shadowColor;
-  MaterialStateProperty<double?>? elevation;
+  WidgetStateProperty<double?>? elevation;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return OutlinedButton(
       style: ButtonStyle(
-        side: MaterialStatePropertyAll(BorderSide(color: color)),
-        backgroundColor: MaterialStatePropertyAll(
+        side: WidgetStatePropertyAll(BorderSide(color: color)),
+        backgroundColor: WidgetStatePropertyAll(
             (bgColor == null) ? Colors.transparent : bgColor),
         elevation:
-            (elevation != null) ? elevation : const MaterialStatePropertyAll(5),
-        shadowColor: MaterialStatePropertyAll(
+            (elevation != null) ? elevation : const WidgetStatePropertyAll(5),
+        shadowColor: WidgetStatePropertyAll(
             (shadowColor != null) ? shadowColor : Colors.transparent),
-        minimumSize: MaterialStatePropertyAll(Size(FullWidth, FullHeight)),
-        padding: MaterialStatePropertyAll(
+        minimumSize: WidgetStatePropertyAll(Size(FullWidth, FullHeight)),
+        padding: WidgetStatePropertyAll(
           EdgeInsets.symmetric(horizontal: FullWidth * 0.3, vertical: 0),
         ),
       ),

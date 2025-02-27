@@ -22,7 +22,7 @@ class WidgetProgressBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             Center(
-              child: Container(
+              child: SizedBox(
                 height: 25,
                 child: Align(
                   alignment: Alignment.center,

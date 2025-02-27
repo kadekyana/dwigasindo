@@ -148,7 +148,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                               }
 
                               // Set cooldown selama 5 detik
-                              Future.delayed(Duration(seconds: 5), () {
+                              Future.delayed(const Duration(seconds: 5), () {
                                 setState(() {
                                   isCooldown = false; // Akhiri cooldown
                                   scanCount = 0; // Reset hitungan scan
@@ -163,7 +163,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                           // Jika tidak ada barcode yang terdeteksi
                           context.read<ProviderScan>().scanFailureCountF();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content:
                                     Text('Tidak ada barcode yang terdeteksi')),
                           );
@@ -199,21 +199,21 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                               provider.toggleFlash();
                             },
                             icon: (provider.isFlashOn)
-                                ? Icon(Icons.flashlight_on_outlined)
-                                : Icon(Icons.flashlight_off_outlined)),
+                                ? const Icon(Icons.flashlight_on_outlined)
+                                : const Icon(Icons.flashlight_off_outlined)),
                       ),
                     ),
                   ],
                 ),
               ),
               // Menampilkan jumlah scan berhasil dan gagal
-              Container(
+              SizedBox(
                 height: height * 0.125,
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(6)),
                           color: PRIMARY_COLOR,
@@ -246,7 +246,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: height * 0.0125),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(6)),
                           color: PRIMARY_COLOR,
@@ -386,7 +386,7 @@ class _ComponentScanQrCodeState extends State<ComponentScanQrCode> {
               ),
               GestureDetector(
                 onTap: () {
-                  Future.delayed(Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 1), () {
                     cameraController.dispose();
                     Navigator.pushReplacement(
                       context,
@@ -480,7 +480,7 @@ class WidgetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: double.maxFinite,
       height: height * 0.25,
       decoration: BoxDecoration(
@@ -503,7 +503,7 @@ class WidgetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
                   decoration: const BoxDecoration(
                     color: PRIMARY_COLOR,
@@ -528,7 +528,8 @@ class WidgetCard extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),
@@ -556,7 +557,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -570,7 +571,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -589,7 +590,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -603,7 +604,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -622,7 +623,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -636,7 +637,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -655,7 +656,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -669,7 +670,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -688,7 +689,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -702,7 +703,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -726,7 +727,7 @@ class WidgetCard extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Container(
-                  padding: EdgeInsets.all(13),
+                  padding: const EdgeInsets.all(13),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
@@ -735,26 +736,26 @@ class WidgetCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 width: 50,
                 child: IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.edit,
                     size: 20,
                     color: SECONDARY_COLOR,
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 50,
                 width: 50,
                 child: IconButton(
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(20)),
                       ),
@@ -777,14 +778,14 @@ class WidgetCard extends StatelessWidget {
                                 child: Text('Yakin Ingin Menghapus',
                                     style: titleTextBlack),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Bagian Tengah (Form)
                               WidgetForm(
                                   controller: reason,
                                   alert:
                                       'Harus di isi jika ingin menghapus data',
                                   hint: "Masukkan Alasan"),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Bagian Bawah (Button Kembali dan Hapus)
                               Row(
                                 mainAxisAlignment:
@@ -822,7 +823,7 @@ class WidgetCard extends StatelessWidget {
                       },
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete,
                     size: 20,
                     color: SECONDARY_COLOR,
@@ -838,7 +839,7 @@ class WidgetCard extends StatelessWidget {
 }
 
 class WidgetCardNew extends StatelessWidget {
-  WidgetCardNew({
+  const WidgetCardNew({
     super.key,
     required this.height,
     required this.width,
@@ -850,13 +851,13 @@ class WidgetCardNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: double.maxFinite,
       height: height * 0.25,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 1,
             color: Color(0xffE4E4E4),
@@ -873,9 +874,9 @@ class WidgetCardNew extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: width * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: COMPLEMENTARY_COLOR3,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -909,7 +910,8 @@ class WidgetCardNew extends StatelessWidget {
             flex: 3,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(8)),
                 border: Border(
                   top: BorderSide(color: Colors.grey.shade300),
                 ),
@@ -918,7 +920,7 @@ class WidgetCardNew extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: PRIMARY_COLOR),
@@ -937,7 +939,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -951,7 +953,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -968,7 +970,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -982,7 +984,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -999,7 +1001,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1013,7 +1015,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1030,7 +1032,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1044,7 +1046,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1061,7 +1063,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1075,7 +1077,7 @@ class WidgetCardNew extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerLeft,
@@ -1099,7 +1101,7 @@ class WidgetCardNew extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Container(
-                  padding: EdgeInsets.all(13),
+                  padding: const EdgeInsets.all(13),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,

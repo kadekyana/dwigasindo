@@ -36,8 +36,10 @@ class Datum {
   int? ownerShipType;
   bool? isHasTubeType;
   int? tubeTypeId;
+  String? tubeTypeName;
   bool? isHasGrade;
   int? tubeGradeId;
+  dynamic tubeGradeName;
   int? tubeYear;
   String? serialNumber;
   dynamic customerId;
@@ -46,6 +48,7 @@ class Datum {
   String? vendorName;
   String? lastLocation;
   int? tubeGasId;
+  String? tubeGasName;
 
   Datum({
     this.id,
@@ -55,8 +58,10 @@ class Datum {
     this.ownerShipType,
     this.isHasTubeType,
     this.tubeTypeId,
+    this.tubeTypeName,
     this.isHasGrade,
     this.tubeGradeId,
+    this.tubeGradeName,
     this.tubeYear,
     this.serialNumber,
     this.customerId,
@@ -65,6 +70,7 @@ class Datum {
     this.vendorName,
     this.lastLocation,
     this.tubeGasId,
+    this.tubeGasName,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -75,8 +81,10 @@ class Datum {
         ownerShipType: json["owner_ship_type"],
         isHasTubeType: json["is_has_tube_type"],
         tubeTypeId: json["tube_type_id"],
+        tubeTypeName: json["tube_type_name"],
         isHasGrade: json["is_has_grade"],
         tubeGradeId: json["tube_grade_id"],
+        tubeGradeName: json["tube_grade_name"],
         tubeYear: json["tube_year"],
         serialNumber: json["serial_number"],
         customerId: json["customer_id"],
@@ -85,6 +93,7 @@ class Datum {
         vendorName: json["vendor_name"],
         lastLocation: json["last_location"],
         tubeGasId: json["tube_gas_id"],
+        tubeGasName: json["tube_gas_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -95,8 +104,10 @@ class Datum {
         "owner_ship_type": ownerShipType,
         "is_has_tube_type": isHasTubeType,
         "tube_type_id": tubeTypeId,
+        "tube_type_name": tubeTypeName,
         "is_has_grade": isHasGrade,
         "tube_grade_id": tubeGradeId,
+        "tube_grade_name": tubeGradeName,
         "tube_year": tubeYear,
         "serial_number": serialNumber,
         "customer_id": customerId,
@@ -105,5 +116,6 @@ class Datum {
         "vendor_name": vendorName,
         "last_location": lastLocation,
         "tube_gas_id": tubeGasId,
+        "tube_gas_name": tubeGasName,
       };
 }

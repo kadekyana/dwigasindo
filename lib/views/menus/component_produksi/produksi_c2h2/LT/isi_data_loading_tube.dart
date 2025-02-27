@@ -63,7 +63,7 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
           height: height,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -93,12 +93,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                             });
                           }
                         },
-                        buttons: ['Massal', "Single"]),
+                        buttons: const ['Massal', "Single"]),
                   ),
                 ),
               ),
               if (widget.title == "Production")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -116,7 +116,7 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                   ),
                 ),
               if (widget.title == "Production")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -135,12 +135,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Postfill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -159,12 +159,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Postfill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -183,12 +183,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Production")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -207,12 +207,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Production")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -231,7 +231,7 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                   ),
                 ),
               if (widget.title == "Prefill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -250,12 +250,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Prefill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -274,12 +274,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Prefill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -298,12 +298,12 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
               if (widget.title == "Prefill")
-                Container(
+                SizedBox(
                   width: width,
                   height: height * 0.1,
                   child: ListTile(
@@ -322,7 +322,7 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['Good', "Not Good"]),
+                          buttons: const ['Good', "Not Good"]),
                     ),
                   ),
                 ),
@@ -331,7 +331,7 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: WidgetButtonCustom(
             FullWidth: width * 0.93,
             FullHeight: height * 0.06,

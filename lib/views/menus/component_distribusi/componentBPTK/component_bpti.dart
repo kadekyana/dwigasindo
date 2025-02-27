@@ -49,10 +49,10 @@ class _ComponentBPTIState extends State<ComponentBPTI> {
       ),
       body: (provider.isLoadingTI == true)
           ? Center(
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SafeArea(

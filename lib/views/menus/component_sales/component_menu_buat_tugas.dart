@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ComponentMenuBuatTugas extends StatefulWidget {
-  ComponentMenuBuatTugas({
+  const ComponentMenuBuatTugas({
     super.key,
   });
   @override
@@ -163,7 +163,12 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ["Prospek", "Existing", "Komplain", "Claim"]),
+                      buttons: const [
+                        "Prospek",
+                        "Existing",
+                        "Komplain",
+                        "Claim"
+                      ]),
                 ),
               ),
             ),
@@ -195,7 +200,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
                           }
                         });
                       },
-                      buttons: ["Lead", "Customer"]),
+                      buttons: const ["Lead", "Customer"]),
                 ),
               ),
             ),
@@ -323,7 +328,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
                   child: Consumer<ProviderSales>(
                     builder: (context, provider, child) {
                       final grade = provider.district?.data
-                          ?.map((data) => {'id': data.id, 'name': data.name})
+                          .map((data) => {'id': data.id, 'name': data.name})
                           .toList();
 
                       return CustomAutocomplete(
@@ -379,7 +384,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: width,
                 height: 220.h,
                 child: ListTile(
@@ -461,7 +466,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

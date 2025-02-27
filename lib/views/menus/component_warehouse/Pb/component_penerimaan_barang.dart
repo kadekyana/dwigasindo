@@ -37,7 +37,7 @@ class _ComponentPenerimaanBarangState extends State<ComponentPenerimaanBarang> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -97,7 +97,7 @@ class _ComponentPenerimaanBarangState extends State<ComponentPenerimaanBarang> {
                   onSelected: (value, index, isSelected) {
                     print('DATA KLIK : $value - $index - $isSelected');
                   },
-                  buttons: ['List SO', 'History']),
+                  buttons: const ['List SO', 'History']),
             ),
             SizedBox(
               height: height * 0.01,
@@ -147,7 +147,7 @@ class cardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: double.maxFinite,
             height: height * 0.05,
             child: Row(

@@ -16,7 +16,7 @@ import '../../../../providers/provider_item.dart';
 import '../../../../widgets/widget_button_custom.dart';
 
 class ComponentSerahTerimaBarang extends StatefulWidget {
-  ComponentSerahTerimaBarang({
+  const ComponentSerahTerimaBarang({
     super.key,
   });
 
@@ -57,16 +57,16 @@ class _ComponentSerahTerimaBarangState
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -136,7 +136,7 @@ class _ComponentSerahTerimaBarangState
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
@@ -147,7 +147,7 @@ class _ComponentSerahTerimaBarangState
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Expanded(
                       child: Center(
                         child: FittedBox(
@@ -180,7 +180,7 @@ class _ComponentSerahTerimaBarangState
                         typeInput: TextInputType.number,
                         alert: '(MoU)',
                         hint: '(MoU)',
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     Expanded(
@@ -194,7 +194,7 @@ class _ComponentSerahTerimaBarangState
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -204,8 +204,8 @@ class _ComponentSerahTerimaBarangState
                     expands: true,
                     decoration: InputDecoration(
                         hintText: 'Masukkan catatan di sini...',
-                        contentPadding: EdgeInsets.all(10),
-                        border: OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10),
+                        border: const OutlineInputBorder(),
                         hintStyle: subtitleTextNormal),
                     style: subtitleTextBlack,
                     textAlignVertical: TextAlignVertical.top,
@@ -256,7 +256,7 @@ class _ComponentSerahTerimaBarangState
                                   activeColor:
                                       PRIMARY_COLOR, // Warna ketika dipilih
                                   checkColor: PRIMARY_COLOR, // Warna centang
-                                  shape: CircleBorder(),
+                                  shape: const CircleBorder(),
                                   side: BorderSide(
                                       color:
                                           Colors.grey.shade200), // Bentuk bulat
@@ -292,7 +292,7 @@ class _ComponentSerahTerimaBarangState
                 ),
               ),
               (tfS == true)
-                  ? Container(
+                  ? SizedBox(
                       width: width,
                       height: height * 0.1,
                       child: ListTile(
@@ -321,12 +321,12 @@ class _ComponentSerahTerimaBarangState
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               (tfS == true)
                   ? SizedBox(
                       height: height * 0.01,
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               (tfS == true)
                   ? Container(
                       width: width,
@@ -336,11 +336,11 @@ class _ComponentSerahTerimaBarangState
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: SizedBox.shrink()),
+                          const Expanded(child: SizedBox.shrink()),
                           SizedBox(
                             width: width * 0.01,
                           ),
-                          Expanded(child: SizedBox.shrink()),
+                          const Expanded(child: SizedBox.shrink()),
                           SizedBox(
                             width: width * 0.01,
                           ),
@@ -356,13 +356,13 @@ class _ComponentSerahTerimaBarangState
                         ],
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap:
                       _showImageSourceDialog, // Panggil fungsi saat button diklik
-                  child: Container(
+                  child: SizedBox(
                     width: width,
                     height: height * 0.1,
                     child: ListTile(
@@ -400,11 +400,11 @@ class _ComponentSerahTerimaBarangState
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: SizedBox.shrink()),
+                    const Expanded(child: SizedBox.shrink()),
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    Expanded(child: SizedBox.shrink()),
+                    const Expanded(child: SizedBox.shrink()),
                     SizedBox(
                       width: width * 0.01,
                     ),

@@ -48,7 +48,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             // Fungsi untuk mengatur logika tombol
-            void _handleButtonClick(int index) {
+            void handleButtonClick(int index) {
               if (index == 0) {
                 // Logika untuk Start Produksi
                 setModalState(() {
@@ -84,7 +84,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text('Pilih Aksi Lanjutan', style: subtitleTextBlack),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -98,9 +98,9 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                                   Navigator.pop(context); // Lanjut Produksi
                                   Navigator.pop(context); // Lanjut Produksi
                                 },
-                                child: Text('Lanjut Produksi'),
+                                child: const Text('Lanjut Produksi'),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               ElevatedButton(
                                 onPressed: () {
                                   Provider.of<ProviderProduksi>(context,
@@ -118,7 +118,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                                           listen: false)
                                       .getAllProduksi(context);
                                 },
-                                child: Text('Off Compressor'),
+                                child: const Text('Off Compressor'),
                               ),
                             ],
                           ),
@@ -169,7 +169,8 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                   GridView.builder(
                     shrinkWrap: true,
                     itemCount: buttonStates.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,
@@ -184,7 +185,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                       ];
                       return ElevatedButton(
                         onPressed: buttonStates[index]
-                            ? () => _handleButtonClick(index)
+                            ? () => handleButtonClick(index)
                             : null, // Disable tombol jika false
                         style: ElevatedButton.styleFrom(
                           backgroundColor: buttonStates[index]
@@ -240,7 +241,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             // Fungsi untuk Filling
-            void _handleFilling() async {
+            void handleFilling() async {
               final provider =
                   Provider.of<ProviderProduksi>(context, listen: false);
 
@@ -251,7 +252,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
             }
 
             // Fungsi untuk menampilkan form isi gas (Refilling)
-            void _showRefillingForm() {
+            void showRefillingForm() {
               showModalBottomSheet(
                 context: context,
                 shape: const RoundedRectangleBorder(
@@ -317,7 +318,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
             }
 
             // Fungsi untuk menampilkan konfirmasi hapus (Empty)
-            void _showEmptyConfirmation() {
+            void showEmptyConfirmation() {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -374,9 +375,9 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                     itemBuilder: (BuildContext context, int index) {
                       final labels = ['Filling', 'Refilling', 'Empty'];
                       final functions = [
-                        _handleFilling, // Filling
-                        _showRefillingForm, // Refilling
-                        _showEmptyConfirmation, // Empty
+                        handleFilling, // Filling
+                        showRefillingForm, // Refilling
+                        showEmptyConfirmation, // Empty
                       ];
                       final isEnabled = [
                         isFillingEnabled, // Kondisi Filling
@@ -428,7 +429,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
           buttonStates[i] = false; // Nonaktifkan semua tombol
         }
       });
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         setModalState(() {
           for (int i = 0; i < buttonStates.length; i++) {
             buttonStates[i] = i < 6; // Reset tombol ke kondisi awal
@@ -471,7 +472,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
             : Container(
                 width: width,
                 height: height,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     SizedBox(
@@ -531,7 +532,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                           onSelected: (value, index, isSelected) {
                             print('DATA KLIK : $value - $index - $isSelected');
                           },
-                          buttons: ['List', 'History']),
+                          buttons: const ['List', 'History']),
                     ),
                     SizedBox(
                       height: height * 0.01,
@@ -559,7 +560,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text('Scan Isi')
+                          const Text('Scan Isi')
                         ],
                       ),
                     ),
@@ -595,7 +596,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (BuildContext context) {
-                                        return Center(
+                                        return const Center(
                                           child: CircularProgressIndicator(),
                                         );
                                       },
@@ -641,7 +642,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                 ),
               ),
         bottomNavigationBar: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -657,7 +658,7 @@ class _ComponentDetailRakMixGasState extends State<ComponentDetailRakMixGas> {
                   FullHeight: height * 0.06,
                   title: 'Selesai',
                   onpressed: () async {},
-                  titleColor: TextStyle(color: Colors.black),
+                  titleColor: const TextStyle(color: Colors.black),
                   bgColor: Colors.white,
                   color: Colors.grey.shade300),
             ],

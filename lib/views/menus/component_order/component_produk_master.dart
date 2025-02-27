@@ -225,7 +225,7 @@ class _ComponentMenuMasterProdukState extends State<ComponentMenuMasterProduk>
 }
 
 class ComponentProdukMaster extends StatefulWidget {
-  ComponentProdukMaster({
+  const ComponentProdukMaster({
     super.key,
   });
 
@@ -250,7 +250,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -307,7 +307,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
               height: 10.h,
             ),
             Expanded(
-              child: (provider.produk!.data!.length == 0)
+              child: (provider.produk!.data!.isEmpty)
                   ? const Center(
                       child: Text('Belum Terdapat Produk Trash'),
                     )
@@ -332,7 +332,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 40.h,
                                 child: Stack(
@@ -354,7 +354,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Text(
                                             (data?.type == 1) ? "Gas" : "Jasa",
@@ -429,7 +429,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${data?.name}',
+                                                        '\t${data.name}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -460,7 +460,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data?.isGrade == true) ? providerDis.getGrade(data!.tubeGradeId!) : "-"}',
+                                                        '\t${(data.isGrade == true) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -485,11 +485,11 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data?.note == "") ? "-" : data?.note}',
+                                                        '\t${(data.note == "") ? "-" : data.note}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -514,7 +514,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
@@ -581,7 +581,8 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
                                           onpressed: () async {
                                             showModalBottomSheet(
                                               context: context,
-                                              shape: RoundedRectangleBorder(
+                                              shape:
+                                                  const RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.vertical(
                                                         top: Radius.circular(
@@ -735,7 +736,7 @@ class _ComponentProdukMasterState extends State<ComponentProdukMaster> {
 }
 
 class ComponentProdukTrashMaster extends StatefulWidget {
-  ComponentProdukTrashMaster({
+  const ComponentProdukTrashMaster({
     super.key,
   });
 
@@ -761,7 +762,7 @@ class _ComponentProdukTrashMasterState
       body: Container(
         width: width,
         height: height,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(
@@ -814,7 +815,7 @@ class _ComponentProdukTrashMasterState
               height: 10.h,
             ),
             Expanded(
-              child: (provider.produkTrash!.data!.length == 0)
+              child: (provider.produkTrash!.data!.isEmpty)
                   ? const Center(
                       child: Text('Belum Terdapat Produk Trash'),
                     )
@@ -839,7 +840,7 @@ class _ComponentProdukTrashMasterState
                           ),
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: double.maxFinite,
                                 height: 40.h,
                                 child: Stack(
@@ -861,7 +862,7 @@ class _ComponentProdukTrashMasterState
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Text(
                                             (data?.type == 1) ? "Gas" : "Jasa",
@@ -936,7 +937,7 @@ class _ComponentProdukTrashMasterState
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${data?.name}',
+                                                        '\t${data.name}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -967,7 +968,7 @@ class _ComponentProdukTrashMasterState
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data?.isGrade == true) ? providerDis.getGrade(data!.tubeGradeId!) : "-"}',
+                                                        '\t${(data.isGrade == true) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -992,11 +993,11 @@ class _ComponentProdukTrashMasterState
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data?.note == "") ? "-" : data?.note}',
+                                                        '\t${(data.note == "") ? "-" : data.note}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -1021,11 +1022,11 @@ class _ComponentProdukTrashMasterState
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(':'),
+                                                  const Text(':'),
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${provider.formatCurrency(data!.price as num)}',
+                                                        '\t${provider.formatCurrency(data.price as num)}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -1143,7 +1144,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -1163,7 +1164,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Gas', "Jasa"]),
+                      buttons: const ['Gas', "Jasa"]),
                 ),
               ),
             ),
@@ -1210,7 +1211,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 80.h,
               child: ListTile(
@@ -1241,12 +1242,12 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
                           });
                         }
                       },
-                      buttons: ['Grade', "Non Grade"]),
+                      buttons: const ['Grade', "Non Grade"]),
                 ),
               ),
             ),
             if (selectGrade == true)
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: ListTile(
@@ -1341,7 +1342,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(
@@ -1669,7 +1670,7 @@ class _ComponentEditProdukState extends State<ComponentEditProduk> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

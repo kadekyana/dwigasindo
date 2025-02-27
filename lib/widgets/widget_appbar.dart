@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetAppbar extends StatelessWidget implements PreferredSizeWidget {
-  WidgetAppbar({
-    Key? key,
+  const WidgetAppbar({
+    super.key,
     required this.title,
     this.back = false,
     this.center = false,
@@ -16,7 +16,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.sizefont,
     this.colorBack,
     this.extraWidget, // Widget tambahan seperti search bar atau filter
-  }) : super(key: key);
+  });
 
   final String title;
   final bool back;
@@ -38,7 +38,7 @@ class WidgetAppbar extends StatelessWidget implements PreferredSizeWidget {
           IconThemeData(color: (colorBack != null) ? colorBack : Colors.white),
       leading: back
           ? IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_rounded),
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
               onPressed: route,
             )
           : null,

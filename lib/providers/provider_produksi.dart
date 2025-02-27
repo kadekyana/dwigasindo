@@ -226,6 +226,39 @@ class ProviderProduksi extends ChangeNotifier {
     }
   }
 
+  Future<void> createMaintenance(
+    BuildContext context,
+    int? type,
+    String? noTube,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .postRequest(url: 'maintenances/create', token: token, data: {
+      "type": type, // 1 = High pressure, 2 = C2h2
+      "tube_no": noTube
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      showTopSnackBar(
+        // ignore: use_build_context_synchronously
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Perbarui Data',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        // ignore: use_build_context_synchronously
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Perbarui Data',
+        ),
+      );
+    }
+  }
+
   Future<void> createMixGas(BuildContext context, int? type, String? poNum,
       String? name, String customerName, int tubeQty, int? selectTube) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);

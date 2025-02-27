@@ -123,7 +123,7 @@ class DetailControlHighPressure extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width,
               height: 50.h,
               child: Row(
@@ -188,7 +188,7 @@ class DetailControlHighPressure extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: width,
                                 height: 40.h,
                                 child: Row(
@@ -622,16 +622,16 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -705,10 +705,10 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
                       onSelected: (value, index, isSelected) {
                         print('DATA KLIK : $value - $index - $isSelected');
                       },
-                      buttons: ['Masuk', "Keluar"]),
+                      buttons: const ['Masuk', "Keluar"]),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: 80.h,
                 child: ListTile(
@@ -720,7 +720,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
                     ),
                   ),
                   subtitle: CustomDropdown(
-                    items: ['a', 'b'],
+                    items: const ['a', 'b'],
                     hintText: 'Unit',
                     controller: kategori,
                     onChanged: (value) {
@@ -732,7 +732,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
               SizedBox(
                 height: height * 0.005,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -796,7 +796,7 @@ class _tambahPemakaianState extends State<tambahPemakaian> {
               SizedBox(
                 height: height * 0.03,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(

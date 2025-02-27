@@ -128,7 +128,7 @@ class _MenuScanState extends State<MenuScan> {
                             // Jika tidak ada code yang terbaca
                             context.read<ProviderScan>().scanFailureCountF();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                   content: Text(
                                       'Gagal membaca barcode atau QR code')),
                             );
@@ -137,7 +137,7 @@ class _MenuScanState extends State<MenuScan> {
                           // Jika tidak ada barcode yang terdeteksi
                           context.read<ProviderScan>().scanFailureCountF();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content:
                                     Text('Tidak ada barcode yang terdeteksi')),
                           );
@@ -172,10 +172,10 @@ class _MenuScanState extends State<MenuScan> {
                               provider.toggleFlash();
                             },
                             icon: (provider.isFlashOn)
-                                ? Icon(
+                                ? const Icon(
                                     Icons.flashlight_on_outlined,
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.flashlight_off_outlined,
                                   )),
                       ),
@@ -184,13 +184,13 @@ class _MenuScanState extends State<MenuScan> {
                 ),
               ),
               // Menampilkan jumlah scan berhasil dan gagal
-              Container(
+              SizedBox(
                 height: height * 0.125,
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(6)),
                           color: PRIMARY_COLOR,
@@ -223,7 +223,7 @@ class _MenuScanState extends State<MenuScan> {
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: height * 0.0125),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomRight: Radius.circular(6)),
                           color: PRIMARY_COLOR,

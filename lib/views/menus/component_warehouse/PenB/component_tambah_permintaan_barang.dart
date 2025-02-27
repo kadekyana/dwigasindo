@@ -72,7 +72,7 @@ class _ComponentTambahPermintaanBarangState
           height: height,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -105,7 +105,7 @@ class _ComponentTambahPermintaanBarangState
               SizedBox(
                 height: height * 0.01,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: Row(
@@ -149,14 +149,14 @@ class _ComponentTambahPermintaanBarangState
                         ),
                       ),
                     ),
-                    Expanded(child: SizedBox.shrink()),
+                    const Expanded(child: SizedBox.shrink()),
                   ],
                 ),
               ),
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -180,7 +180,7 @@ class _ComponentTambahPermintaanBarangState
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: height * 0.1,
                 child: ListTile(
@@ -193,8 +193,8 @@ class _ComponentTambahPermintaanBarangState
                     expands: true,
                     decoration: InputDecoration(
                         hintText: 'Masukkan catatan di sini...',
-                        contentPadding: EdgeInsets.all(10),
-                        border: OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10),
+                        border: const OutlineInputBorder(),
                         hintStyle: subtitleTextNormal),
                     style: subtitleTextBlack,
                     textAlignVertical: TextAlignVertical.top,
@@ -204,7 +204,7 @@ class _ComponentTambahPermintaanBarangState
               SizedBox(
                 height: height * 0.04,
               ),
-              Container(
+              SizedBox(
                 width: width,
                 height: 250.h,
                 child: ListTile(
@@ -320,7 +320,7 @@ class _ComponentTambahPermintaanBarangState
           ),
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         width: width,
         height: height * 0.06,
         child: Align(

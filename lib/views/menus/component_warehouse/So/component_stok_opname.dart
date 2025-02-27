@@ -343,7 +343,7 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: width,
               height: 40.h,
               child: WidgetButtonCustom(
@@ -416,7 +416,7 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                     ),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.maxFinite,
                           height: height * 0.05,
                           child: Row(

@@ -15,8 +15,8 @@ class WidgetButtonDistribusi extends StatelessWidget {
     this.onItemTap,
     this.onTap,
     this.onFunction,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class WidgetButtonDistribusi extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         if (onFunction != null) {
-          await onFunction;
+          onFunction;
         }
 
         // Show modal
@@ -63,7 +63,7 @@ class WidgetButtonDistribusi extends StatelessWidget {
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 2,
-                                  offset: Offset(0, 3),
+                                  offset: const Offset(0, 3),
                                   color: Colors.grey.shade300),
                             ],
                           ),
@@ -90,7 +90,7 @@ class WidgetButtonDistribusi extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       height: 25,
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
@@ -188,7 +188,7 @@ class WidgetButtonDistribusi extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 blurRadius: 2,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
                 color: Colors.grey.shade300),
           ],
         ),
@@ -204,7 +204,7 @@ class WidgetButtonDistribusi extends StatelessWidget {
             ),
             SizedBox(width: width * 0.03),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: 25,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
