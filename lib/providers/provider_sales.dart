@@ -25,6 +25,8 @@ import 'package:dwigasindo/model/modelUsersPic.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'provider_auth.dart';
 
 class ProviderSales extends ChangeNotifier {
@@ -143,34 +145,99 @@ class ProviderSales extends ChangeNotifier {
 
   Future<void> updateHP(
     BuildContext context,
+    int id,
+    String note,
+    String tubeNote,
+    int statusTube,
+    int gVelveHp,
+    int serviceCrookedVelveHp,
+    int serviceLeakNeckVelveHp,
+    int safetyValveGTeflonHp,
+    int safetyValveDiskHp,
+    int tighteningHp,
+    int stimGStimHp,
+    int penSpindleGPenSpindleHp,
+    int gTeflonHp,
+    int hydroTestHp,
+    int heaterTestHp,
   ) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
+
     final response = await DioServiceAPI().putRequest(
-        url: "maintenances/update-status-check-hp-by-id/:maintenance_id",
+        url: "maintenances/update-status-check-hp-by-id/$id",
         token: token,
         data: {
-          "note": "ini note biasa",
-          "tube_note": "ini tube note",
-          "status_tube": 1, // 1 = not good, 2 = claim
-          "g_velve_hp": 2, // 1 = Not good, 2 = Good
-          "service_crooked_velve_hp": 2,
-          "service_leak_neck_velve_hp": 2,
-          "safety_valve_g_teflon_hp": 2,
-          "safety_valve_disk_hp": 2,
-          "tightening_hp": 2,
-          "stim_g_stim_hp": 2,
-          "pen_spidle_g_pen_spindle_hp": 2,
-          "g_teflon_hp": 2,
-          "hydro_test_hp": 2,
-          "heater_test_hp": 2
+          "note": note,
+          "tube_note": tubeNote,
+          "status_tube": statusTube,
+          "g_velve_hp": gVelveHp,
+          "service_crooked_velve_hp": serviceCrookedVelveHp,
+          "service_leak_neck_velve_hp": serviceLeakNeckVelveHp,
+          "safety_valve_g_teflon_hp": safetyValveGTeflonHp,
+          "safety_valve_disk_hp": safetyValveDiskHp,
+          "tightening_hp": tighteningHp,
+          "stim_g_stim_hp": stimGStimHp,
+          "pen_spidle_g_pen_spindle_hp": penSpindleGPenSpindleHp,
+          "g_teflon_hp": gTeflonHp,
+          "hydro_test_hp": hydroTestHp,
+          "heater_test_hp": heaterTestHp,
         });
 
-    print(response?.data);
+    print(response?.data['error']);
     if (response?.data['error'] == null) {
-      final data = ModelUsersPic.fromJson(response!.data);
-      _modelUsersPic = data;
-      notifyListeners();
+      await getListMaintenance(context, 1, 0);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Update Status Item',
+        ),
+      );
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Update Status Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> updateKonfirmasi(BuildContext context, int id, String note,
+      int penerima, int status, String path) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: "maintenances/update-status-default-by-id/$id",
+        token: token,
+        data: {
+          "new_status":
+              status, // 1= konfirmasi, 3 = ready to user, 4 = Retur customer
+          "note": note,
+          "receive_by_id": penerima,
+          "path": path
+        });
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      await getListMaintenance(context, 1, 0);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Update Status Item',
+        ),
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Update Status Item',
+        ),
+      );
     }
   }
 
@@ -218,6 +285,10 @@ class ProviderSales extends ChangeNotifier {
 
   Future<void> getListMaintenance(
       BuildContext context, int type, int status) async {
+    print("----------------------------");
+    print(type);
+    print(status);
+    print("----------------------------");
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response = await DioServiceAPI().getRequest(

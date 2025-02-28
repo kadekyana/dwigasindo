@@ -15,9 +15,11 @@ import 'package:provider/provider.dart';
 
 class ComponentButtonMaintenance extends StatefulWidget {
   String title;
+  int id;
   ComponentButtonMaintenance({
     super.key,
     required this.title,
+    required this.id,
   });
   @override
   State<ComponentButtonMaintenance> createState() =>
@@ -29,11 +31,20 @@ class _ComponentButtonMaintenanceState
   // int selectPicId = 0;
   // int selectPicId1 = 0;
   // int selectPicId2 = 0;
-  TextEditingController serial = TextEditingController();
-  TextEditingController kecamatan = TextEditingController();
   TextEditingController note = TextEditingController();
-  GroupButtonController? tugas = GroupButtonController();
-  GroupButtonController? jenis = GroupButtonController();
+  TextEditingController noteK = TextEditingController();
+  GroupButtonController? status = GroupButtonController();
+  GroupButtonController? g = GroupButtonController();
+  GroupButtonController? serviceV = GroupButtonController();
+  GroupButtonController? serviceB = GroupButtonController();
+  GroupButtonController? gT = GroupButtonController();
+  GroupButtonController? gS = GroupButtonController();
+  GroupButtonController? pengencangan = GroupButtonController();
+  GroupButtonController? gStim = GroupButtonController();
+  GroupButtonController? gPen = GroupButtonController();
+  GroupButtonController? gTeflon = GroupButtonController();
+  GroupButtonController? hY = GroupButtonController();
+  GroupButtonController? hE = GroupButtonController();
   bool cek = false;
   bool tlp = false;
 
@@ -71,7 +82,7 @@ class _ComponentButtonMaintenanceState
                 subtitle: Align(
                   alignment: Alignment.topLeft,
                   child: GroupButton(
-                      controller: tugas,
+                      controller: status,
                       isRadio: true,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
@@ -138,7 +149,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: g,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -170,7 +181,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: serviceV,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -202,7 +213,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: serviceB,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -245,7 +256,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: gT,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -277,7 +288,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: gS,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -309,7 +320,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: pengencangan,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -352,7 +363,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: gStim,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -395,7 +406,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: gPen,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -427,7 +438,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: gTeflon,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -462,7 +473,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: hY,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -494,7 +505,7 @@ class _ComponentButtonMaintenanceState
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      controller: jenis,
+                      controller: hE,
                       options: GroupButtonOptions(
                         mainGroupAlignment: MainGroupAlignment.start,
                         selectedColor: PRIMARY_COLOR,
@@ -526,7 +537,7 @@ class _ComponentButtonMaintenanceState
                   margin: EdgeInsets.only(top: height * 0.01),
                   height: 70.h,
                   child: TextField(
-                    controller: note,
+                    controller: noteK,
                     maxLines: null,
                     expands: true,
                     decoration: InputDecoration(
@@ -553,7 +564,55 @@ class _ComponentButtonMaintenanceState
               FullWidth: width * 0.9,
               FullHeight: height * 0.05,
               title: 'Simpan',
-              onpressed: () async {},
+              onpressed: () async {
+                print(widget.id);
+                await provider.updateHP(
+                  context,
+                  widget.id,
+                  noteK.text,
+                  note.text,
+                  (status!.selectedIndex! + 1), // Menambahkan 1
+                  (g!.selectedIndex! + 1), // Menambahkan 1
+                  (serviceV!.selectedIndex! + 1), // Menambahkan 1
+                  (serviceB!.selectedIndex! + 1), // Menambahkan 1
+                  (gT!.selectedIndex! + 1), // Menambahkan 1
+                  (gS!.selectedIndex! + 1), // Menambahkan 1
+                  (pengencangan!.selectedIndex! + 1), // Menambahkan 1
+                  (gStim!.selectedIndex! + 1), // Menambahkan 1
+                  (gPen!.selectedIndex! + 1), // Menambahkan 1
+                  (gTeflon!.selectedIndex! + 1), // Menambahkan 1
+                  (hY!.selectedIndex! + 1), // Menambahkan 1
+                  (hE!.selectedIndex! + 1), // Menambahkan 1
+                );
+
+                print('Selected Data:');
+                print(
+                    'Status: ${status?.selectedIndex != null ? status!.selectedIndex! + 1 : 1}');
+                print('Note: ${note.text}');
+                print(
+                    'G: ${g?.selectedIndex != null ? g!.selectedIndex! + 1 : 1}');
+                print(
+                    'ServiceV: ${serviceV?.selectedIndex != null ? serviceV!.selectedIndex! + 1 : 1}');
+                print(
+                    'ServiceB: ${serviceB?.selectedIndex != null ? serviceB!.selectedIndex! + 1 : 1}');
+                print(
+                    'GT: ${gT?.selectedIndex != null ? gT!.selectedIndex! + 1 : 1}');
+                print(
+                    'GS: ${gS?.selectedIndex != null ? gS!.selectedIndex! + 1 : 1}');
+                print(
+                    'Pengencangan: ${pengencangan?.selectedIndex != null ? pengencangan!.selectedIndex! + 1 : 1}');
+                print(
+                    'GStim: ${gStim?.selectedIndex != null ? gStim!.selectedIndex! + 1 : 1}');
+                print(
+                    'GPen: ${gPen?.selectedIndex != null ? gPen!.selectedIndex! + 1 : 1}');
+                print(
+                    'GTeflon: ${gTeflon?.selectedIndex != null ? gTeflon!.selectedIndex! + 1 : 1}');
+                print(
+                    'HY: ${hY?.selectedIndex != null ? hY!.selectedIndex! + 1 : 1}');
+                print(
+                    'HE: ${hE?.selectedIndex != null ? hE!.selectedIndex! + 1 : 1}');
+                print('Note: ${noteK.text}');
+              },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
         ),
@@ -1374,10 +1433,13 @@ class _FormAfkirState extends State<FormAfkir> {
 
 class UpdateStatusToUsers extends StatefulWidget {
   String title;
-  UpdateStatusToUsers({
-    super.key,
-    required this.title,
-  });
+  int id;
+  int lastStatus;
+  UpdateStatusToUsers(
+      {super.key,
+      required this.title,
+      required this.id,
+      required this.lastStatus});
   @override
   State<UpdateStatusToUsers> createState() => _UpdateStatusToUsersState();
 }
@@ -1387,6 +1449,49 @@ class _UpdateStatusToUsersState extends State<UpdateStatusToUsers> {
   // int selectPicId1 = 0;
   int selectPicId = 0;
   TextEditingController note = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  TextEditingController? controller = TextEditingController();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1478,6 +1583,47 @@ class _UpdateStatusToUsersState extends State<UpdateStatusToUsers> {
                 ),
               ),
             ),
+            SizedBox(
+              width: width,
+              height: 80.h,
+              child: Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap:
+                      _showImageSourceDialog, // Panggil fungsi saat button diklik
+                  child: SizedBox(
+                    width: width,
+                    height: height * 0.1,
+                    child: ListTile(
+                      title: Text(
+                        'Upload Image',
+                        style: subtitleTextBlack,
+                      ),
+                      subtitle: Container(
+                        height: 100.h,
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _imageFile != null
+                            ? Image.file(
+                                _imageFile!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: SvgPicture.asset(
+                                    'assets/images/gambar.svg'),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -1490,7 +1636,12 @@ class _UpdateStatusToUsersState extends State<UpdateStatusToUsers> {
               FullWidth: width * 0.9,
               FullHeight: height * 0.05,
               title: 'Simpan',
-              onpressed: () async {},
+              onpressed: () async {
+                print(widget.id);
+                print(widget.lastStatus);
+                await provider.updateKonfirmasi(context, widget.id, note.text,
+                    selectPicId, widget.lastStatus, _imageFile!.path);
+              },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
         ),
