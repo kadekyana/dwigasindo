@@ -23,16 +23,14 @@ class ComponentSelesaiSo extends StatefulWidget {
 }
 
 class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
-  TextEditingController? fisik = TextEditingController();
-  TextEditingController? hasil = TextEditingController();
+  // Membuat list controller untuk setiap baris data
+  List<TextEditingController> fisikControllers = [];
   int selectPicId = 0;
   int selectPicId1 = 0;
   int selectPicId2 = 0;
 
   bool hide_tanggal = false;
-
   bool hide_button = false;
-
   String buttonText = "Mulai SO";
 
   List<Map<String, dynamic>> details = [];
@@ -53,11 +51,24 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Inisialisasi controller untuk setiap item data yang ada
+    final provider = Provider.of<ProviderItem>(context, listen: false);
+    final data = provider.detailStock?.data;
+    if (data != null) {
+      fisikControllers = List.generate(
+          data.details!.length, (index) => TextEditingController());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderItem>(context);
     final data = provider.detailStock!.data;
+
     return Scaffold(
       appBar: WidgetAppbar(
         title: 'Buat Detail Stock Opname',
@@ -76,25 +87,18 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
           height: height,
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.01,
-              ),
+              SizedBox(height: height * 0.01),
               Container(
                 width: width,
                 height: 20.h,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(
                   children: [
-                    Text(
-                      'Kategori',
-                      style: titleTextBlack,
-                    ),
+                    Text('Kategori', style: titleTextBlack),
                     const Text(" : "),
                     Expanded(
-                      child: Text(
-                        data?.categories ?? "-",
-                        style: titleTextBlack,
-                      ),
+                      child:
+                          Text(data?.categories ?? "-", style: titleTextBlack),
                     ),
                   ],
                 ),
@@ -105,33 +109,23 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(
                   children: [
-                    Text(
-                      'Gudang  ',
-                      style: titleTextBlack,
-                    ),
+                    Text('Gudang  ', style: titleTextBlack),
                     const Text(" : "),
                     Expanded(
-                      child: Text(
-                        data?.warehouseName ?? "-",
-                        style: titleTextBlack,
-                      ),
+                      child: Text(data?.warehouseName ?? "-",
+                          style: titleTextBlack),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: height * 0.01,
-              ),
+              SizedBox(height: height * 0.01),
               Container(
                 width: width,
                 height: 30.h,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: FittedBox(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Hasil Data',
-                    style: titleTextBlack,
-                  ),
+                  child: Text('Hasil Data', style: titleTextBlack),
                 ),
               ),
               Container(
@@ -149,14 +143,14 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                       data!.details!.length,
                       (index) {
                         final item = data.details![index];
-
                         return DataRow(cells: [
                           DataCell(Text((index + 1).toString())), // No
                           DataCell(Text(item.name ?? "-")), // Item
                           DataCell(Text("${item.totalQty ?? "-"}")), // Qty
                           DataCell(
                             TextField(
-                              controller: fisik,
+                              controller: fisikControllers[
+                                  index], // Menggunakan controller untuk index tertentu
                               decoration: const InputDecoration(
                                   border: InputBorder.none),
                               keyboardType: TextInputType.number,
@@ -168,7 +162,7 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                           ),
                           DataCell(
                             Text(
-                                "${(fisik?.text != '') ? int.tryParse(fisik!.text)! + item.totalQty! : 0}"),
+                                "${(fisikControllers[index].text != '') ? int.tryParse(fisikControllers[index].text)! + item.totalQty! : 0}"),
                           ),
                         ]);
                       },
@@ -178,21 +172,15 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
               ),
               const Divider(),
               ListTile(
-                title: Text(
-                  'PIC Approval',
-                  style: subtitleTextBlack,
-                ),
+                title: Text('PIC Approval', style: subtitleTextBlack),
                 subtitle: Column(
                   children: [
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizedBox(height: 10.h),
                     Consumer<ProviderSales>(
                       builder: (context, provider, child) {
                         final pic = provider.modelUsersPic!.data!
                             .map((data) => {'id': data.id, 'name': data.name})
                             .toList();
-
                         return CustomDropdown(
                           decoration: CustomDropdownDecoration(
                               closedBorder:
@@ -202,25 +190,18 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                           hintText: 'Pilih PIC Verifikasi',
                           items: pic.map((e) => e['name']).toList(),
                           onChanged: (item) {
-                            print("Selected Item: $item");
-
                             final selected = pic.firstWhere(
                               (e) => e['name'] == item,
                             );
-
                             setState(() {
                               selectPicId =
                                   int.parse(selected['id'].toString());
                             });
-
-                            print("Selected ID: $selectPicId");
                           },
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizedBox(height: 10.h),
                     Consumer<ProviderSales>(
                       builder: (context, provider, child) {
                         final pic = provider.modelUsersPic!.data!
@@ -235,18 +216,13 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
                           hintText: 'Pilih PIC Menyetujui',
                           items: pic.map((e) => e['name']).toList(),
                           onChanged: (item) {
-                            print("Selected Item: $item");
-
                             final selected = pic.firstWhere(
                               (e) => e['name'] == item,
                             );
-
                             setState(() {
                               selectPicId2 =
                                   int.parse(selected['id'].toString());
                             });
-
-                            print("Selected ID: $selectPicId2");
                           },
                         );
                       },
@@ -267,7 +243,6 @@ class _ComponentSelesaiSoState extends State<ComponentSelesaiSo> {
           FullHeight: 50.h,
           title: 'Selesai',
           onpressed: () {
-            print(details);
             provider.createDetailStock(context, widget.id, widget.warehouse_id,
                 widget.categori_id, details, selectPicId, selectPicId2);
           },
@@ -570,48 +545,28 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
                               color: Colors.grey,
                             ),
                           ),
-                        if (widget.type != 3)
-                          if (!hasRevisi()) SizedBox(width: 10.w),
+
+                        SizedBox(width: 10.w),
                         // Tombol Submit hanya muncul apabila tidak ada data yang statusnya 3 (Revisi)
-                        if (widget.type != 3)
-                          if (!hasRevisi())
-                            Expanded(
-                              child: WidgetButtonCustom(
-                                FullWidth: width,
-                                FullHeight: 50.h,
-                                title: 'Submit',
-                                onpressed: () {
-                                  print(soVerifikasi);
-                                  provider.approvalDetailStock(
-                                    context,
-                                    widget.id,
-                                    widget.type,
-                                    soVerifikasi,
-                                  );
-                                },
-                                bgColor: PRIMARY_COLOR,
-                                color: PRIMARY_COLOR,
-                              ),
-                            ),
-                        if (widget.type == 3)
-                          Expanded(
-                            child: WidgetButtonCustom(
-                              FullWidth: width,
-                              FullHeight: 50.h,
-                              title: 'Submit',
-                              onpressed: () {
-                                print(soVerifikasi);
-                                provider.approvalDetailStock(
-                                  context,
-                                  widget.id,
-                                  widget.type,
-                                  soVerifikasi,
-                                );
-                              },
-                              bgColor: PRIMARY_COLOR,
-                              color: PRIMARY_COLOR,
-                            ),
+
+                        Expanded(
+                          child: WidgetButtonCustom(
+                            FullWidth: width,
+                            FullHeight: 50.h,
+                            title: 'Submit',
+                            onpressed: () {
+                              print(soVerifikasi);
+                              provider.approvalDetailStock(
+                                context,
+                                widget.id,
+                                widget.type,
+                                soVerifikasi,
+                              );
+                            },
+                            bgColor: PRIMARY_COLOR,
+                            color: PRIMARY_COLOR,
                           ),
+                        ),
                       ],
                     ),
                   ),

@@ -198,7 +198,7 @@ class ProviderItem extends ChangeNotifier {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response =
-        await DioServiceAPI().getRequest(url: "units", token: token);
+        await DioServiceAPI().getRequest(url: "units/get-all", token: token);
 
     print(response?.data['error']);
     if (response?.data['error'] == null) {
@@ -233,6 +233,7 @@ class ProviderItem extends ChangeNotifier {
 
     print(response?.data);
     if (response?.data['error'] == null) {
+      await getLihatSO(context, id);
       final data = ModelApprovalVerifikasi.fromJson(response!.data);
       _approvalVerifikasi = data;
       notifyListeners();
@@ -276,12 +277,29 @@ class ProviderItem extends ChangeNotifier {
       int lokasi,
       int idUnit,
       int stock,
-      int price,
+      double price,
+      int isSell,
+      double priceSell,
       int limit,
       int idVendor,
       int isRawMaterial) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
+    print({
+      "code": kode,
+      "name": nama,
+      "category_id": idCategory,
+      "location_id": lokasi,
+      "unit_id": idUnit,
+      "stock": stock,
+      "price": price,
+      "limit_stock": limit,
+      "vendor_id": idVendor,
+      "photo": null,
+      "is_raw_material": isRawMaterial,
+      "is_item_sell": 1, // 1 = no, 2 = yes
+      "sell_price": 10.2, // when is_item_sell
+    });
     final response =
         await DioServiceAPI().postRequest(url: 'items', token: token, data: {
       "code": kode,
@@ -294,7 +312,9 @@ class ProviderItem extends ChangeNotifier {
       "limit_stock": limit,
       "vendor_id": idVendor,
       "photo": null,
-      "is_raw_material": isRawMaterial
+      "is_raw_material": isRawMaterial,
+      "is_item_sell": 1, // 1 = no, 2 = yes
+      "sell_price": 10.2, // when is_item_sell
     });
 
     print(response?.data['error']);
@@ -378,7 +398,9 @@ class ProviderItem extends ChangeNotifier {
                   int.parse(item["status"].toString()), // Pastikan integer
             })
         .toList();
-
+    print("---------------------");
+    print(type);
+    print("---------------------");
     print(data);
 
     final auth = Provider.of<ProviderAuth>(context, listen: false);
@@ -387,23 +409,21 @@ class ProviderItem extends ChangeNotifier {
         url: 'stock_opnames/details/update-detail-item-by-id/$id',
         token: token,
         data: {"type": type, "details": data});
-
     print(response?.data['error']);
     if (response?.data['error'] == null) {
-      getAllSO(context);
-      Navigator.pop(context);
+      getLihatSO(context, id);
       Navigator.pop(context);
       showTopSnackBar(
         Overlay.of(context),
         const CustomSnackBar.success(
-          message: 'Berhasil Tambah Item',
+          message: 'Berhasil',
         ),
       );
     } else {
       showTopSnackBar(
         Overlay.of(context),
         const CustomSnackBar.error(
-          message: 'Gagal Tambah Item',
+          message: 'Gagal',
         ),
       );
     }
@@ -525,7 +545,7 @@ class ProviderItem extends ChangeNotifier {
     }
   }
 
-  Future<void> getDetailSO(
+  Future<bool> getDetailSO(
     BuildContext context,
     List<int> categori,
     int warehouseId,
@@ -543,19 +563,11 @@ class ProviderItem extends ChangeNotifier {
       final data = ModelDetailStock.fromJson(response!.data);
       _detailStock = data;
       notifyListeners();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ComponentSelesaiSo(
-            id: soId,
-            warehouse_id: warehouseId,
-            categori_id: categori,
-          ),
-        ),
-      );
+      return true;
     } else {
       print('error update');
     }
+    return false;
   }
 
   Future<void> createDetailStock(
@@ -567,6 +579,20 @@ class ProviderItem extends ChangeNotifier {
     int approval1,
     int approval2,
   ) async {
+    final stockOpnameData = {
+      "stock_opname_id": stockId,
+      "warehouse_id": warehouseId,
+      "categories": categori,
+      "details": details,
+      "approval_1": approval1,
+      "approval_2": approval2,
+    };
+    print("----------------------");
+    // Mencetak seluruh data
+    print(stockOpnameData);
+    print("----------------------");
+
+    print(details);
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
 
@@ -581,11 +607,14 @@ class ProviderItem extends ChangeNotifier {
     });
 
     if (response?.data['error'] == null) {
-      getAllSO(context);
+      await getAllSO(context);
+      await getLihatSO(context, stockId);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const ComponentStokOpname(),
+          builder: (context) => DetailLihatSO(
+            id: stockId,
+          ),
         ),
       );
     } else {

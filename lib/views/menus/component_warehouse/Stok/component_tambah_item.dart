@@ -10,6 +10,7 @@ import 'package:dwigasindo/widgets/wigdet_kecamatan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -70,6 +71,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
   int? selectVendor;
   int? selectLokasi;
   int? selectUnit;
+  int check = 1;
 
   TextEditingController kode = TextEditingController();
   TextEditingController nama = TextEditingController();
@@ -78,7 +80,8 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
   TextEditingController lokasi = TextEditingController();
   TextEditingController limit = TextEditingController();
   TextEditingController supplier = TextEditingController();
-
+  GroupButtonController? sell = GroupButtonController(selectedIndex: 0);
+  TextEditingController hargaJual = TextEditingController();
   SingleSelectController<String?> kategori =
       SingleSelectController<String?>(null);
 
@@ -211,11 +214,16 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                   subtitle: CustomAutocomplete(
                     data: locations!.map((e) => e['name']).toList(),
                     displayString: (item) => item.toString(),
-                    onSelected: (item) {
-                      setState(() {
-                        controller?.text = item.toString();
-                      });
-                      print("Barang dipilih: ${item.toString()}");
+                    onSelected: (value) {
+                      if (value != null) {
+                        final ID = locations.firstWhere(
+                          (item) => item['name'] == value,
+                        );
+                        setState(() {
+                          selectLokasi = int.parse(ID['id'].toString());
+                        });
+                        print(selectLokasi);
+                      }
                     },
                     labelText: 'Cari Barang',
                     controller: controller,
@@ -298,6 +306,61 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                   ),
                 ),
               ),
+              SizedBox(height: height * 0.02),
+              SizedBox(
+                width: width,
+                height: 70.h,
+                child: ListTile(
+                  title: Text(
+                    'Apakah Item Akan Di Jual ?',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Align(
+                    alignment: Alignment.topLeft,
+                    child: GroupButton(
+                        isRadio: true,
+                        controller: sell,
+                        options: GroupButtonOptions(
+                          mainGroupAlignment: MainGroupAlignment.start,
+                          selectedColor: PRIMARY_COLOR,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        onSelected: (value, index, isSelected) {
+                          print('DATA KLIK : $value - $index - $isSelected');
+                          setState(() {
+                            if (index == 0) {
+                              check = 1;
+                            } else {
+                              check = 2;
+                            }
+                          });
+                        },
+                        buttons: const ["Tidak", "Iya"]),
+                  ),
+                ),
+              ),
+              if (check == 2)
+                SizedBox(
+                  width: width,
+                  height: height * 0.1,
+                  child: ListTile(
+                    title: Text(
+                      'Harga Jual',
+                      style: subtitleTextBlack,
+                    ),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: height * 0.01),
+                      child: WidgetForm(
+                        controller: hargaJual,
+                        typeInput: TextInputType.number,
+                        alert: 'Harga Jual',
+                        hint: 'Harga Jual',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ),
               SizedBox(height: height * 0.02),
               SizedBox(
                 width: width,
@@ -410,7 +473,6 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
               title: 'Submit',
               onpressed: () async {
                 if (!mounted) return;
-
                 // Tampilkan Dialog Loading
                 showDialog(
                   context: context,
@@ -432,7 +494,9 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                         selectLokasi!,
                         selectUnit!,
                         int.parse(stok.text),
-                        int.parse(harga.text),
+                        double.parse(harga.text),
+                        check,
+                        double.parse(hargaJual.text),
                         int.parse(limit.text),
                         selectVendor!,
                         1),

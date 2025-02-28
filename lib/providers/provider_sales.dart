@@ -141,6 +141,39 @@ class ProviderSales extends ChangeNotifier {
     return labels.join(' , ');
   }
 
+  Future<void> updateHP(
+    BuildContext context,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().putRequest(
+        url: "maintenances/update-status-check-hp-by-id/:maintenance_id",
+        token: token,
+        data: {
+          "note": "ini note biasa",
+          "tube_note": "ini tube note",
+          "status_tube": 1, // 1 = not good, 2 = claim
+          "g_velve_hp": 2, // 1 = Not good, 2 = Good
+          "service_crooked_velve_hp": 2,
+          "service_leak_neck_velve_hp": 2,
+          "safety_valve_g_teflon_hp": 2,
+          "safety_valve_disk_hp": 2,
+          "tightening_hp": 2,
+          "stim_g_stim_hp": 2,
+          "pen_spidle_g_pen_spindle_hp": 2,
+          "g_teflon_hp": 2,
+          "hydro_test_hp": 2,
+          "heater_test_hp": 2
+        });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelUsersPic.fromJson(response!.data);
+      _modelUsersPic = data;
+      notifyListeners();
+    }
+  }
+
   Future<void> getUsersPic(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;

@@ -4,6 +4,7 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_mulai_so.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_tambah_so.dart';
+import 'package:dwigasindo/views/menus/menu_warehouse.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -44,7 +45,8 @@ class _ComponentStokOpnameState extends State<ComponentStokOpname> {
           setState(() {
             provider.cekLoad = 0;
           });
-          Navigator.pop(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MenuWarehouse()));
         },
         actions: [
           IconButton(
@@ -313,7 +315,7 @@ class _ComponentStokOpnameState extends State<ComponentStokOpname> {
 
 class DetailLihatSO extends StatefulWidget {
   DetailLihatSO({super.key, required this.id});
-  int id;
+  final int id;
   @override
   State<DetailLihatSO> createState() => _DetailLihatSOState();
 }
@@ -334,7 +336,8 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
         colorBG: Colors.grey.shade100,
         back: true,
         route: () {
-          Navigator.pop(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ComponentStokOpname()));
         },
       ),
       body: Container(
@@ -351,6 +354,7 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                   FullHeight: 40.h,
                   title: "Tambah Detail",
                   onpressed: () async {
+                    print(widget.id);
                     showDialog(
                       context: context,
                       barrierDismissible: false,
@@ -669,11 +673,17 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                                       FullWidth: width * 0.3,
                                       FullHeight: 30.h,
                                       title: "Approval Verifikasi",
-                                      onpressed: () {
-                                        provider.getApprovalVerifikasi(
-                                            context, dataCard.id!, 1);
-                                      },
-                                      bgColor: PRIMARY_COLOR,
+                                      onpressed: (dataCard.isProcessVerified ==
+                                              true)
+                                          ? null
+                                          : () {
+                                              provider.getApprovalVerifikasi(
+                                                  context, dataCard.id!, 1);
+                                            },
+                                      bgColor:
+                                          (dataCard.isProcessVerified == true)
+                                              ? Colors.grey
+                                              : PRIMARY_COLOR,
                                       color: Colors.transparent),
                                 ),
                               ],
@@ -692,11 +702,19 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                                       FullWidth: width * 0.3,
                                       FullHeight: 30.h,
                                       title: "Approval Mengetahui",
-                                      onpressed: () {
-                                        provider.getApprovalVerifikasi(
-                                            context, dataCard.id!, 2);
-                                      },
-                                      bgColor: PRIMARY_COLOR,
+                                      onpressed: (dataCard.isProcessApproval ==
+                                                  true ||
+                                              dataCard.status == 3)
+                                          ? null
+                                          : () {
+                                              provider.getApprovalVerifikasi(
+                                                  context, dataCard.id!, 2);
+                                            },
+                                      bgColor:
+                                          (dataCard.isProcessApproval == true ||
+                                                  dataCard.status == 3)
+                                              ? Colors.grey
+                                              : PRIMARY_COLOR,
                                       color: Colors.transparent),
                                 ),
                               ],
