@@ -5,10 +5,12 @@ import 'package:dwigasindo/model/modelAllSO.dart';
 import 'package:dwigasindo/model/modelAllUnit.dart';
 import 'package:dwigasindo/model/modelAllWarehouse.dart';
 import 'package:dwigasindo/model/modelApprovalVerifikasi.dart';
+import 'package:dwigasindo/model/modelDetailPenerimaanBarang.dart';
 import 'package:dwigasindo/model/modelDetailSPB.dart';
 import 'package:dwigasindo/model/modelDetailStock.dart';
 import 'package:dwigasindo/model/modelLihatSO.dart';
 import 'package:dwigasindo/model/modelPO.dart';
+import 'package:dwigasindo/model/modelPenerimaanBarang.dart';
 import 'package:dwigasindo/model/modelSpb.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_selesai_so.dart';
@@ -75,6 +77,13 @@ class ProviderItem extends ChangeNotifier {
   ModelDetailSpb? _detailSpb;
   ModelDetailSpb? get detailSpb => _detailSpb;
 
+  ModelPenerimaanBarang? _modelPenerimaanBarang;
+  ModelPenerimaanBarang? get modelPenerimaanBarang => _modelPenerimaanBarang;
+
+  ModeldetailPenerimaanBarang? _modeldetailPenerimaanBarang;
+  ModeldetailPenerimaanBarang? get modeldetailPenerimaanBarang =>
+      _modeldetailPenerimaanBarang;
+
   String? getCategory(int idCategory) {
     final category = allcategory?.data.firstWhere(
       (category) => category.id == idCategory,
@@ -136,6 +145,35 @@ class ProviderItem extends ChangeNotifier {
               builder: (context) => DetailLihatSO(
                     id: id,
                   )));
+    }
+  }
+
+  Future<void> getDetailPenerimaanBarang(
+      BuildContext context, String no) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "item_requests/$no", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModeldetailPenerimaanBarang.fromJson(response!.data);
+      _modeldetailPenerimaanBarang = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getPenerimaanBarang(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "item_requests", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelPenerimaanBarang.fromJson(response!.data);
+      _modelPenerimaanBarang = data;
+      notifyListeners();
     }
   }
 
@@ -376,6 +414,57 @@ class ProviderItem extends ChangeNotifier {
         Overlay.of(context),
         const CustomSnackBar.error(
           message: 'Gagal Tambah Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> updateSerahTerima(
+      BuildContext context,
+      String uuid,
+      String no,
+      int isTransfer,
+      int qtyR,
+      String note,
+      String path,
+      int warehouseId) async {
+    print(uuid);
+    print(no);
+    print("is_transfer_stock : $isTransfer");
+    print("qty_received : $qtyR");
+    print("note : $note");
+    print("photo : $path");
+    print("warehouse_id : $warehouseId");
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().putRequest(
+      url: 'item_request_hand_off/$uuid',
+      token: token,
+      data: {
+        "is_transfer_stock": isTransfer,
+        "qty_received": qtyR,
+        "note": note,
+        "photo": path,
+        "warehouse_id": warehouseId,
+      },
+    );
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      getDetailPenerimaanBarang(context, no);
+      Navigator.pop(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Edit Item',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Edit Item',
         ),
       );
     }

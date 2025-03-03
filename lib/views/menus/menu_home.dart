@@ -199,6 +199,7 @@ class MenuHome extends StatelessWidget {
                                 providerItem.getAllItem(context),
                                 providerItem.getAllCategory(context),
                                 providerItem.getAllVendor(context),
+                                providerItem.getPenerimaanBarang(context),
                                 providerDistribusi.getAllTube(context),
                                 providerDistribusi.getAllTubeType(context),
                                 providerDistribusi.getAllTubeGas(context),

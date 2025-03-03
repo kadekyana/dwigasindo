@@ -16,9 +16,11 @@ import '../../../../providers/provider_item.dart';
 import '../../../../widgets/widget_button_custom.dart';
 
 class ComponentSerahTerimaBarang extends StatefulWidget {
-  const ComponentSerahTerimaBarang({
-    super.key,
-  });
+  String uuid;
+  int qty;
+  String no;
+  ComponentSerahTerimaBarang(
+      {super.key, required this.uuid, required this.qty, required this.no});
 
   @override
   State<ComponentSerahTerimaBarang> createState() =>
@@ -28,6 +30,8 @@ class ComponentSerahTerimaBarang extends StatefulWidget {
 class _ComponentSerahTerimaBarangState
     extends State<ComponentSerahTerimaBarang> {
   late TextEditingController pic;
+  TextEditingController qty = TextEditingController();
+  int qtyResult = 0;
   TextEditingController quantity = TextEditingController();
   TextEditingController catatan = TextEditingController();
   GroupButtonController? operator = GroupButtonController();
@@ -91,6 +95,7 @@ class _ComponentSerahTerimaBarangState
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final userName = auth.auth!.data.name;
     pic = TextEditingController(text: userName);
+    qtyResult = widget.qty;
   }
 
   @override
@@ -170,23 +175,33 @@ class _ComponentSerahTerimaBarangState
                     Expanded(
                       child: Center(
                         child: Text(
-                          '100 (MoU)',
+                          '${widget.qty} (MoU)', // qty pemesanan
                           style: subtitleTextBlack,
                         ),
                       ),
                     ),
                     Expanded(
-                      child: WidgetForm(
-                        typeInput: TextInputType.number,
-                        alert: '(MoU)',
-                        hint: '(MoU)',
-                        border: const OutlineInputBorder(),
+                      child: TextField(
+                        controller: qty,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: '(MoU)',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          // Update qtyResult setiap kali input berubah
+                          setState(() {
+                            int qtyDiterima = int.tryParse(value) ?? 0;
+                            qtyResult = widget.qty + qtyDiterima;
+                          });
+                        },
                       ),
                     ),
                     Expanded(
                       child: Center(
                         child: Text(
-                          '-/+1 (MoU)',
+                          // Perhitungan total qty
+                          '${(int.tryParse(widget.qty.toString()) ?? 0) + (int.tryParse(qty.text) ?? 0)} (MoU)', // qty result
                           style: subtitleTextBlack,
                         ),
                       ),
@@ -202,6 +217,7 @@ class _ComponentSerahTerimaBarangState
                   subtitle: TextField(
                     maxLines: null,
                     expands: true,
+                    controller: catatan,
                     decoration: InputDecoration(
                         hintText: 'Masukkan catatan di sini...',
                         contentPadding: const EdgeInsets.all(10),
@@ -279,15 +295,6 @@ class _ComponentSerahTerimaBarangState
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    // Expanded(
-                    //   child: WidgetButtonCustom(
-                    //       FullWidth: width * 0.3,
-                    //       FullHeight: 30,
-                    //       title: "Submit",
-                    //       onpressed: () {},
-                    //       bgColor: PRIMARY_COLOR,
-                    //       color: Colors.transparent),
-                    // ),
                   ],
                 ),
               ),
@@ -325,36 +332,6 @@ class _ComponentSerahTerimaBarangState
               (tfS == true)
                   ? SizedBox(
                       height: height * 0.01,
-                    )
-                  : const SizedBox.shrink(),
-              (tfS == true)
-                  ? Container(
-                      width: width,
-                      height: height * 0.05,
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Expanded(child: SizedBox.shrink()),
-                          SizedBox(
-                            width: width * 0.01,
-                          ),
-                          const Expanded(child: SizedBox.shrink()),
-                          SizedBox(
-                            width: width * 0.01,
-                          ),
-                          Expanded(
-                            child: WidgetButtonCustom(
-                                FullWidth: width * 0.3,
-                                FullHeight: 30,
-                                title: "Submit",
-                                onpressed: () {},
-                                bgColor: PRIMARY_COLOR,
-                                color: Colors.transparent),
-                          ),
-                        ],
-                      ),
                     )
                   : const SizedBox.shrink(),
               Align(
@@ -413,7 +390,17 @@ class _ComponentSerahTerimaBarangState
                           FullWidth: width * 0.3,
                           FullHeight: 30,
                           title: "Submit",
-                          onpressed: () {},
+                          onpressed: () {
+                            provider.updateSerahTerima(
+                                context,
+                                widget.uuid,
+                                widget.no,
+                                (tfS == true) ? 1 : 0,
+                                int.parse(qty.text),
+                                catatan.text,
+                                _imageFile!.path,
+                                selectWarehouse);
+                          },
                           bgColor: PRIMARY_COLOR,
                           color: Colors.transparent),
                     ),

@@ -89,6 +89,49 @@ class DioServiceAPI {
     }
   }
 
+  Future<Response?> uploadFilePut({
+    required String url,
+    required String token,
+    required String filePath,
+    required Map<String, dynamic> data,
+    String fieldName = "file",
+    int maxRetries = 3,
+    int timeoutSeconds = 10,
+  }) async {
+    try {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
+      return await retry(
+        () async {
+          _dio.options.headers['Authorization'] = 'Bearer $token';
+          _dio.options.headers['Content-Type'] = 'multipart/form-data';
+
+          FormData formData = FormData.fromMap({
+            fieldName: await MultipartFile.fromFile(filePath,
+                filename: filePath.split("/").last),
+            ...data,
+          });
+
+          final response = await _dio
+              .put("$baseUrl/$url", data: formData)
+              .timeout(Duration(seconds: timeoutSeconds));
+
+          return response;
+        },
+        retryIf: (e) => e is DioException || e is TimeoutException,
+        maxAttempts: maxRetries,
+      );
+    } on DioException catch (e) {
+      return _handleDioException(e, url);
+    } catch (e) {
+      return _handleUnknownError(e, url);
+    }
+  }
+
   // Fungsi untuk melakukan GET request dengan retry
   Future<Response?> getRequest({
     required String url,

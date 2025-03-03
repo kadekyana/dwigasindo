@@ -14,6 +14,7 @@ import 'package:dwigasindo/model/modelCradle.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelTube.dart';
+import 'package:dwigasindo/model/modelVendorDetail.dart';
 import 'package:dwigasindo/model/modelVerifikasiBPTK.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bpti.dart';
@@ -89,6 +90,9 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelAllVendor? _vendors;
   ModelAllVendor? get vendors => _vendors;
 
+  ModelVendorDetail? _detail;
+  ModelVendorDetail? get detail => _detail;
+
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -99,6 +103,20 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelAllVendor.fromJson(response!.data);
       _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDataVendorDetails(BuildContext context, String uuid) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "vendors/$uuid", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelVendorDetail.fromJson(response!.data);
+      _detail = data;
       notifyListeners();
     }
   }
@@ -729,6 +747,7 @@ class ProviderDistribusi extends ChangeNotifier {
     int? selectedGradeIndex,
     int? tahun,
     String? serial,
+    String? tblama,
     int? intCustomer,
     int? intVendor,
     String? lokasi,
@@ -752,6 +771,7 @@ class ProviderDistribusi extends ChangeNotifier {
         "vendor_id": intVendor,
         "tube_year": tahun,
         "serial_number": serial,
+        "old_tube_number": tblama,
         "customer_id": intCustomer,
         "last_location": lokasi,
       },

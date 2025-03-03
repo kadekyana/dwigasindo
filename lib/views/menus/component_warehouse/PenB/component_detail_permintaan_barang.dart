@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/PenB/component_serah_terima_barang.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Stok/component_tambah_item.dart';
+import 'package:provider/provider.dart';
 
 class ComponentDetailPermintaanBarang extends StatefulWidget {
   const ComponentDetailPermintaanBarang({super.key});
@@ -72,6 +74,9 @@ class _ComponentDetailPermintaanBarangState
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
+    final data = provider.modeldetailPenerimaanBarang?.data;
     return Scaffold(
       appBar: WidgetAppbar(
         title: 'Detail Permintaan Barang',
@@ -118,7 +123,7 @@ class _ComponentDetailPermintaanBarangState
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                ': D000000023',
+                                ': ${data?.no}',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -147,7 +152,7 @@ class _ComponentDetailPermintaanBarangState
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                ': 09-11-2024',
+                                ': ${providerSales.formatDate(data!.createdAt.toString())}',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -179,7 +184,7 @@ class _ComponentDetailPermintaanBarangState
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                ': Bahan Baku',
+                                ': ${data.category ?? "-"}',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -208,7 +213,7 @@ class _ComponentDetailPermintaanBarangState
                               alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                ': Jhon Doe',
+                                ': ${data.createdByName ?? "-"}',
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -225,6 +230,7 @@ class _ComponentDetailPermintaanBarangState
               alignment: Alignment.centerLeft,
               child: GroupButton(
                   isRadio: true,
+                  controller: GroupButtonController(selectedIndex: 0),
                   options: GroupButtonOptions(
                     selectedColor: PRIMARY_COLOR,
                     borderRadius: BorderRadius.circular(8),
@@ -239,10 +245,274 @@ class _ComponentDetailPermintaanBarangState
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 3,
+                itemCount: data.detail?.length,
                 itemBuilder: (context, index) {
-                  print(index);
-                  return WidgetCard(height: height, width: width);
+                  final dataCard = data.detail?[index];
+                  return Container(
+                    width: double.maxFinite,
+                    height: height * 0.3,
+                    padding: EdgeInsets.all(height * 0.01),
+                    margin: EdgeInsets.only(bottom: height * 0.02),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 1,
+                          color: Color(0xffE4E4E4),
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: height * 0.01),
+                                height: 20,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/approve4.svg',
+                                            height: 25,
+                                            width: 25,
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/images/approve3.svg',
+                                            height: 25,
+                                            width: 25,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Expanded(child: SizedBox.shrink()),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                  child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: FittedBox(
+                                        alignment: Alignment.centerLeft,
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          'No. PB',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2),
+                                      child: FittedBox(
+                                        alignment: Alignment.centerLeft,
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                            ': ${dataCard?.warehouseName ?? "-"}',
+                                            style: subtitleTextBlack),
+                                      ),
+                                    ),
+                                  ),
+                                  const Expanded(child: SizedBox.shrink()),
+                                ],
+                              )),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            'Qty',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                              ': ${dataCard?.qty ?? "0"}',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            'Qty diserahkan',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                              ': ${dataCard?.qtyReceived ?? "0"}',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            'Kategori',
+                                            style: subtitleTextBlack,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        child: FittedBox(
+                                          alignment: Alignment.centerLeft,
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(': -',
+                                              style: subtitleTextBlack),
+                                        ),
+                                      ),
+                                    ),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'Catatan',
+                                      style: titleTextBlack,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            readOnly: true,
+                            controller:
+                                TextEditingController(text: dataCard?.note),
+                            maxLines:
+                                null, // Membuat text field untuk teks panjang
+                            expands:
+                                true, // Memperluas TextField agar sesuai dengan ukuran Container
+                            decoration: const InputDecoration(
+                              hintText: 'Masukkan catatan di sini...',
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(),
+                            ),
+                            style: subtitleTextBlack,
+                            textAlignVertical: TextAlignVertical.top,
+                          ),
+                        ),
+                        SizedBox(
+                          width: width,
+                          height: height * 0.05,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Expanded(child: SizedBox.shrink()),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                              const Expanded(child: SizedBox.shrink()),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                              Expanded(
+                                child: WidgetButtonCustom(
+                                    FullWidth: width * 0.3,
+                                    FullHeight: 30,
+                                    title: "Edit",
+                                    onpressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ComponentSerahTerimaBarang(
+                                            uuid: dataCard!.idStr!,
+                                            qty: dataCard.qty!,
+                                            no: data.no!,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    bgColor: PRIMARY_COLOR,
+                                    color: Colors.transparent),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),
@@ -499,11 +769,11 @@ class WidgetCard extends StatelessWidget {
                       FullHeight: 30,
                       title: "Edit",
                       onpressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ComponentSerahTerimaBarang()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             ComponentSerahTerimaBarang()));
                       },
                       bgColor: PRIMARY_COLOR,
                       color: Colors.transparent),

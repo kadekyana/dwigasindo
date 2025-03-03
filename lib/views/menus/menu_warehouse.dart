@@ -25,7 +25,7 @@ class MenuWarehouse extends StatelessWidget {
         back: true,
         route: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MenuHome()));
+              context, MaterialPageRoute(builder: (context) => BottomAppBar()));
         },
         colorTitle: Colors.black,
         colorBG: Colors.grey.shade100,

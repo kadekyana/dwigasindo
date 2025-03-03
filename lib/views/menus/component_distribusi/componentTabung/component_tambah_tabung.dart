@@ -55,6 +55,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
   Timer? _timer;
   TextEditingController tahun = TextEditingController();
   TextEditingController serial = TextEditingController();
+  TextEditingController tblama = TextEditingController();
   TextEditingController lokasi = TextEditingController();
   TextEditingController blast = TextEditingController();
 
@@ -201,6 +202,26 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                           ),
                         ),
                       ),
+                    SizedBox(
+                      width: width,
+                      height: 100.h,
+                      child: ListTile(
+                        title: Text(
+                          'No Tabung Lama',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            controller: tblama,
+                            alert: 'Boleh Di kosongkan',
+                            hint: 'Boleh Di kosongkan',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       width: width,
                       height: height * 0.1,
@@ -605,6 +626,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                         selectedGradeIndex,
                                         intTahun,
                                         serial.text,
+                                        tblama.text,
                                         selectCustomer,
                                         selectSupllier,
                                         lokasi.text,
@@ -631,6 +653,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                       selectedGradeIndex,
                                       intTahun,
                                       serial.text,
+                                      tblama.text,
                                       selectCustomer,
                                       selectSupllier,
                                       lokasi.text,

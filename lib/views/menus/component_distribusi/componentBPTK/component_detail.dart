@@ -397,7 +397,7 @@ class WidgetCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                'Produk',
+                                'Sumber',
                                 style: subtitleTextBlack,
                               ),
                             ),

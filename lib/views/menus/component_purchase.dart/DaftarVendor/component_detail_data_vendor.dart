@@ -1,10 +1,12 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 class ComponentDetailDataVendor extends StatefulWidget {
   const ComponentDetailDataVendor({super.key});
@@ -61,6 +63,8 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderDistribusi>(context);
+    final data = provider.detail?.data;
     return Scaffold(
       appBar: WidgetAppbar(
         title: 'Data Vendor',
@@ -86,7 +90,252 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            WidgetHeader(height: height),
+            SizedBox(
+              width: double.maxFinite,
+              height: height * 0.125,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Kode Vendor',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': -',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'PIC',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': -',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Nama Vendor',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                ': ${data?.name ?? "-"}',
+                                overflow: TextOverflow.ellipsis,
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'No. Telp',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': -',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Kategori',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Text(
+                              ':  ${data?.vendorCategoryName ?? "-"}',
+                              style: subtitleTextBlack,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Sejak',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': -',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Jenis',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Text(
+                              ':  ${data?.vendorCategoryName ?? "-"}',
+                              style: subtitleTextBlack,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Kota',
+                                style: titleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                ': ${data?.cityName ?? "-"}',
+                                style: subtitleTextBlack,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               width: width,
               height: height * 0.07,
@@ -103,7 +352,7 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
                       ),
                       child: Center(
                         child: Text(
-                          'Kawasan Industri Karyadeka, Jl.Raya Gemalapik. No.1, Pasirsari, Cikarang Selatan',
+                          data?.address ?? "-",
                           style: subtitleTextBlack,
                           textAlign: TextAlign.justify,
                         ),
@@ -610,267 +859,267 @@ class _ComponentDetailDataVendorState extends State<ComponentDetailDataVendor>
   }
 }
 
-class WidgetHeader extends StatelessWidget {
-  const WidgetHeader({
-    super.key,
-    required this.height,
-  });
+// class WidgetHeader extends StatelessWidget {
+//   const WidgetHeader({
+//     super.key,
+//     required this.height,
+//   });
 
-  final double height;
+//   final double height;
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
-      height: height * 0.125,
-      child: Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Kode Vendor',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': D000000023',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'PIC',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': Jhon Doe',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Nama Vendor',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        ': PT Lorem Ipsum',
-                        overflow: TextOverflow.ellipsis,
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'No. Telp',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': 0812222222',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Kategori',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': Bahan Baku',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Sejak',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': 22-02-2023',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Jenis',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': Barang',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Kota',
-                        style: titleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        ': Bekasi',
-                        style: subtitleTextBlack,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: double.maxFinite,
+//       height: height * 0.125,
+//       child: Column(
+//         children: [
+//           Expanded(
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Kode Vendor',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': D000000023',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(
+//                   width: 5,
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'PIC',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': Jhon Doe',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Nama Vendor',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       child: Text(
+//                         ': PT Lorem Ipsum',
+//                         overflow: TextOverflow.ellipsis,
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(
+//                   width: 5,
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'No. Telp',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': 0812222222',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Kategori',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': Bahan Baku',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(
+//                   width: 5,
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Sejak',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': 22-02-2023',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Jenis',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': Barang',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(
+//                   width: 5,
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         'Kota',
+//                         style: titleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(5),
+//                     child: FittedBox(
+//                       fit: BoxFit.scaleDown,
+//                       alignment: Alignment.centerLeft,
+//                       child: Text(
+//                         ': Bekasi',
+//                         style: subtitleTextBlack,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

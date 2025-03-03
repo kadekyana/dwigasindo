@@ -1,6 +1,7 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/views/menus/component_purchase.dart/DaftarVendor/component_detail_data_vendor.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -297,8 +298,41 @@ class _ComponentDaftarVendorState extends State<ComponentDaftarVendor> {
                             child: WidgetButtonCustom(
                                 FullWidth: width,
                                 FullHeight: 40.h,
-                                title: "Lihat Barang",
-                                onpressed: () {},
+                                title: "Lihat Vendor",
+                                onpressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  );
+
+                                  try {
+                                    await Future.wait([
+                                      provider.getDataVendorDetails(
+                                          context, data!.idStr!),
+                                    ]);
+
+                                    // Navigate sesuai kondisi
+                                    Navigator.of(context)
+                                        .pop(); // Tutup Dialog Loading
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ComponentDetailDataVendor(),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    Navigator.of(context)
+                                        .pop(); // Tutup Dialog Loading
+                                    print('Error: $e');
+                                    // Tambahkan pesan error jika perlu
+                                  }
+                                },
                                 bgColor: PRIMARY_COLOR,
                                 color: Colors.transparent),
                           ),
