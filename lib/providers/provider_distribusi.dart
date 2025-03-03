@@ -126,6 +126,37 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+  Future<void> createCradle(
+      BuildContext context,
+      int owner,
+      bool isHasTube,
+      int typeId,
+      bool isHas,
+      int? customerId,
+      int? vendorId,
+      String lokasi,
+      int tubeId) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().postRequest(url: "cradles", token: token, data: {
+      "owner_ship_type": owner,
+      "is_has_tube_type": isHasTube,
+      "tube_type_id": typeId,
+      "is_has_grade": isHas,
+      "customer_id": customerId,
+      "vendor_id": vendorId,
+      "location": lokasi,
+      "tube_gas_id": tubeId
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getAllCradle(context);
+      notifyListeners();
+    }
+  }
+
   //clear data
   Future<void> clearVerifikaisBPTK() async {
     _verifikasiBptk = null;
@@ -333,29 +364,6 @@ class ProviderDistribusi extends ChangeNotifier {
       final data = ModelCradle.fromJson(response.data);
       print("RESPONSE : $response");
       _cradle = data;
-      notifyListeners();
-    } else {
-      showTopSnackBar(
-        Overlay.of(context),
-        const CustomSnackBar.error(
-          message: 'Gagal Mendapat Cradle',
-        ),
-      );
-    }
-
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> createCradle(BuildContext context) async {
-    final auth = Provider.of<ProviderAuth>(context, listen: false);
-    final token = auth.auth!.data.accessToken;
-
-    final response = await DioServiceAPI()
-        .postRequest(url: 'cradles', token: token, data: {});
-
-    if (response!.data['error'] == null) {
-      getAllCradle(context);
       notifyListeners();
     } else {
       showTopSnackBar(

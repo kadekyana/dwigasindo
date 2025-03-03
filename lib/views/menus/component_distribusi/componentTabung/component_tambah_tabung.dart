@@ -7,6 +7,7 @@ import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_printer.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
+import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
@@ -678,6 +679,475 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
     );
   }
 }
+
+class ComponentTambahCradle extends StatefulWidget {
+  ComponentTambahCradle({super.key, this.uuid});
+  String? uuid;
+  @override
+  State<ComponentTambahCradle> createState() => _ComponentTambahCradleState();
+}
+
+class _ComponentTambahCradleState extends State<ComponentTambahCradle> {
+  final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+  Timer? _timer;
+  TextEditingController tahun = TextEditingController();
+  TextEditingController serial = TextEditingController();
+  TextEditingController lokasi = TextEditingController();
+  TextEditingController blast = TextEditingController();
+
+  SingleSelectController<String?> jenisTabung =
+      SingleSelectController<String?>(null);
+
+  SingleSelectController<String?> customer =
+      SingleSelectController<String?>(null);
+
+  SingleSelectController<String?> jenisGas =
+      SingleSelectController<String?>(null);
+
+  SingleSelectController<String?> supllier =
+      SingleSelectController<String?>(null);
+
+  String selectTubeGas = '';
+  int? selectCustomer;
+  int? selectSupllier;
+
+  int? owner = 0;
+  int? nonSingletubeType;
+  int? selectnonGrade;
+  bool nonGrade = true;
+  int? selectedGradeIndex;
+
+  bool isSingle = false;
+  bool? isBlast;
+
+  List<String>? tubeGrade;
+  List<String>? tubeType;
+  List<Map<String, dynamic>>? tubeGas;
+  List<Map<String, dynamic>>? tubecustomer;
+  List<Map<String, dynamic>>? tubesupplier;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+
+    // Ambil data dan cek apakah tidak null
+    tubeGrade = provider.tubeGrades?.data.map((data) => data.name).toList();
+    tubeType = provider.tubeTypes?.data.map((data) => data.name).toList();
+
+    tubeGas = provider.tubeGas?.data
+        .map((data) => {'id': data.id, 'name': data.name})
+        .toList();
+
+    tubecustomer = provider.customer!.data!
+        .map((data) => {'id': data.id, 'name': data.name})
+        .toList();
+
+    tubesupplier = provider.supllier?.data
+        .map((data) => {'id': data.id, 'name': data.name})
+        .toList();
+
+    // Cek data supplier dan customer
+    print("Supllier data: ${provider.supllier?.data}");
+    print("Customer data: ${provider.customer?.data}");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderDistribusi>(context);
+    return Scaffold(
+      appBar: WidgetAppbar(
+        title: 'Tambah Cradle',
+        back: true,
+        center: true,
+        colorBG: Colors.grey.shade100,
+        colorBack: Colors.black,
+        colorTitle: Colors.black,
+        route: () {
+          Navigator.pop(context);
+        },
+      ),
+      body: (provider.isLoadingT == true)
+          ? Center(
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: const CircularProgressIndicator(),
+              ),
+            )
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Kepemilikan*',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Align(
+                          alignment: Alignment.topLeft,
+                          child: GroupButton(
+                              isRadio: true,
+                              options: GroupButtonOptions(
+                                selectedColor: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              onSelected: (value, index, isSelected) {
+                                setState(() {
+                                  owner = index + 1;
+                                  if (index == 0) {
+                                    // Pilihan Assets, set data supplier
+                                    tubesupplier = provider.supllier?.data
+                                        .map((data) =>
+                                            {'id': data.id, 'name': data.name})
+                                        .toList();
+                                    selectCustomer = null;
+                                    supllier.value = null;
+                                    customer.value = null;
+                                    print(tubecustomer);
+                                    print(tubesupplier);
+                                  } else {
+                                    // Pilihan Pelanggan, set data customer
+                                    tubecustomer = provider.customer!.data!
+                                        .map((data) =>
+                                            {'id': data.id, 'name': data.name})
+                                        .toList();
+                                    selectSupllier = null;
+                                    supllier.value = null;
+                                    customer.value = null;
+                                    print(tubecustomer);
+                                    print(tubesupplier);
+                                  }
+                                  print(
+                                      'DATA KLIK : $value - $index - $isSelected');
+                                });
+                              },
+                              buttons: const ['Assets', "Pelanggan"]),
+                        ),
+                      ),
+                    ),
+                    (owner == 1)
+                        ? SizedBox(
+                            width: width,
+                            height: height * 0.1,
+                            child: ListTile(
+                              title: Text(
+                                'Supplier',
+                                style: subtitleTextBlack,
+                              ),
+                              subtitle: WidgetDropdown(
+                                items: tubesupplier != null
+                                    ? tubesupplier!
+                                        .map((item) => item['name'].toString())
+                                        .toList()
+                                    : [],
+                                hintText: 'Tipe',
+                                controller: supllier,
+                                onChanged: (value) {
+                                  if (tubesupplier != null) {
+                                    final selecttubeC = tubesupplier!
+                                        .firstWhere(
+                                            (item) => item['name'] == value);
+                                    print("ID VENDOR : ${selecttubeC['id']}");
+                                    setState(() {
+                                      selectSupllier = selecttubeC['id'];
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    (owner == 2)
+                        ? SizedBox(
+                            width: width,
+                            height: height * 0.1,
+                            child: ListTile(
+                              title: Text(
+                                'Customer',
+                                style: subtitleTextBlack,
+                              ),
+                              subtitle: WidgetDropdown(
+                                items: tubecustomer != null
+                                    ? tubecustomer!
+                                        .map((item) => item['name'].toString())
+                                        .toList()
+                                    : [],
+                                hintText: 'Tipe',
+                                controller: customer,
+                                onChanged: (value) {
+                                  if (tubecustomer != null) {
+                                    final selecttubeC = tubecustomer!
+                                        .firstWhere(
+                                            (item) => item['name'] == value);
+                                    print("ID CUSTOMER : ${selecttubeC['id']}");
+                                    setState(() {
+                                      selectCustomer = selecttubeC['id'];
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Jenis Tabung*',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Align(
+                          alignment: Alignment.topLeft,
+                          child: GroupButton(
+                              isRadio: true,
+                              options: GroupButtonOptions(
+                                selectedColor: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              onSelected: (value, index, isSelected) {
+                                if (value == 'Non Single') {
+                                  setState(() {
+                                    isSingle = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isSingle = true;
+                                  });
+                                }
+                                print(
+                                    'DATA KLIK : $value - $index - $isSelected');
+                              },
+                              buttons: const ['Single', "Non Single"]),
+                        ),
+                      ),
+                    ),
+                    (!isSingle)
+                        ? SizedBox(
+                            width: width,
+                            height: height * 0.1,
+                            child: ListTile(
+                              title: Text(
+                                'Jenis Tabung*',
+                                style: subtitleTextBlack,
+                              ),
+                              subtitle: Align(
+                                alignment: Alignment.topLeft,
+                                child: GroupButton(
+                                  isRadio: true,
+                                  options: GroupButtonOptions(
+                                      selectedColor: PRIMARY_COLOR,
+                                      borderRadius: BorderRadius.circular(8),
+                                      // Disable tombol jika "Tidak" dipilih pada "Non Grade"
+                                      unselectedColor: Colors.white,
+                                      selectedTextStyle: subtitleText),
+                                  onSelected: (value, index, isSelected) {
+                                    setState(() {
+                                      nonSingletubeType = index + 1;
+                                    });
+                                    print(
+                                        'Grade Selected: $value - ${index + 1} - $isSelected');
+                                  },
+                                  buttons: tubeType!,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Jenis Gas*',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: WidgetDropdown(
+                          items: tubeGas!
+                              .map((item) => item['name'].toString())
+                              .toList(),
+                          hintText: 'Tipe',
+                          controller: jenisGas,
+                          onChanged: (value) {
+                            final selectedC = tubeGas!
+                                .firstWhere((item) => item['name'] == value);
+                            setState(() {
+                              selectTubeGas = selectedC['id'].toString();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Non Grade*',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Align(
+                          alignment: Alignment.topLeft,
+                          child: GroupButton(
+                              isRadio: true,
+                              options: GroupButtonOptions(
+                                selectedColor: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              onSelected: (value, index, isSelected) {
+                                if (value == 'Tidak') {
+                                  setState(() {
+                                    nonGrade = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    nonGrade = true;
+                                  });
+                                }
+                                print(
+                                    'DATA KLIK : $value - $index - $isSelected');
+                              },
+                              buttons: const ['Ya', "Tidak"]),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Grade*',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Align(
+                          alignment: Alignment.topLeft,
+                          child: GroupButton(
+                            isRadio: true,
+                            options: GroupButtonOptions(
+                                selectedColor:
+                                    !nonGrade ? Colors.grey : PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(8),
+                                // Disable tombol jika "Tidak" dipilih pada "Non Grade"
+                                unselectedColor:
+                                    !nonGrade ? Colors.grey : Colors.white,
+                                selectedTextStyle: TextStyle(
+                                    color: !nonGrade
+                                        ? Colors.black
+                                        : Colors.white)),
+                            onSelected: !nonGrade
+                                ? null
+                                : (value, index, isSelected) {
+                                    setState(() {
+                                      selectedGradeIndex = index + 1;
+                                    });
+                                    print(
+                                        'Grade Selected: $value - ${index + 1} - $isSelected');
+                                  },
+                            buttons: tubeGrade!,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Lokasi Awal',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            controller: lokasi,
+                            alert: 'Denpasar',
+                            hint: 'Denpasar',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.05,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+      bottomNavigationBar: Container(
+        width: width,
+        height: 50.h,
+        margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+        child: WidgetButtonCustom(
+          FullWidth: width,
+          FullHeight: 30.h,
+          title: "Tambah Cradle",
+          color: PRIMARY_COLOR,
+          onpressed: () async {
+            print(owner);
+            print(isSingle);
+            print(nonSingletubeType);
+            print(nonGrade);
+            print(selectCustomer);
+            print("Cek $selectSupllier");
+            print(selectTubeGas);
+            if (owner == 1) {
+              await provider.createCradle(
+                context,
+                owner!,
+                isSingle,
+                nonSingletubeType!,
+                nonGrade,
+                null,
+                selectSupllier,
+                lokasi.text,
+                int.parse(selectTubeGas),
+              );
+            } else {
+              await provider.createCradle(
+                context,
+                owner!,
+                isSingle,
+                nonSingletubeType!,
+                nonGrade,
+                selectCustomer,
+                null,
+                lokasi.text,
+                int.parse(selectTubeGas),
+              );
+            }
+            Navigator.pop(context);
+            await provider.countTube();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Berhasil Tambah Data"),
+              ),
+            );
+          },
+          bgColor: PRIMARY_COLOR,
+        ),
+      ),
+    );
+  }
+}
+
 // backup printer
 // import 'dart:async';
 // import 'dart:developer';

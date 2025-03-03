@@ -1118,7 +1118,7 @@ class _ComponentTambahProdukState extends State<ComponentTambahProduk> {
   GroupButtonController? jenis = GroupButtonController(selectedIndex: 0);
   TextEditingController nama = TextEditingController();
   TextEditingController kode = TextEditingController();
-  GroupButtonController? gradeA = GroupButtonController(selectedIndex: 0);
+  GroupButtonController? gradeA = GroupButtonController();
   GroupButtonController? gradeC = GroupButtonController(selectedIndex: 0);
   TextEditingController hpp = TextEditingController();
   TextEditingController catatan = TextEditingController();

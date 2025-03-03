@@ -4,9 +4,9 @@ import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
-import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_tambah_cradle.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_tambah_tabung.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_update_tabung.dart';
+import 'package:dwigasindo/views/menus/menu_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_grafik.dart';
@@ -330,11 +330,21 @@ class _ComponentTabungState extends State<ComponentTabung> {
 
                       try {
                         await Future.wait([
-                          provider.createCradle(context),
+                          provider.getAllTubeGrade(context),
+                          provider.getAllTubeType(context),
+                          provider.getAllTubeGas(context),
+                          provider.getAllCostumer(context),
+                          provider.getAllSupplier(context),
                         ]);
 
                         // Navigate sesuai kondisi
                         Navigator.of(context).pop(); // Tutup Dialog Loading
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ComponentTambahCradle(),
+                          ),
+                        );
                       } catch (e) {
                         Navigator.of(context).pop(); // Tutup Dialog Loading
                         print('Error: $e');
@@ -605,7 +615,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${item?.tubeGradeName}',
+                                                              ': ${item?.tubeGasName}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),
@@ -1109,7 +1119,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${item.tubeGradeName}',
+                                                              ': ${item.tubeGradeName ?? "-"}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),
@@ -1226,131 +1236,98 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                         ),
                                       ),
                                     ),
-                                    // Expanded(
-                                    //   flex: 1,
-                                    //   child: Row(
-                                    //     mainAxisAlignment:
-                                    //         MainAxisAlignment.end,
-                                    //     children: [
-                                    //       IconButton(
-                                    //         onPressed: () async {
-                                    //           // Tampilkan Dialog Loading
-                                    //           showDialog(
-                                    //             context: context,
-                                    //             barrierDismissible: false,
-                                    //             builder:
-                                    //                 (BuildContext context) {
-                                    //               return const Center(
-                                    //                 child:
-                                    //                     CircularProgressIndicator(),
-                                    //               );
-                                    //             },
-                                    //           );
-                                    //           _timer?.cancel();
-                                    //           final provider =
-                                    //               Provider.of<ProviderScan>(
-                                    //                   context,
-                                    //                   listen: false);
-
-                                    //           try {
-                                    //             await Future.wait([
-                                    //               provider.getDataCard(
-                                    //                   context, item.code!),
-                                    //             ]);
-
-                                    //             // Navigate sesuai kondisi
-                                    //             Navigator.of(context)
-                                    //                 .pop(); // Tutup Dialog Loading
-                                    //             Navigator.push(
-                                    //               context,
-                                    //               MaterialPageRoute(
-                                    //                 builder: (context) =>
-                                    //                     ComponentUpdateTabung(
-                                    //                   code: item.idStr!,
-                                    //                 ),
-                                    //               ),
-                                    //             );
-                                    //           } catch (e) {
-                                    //             Navigator.of(context)
-                                    //                 .pop(); // Tutup Dialog Loading
-                                    //             print('Error: $e');
-                                    //             // Tambahkan pesan error jika perlu
-                                    //           }
-                                    //         },
-                                    //         icon: const Icon(
-                                    //           Icons.edit,
-                                    //           size: 20,
-                                    //           color: PRIMARY_COLOR,
-                                    //         ),
-                                    //       ),
-                                    //       IconButton(
-                                    //         onPressed: () {
-                                    //           showDialog(
-                                    //             context: context,
-                                    //             builder:
-                                    //                 (BuildContext context) {
-                                    //               return SizedBox(
-                                    //                 width: width * 0.8,
-                                    //                 height: height * 0.1,
-                                    //                 child: AlertDialog(
-                                    //                   title: const Text(
-                                    //                       'Yakin ingin menghapus?'),
-                                    //                   actions: <Widget>[
-                                    //                     // Tombol Batal
-                                    //                     WidgetButtonCustom(
-                                    //                         FullWidth:
-                                    //                             width * 0.2,
-                                    //                         FullHeight:
-                                    //                             height * 0.05,
-                                    //                         title: "Kembali",
-                                    //                         bgColor:
-                                    //                             PRIMARY_COLOR,
-                                    //                         onpressed: () {
-                                    //                           Navigator.pop(
-                                    //                               context);
-                                    //                         },
-                                    //                         color:
-                                    //                             PRIMARY_COLOR),
-                                    //                     // Tombol Hapus
-                                    //                     WidgetButtonCustom(
-                                    //                         FullWidth:
-                                    //                             width * 0.2,
-                                    //                         FullHeight:
-                                    //                             height * 0.05,
-                                    //                         bgColor:
-                                    //                             SECONDARY_COLOR,
-                                    //                         title: "Hapus",
-                                    //                         onpressed:
-                                    //                             () async {
-                                    //                           Navigator.pop(
-                                    //                               context);
-                                    //                           print(
-                                    //                               item?.idStr);
-                                    //                           // print(
-                                    //                           //     "No BPTK : ${item!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
-                                    //                           await provider
-                                    //                               .deleteTube(
-                                    //                             context,
-                                    //                             item!.idStr!,
-                                    //                           );
-                                    //                         },
-                                    //                         color:
-                                    //                             SECONDARY_COLOR),
-                                    //                   ],
-                                    //                 ),
-                                    //               );
-                                    //             },
-                                    //           );
-                                    //         },
-                                    //         icon: const Icon(
-                                    //           Icons.delete,
-                                    //           size: 20,
-                                    //           color: SECONDARY_COLOR,
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () async {
+                                              // Tampilkan Dialog Loading
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MenuScanCradle(
+                                                    title: "Scan Tube Cradle",
+                                                    cradleId: item.id,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                              color: PRIMARY_COLOR,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return SizedBox(
+                                                    width: width * 0.8,
+                                                    height: height * 0.1,
+                                                    child: AlertDialog(
+                                                      title: const Text(
+                                                          'Yakin ingin menghapus?'),
+                                                      actions: <Widget>[
+                                                        // Tombol Batal
+                                                        WidgetButtonCustom(
+                                                            FullWidth:
+                                                                width * 0.2,
+                                                            FullHeight:
+                                                                height * 0.05,
+                                                            title: "Kembali",
+                                                            bgColor:
+                                                                PRIMARY_COLOR,
+                                                            onpressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            color:
+                                                                PRIMARY_COLOR),
+                                                        // Tombol Hapus
+                                                        WidgetButtonCustom(
+                                                            FullWidth:
+                                                                width * 0.2,
+                                                            FullHeight:
+                                                                height * 0.05,
+                                                            bgColor:
+                                                                SECONDARY_COLOR,
+                                                            title: "Hapus",
+                                                            onpressed:
+                                                                () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              // print(
+                                                              //     "No BPTK : ${item!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
+                                                              // await provider
+                                                              //     .deleteTube(
+                                                              //   context,
+                                                              //   item!.idStr!,
+                                                              // );
+                                                            },
+                                                            color:
+                                                                SECONDARY_COLOR),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              size: 20,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 )),
                               ],
@@ -1591,9 +1568,7 @@ class WidgetCardCradle extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ComponentTambahCradle(
-                            id: item.id,
-                          ),
+                          builder: (context) => ComponentTambahCradle(),
                         ),
                       );
                     } catch (e) {

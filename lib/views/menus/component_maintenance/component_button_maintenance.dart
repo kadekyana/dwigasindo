@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
+import 'package:dwigasindo/widgets/wigdet_kecamatan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -1075,9 +1077,11 @@ class _FormC2H2State extends State<FormC2H2> {
 
 class FormAfkir extends StatefulWidget {
   String title;
+  int id;
   FormAfkir({
     super.key,
     required this.title,
+    required this.id,
   });
   @override
   State<FormAfkir> createState() => _FormAfkirState();
@@ -1422,7 +1426,345 @@ class _FormAfkirState extends State<FormAfkir> {
               FullWidth: width * 0.9,
               FullHeight: height * 0.05,
               title: 'Simpan',
-              onpressed: () async {},
+              onpressed: () async {
+                provider.isiFormAfkir(
+                    context,
+                    widget.id,
+                    note.text,
+                    selectPicId,
+                    _imageFile!.path,
+                    (a!.selectedIndex == 0) ? true : false,
+                    (b!.selectedIndex == 0) ? true : false,
+                    (c!.selectedIndex == 0) ? true : false,
+                    (d!.selectedIndex == 0) ? true : false,
+                    (e!.selectedIndex == 0) ? true : false);
+              },
+              bgColor: PRIMARY_COLOR,
+              color: PRIMARY_COLOR),
+        ),
+      ),
+    );
+  }
+}
+
+class UpdateStatusSparepart extends StatefulWidget {
+  String title;
+  int id;
+  int lastStatus;
+  UpdateStatusSparepart(
+      {super.key,
+      required this.title,
+      required this.id,
+      required this.lastStatus});
+  @override
+  State<UpdateStatusSparepart> createState() => _UpdateStatusSparepartState();
+}
+
+class _UpdateStatusSparepartState extends State<UpdateStatusSparepart> {
+  // int selectPicId = 0;
+  // int selectPicId1 = 0;
+  int selectPicId = 0;
+  int selectItemId = 0;
+  TextEditingController note = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  TextEditingController? controller = TextEditingController();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
+  // Fungsi untuk menambah form baru
+  void _addForm() {
+    setState(() {
+      formList.add({
+        "item_id": null,
+        "qty": null,
+      });
+    });
+  }
+
+  // Fungsi untuk menghapus form terakhir
+  void _removeForm(int index) {
+    setState(() {
+      formList.removeAt(index);
+    });
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderSales>(context);
+    return Scaffold(
+      appBar: WidgetAppbar(
+        title: 'Update Status ${widget.title}',
+        center: true,
+        colorTitle: Colors.black,
+        colorBack: Colors.black,
+        colorBG: Colors.grey.shade100,
+        back: true,
+        route: () {
+          Navigator.pop(context);
+        },
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: width,
+                child: ListTile(
+                  title: Text(
+                    'Pilih Penerima',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Consumer<ProviderSales>(
+                    builder: (context, provider, child) {
+                      final pic = provider.modelUsersPic!.data!
+                          .map((data) => {'id': data.id, 'name': data.name})
+                          .toList();
+
+                      return CustomDropdown(
+                        decoration: CustomDropdownDecoration(
+                            closedBorder:
+                                Border.all(color: Colors.grey.shade400),
+                            expandedBorder:
+                                Border.all(color: Colors.grey.shade400)),
+                        hintText: 'Pilih Penerima',
+                        items: pic.map((e) => e['name']).toList(),
+                        onChanged: (item) {
+                          print("Selected Item: $item");
+
+                          final selected = pic.firstWhere(
+                            (e) => e['name'] == item,
+                          );
+
+                          setState(() {
+                            selectPicId = int.parse(selected['id'].toString());
+                          });
+
+                          print("Selected ID: $selectPicId");
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: width,
+              height: 110.h,
+              child: ListTile(
+                title: Text(
+                  'Catatan',
+                  style: subtitleTextBlack,
+                ),
+                subtitle: Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
+                  height: 70.h,
+                  child: TextField(
+                    controller: note,
+                    maxLines: null,
+                    expands: true,
+                    decoration: InputDecoration(
+                      hintText: 'Masukkan catatan di sini...',
+                      contentPadding: const EdgeInsets.all(10),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    style: subtitleTextBlack,
+                    textAlignVertical: TextAlignVertical.top,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: width,
+              height: 80.h,
+              child: Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap:
+                      _showImageSourceDialog, // Panggil fungsi saat button diklik
+                  child: SizedBox(
+                    width: width,
+                    height: height * 0.1,
+                    child: ListTile(
+                      title: Text(
+                        'Upload Image',
+                        style: subtitleTextBlack,
+                      ),
+                      subtitle: Container(
+                        height: 100.h,
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _imageFile != null
+                            ? Image.file(
+                                _imageFile!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: SvgPicture.asset(
+                                    'assets/images/gambar.svg'),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: formList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ListTile(
+                        title: Text(
+                          'Pilih Item',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: Consumer<ProviderItem>(
+                            builder: (context, provider, child) {
+                              final item = provider.allItem!.data!
+                                  .map((data) =>
+                                      {'id': data.id, 'name': data.name})
+                                  .toList();
+
+                              return CustomAutocomplete(
+                                data: item.map((e) => e['name']).toList() ?? [],
+                                displayString: (item) => item.toString(),
+                                onSelected: (value) {
+                                  print("Selected Item: $item");
+
+                                  final selected = item.firstWhere(
+                                    (e) => e['name'] == value,
+                                  );
+
+                                  setState(() {
+                                    selectItemId =
+                                        int.parse(selected!['id'].toString());
+                                  });
+
+                                  setState(() {
+                                    formList[index]['item_id'] = selectItemId;
+                                  });
+
+                                  print("Selected ID: $selectItemId");
+                                },
+                                labelText: 'Cari Item',
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: height * 0.06,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: WidgetButtonCustom(
+                            FullWidth: width * 0.9,
+                            FullHeight: 40.h,
+                            title: 'Hapus Form Gas',
+                            onpressed: () {
+                              _removeForm(index);
+                            },
+                            bgColor: PRIMARY_COLOR,
+                            color: PRIMARY_COLOR),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            SizedBox(
+              width: width,
+              height: height * 0.06,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: WidgetButtonCustom(
+                    FullWidth: width * 0.9,
+                    FullHeight: 40.h,
+                    title: 'Tambah Form Gas',
+                    onpressed: _addForm,
+                    bgColor: PRIMARY_COLOR,
+                    color: PRIMARY_COLOR),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: SizedBox(
+        width: width,
+        height: height * 0.06,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: WidgetButtonCustom(
+              FullWidth: width * 0.9,
+              FullHeight: height * 0.05,
+              title: 'Simpan',
+              onpressed: () async {
+                print(widget.id);
+                print(widget.lastStatus);
+                await provider.updateSparepart(context, widget.id, note.text,
+                    selectPicId, _imageFile!.path, formList);
+              },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
         ),

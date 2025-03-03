@@ -35,10 +35,10 @@ class Datum {
   String? photo;
   int? ownerShipType;
   bool? isHasTubeType;
-  int? tubeTypeId;
+  dynamic tubeTypeId;
   String? tubeTypeName;
   bool? isHasGrade;
-  int? tubeGradeId;
+  dynamic tubeGradeId;
   dynamic tubeGradeName;
   int? tubeYear;
   String? serialNumber;

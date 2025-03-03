@@ -1170,8 +1170,8 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
     }
   }
 
-  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
   List<Map<String, dynamic>> formListB = []; // List untuk menyimpan data form
+  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
   // Fungsi untuk menambah form baru
   void _addForm() {
     setState(() {

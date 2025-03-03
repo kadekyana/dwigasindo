@@ -115,6 +115,16 @@ class ProviderScan with ChangeNotifier {
     print(response?.data);
   }
 
+  Future<void> scanCradle(
+      BuildContext context, String code, int cradleId) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'scan_cradle/$cradleId?tube_no=$code', token: token, data: {});
+    print(response?.data);
+  }
+
   Future<void> scanC2H2(BuildContext context, String code) async {
     List<String> dataCode = [code];
     final auth = Provider.of<ProviderAuth>(context, listen: false);

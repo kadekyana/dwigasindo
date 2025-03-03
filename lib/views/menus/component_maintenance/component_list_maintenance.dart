@@ -308,31 +308,6 @@ class _ComponentMenuReadyState extends State<ComponentMenuReady> {
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: Column(
           children: [
-            // SizedBox(
-            //   width: double.maxFinite,
-            //   height: height * 0.1,
-            //   child: GroupButton(
-            //       controller: menu,
-            //       options: GroupButtonOptions(
-            //           buttonWidth: width * 0.4,
-            //           borderRadius: BorderRadius.circular(8),
-            //           selectedColor: PRIMARY_COLOR),
-            //       isRadio: true,
-            //       onSelected: (value, index, isSelected) async {
-            //         if (index == 0) {
-            //           setState(() {
-            //             check = true;
-            //           });
-            //           await provider.getListMaintenance(context, 1, 0);
-            //         } else {
-            //           setState(() {
-            //             check = false;
-            //           });
-            //           await provider.getListMaintenance(context, 2, 0);
-            //         }
-            //       },
-            //       buttons: ['High Preasure', 'C2H2']),
-            // ),
             SizedBox(
               height: 20.h,
             ),
@@ -1092,6 +1067,7 @@ class _ComponentMenuReadyState extends State<ComponentMenuReady> {
                                                                               MaterialPageRoute(
                                                                                 builder: (context) => FormAfkir(
                                                                                   title: 'Ready To Use',
+                                                                                  id: dataCard.id!,
                                                                                 ),
                                                                               ),
                                                                             );
@@ -1855,8 +1831,8 @@ class _ComponentMenuReturnState extends State<ComponentMenuReturn> {
                                                                             Navigator.push(
                                                                               context,
                                                                               MaterialPageRoute(
-                                                                                builder: (context) => UpdateStatusToUsers(
-                                                                                  title: 'Pergantian Sparepart',
+                                                                                builder: (context) => UpdateStatusSparepart(
+                                                                                  title: 'Pergantian',
                                                                                   id: dataCard.id!,
                                                                                   lastStatus: dataCard.lastStatus!,
                                                                                 ),
@@ -1988,6 +1964,7 @@ class _ComponentMenuReturnState extends State<ComponentMenuReturn> {
                                                                               MaterialPageRoute(
                                                                                 builder: (context) => FormAfkir(
                                                                                   title: 'Ready To Use',
+                                                                                  id: dataCard.id!,
                                                                                 ),
                                                                               ),
                                                                             );
@@ -2751,8 +2728,8 @@ class _ComponentMenuAfkirState extends State<ComponentMenuAfkir> {
                                                                             Navigator.push(
                                                                               context,
                                                                               MaterialPageRoute(
-                                                                                builder: (context) => UpdateStatusToUsers(
-                                                                                  title: 'Pergantian Sparepart',
+                                                                                builder: (context) => UpdateStatusSparepart(
+                                                                                  title: 'Pergantian',
                                                                                   id: dataCard.id!,
                                                                                   lastStatus: dataCard.lastStatus!,
                                                                                 ),
@@ -2884,6 +2861,7 @@ class _ComponentMenuAfkirState extends State<ComponentMenuAfkir> {
                                                                               MaterialPageRoute(
                                                                                 builder: (context) => FormAfkir(
                                                                                   title: 'Ready To Use',
+                                                                                  id: dataCard.id!,
                                                                                 ),
                                                                               ),
                                                                             );
@@ -3644,8 +3622,8 @@ class _ComponentMenuListState extends State<ComponentMenuList> {
                                                                             Navigator.push(
                                                                               context,
                                                                               MaterialPageRoute(
-                                                                                builder: (context) => UpdateStatusToUsers(
-                                                                                  title: 'Pergantian Sparepart',
+                                                                                builder: (context) => UpdateStatusSparepart(
+                                                                                  title: 'Pergantian',
                                                                                   id: dataCard.id!,
                                                                                   lastStatus: dataCard.lastStatus!,
                                                                                 ),
@@ -3777,6 +3755,7 @@ class _ComponentMenuListState extends State<ComponentMenuList> {
                                                                               MaterialPageRoute(
                                                                                 builder: (context) => FormAfkir(
                                                                                   title: 'Ready To Use',
+                                                                                  id: dataCard.id!,
                                                                                 ),
                                                                               ),
                                                                             );

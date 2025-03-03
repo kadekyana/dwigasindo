@@ -10,6 +10,7 @@ import 'package:dwigasindo/model/modelDetailLead.dart';
 import 'package:dwigasindo/model/modelDetailOrder.dart';
 import 'package:dwigasindo/model/modelDistrict.dart';
 import 'package:dwigasindo/model/modelDocumentationLeads.dart';
+import 'package:dwigasindo/model/modelItemSupport.dart';
 import 'package:dwigasindo/model/modelKunjungan.dart';
 import 'package:dwigasindo/model/modelLeads.dart';
 import 'package:dwigasindo/model/modelListSales.dart';
@@ -131,6 +132,10 @@ class ProviderSales extends ChangeNotifier {
   ModelSummaryMaintenance? get modelSummaryMaintenance =>
       _modelSummaryMaintenance;
 
+  ModelItemSupport? _itemSupport;
+
+  ModelItemSupport? get itemSupport => _itemSupport;
+
   String getRemarksLabel(String remarks) {
     List<String> values =
         remarks.split(',').map((e) => e.trim()).toList(); // Hapus spasi
@@ -241,6 +246,100 @@ class ProviderSales extends ChangeNotifier {
     }
   }
 
+  Future<void> updateSparepart(
+    BuildContext context,
+    int id,
+    String note,
+    int penerima,
+    String path,
+    List<Map<String, dynamic>> items,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: "maintenances/update-status-sparepart-by-id/$id",
+        token: token,
+        data: {
+          "note": note,
+          "receive_by_id": penerima,
+          "path": path,
+          "items": items
+        });
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      await getListMaintenance(context, 1, 0);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Update Status Item',
+        ),
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Update Status Item',
+        ),
+      );
+    }
+  }
+
+  Future<void> isiFormAfkir(
+      BuildContext context,
+      int id,
+      String note,
+      int penerima,
+      String path,
+      bool hamer,
+      bool leaking,
+      bool rusty,
+      bool bloated,
+      bool welding) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: "maintenances/update-status-afkir-by-id/$id",
+        token: token,
+        data: {
+          // fill this when status 1,3,4
+          "note": note,
+          "receive_by_id": penerima,
+          "path": path,
+
+          // fill this when status 5
+          "is_hammer_demage": hamer,
+          "is_leaking_tube": leaking,
+          "is_rusty_tube_body": rusty,
+          "is_bloated_tube_body": bloated,
+          "is_welding_join_tube_body": welding
+        });
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      await getListMaintenance(context, 1, 0);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Update Status Item',
+        ),
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Update Status Item',
+        ),
+      );
+    }
+  }
+
   Future<void> getUsersPic(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -251,6 +350,20 @@ class ProviderSales extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelUsersPic.fromJson(response!.data);
       _modelUsersPic = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getItemSupport(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "maintenances/support-items/get-all", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelItemSupport.fromJson(response!.data);
+      _itemSupport = data;
       notifyListeners();
     }
   }
