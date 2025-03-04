@@ -1,5 +1,7 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_order.dart';
 import 'package:dwigasindo/providers/provider_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_update_driver.dart';
@@ -30,6 +32,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
     final width = MediaQuery.of(context).size.width;
 
     final provider = Provider.of<ProviderSuratJalan>(context);
+    final providerItem = Provider.of<ProviderItem>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -65,14 +68,39 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                           FullWidth: width,
                           FullHeight: height * 0.06,
                           title: 'Buat Surat Jalan',
-                          onpressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const ComponentBuatSuratJalan(),
-                              ),
+                          onpressed: () async {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
+
+                            try {
+                              await Future.wait([
+                                providerItem.getDataBpti(context),
+                                providerItem.getAllOrder(context, 1),
+                              ]);
+
+                              // Navigate sesuai kondisi
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ComponentBuatSuratJalan(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           },
                           bgColor: PRIMARY_COLOR,
                           color: PRIMARY_COLOR),

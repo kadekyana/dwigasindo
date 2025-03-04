@@ -1,14 +1,29 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_order.dart';
+import 'package:dwigasindo/providers/provider_surat_jalan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-class ComponentBuatSuratJalan extends StatelessWidget {
-  const ComponentBuatSuratJalan({super.key});
+class ComponentBuatSuratJalan extends StatefulWidget {
+  ComponentBuatSuratJalan({super.key});
+
+  @override
+  State<ComponentBuatSuratJalan> createState() =>
+      _ComponentBuatSuratJalanState();
+}
+
+class _ComponentBuatSuratJalanState extends State<ComponentBuatSuratJalan> {
+  int selectOrder = 0;
+
+  SingleSelectController? controller = SingleSelectController(null);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +31,9 @@ class ComponentBuatSuratJalan extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     final provider = Provider.of<ProviderDistribusi>(context);
+    final providerItem = Provider.of<ProviderItem>(context);
+    final providerSU = Provider.of<ProviderSuratJalan>(context);
+    final data = providerItem.modelDataBpti?.data;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -39,8 +57,47 @@ class ComponentBuatSuratJalan extends StatelessWidget {
             height: double.maxFinite,
             child: Column(
               children: [
-                SizedBox(
-                  height: height * 0.01,
+                Container(
+                  width: double.maxFinite,
+                  height: 90.h,
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Consumer<ProviderItem>(
+                        builder: (context, provider, child) {
+                          final bptks = provider.order?.data
+                              ?.map(
+                                  (data) => {'id': data.id, 'name': data.code})
+                              .toList();
+                          return CustomDropdown(
+                            controller: controller,
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih Order',
+                            items: bptks?.map((e) => e['name']).toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                final ID = bptks?.firstWhere(
+                                  (item) => item['name'] == value,
+                                );
+                                setState(() {
+                                  selectOrder = int.parse(ID!['id'].toString());
+                                });
+                                print("Selected BPTK ID: $selectOrder");
+                              } else {
+                                print("BPTK is null");
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 25,
@@ -56,164 +113,129 @@ class ComponentBuatSuratJalan extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: provider.data.length,
+                    itemCount: data?.length ?? 0,
                     itemBuilder: (context, index) {
-                      final dateData = provider.data[index];
-                      final date = dateData['date'];
-                      final items = dateData['items'];
+                      final dataBpti = data?[index];
                       return Container(
                         margin: EdgeInsets.only(bottom: height * 0.01),
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 30,
-                              width: width,
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  date,
-                                  style: titleTextBlack,
+                              height: height * 0.1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Fungsi ini akan dipanggil ketika Card ditekan
+                                  provider.onItemChanged(
+                                    dataBpti.id.toString(),
+                                    !provider.selectedItems.contains(dataBpti.id
+                                        .toString()), // Cek status centang
+                                    {
+                                      'id': dataBpti.id,
+                                      'no': dataBpti.no,
+                                      'total': dataBpti.total,
+                                    },
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  color: Colors.white,
+                                  surfaceTintColor: Colors.white,
+                                  child: Row(
+                                    children: [
+                                      // Checkbox di sebelah kiri
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: height * 0.016,
+                                            horizontal: width * 0.05,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              // Custom Checkbox
+                                              Transform.scale(
+                                                scale: 1.5,
+                                                child: Container(
+                                                  width: 20,
+                                                  height: 20,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: provider
+                                                            .selectedItems
+                                                            .contains(dataBpti!
+                                                                .id
+                                                                .toString())
+                                                        ? COMPLEMENTARY_COLOR4 // Warna hijau ketika dipilih
+                                                        : Colors.grey
+                                                            .shade200, // Warna abu ketika tidak dipilih
+                                                  ),
+                                                  child: Checkbox(
+                                                    value: provider
+                                                        .selectedItems
+                                                        .contains(dataBpti.id
+                                                            .toString()),
+                                                    onChanged: (bool? value) {
+                                                      provider.onItemChanged(
+                                                        dataBpti.id.toString(),
+                                                        value ?? false,
+                                                        {
+                                                          'id': dataBpti.id,
+                                                          'no': dataBpti.no,
+                                                          'total':
+                                                              dataBpti.total,
+                                                        },
+                                                      );
+                                                    },
+                                                    autofocus: true,
+                                                    activeColor:
+                                                        COMPLEMENTARY_COLOR4, // Warna ketika dipilih
+                                                    checkColor:
+                                                        COMPLEMENTARY_COLOR4, // Warna centang
+                                                    shape: const CircleBorder(),
+                                                    side: BorderSide(
+                                                        color: Colors.grey
+                                                            .shade200), // Bentuk bulat
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: width * 0.03),
+                                              FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(dataBpti!.no!,
+                                                    style: titleTextBlack),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 30,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.04),
+                                            decoration: const BoxDecoration(
+                                              color: PRIMARY_COLOR,
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(12),
+                                                bottomLeft: Radius.circular(12),
+                                              ),
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                "Total Tabung: ${dataBpti.total}",
+                                                style: subtitleText,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: items.length,
-                              itemBuilder: (context, itemIndex) {
-                                final item = items[itemIndex];
-                                final itemId =
-                                    "$date-${item['tipe']}"; // Unique ID untuk setiap item
-
-                                return SizedBox(
-                                  height: height * 0.1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      // Fungsi ini akan dipanggil ketika Card ditekan
-                                      provider.onItemChanged(
-                                          itemId,
-                                          !provider.selectedItems
-                                              .contains(itemId),
-                                          item);
-                                    },
-                                    child: Card(
-                                      elevation: 2,
-                                      color: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      child: Row(
-                                        children: [
-                                          // Checkbox di sebelah kiri
-                                          Expanded(
-                                            flex: 2,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: height * 0.016,
-                                                horizontal: width * 0.05,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  // Custom Checkbox
-                                                  Transform.scale(
-                                                    scale: 1.5,
-                                                    child: Container(
-                                                      width: 20,
-                                                      height: 20,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: provider
-                                                                .selectedItems
-                                                                .contains(
-                                                                    itemId)
-                                                            ? COMPLEMENTARY_COLOR4 // Warna hijau ketika dipilih
-                                                            : Colors.grey
-                                                                .shade200, // Warna abu ketika tidak dipilih
-                                                      ),
-                                                      child: Checkbox(
-                                                        value: provider
-                                                            .selectedItems
-                                                            .contains(itemId),
-                                                        onChanged:
-                                                            (bool? value) {
-                                                          provider
-                                                              .onItemChanged(
-                                                                  itemId,
-                                                                  value!,
-                                                                  item);
-                                                        },
-                                                        autofocus: true,
-                                                        activeColor:
-                                                            COMPLEMENTARY_COLOR4, // Warna ketika dipilih
-                                                        checkColor:
-                                                            COMPLEMENTARY_COLOR4, // Warna centang
-                                                        shape:
-                                                            const CircleBorder(),
-                                                        side: BorderSide(
-                                                            color: Colors.grey
-                                                                .shade200), // Bentuk bulat
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: width * 0.03),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(
-                                                            item['tipe'],
-                                                            style:
-                                                                titleTextBlack),
-                                                      ),
-                                                      SizedBox(
-                                                        width: width * 0.4,
-                                                        child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            child: Text(
-                                                                item['nama'])),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                                height: 30,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: width * 0.04),
-                                                decoration: const BoxDecoration(
-                                                  color: PRIMARY_COLOR,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(12),
-                                                    bottomLeft:
-                                                        Radius.circular(12),
-                                                  ),
-                                                ),
-                                                child: FittedBox(
-                                                  fit: BoxFit.scaleDown,
-                                                  child: Text(
-                                                    "Total Tabung: ${item['total']}",
-                                                    style: subtitleText,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
                           ],
                         ),
@@ -230,153 +252,157 @@ class ComponentBuatSuratJalan extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: width * 0.05, vertical: height * 0.005),
         child: WidgetButtonCustom(
-            FullWidth: width,
-            FullHeight: height * 0.065,
-            title: 'Buat Surat Jalan',
-            onpressed: () {
-              WoltModalSheet.show(
-                context: context,
-                pageListBuilder: (bottomSheetContext) => [
-                  SliverWoltModalSheetPage(
-                    topBarTitle: Container(
-                      margin: EdgeInsets.symmetric(vertical: height * 0.02),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Apakah kamu sudah yakin buat\nsurat jalan ?',
-                              textAlign: TextAlign.center,
-                              style: titleTextBlack),
-                          WidgetButtonCustom(
-                            FullWidth: width,
-                            FullHeight: height * 0.05,
-                            title: 'Batal',
-                            onpressed: () {
-                              Navigator.pop(context);
-                              provider.clearSelectedItems();
-                            },
-                            color: SECONDARY_COLOR,
-                            bgColor: SECONDARY_COLOR,
-                          )
-                        ],
-                      ),
+          FullWidth: width,
+          FullHeight: height * 0.065,
+          title: 'Buat Surat Jalan',
+          onpressed: () {
+            WoltModalSheet.show(
+              context: context,
+              pageListBuilder: (bottomSheetContext) => [
+                SliverWoltModalSheetPage(
+                  topBarTitle: Container(
+                    margin: EdgeInsets.symmetric(vertical: height * 0.02),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Apakah kamu sudah yakin buat\nsurat jalan ?',
+                            textAlign: TextAlign.center, style: titleTextBlack),
+                        WidgetButtonCustom(
+                          FullWidth: width,
+                          FullHeight: height * 0.05,
+                          title: 'Batal',
+                          onpressed: () {
+                            Navigator.pop(context);
+                            print(provider.selectedItemsList);
+                            provider
+                                .clearSelectedItems(); // Menghapus item yang dipilih
+                          },
+                          color: SECONDARY_COLOR,
+                          bgColor: SECONDARY_COLOR,
+                        )
+                      ],
                     ),
-                    isTopBarLayerAlwaysVisible: true,
-                    navBarHeight: 150,
-                    mainContentSliversBuilder: (context) => [
-                      SliverList.builder(
-                        itemCount: provider.selectedItemsList
-                            .length, // Jumlah item yang dipilih
-                        itemBuilder: (context, index) {
-                          final selectedItem = provider.selectedItemsList[
-                              index]; // Ambil item dari list yang dipilih
-                          return Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width * 0.04),
-                            child: Column(
-                              children: [
-                                SizedBox(height: height * 0.02),
-                                SizedBox(
-                                  height: height * 0.1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      provider.onItemChanged(
-                                          "${selectedItem['tipe']}",
-                                          !provider.selectedItems.contains(
-                                              "${selectedItem['tipe']}"),
-                                          selectedItem);
-                                    },
-                                    child: Card(
-                                      elevation: 2,
-                                      color: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: height * 0.015,
-                                                horizontal: width * 0.01,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(width: width * 0.01),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(selectedItem['tipe'],
-                                                          style:
-                                                              titleTextBlack),
-                                                      FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Text(
-                                                            selectedItem[
-                                                                'nama']),
+                  ),
+                  isTopBarLayerAlwaysVisible: true,
+                  navBarHeight: 150,
+                  mainContentSliversBuilder: (context) => [
+                    SliverList.builder(
+                      itemCount: provider
+                          .selectedItemsList.length, // Jumlah item yang dipilih
+                      itemBuilder: (context, index) {
+                        final selectedItem = provider.selectedItemsList[
+                            index]; // Ambil item dari list yang dipilih
+                        return Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * 0.04),
+                          child: Column(
+                            children: [
+                              SizedBox(height: height * 0.02),
+                              SizedBox(
+                                height: height * 0.1,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    provider.onItemChanged(
+                                        "${selectedItem['id']}", // Perbaiki akses key sesuai dengan data
+                                        !provider.selectedItems.contains(
+                                            "${selectedItem['id']}"), // Pengecekan dengan id
+                                        selectedItem);
+                                  },
+                                  child: Card(
+                                    elevation: 2,
+                                    color: Colors.white,
+                                    surfaceTintColor: Colors.white,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: height * 0.015,
+                                              horizontal: width * 0.01,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: width * 0.01),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        selectedItem['no'],
+                                                        style:
+                                                            superTitleTextBlack,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                                height: 30,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: width * 0.04),
-                                                decoration: const BoxDecoration(
-                                                  color: PRIMARY_COLOR,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(12),
-                                                    bottomLeft:
-                                                        Radius.circular(12),
-                                                  ),
+                                        ),
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                              height: 30,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: width * 0.04),
+                                              decoration: const BoxDecoration(
+                                                color: PRIMARY_COLOR,
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(12),
+                                                  bottomLeft:
+                                                      Radius.circular(12),
                                                 ),
-                                                child: FittedBox(
-                                                  fit: BoxFit.scaleDown,
-                                                  child: Text(
-                                                    "Total Tabung: ${selectedItem['total']}",
-                                                    style: subtitleText,
-                                                  ),
+                                              ),
+                                              child: FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  "Total Tabung: ${selectedItem['total']}",
+                                                  style: subtitleText,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      SliverToBoxAdapter(
-                          child: Container(
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
                         margin: const EdgeInsets.all(15),
                         child: WidgetButtonCustom(
                           FullWidth: width,
                           FullHeight: height * 0.05,
                           title: 'Buat Surat Jalan',
-                          onpressed: () {},
+                          onpressed: () {
+                            providerSU.createSuratJalan(context, selectOrder,
+                                provider.selectedItemsList);
+                          },
                           color: PRIMARY_COLOR,
                           bgColor: PRIMARY_COLOR,
                         ),
-                      )),
-                    ],
-                  ),
-                ],
-              );
-            },
-            bgColor: PRIMARY_COLOR,
-            color: PRIMARY_COLOR),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+          bgColor: PRIMARY_COLOR,
+          color: PRIMARY_COLOR,
+        ),
       ),
     );
   }

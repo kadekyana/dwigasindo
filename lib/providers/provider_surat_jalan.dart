@@ -35,6 +35,32 @@ class ProviderSuratJalan extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> createSuratJalan(
+    BuildContext context,
+    int orderId,
+    List<Map<String, dynamic>> data,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    data = data
+        .map((item) => {
+              "id": int.parse(item["id"].toString()), // Pastikan integer
+            })
+        .toList();
+
+    final response = await DioServiceAPI().postRequest(
+        url: "delivery_notes",
+        token: token,
+        data: {"order_id": orderId, "details": data});
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      getAllSuratJalan(context);
+    }
+  }
+
   Future<void> updateSuratJalan(BuildContext context, String uuid, int type,
       int? driverId, String? name, String vehicleNumber, int customer) async {
     if (type == 0) {

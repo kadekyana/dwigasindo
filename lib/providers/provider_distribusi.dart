@@ -1213,9 +1213,10 @@ class ProviderDistribusi extends ChangeNotifier {
   ];
 
   // Set untuk menyimpan item yang dipilih
+  // Set untuk menyimpan item yang dipilih
   Set<String> selectedItems = <String>{}; // Untuk menyimpan item yang dicentang
 
-  // Daftar untuk menyimpan item yang dipilih
+// Daftar untuk menyimpan item yang dipilih
   List<Map<String, dynamic>> selectedItemsList = [];
 
   void onItemChanged(
@@ -1225,8 +1226,8 @@ class ProviderDistribusi extends ChangeNotifier {
       selectedItemsList.add(item); // Tambahkan ke list terpilih
     } else {
       selectedItems.remove(itemId); // Hapus dari daftar centang
-      selectedItemsList.removeWhere((element) =>
-          element['tipe'] == item['tipe']); // Hapus dari list terpilih
+      selectedItemsList.removeWhere(
+          (element) => element['id'] == item['id']); // Hapus dari list terpilih
     }
     notifyListeners(); // Perbarui UI
   }

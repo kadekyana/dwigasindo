@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/model/modelAllLocation.dart';
+import 'package:dwigasindo/model/modelAllOrder.dart';
 import 'package:dwigasindo/model/modelAllSO.dart';
 import 'package:dwigasindo/model/modelAllUnit.dart';
 import 'package:dwigasindo/model/modelAllWarehouse.dart';
 import 'package:dwigasindo/model/modelApprovalVerifikasi.dart';
+import 'package:dwigasindo/model/modelDataBPTI.dart';
 import 'package:dwigasindo/model/modelDetailPenerimaanBarang.dart';
 import 'package:dwigasindo/model/modelDetailSPB.dart';
 import 'package:dwigasindo/model/modelDetailStock.dart';
@@ -84,6 +86,27 @@ class ProviderItem extends ChangeNotifier {
   ModeldetailPenerimaanBarang? get modeldetailPenerimaanBarang =>
       _modeldetailPenerimaanBarang;
 
+  ModelDataBpti? _modelDataBpti;
+  ModelDataBpti? get modelDataBpti => _modelDataBpti;
+
+  ModelAllOrder? _order;
+
+  ModelAllOrder? get order => _order;
+
+  Future<void> getAllOrder(BuildContext context, int type) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "orders?type=$type", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelAllOrder.fromJson(response!.data);
+      _order = data;
+      notifyListeners();
+    }
+  }
+
   String? getCategory(int idCategory) {
     final category = allcategory?.data.firstWhere(
       (category) => category.id == idCategory,
@@ -145,6 +168,20 @@ class ProviderItem extends ChangeNotifier {
               builder: (context) => DetailLihatSO(
                     id: id,
                   )));
+    }
+  }
+
+  Future<void> getDataBpti(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "delivery_note_bpti_available", token: token);
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      final data = ModelDataBpti.fromJson(response!.data);
+      _modelDataBpti = data;
+      notifyListeners();
     }
   }
 
