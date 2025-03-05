@@ -4,6 +4,7 @@ import 'package:dwigasindo/views/menus/component_warehouse/Pb/component_penerima
 import 'package:dwigasindo/views/menus/component_warehouse/PenB/component_permintaan_barang.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_item_stok.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_stok_opname.dart';
+import 'package:dwigasindo/views/menus/menu_dashboard.dart';
 import 'package:dwigasindo/views/menus/menu_home.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
@@ -24,8 +25,8 @@ class MenuWarehouse extends StatelessWidget {
         colorBack: Colors.black,
         back: true,
         route: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => BottomAppBar()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MenuDashboard()));
         },
         colorTitle: Colors.black,
         colorBG: Colors.grey.shade100,

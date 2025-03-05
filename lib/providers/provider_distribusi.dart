@@ -87,11 +87,11 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelCradle? _cradle;
   ModelCradle? get cradle => _cradle;
 
-  ModelAllVendor? _vendors;
-  ModelAllVendor? get vendors => _vendors;
-
   ModelVendorDetail? _detail;
   ModelVendorDetail? get detail => _detail;
+
+  ModelAllVendor? _vendors;
+  ModelAllVendor? get vendors => _vendors;
 
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);

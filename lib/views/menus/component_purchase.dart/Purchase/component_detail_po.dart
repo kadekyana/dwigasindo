@@ -15,16 +15,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../../widgets/widget_form.dart';
 
-class ComponentDetailPenerimaanBarang extends StatefulWidget {
-  const ComponentDetailPenerimaanBarang({super.key});
+class ComponentDetailPo extends StatefulWidget {
+  const ComponentDetailPo({super.key});
 
   @override
-  State<ComponentDetailPenerimaanBarang> createState() =>
-      _ComponentDetailPenerimaanBarangState();
+  State<ComponentDetailPo> createState() => _ComponentDetailPoState();
 }
 
-class _ComponentDetailPenerimaanBarangState
-    extends State<ComponentDetailPenerimaanBarang> {
+class _ComponentDetailPoState extends State<ComponentDetailPo> {
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
@@ -531,10 +529,10 @@ class _ComponentDetailPenerimaanBarangState
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderItem>(context);
     final providerSales = Provider.of<ProviderSales>(context);
-    final data = provider.dataPO?.data;
+    final data = provider.detailPurchase?.data;
     return Scaffold(
       appBar: WidgetAppbar(
-        title: 'Penerimaan Barang',
+        title: 'Detail Purchase Order',
         center: true,
         colorTitle: Colors.black,
         colorBack: Colors.black,
@@ -578,7 +576,7 @@ class _ComponentDetailPenerimaanBarangState
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                data?.poNo ?? "-",
+                                data?.no ?? "-",
                                 style: subtitleTextBlack,
                               ),
                             ),
@@ -763,17 +761,17 @@ class _ComponentDetailPenerimaanBarangState
               height: height * 0.01,
             ),
             Expanded(
-              child: (data.detail?.length == 0)
+              child: (data.poDetail?.length == 0)
                   ? const Center(
                       child: Text('Belum Terdapat Data'),
                     )
                   : ListView.builder(
-                      itemCount: data.detail?.length,
+                      itemCount: data.poDetail?.length,
                       itemBuilder: (context, index) {
-                        final dataCard = data.detail![index];
+                        final dataCard = data.poDetail![index];
                         return Container(
                           width: double.maxFinite,
-                          height: height * 0.35,
+                          height: 180.h,
                           padding: EdgeInsets.all(height * 0.01),
                           margin: EdgeInsets.only(bottom: height * 0.02),
                           decoration: BoxDecoration(
@@ -901,49 +899,7 @@ class _ComponentDetailPenerimaanBarangState
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
-                                                        ': ${dataCard.qty ?? "-"}',
-                                                        style:
-                                                            subtitleTextBlack),
-                                                  ),
-                                                ),
-                                              ),
-                                              const Expanded(
-                                                  child: SizedBox.shrink()),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(5),
-                                                  child: FittedBox(
-                                                    fit: BoxFit.scaleDown,
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Kategori',
-                                                      style: subtitleTextBlack,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(5),
-                                                  child: FittedBox(
-                                                    fit: BoxFit.scaleDown,
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        ': ${dataCard.itemCategory ?? "-"}',
+                                                        ': ${dataCard.itemQty ?? "-"}',
                                                         style:
                                                             subtitleTextBlack),
                                                   ),
@@ -983,7 +939,7 @@ class _ComponentDetailPenerimaanBarangState
                                   expands:
                                       true, // Memperluas TextField agar sesuai dengan ukuran Container
                                   controller: TextEditingController(
-                                      text: dataCard.note),
+                                      text: dataCard.itemNote),
                                   decoration: const InputDecoration(
                                     hintText: 'Masukkan keterangan di sini...',
                                     contentPadding: EdgeInsets.all(10),
@@ -993,70 +949,70 @@ class _ComponentDetailPenerimaanBarangState
                                   textAlignVertical: TextAlignVertical.top,
                                 ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: WidgetButtonCustom(
-                                          FullWidth: width * 0.3,
-                                          FullHeight: 30,
-                                          title: "Batal",
-                                          onpressed: () {
-                                            showCancel(
-                                                context,
-                                                width * 0.3,
-                                                height * 0.05,
-                                                () {},
-                                                data.id!,
-                                                dataCard.itemId!,
-                                                data.poNo!,
-                                                data.idStr!);
-                                          },
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.01,
-                                    ),
-                                    Expanded(
-                                      child: WidgetButtonCustom(
-                                          FullWidth: width * 0.3,
-                                          FullHeight: 30,
-                                          title: "Return",
-                                          onpressed: () {
-                                            showReturn(context, width * 0.3,
-                                                height * 0.05, () {});
-                                          },
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.01,
-                                    ),
-                                    Expanded(
-                                      child: WidgetButtonCustom(
-                                          FullWidth: width * 0.3,
-                                          FullHeight: 30,
-                                          title: "Terima",
-                                          onpressed: () {
-                                            showCompletionDialog(
-                                                context,
-                                                width * 0.3,
-                                                height * 0.05,
-                                                () {},
-                                                dataCard.qty!,
-                                                data.id!,
-                                                dataCard.itemId!,
-                                                data.poNo!);
-                                          },
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Expanded(
+                              //         child: WidgetButtonCustom(
+                              //             FullWidth: width * 0.3,
+                              //             FullHeight: 30,
+                              //             title: "Batal",
+                              //             onpressed: () {
+                              //               showCancel(
+                              //                   context,
+                              //                   width * 0.3,
+                              //                   height * 0.05,
+                              //                   () {},
+                              //                   data.id!,
+                              //                   dataCard.itemId!,
+                              //                   data.poNo!,
+                              //                   data.idStr!);
+                              //             },
+                              //             bgColor: PRIMARY_COLOR,
+                              //             color: Colors.transparent),
+                              //       ),
+                              //       SizedBox(
+                              //         width: width * 0.01,
+                              //       ),
+                              //       Expanded(
+                              //         child: WidgetButtonCustom(
+                              //             FullWidth: width * 0.3,
+                              //             FullHeight: 30,
+                              //             title: "Return",
+                              //             onpressed: () {
+                              //               showReturn(context, width * 0.3,
+                              //                   height * 0.05, () {});
+                              //             },
+                              //             bgColor: PRIMARY_COLOR,
+                              //             color: Colors.transparent),
+                              //       ),
+                              //       SizedBox(
+                              //         width: width * 0.01,
+                              //       ),
+                              //       Expanded(
+                              //         child: WidgetButtonCustom(
+                              //             FullWidth: width * 0.3,
+                              //             FullHeight: 30,
+                              //             title: "Terima",
+                              //             onpressed: () {
+                              //               showCompletionDialog(
+                              //                   context,
+                              //                   width * 0.3,
+                              //                   height * 0.05,
+                              //                   () {},
+                              //                   dataCard.qty!,
+                              //                   data.id!,
+                              //                   dataCard.itemId!,
+                              //                   data.poNo!);
+                              //             },
+                              //             bgColor: PRIMARY_COLOR,
+                              //             color: Colors.transparent),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         );

@@ -1,20 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
+import 'package:dwigasindo/model/modelAllCategory.dart';
+import 'package:dwigasindo/model/modelAllItem.dart';
 import 'package:dwigasindo/model/modelAllLocation.dart';
 import 'package:dwigasindo/model/modelAllOrder.dart';
 import 'package:dwigasindo/model/modelAllSO.dart';
 import 'package:dwigasindo/model/modelAllUnit.dart';
+import 'package:dwigasindo/model/modelAllVendor.dart';
 import 'package:dwigasindo/model/modelAllWarehouse.dart';
 import 'package:dwigasindo/model/modelApprovalVerifikasi.dart';
+import 'package:dwigasindo/model/modelCity.dart';
 import 'package:dwigasindo/model/modelDataBPTI.dart';
 import 'package:dwigasindo/model/modelDetailPenerimaanBarang.dart';
+import 'package:dwigasindo/model/modelDetailPurchase.dart';
 import 'package:dwigasindo/model/modelDetailSPB.dart';
 import 'package:dwigasindo/model/modelDetailStock.dart';
+import 'package:dwigasindo/model/modelDetaillPO.dart';
 import 'package:dwigasindo/model/modelLihatSO.dart';
+import 'package:dwigasindo/model/modelMutasi.dart';
 import 'package:dwigasindo/model/modelPO.dart';
 import 'package:dwigasindo/model/modelPenerimaanBarang.dart';
 import 'package:dwigasindo/model/modelSpb.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
+import 'package:dwigasindo/model/modelVendorCategory.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_selesai_so.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/So/component_stok_opname.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +30,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import '../model/modelAllCategory.dart';
-import '../model/modelAllItem.dart';
-import '../model/modelMutasi.dart';
 import 'provider_auth.dart';
 
 class ProviderItem extends ChangeNotifier {
@@ -93,6 +98,49 @@ class ProviderItem extends ChangeNotifier {
 
   ModelAllOrder? get order => _order;
 
+  ModelVendorCategory? _modelVendorCategory;
+  ModelVendorCategory? get modelVendorCategory => _modelVendorCategory;
+
+  ModelCity? _modelCity;
+  ModelCity? get modelCity => _modelCity;
+
+  ModelAllVendor? _vendors;
+  ModelAllVendor? get vendors => _vendors;
+
+  ModelDataPo? _dataPo;
+  ModelDataPo? get dataPO => _dataPo;
+
+  ModelDetailPurchase? _detailPurchase;
+  ModelDetailPurchase? get detailPurchase => _detailPurchase;
+
+  Future<void> getDataVendor(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "vendors", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelAllVendor.fromJson(response!.data);
+      _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDetailPO(BuildContext context, String noPO) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "receiving_orders/$noPO", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDataPo.fromJson(response!.data);
+      _dataPo = data;
+      notifyListeners();
+    }
+  }
+
   Future<void> getAllOrder(BuildContext context, int type) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -104,6 +152,108 @@ class ProviderItem extends ChangeNotifier {
       final data = ModelAllOrder.fromJson(response!.data);
       _order = data;
       notifyListeners();
+    }
+  }
+
+  Future<void> getDetailPurchase(BuildContext context, String noPo) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "po/$noPo", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailPurchase.fromJson(response!.data);
+      _detailPurchase = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getVendorCategory(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "vendor_categories", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelVendorCategory.fromJson(response!.data);
+      _modelVendorCategory = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getCity(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "cities", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelCity.fromJson(response!.data);
+      _modelCity = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createVendor(BuildContext context, String nama, String alamat,
+      int vendorCategory, int type, int cityId) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().postRequest(url: "vendors", token: token, data: {
+      "name": nama,
+      "address": alamat,
+      "vendor_category_id": vendorCategory,
+      "type": type,
+      "city_id": cityId
+
+      // PIC, no telp
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      await getAllVendor(context);
+      await getDataVendor(context);
+
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> createTerimaBarang(BuildContext context, int poId, int itemId,
+      int qty, int warehouseId, String note, String noPo) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .postRequest(url: "receiving_orders", token: token, data: {
+      "po_id": poId,
+      "item_id": itemId,
+      "qty": qty,
+      "warehouse_id": warehouseId,
+      "note": note,
+      "status": 1
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getDetailPO(context, noPo);
+    }
+  }
+
+  Future<void> updateTerimaBarang(BuildContext context, int poId, int itemId,
+      String note, String uuid, String noPo) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: "receiving_order_details/$uuid",
+        token: token,
+        data: {"po_id": poId, "item_id": itemId, "note": note, "status": 0});
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getDetailPO(context, noPo);
     }
   }
 

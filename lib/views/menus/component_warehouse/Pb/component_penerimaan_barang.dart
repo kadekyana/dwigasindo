@@ -1,5 +1,7 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Pb/component_detail_penerimaan_barang.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 class ComponentPenerimaanBarang extends StatefulWidget {
   const ComponentPenerimaanBarang({super.key});
@@ -18,10 +21,14 @@ class ComponentPenerimaanBarang extends StatefulWidget {
 }
 
 class _ComponentPenerimaanBarangState extends State<ComponentPenerimaanBarang> {
+  GroupButtonController controller = GroupButtonController(selectedIndex: 0);
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
+    final data = provider.po?.data;
     return Scaffold(
       appBar: WidgetAppbar(
         title: 'Penerimaan Barang',
@@ -89,6 +96,7 @@ class _ComponentPenerimaanBarangState extends State<ComponentPenerimaanBarang> {
             Align(
               alignment: Alignment.centerLeft,
               child: GroupButton(
+                  controller: controller,
                   isRadio: true,
                   options: GroupButtonOptions(
                     selectedColor: PRIMARY_COLOR,
@@ -104,10 +112,297 @@ class _ComponentPenerimaanBarangState extends State<ComponentPenerimaanBarang> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 3,
+                itemCount: data?.length,
                 itemBuilder: (context, index) {
-                  print(index);
-                  return cardWidget(height: height, width: width);
+                  final dataCard = data?[index];
+                  return Container(
+                    width: double.maxFinite,
+                    height: height * 0.25,
+                    margin: EdgeInsets.only(bottom: height * 0.02),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 1,
+                          color: Color(0xffE4E4E4),
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: height * 0.05,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: width * 0.3,
+                                height: height * 0.05,
+                                decoration: const BoxDecoration(
+                                  color: PRIMARY_COLOR,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(30),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    providerSales.formatDate(
+                                        dataCard!.createdAt.toString()),
+                                    style: titleText,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * 0.3,
+                                height: 50.sh,
+                                decoration: BoxDecoration(
+                                  color: (dataCard.picAcknowledgedBy != null ||
+                                          dataCard.picApprovedBy != null ||
+                                          dataCard.picVerifiedBy != null)
+                                      ? COMPLEMENTARY_COLOR2
+                                      : Colors.grey,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(8),
+                                    bottomLeft: Radius.circular(30),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    (dataCard.picAcknowledgedBy != null ||
+                                            dataCard.picApprovedBy != null ||
+                                            dataCard.picVerifiedBy != null)
+                                        ? "Approve"
+                                        : "Proses",
+                                    style: titleText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.025),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(color: Colors.grey.shade300),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              'Nomor PO',
+                                              style: subtitleTextBlack,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            child: Text(' : ',
+                                                style: subtitleTextBlack),
+                                          ),
+                                          Expanded(
+                                            flex: 4,
+                                            child: Text(dataCard.no ?? "-",
+                                                style: subtitleTextBlack),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/images/approve2.svg',
+                                          width: 30.w,
+                                          height: 20.h,
+                                          color: (dataCard.picAcknowledgedBy ==
+                                                  null)
+                                              ? Colors.grey
+                                              : null,
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        SvgPicture.asset(
+                                          'assets/images/approve.svg',
+                                          width: 30.w,
+                                          height: 20.h,
+                                          color:
+                                              (dataCard.picApprovedBy == null)
+                                                  ? Colors.grey
+                                                  : null,
+                                        ),
+                                        SizedBox(
+                                          width: 10.h,
+                                        ),
+                                        SvgPicture.asset(
+                                          'assets/images/approve3.svg',
+                                          width: 30.w,
+                                          height: 20.h,
+                                          color:
+                                              (dataCard.picVerifiedBy == null)
+                                                  ? Colors.grey
+                                                  : null,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Vendor',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          ' : ',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          dataCard.vendorName ?? "-",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Kategori',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          ' : ',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                            dataCard.categoryName ?? "-",
+                                            style: subtitleTextBlack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          'Dibuat Oleh',
+                                          style: subtitleTextNormal,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          ' : ',
+                                          style: subtitleTextNormal,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                            dataCard.createdByName ?? "-",
+                                            style: subtitleTextNormal),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.025),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: WidgetButtonCustom(
+                                      FullWidth: width * 0.3,
+                                      FullHeight: 30.h,
+                                      title: "Lihat Barang",
+                                      onpressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (BuildContext context) {
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          },
+                                        );
+
+                                        try {
+                                          await Future.wait([
+                                            provider.getDetailPO(
+                                                context, dataCard.no!)
+                                          ]);
+
+                                          // Navigate sesuai kondisi
+
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ComponentDetailPenerimaanBarang(),
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          Navigator.of(context)
+                                              .pop(); // Tutup Dialog Loading
+                                          print('Error: $e');
+                                          // Tambahkan pesan error jika perlu
+                                        }
+                                      },
+                                      bgColor: PRIMARY_COLOR,
+                                      color: Colors.transparent),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),

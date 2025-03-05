@@ -208,6 +208,7 @@ class MenuHome extends StatelessWidget {
                                 providerDistribusi.getAllCradle(context),
                                 providerItem.getAllSO(context),
                                 providerSales.getUsersPic(context),
+                                providerItem.getAllPo(context),
                               ]);
 
                               // Navigate sesuai kondisi
@@ -265,6 +266,7 @@ class MenuHome extends StatelessWidget {
                                 providerItem.getAllSPB(context),
                                 providerItem.getAllCategory(context),
                                 providerItem.getAllVendor(context),
+                                providerItem.getDataVendor(context),
                               ]);
 
                               // Navigate sesuai kondisi

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/model/modelLoadingTube.dart';
-import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_maintenance/component_button_maintenance.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';

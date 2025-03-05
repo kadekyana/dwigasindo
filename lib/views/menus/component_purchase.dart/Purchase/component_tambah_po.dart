@@ -53,7 +53,6 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
       final data = ModelDetailSpb.fromJson(response!.data);
       setState(() {
         _detailSpb = data;
-        // Jika terdapat data di spb_detail, otomatis buat formList berdasarkan data tersebut
         formList = data.data!.spbDetail!.map((detail) {
           return {
             "item_id": detail.itemId,
@@ -62,8 +61,8 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
             "item_qty": null,
             "item_note": null,
             "preselected": detail.itemName,
-            "isSPB":
-                true, // menandakan item berasal dari SPB, harga bisa diubah manual
+            "isSPB": true, // Dari SPB, harga bisa diubah manual
+            "controller": TextEditingController(), // Tambahkan controller baru
           };
         }).toList();
       });
@@ -107,6 +106,16 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
     }
   }
 
+  void _updateGrandTotal() {
+    double total = 0;
+    for (var form in formListB) {
+      total += double.tryParse(form['total']?.toString() ?? '0') ?? 0;
+    }
+    setState(() {
+      grandTotal = total;
+    });
+  }
+
   List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
   List<Map<String, dynamic>> formListB = []; // List untuk menyimpan data form
   // Fungsi untuk menambah form baru
@@ -139,10 +148,10 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
   }
 
   // Fungsi untuk menghapus form terakhir
-  void _removeFormB() {
+  void _removeFormB(int index) {
     if (formListB.isNotEmpty) {
       setState(() {
-        formListB.removeLast();
+        formListB.removeAt(index);
       });
     }
   }
@@ -491,16 +500,17 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                               subtitle: Container(
                                 margin: EdgeInsets.only(top: height * 0.01),
                                 child: WidgetForm(
-                                  controller: TextEditingController(
-                                    text:
-                                        (formList[index]['item_price'] != null)
+                                  controller: formList[index]['controller'] ??
+                                      TextEditingController(
+                                        text: (formList[index]['item_price'] !=
+                                                null)
                                             ? providerSales.formatCurrency(
                                                 double.tryParse(formList[index]
                                                             ['item_price']
                                                         .toString()) ??
                                                     0)
                                             : "",
-                                  ),
+                                      ),
                                   change: (value) {
                                     setState(() {
                                       formList[index]['item_price'] = value;
@@ -508,8 +518,8 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                                   },
                                   alert: 'Harga',
                                   hint: 'Harga',
-                                  enable: formList[index]["isSPB"] ==
-                                      true, // jika dari SPB, harga bisa diubah manual
+                                  enable: formList[index][
+                                      "isSPB"], // Harga bisa diisi jika bukan SPB
                                   typeInput: TextInputType.number,
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12)),
@@ -738,78 +748,97 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               height: 10.h,
             ),
             if (cek == true)
-              Container(
-                width: width,
-                height: 30,
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  children: [
-                    IconButton(
-                        onPressed: _addFormB,
-                        icon: const Icon(Icons.add_circle)),
-                    if (formListB.isNotEmpty)
-                      IconButton(
-                          onPressed: _removeFormB,
-                          icon: const Icon(Icons.delete)),
-                  ],
-                ),
-              ),
-            if (cek == true)
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: formListB.length,
                 itemBuilder: (context, index) {
-                  return Row(
+                  return Column(
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: ListTile(
-                          title: Text(
-                            'Bertahap',
-                            style: subtitleTextBlack,
-                          ),
-                          subtitle: Container(
-                            margin: EdgeInsets.only(top: height * 0.01),
-                            child: WidgetForm(
-                              alert: 'Bertahap',
-                              hint: 'Bertahap',
-                              change: (value) {
-                                setState(() {
-                                  formListB[index]['bertahap'] = value;
-                                });
-                              },
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12)),
+                      SizedBox(
+                        width: width,
+                        height: 100.h,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: ListTile(
+                                title: Text(
+                                  'Tahap ${index + 1}',
+                                  style: superTitleTextBlack,
+                                ),
+                                subtitle: Container(
+                                  margin: EdgeInsets.only(top: height * 0.01),
+                                  child: WidgetForm(
+                                    typeInput: TextInputType.number,
+                                    alert: 'Tahap ${index + 1}',
+                                    hint: 'Tahap ${index + 1}',
+                                    change: (value) {
+                                      setState(() {
+                                        formListB[index]['bertahap'] = value;
+                                      });
+                                    },
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: ListTile(
+                                title: Text(
+                                  '%',
+                                  style: subtitleTextBlack,
+                                ),
+                                subtitle: Container(
+                                  margin: EdgeInsets.only(top: height * 0.01),
+                                  child: WidgetForm(
+                                    typeInput: TextInputType.number,
+                                    alert: '%',
+                                    hint: '%',
+                                    change: (value) {
+                                      setState(() {
+                                        formListB[index]['%'] = value;
+
+                                        // Ambil total tahap sebelumnya (atau tahap 1 jika index 0)
+                                        double previousTotal = index == 0
+                                            ? (double.tryParse(formListB[0]
+                                                        ['bertahap']
+                                                    .toString()) ??
+                                                0)
+                                            : (double.tryParse(
+                                                    formListB[index - 1]
+                                                            ['total']
+                                                        .toString()) ??
+                                                0);
+
+                                        double percentage =
+                                            double.tryParse(value) ?? 0;
+
+                                        // Hitung total tahap ini
+                                        formListB[index]['total'] =
+                                            previousTotal +
+                                                (previousTotal *
+                                                    percentage /
+                                                    100);
+
+                                        _updateGrandTotal();
+                                      });
+                                    },
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: ListTile(
-                          title: Text(
-                            '%',
-                            style: subtitleTextBlack,
-                          ),
-                          subtitle: Container(
-                            margin: EdgeInsets.only(top: height * 0.01),
-                            child: WidgetForm(
-                              alert: '%',
-                              hint: '%',
-                              change: (value) {
-                                setState(() {
-                                  formListB[index]['%'] = value;
-                                });
-                              },
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
+                      SizedBox(
+                        width: width,
+                        height: 80.h,
                         child: ListTile(
                           title: Text(
                             'Total',
@@ -825,10 +854,32 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                                   formListB[index]['total'] = value;
                                 });
                               },
+                              controller: TextEditingController(
+                                text: providerSales.formatCurrency(
+                                    formListB[index]['total'] ?? 0),
+                              ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12)),
                             ),
                           ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Container(
+                        width: width,
+                        height: 40.h,
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: WidgetButtonCustom(
+                          FullWidth: width,
+                          FullHeight: 40.h,
+                          title: "Hapus Form Pembayaran Tahap ${index + 1}",
+                          color: SECONDARY_COLOR,
+                          bgColor: SECONDARY_COLOR,
+                          onpressed: () {
+                            _removeFormB(index);
+                          },
                         ),
                       ),
                     ],
@@ -837,6 +888,19 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
               ),
             SizedBox(
               height: height * 0.02,
+            ),
+            Container(
+              width: width,
+              height: 40.h,
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: WidgetButtonCustom(
+                FullWidth: width,
+                FullHeight: 40.h,
+                title: "Tambah Form Pembayaran Bertahap",
+                color: PRIMARY_COLOR,
+                bgColor: PRIMARY_COLOR,
+                onpressed: _addFormB,
+              ),
             ),
             SizedBox(
               width: width,

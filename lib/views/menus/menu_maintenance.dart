@@ -1,12 +1,8 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
-import 'package:dwigasindo/views/menus/component_maintenance/component_button_maintenance.dart';
 import 'package:dwigasindo/views/menus/component_maintenance/component_list_maintenance.dart';
-import 'package:dwigasindo/views/menus/component_sales/component_data_crm.dart';
-import 'package:dwigasindo/views/menus/component_sales/component_data_sales_information.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
-import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

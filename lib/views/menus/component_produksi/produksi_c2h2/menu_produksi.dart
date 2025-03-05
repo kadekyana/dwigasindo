@@ -5,6 +5,7 @@ import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/compo
 import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/component_loading_tabung_mix_gas.dart';
 import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/control/control_c2h2.dart';
 import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/control/control_high_pressure.dart';
+import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/purging/component_purging.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,14 @@ class _MenuProduksiState extends State<MenuProduksi> {
               dataList: null,
               onTap: ComponentProduksi(
                 title: widget.title,
+              ),
+            ),
+            WidgetButtonDistribusi(
+              title: 'Purging',
+              dataList: null,
+              onTap: ComponentPurging(
+                title: 'Purging',
+                fill: 0,
               ),
             ),
             WidgetButtonDistribusi(

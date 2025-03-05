@@ -3,6 +3,7 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bpti.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bptk.dart';
+import 'package:dwigasindo/views/menus/component_distribusi/componentClaim/component_claim_page.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_tabung.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
@@ -126,19 +127,11 @@ class MenuDistribusi extends StatelessWidget {
                         provider.isLoadingTube = true;
                       },
                     ),
-                    // WidgetButtonDistribusi(
-                    //   title: 'Claim',
-                    //   dataList: provider.dataBPTK1,
-                    //   onItemTap: (context, data) {
-                    //     Navigator.pop(context);
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => ComponentBPTK(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
+                    WidgetButtonDistribusi(
+                      title: 'Claim',
+                      dataList: null,
+                      onTap: ComponentClaimPage(),
+                    ),
                   ],
                 ),
               ),
