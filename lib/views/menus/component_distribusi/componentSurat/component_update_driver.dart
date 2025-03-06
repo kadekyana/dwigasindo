@@ -1,11 +1,13 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,8 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
   TextEditingController noKendaraan = TextEditingController();
   TextEditingController nama = TextEditingController();
   GroupButtonController? type = GroupButtonController();
+  int typeJ = 0;
+  int selectPicId = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,61 +69,87 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         onSelected: (value, index, isSelected) {
-                          // if (value == 'User') {
-                          //   nama.clear();
-                          // } else {
-                          //   driver.clear();
-                          // }
                           print('DATA KLIK : $value - $index - $isSelected');
-                          // setState(() {
-                          //   type = index;
-                          // });
+                          setState(() {
+                            typeJ = index;
+                          });
                         },
                         buttons: const ['User', "Non User"]),
                   ),
                 ),
               ),
-              SizedBox(
-                width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Driver',
-                    style: subtitleTextBlack,
-                  ),
-                  subtitle: WidgetDropdown(
-                    items: const ['Andi Muhammad', 'Dwi', 'Anda'],
-                    hintText: 'Tipe',
-                    controller: driver,
-                    onChanged: (value) {
-                      print("Select : $value");
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: width,
-                height: height * 0.12,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ListTile(
-                    title: Text(
-                      'Nama',
-                      style: subtitleTextBlack,
-                    ),
-                    subtitle: Container(
-                      margin: EdgeInsets.only(top: height * 0.01),
-                      child: WidgetForm(
-                        alert: 'Nama',
-                        hint: 'Nama',
-                        controller: nama,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
+              if (typeJ == 0)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: width,
+                    child: ListTile(
+                      title: Container(
+                        margin: EdgeInsets.only(bottom: 10.h),
+                        child: Text(
+                          'Pilih Driver',
+                          style: subtitleTextBlack,
+                        ),
+                      ),
+                      subtitle: Consumer<ProviderSales>(
+                        builder: (context, provider, child) {
+                          final pic = provider.modelUsersPic!.data!
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            controller: driver,
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih Driver',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                selectPicId =
+                                    int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $selectPicId");
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
                 ),
-              ),
+              if (typeJ == 1)
+                SizedBox(
+                  width: width,
+                  height: height * 0.12,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ListTile(
+                      title: Text(
+                        'Nama',
+                        style: subtitleTextBlack,
+                      ),
+                      subtitle: Container(
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        child: WidgetForm(
+                          alert: 'Nama',
+                          hint: 'Nama',
+                          controller: nama,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               SizedBox(
                 height: height * 0.02,
               ),
@@ -178,13 +208,6 @@ class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
                               noKendaraan.text,
                               1);
                         }
-
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           ComponentVerifikasiSuratJalan()),
-                        // );
                       },
                       bgColor: PRIMARY_COLOR,
                       color: PRIMARY_COLOR),

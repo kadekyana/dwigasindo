@@ -2,8 +2,10 @@ import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/providers/provider_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan.dart';
+import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan_Item.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_detail_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_update_driver.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
@@ -12,21 +14,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class ComponentSuratJalan extends StatefulWidget {
-  const ComponentSuratJalan({super.key});
+class ComponentSuratJalanItem extends StatefulWidget {
+  const ComponentSuratJalanItem({super.key});
 
   @override
-  State<ComponentSuratJalan> createState() => _ComponentSuratJalanState();
+  State<ComponentSuratJalanItem> createState() =>
+      _ComponentSuratJalanItemState();
 }
 
-class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
-  @override
-  void initState() {
-    super.initState();
-    final provider = Provider.of<ProviderSuratJalan>(context, listen: false);
-    provider.getAllSuratJalan(context);
-  }
-
+class _ComponentSuratJalanItemState extends State<ComponentSuratJalanItem> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -35,11 +31,12 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
     final provider = Provider.of<ProviderSuratJalan>(context);
     final providerItem = Provider.of<ProviderItem>(context);
     final providerDistribusi = Provider.of<ProviderDistribusi>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: WidgetAppbar(
-        title: 'Surat Jalan',
+        title: 'Surat Jalan Item',
         sizefont: 22,
         center: true,
         colorTitle: Colors.black,
@@ -83,8 +80,9 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
 
                             try {
                               await Future.wait([
-                                providerItem.getDataBpti(context),
+                                providerSales.getUsersPic(context),
                                 providerItem.getAllOrder(context, 1),
+                                providerItem.getAllItem(context),
                               ]);
 
                               // Navigate sesuai kondisi
@@ -94,7 +92,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ComponentBuatSuratJalan(),
+                                      ComponentBuatSuratJalanItem(),
                                 ),
                               );
                             } catch (e) {
@@ -109,7 +107,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                       SizedBox(
                         height: height * 0.05,
                       ),
-                      (provider.suratJalan?.data == null)
+                      (providerDistribusi.detailSuratJalanItem?.data == null)
                           ? Expanded(
                               child: Center(
                                 child: Text(
@@ -120,10 +118,11 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                             )
                           : Expanded(
                               child: ListView.builder(
-                                itemCount: provider.suratJalan?.data?.length,
+                                itemCount: providerDistribusi
+                                    .detailSuratJalanItem?.data?.length,
                                 itemBuilder: (context, index) {
-                                  final data =
-                                      provider.suratJalan!.data![index];
+                                  final data = providerDistribusi
+                                      .detailSuratJalanItem!.data![index];
                                   return GestureDetector(
                                     onTap: () async {
                                       if (!mounted) return;
@@ -273,7 +272,7 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                                             alignment: Alignment
                                                                 .centerLeft,
                                                             child: Text(
-                                                              '\t${data.name}',
+                                                              '\t${data.no}',
                                                               style:
                                                                   subtitleTextBlack,
                                                             ),
@@ -420,30 +419,6 @@ class _ComponentSuratJalanState extends State<ComponentSuratJalan> {
                                               ),
                                             ),
                                           ),
-                                          // Padding(
-                                          //   padding: EdgeInsets.symmetric(
-                                          //       vertical: 5, horizontal: 10),
-                                          //   child: Row(
-                                          //     mainAxisAlignment: MainAxisAlignment.end,
-                                          //     children: [
-                                          //       WidgetButtonCustom(
-                                          //           FullWidth: width * 0.25,
-                                          //           FullHeight: 30,
-                                          //           title: 'Scan BPTI',
-                                          //           onpressed: () {
-                                          //             Navigator.push(
-                                          //               context,
-                                          //               MaterialPageRoute(
-                                          //                 builder: (context) =>
-                                          //                     ComponentScanBPTI(),
-                                          //               ),
-                                          //             );
-                                          //           },
-                                          //           bgColor: PRIMARY_COLOR,
-                                          //           color: Colors.transparent),
-                                          //     ],
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ),

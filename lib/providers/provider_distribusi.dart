@@ -12,8 +12,10 @@ import 'package:dwigasindo/model/modelAllTubeType.dart';
 import 'package:dwigasindo/model/modelAllVendor.dart';
 import 'package:dwigasindo/model/modelCradle.dart';
 import 'package:dwigasindo/model/modelDetailBpti.dart';
+import 'package:dwigasindo/model/modelDetailSuratJalan.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
+import 'package:dwigasindo/model/modelSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelTube.dart';
 import 'package:dwigasindo/model/modelVendorDetail.dart';
 import 'package:dwigasindo/model/modelVerifikasiBPTK.dart';
@@ -97,6 +99,12 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelDetailBpti? _detailBpti;
   ModelDetailBpti? get detailBpti => _detailBpti;
 
+  ModelDetailSuratJalan? _detailSuratJalan;
+  ModelDetailSuratJalan? get detailSuratJalan => _detailSuratJalan;
+
+  ModelDetailSuratJalanItem? _detailSuratJalanItem;
+  ModelDetailSuratJalanItem? get detailSuratJalanItem => _detailSuratJalanItem;
+
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -107,6 +115,34 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelAllVendor.fromJson(response!.data);
       _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDataSuratJalanItem(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "delivery_note_items", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailSuratJalanItem.fromJson(response!.data);
+      _detailSuratJalanItem = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDetailSuratJalan(BuildContext context, String noSJ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "delivery_note_detail/$noSJ", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailSuratJalan.fromJson(response!.data);
+      _detailSuratJalan = data;
       notifyListeners();
     }
   }
@@ -160,6 +196,73 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelAllVendor.fromJson(response!.data);
       _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  int _parseToInt(dynamic value) {
+    if (value == null || value.toString().trim().isEmpty) {
+      return 0; // Bisa juga pakai `throw FormatException("Invalid number")`
+    }
+    return int.tryParse(value.toString()) ?? 0;
+  }
+
+  Future<void> createSuratJalanItem(
+    BuildContext context,
+    int type,
+    int driverId,
+    String? nonUser,
+    String vehicleNumber,
+    List<Map<String, dynamic>> orders,
+    List<Map<String, dynamic>> details,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    print(type);
+    print(driverId);
+    print(nonUser);
+    print(vehicleNumber);
+    print(orders);
+    print(details);
+
+    try {
+      orders = orders.map((item) {
+        return {
+          "id": _parseToInt(item["id"]), // Pastikan integer aman
+        };
+      }).toList();
+
+      details = details.map((item) {
+        return {
+          "item_id": _parseToInt(item["item_id"]), // Pastikan integer aman
+          "order_id": _parseToInt(item["order_id"]), // Pastikan integer aman
+          "qty": _parseToInt(item["qty"]), // Pastikan integer aman
+          "note": item["note"]?.toString() ?? "", // Hindari null
+        };
+      }).toList();
+    } catch (e) {
+      print("Error converting data: $e");
+      return;
+    }
+
+    final response = await DioServiceAPI().postRequest(
+      url: "delivery_note_items",
+      token: token,
+      data: {
+        "type": type,
+        "driver_id": driverId,
+        "non_user_name": null,
+        "vehicle_number": vehicleNumber,
+        "orders": orders,
+        "details": details,
+      },
+    );
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      Navigator.pop(context);
+      getDataSuratJalanItem(context);
       notifyListeners();
     }
   }
@@ -1158,6 +1261,11 @@ class ProviderDistribusi extends ChangeNotifier {
   List<Map<String, String>> dataBPTK1 = [
     {"tipe": 'BPTK', 'hari': '100', 'bulan': '100'},
     {'tipe': 'BPTI', 'hari': '', 'bulan': '100'}
+  ];
+
+  List<Map<String, String>> suratJalan = [
+    {"tipe": 'Surat Jalan Gas', '-': '-', '-': '-'},
+    {'tipe': 'Surat Jalan Item', '-': '-', '-': '-'}
   ];
   List<Map<String, String>> Tabung = [
     {"tipe": 'Total Tabung', 'hari': '1000', 'bulan': '1000'},

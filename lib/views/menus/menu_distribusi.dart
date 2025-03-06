@@ -1,10 +1,12 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/providers/provider_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bpti.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentBPTK/component_bptk.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentClaim/component_claim_page.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_surat_jalan.dart';
+import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_surat_jalan_item.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/component_tabung.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
@@ -77,10 +79,39 @@ class MenuDistribusi extends StatelessWidget {
                         }
                       },
                     ),
-                    const WidgetButtonDistribusi(
+                    WidgetButtonDistribusi(
                       title: 'Surat Jalan',
-                      dataList: null,
-                      onTap: ComponentSuratJalan(),
+                      dataList: provider.suratJalan,
+                      onItemTap: (context, data) async {
+                        Navigator.pop(context);
+                        print(
+                          data['tipe'],
+                        );
+                        if (data['tipe'] == "Surat Jalan Gas") {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ComponentSuratJalan(),
+                            ),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ComponentSuratJalanItem(),
+                            ),
+                          );
+                          final provider = Provider.of<ProviderDistribusi>(
+                              context,
+                              listen: false);
+                          final providerS = Provider.of<ProviderSuratJalan>(
+                              context,
+                              listen: false);
+                          await providerS.getAllSuratJalan(context);
+                          await provider.getDataSuratJalanItem(context);
+                        }
+                      },
                     ),
                     WidgetButtonDistribusi(
                       title: 'Tabung',
