@@ -11,6 +11,7 @@ import 'package:dwigasindo/model/modelAllTubeGrade.dart';
 import 'package:dwigasindo/model/modelAllTubeType.dart';
 import 'package:dwigasindo/model/modelAllVendor.dart';
 import 'package:dwigasindo/model/modelCradle.dart';
+import 'package:dwigasindo/model/modelDetailBpti.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelTube.dart';
@@ -93,6 +94,9 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelAllVendor? _vendors;
   ModelAllVendor? get vendors => _vendors;
 
+  ModelDetailBpti? _detailBpti;
+  ModelDetailBpti? get detailBpti => _detailBpti;
+
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -103,6 +107,22 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelAllVendor.fromJson(response!.data);
       _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDetailBpti(BuildContext context, String noBpti) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .postRequest(url: "verification_bpti/$noBpti", token: token, data: {
+      "status": [0, 1]
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailBpti.fromJson(response!.data);
+      _detailBpti = data;
       notifyListeners();
     }
   }
