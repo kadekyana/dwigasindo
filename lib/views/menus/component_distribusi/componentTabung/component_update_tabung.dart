@@ -10,6 +10,7 @@ import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
   late TextEditingController tahun;
   late TextEditingController serial;
   late TextEditingController lokasi;
+  late TextEditingController tblama;
 
   late GroupButtonController jenisTabung;
 
@@ -109,9 +111,13 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
     isSingle = providerS.card!.data!.isHasTubeType!;
 
     jenisTabung = GroupButtonController(
-        selectedIndex: (providerS.card?.data?.tubeTypeId != null)
-            ? providerS.card?.data?.tubeTypeId - 1
-            : null);
+      selectedIndex: providerS.card?.data?.tubeTypeId != null
+          ? providerS.card!.data!.tubeTypeId! - 1
+          : null,
+    );
+
+    tblama =
+        TextEditingController(text: providerS.card?.data?.oldTubeNumber ?? "");
 
     jenisTabungBool = GroupButtonController(
         selectedIndex: (providerS.card?.data?.isHasTubeType == false) ? 1 : 0);
@@ -138,7 +144,7 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
 
     grade = GroupButtonController(
         selectedIndex: (providerS.card?.data?.tubeGradeId != null)
-            ? providerS.card?.data?.tubeGradeId - 1
+            ? providerS.card!.data!.tubeGradeId! - 1
             : null);
 
     provider.isLoadingT = false;
@@ -225,6 +231,26 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                                 });
                               },
                               buttons: const ['Assets', "Pelanggan"]),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: 100.h,
+                      child: ListTile(
+                        title: Text(
+                          'No Tabung Lama',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            controller: tblama,
+                            alert: 'Boleh Di kosongkan',
+                            hint: 'Boleh Di kosongkan',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
                         ),
                       ),
                     ),

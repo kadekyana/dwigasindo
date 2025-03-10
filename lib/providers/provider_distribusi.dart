@@ -14,6 +14,8 @@ import 'package:dwigasindo/model/modelCradle.dart';
 import 'package:dwigasindo/model/modelDetailBpti.dart';
 import 'package:dwigasindo/model/modelDetailSuratJalan.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
+import 'package:dwigasindo/model/modelSatuanSuratJalan.dart';
+import 'package:dwigasindo/model/modelSatuanSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelTube.dart';
@@ -105,6 +107,12 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelDetailSuratJalanItem? _detailSuratJalanItem;
   ModelDetailSuratJalanItem? get detailSuratJalanItem => _detailSuratJalanItem;
 
+  ModelSatuanSuratJalanItem? _suratJalanItem;
+  ModelSatuanSuratJalanItem? get suratJalanItem => _suratJalanItem;
+
+  ModelSatuanSuratJalan? _satuanSuratJalan;
+  ModelSatuanSuratJalan? get satuanSuratJalan => _satuanSuratJalan;
+
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -119,6 +127,20 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+  Future<void> getSatuanSuratJalan(BuildContext context, String uuid) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "delivery_notes/$uuid", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelSatuanSuratJalan.fromJson(response!.data);
+      _satuanSuratJalan = data;
+      notifyListeners();
+    }
+  }
+
   Future<void> getDataSuratJalanItem(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -129,6 +151,21 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelDetailSuratJalanItem.fromJson(response!.data);
       _detailSuratJalanItem = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getSatuanSuratJalanItem(
+      BuildContext context, String noSJI) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "delivery_note_items/$noSJI", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelSatuanSuratJalanItem.fromJson(response!.data);
+      _suratJalanItem = data;
       notifyListeners();
     }
   }
@@ -174,6 +211,31 @@ class ProviderDistribusi extends ChangeNotifier {
       final data = ModelVendorDetail.fromJson(response!.data);
       _detail = data;
       notifyListeners();
+    }
+  }
+
+  Future<void> selesaiBPTK(BuildContext context, String uuid) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().postRequest(
+        url: "update_status_success_bptk/$uuid", token: token, data: {});
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Selesai BPTK',
+        ),
+      );
+      notifyListeners();
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Selesai BPTK',
+        ),
+      );
     }
   }
 
@@ -248,6 +310,67 @@ class ProviderDistribusi extends ChangeNotifier {
 
     final response = await DioServiceAPI().postRequest(
       url: "delivery_note_items",
+      token: token,
+      data: {
+        "type": type,
+        "driver_id": driverId,
+        "non_user_name": null,
+        "vehicle_number": vehicleNumber,
+        "orders": orders,
+        "details": details,
+      },
+    );
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      Navigator.pop(context);
+      getDataSuratJalanItem(context);
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateSuratJalanItem(
+    BuildContext context,
+    String uuid,
+    int type,
+    int driverId,
+    String? nonUser,
+    String vehicleNumber,
+    List<Map<String, dynamic>> orders,
+    List<Map<String, dynamic>> details,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    print(type);
+    print(driverId);
+    print(nonUser);
+    print(vehicleNumber);
+    print(orders);
+    print(details);
+
+    try {
+      orders = orders.map((item) {
+        return {
+          "id": _parseToInt(item["id"]), // Pastikan integer aman
+        };
+      }).toList();
+
+      details = details.map((item) {
+        return {
+          "item_id": _parseToInt(item["item_id"]), // Pastikan integer aman
+          "order_id": _parseToInt(item["order_id"]), // Pastikan integer aman
+          "qty": _parseToInt(item["qty"]), // Pastikan integer aman
+          "note": item["note"]?.toString() ?? "", // Hindari null
+        };
+      }).toList();
+    } catch (e) {
+      print("Error converting data: $e");
+      return;
+    }
+
+    final response = await DioServiceAPI().putRequest(
+      url: "delivery_note_items/$uuid",
       token: token,
       data: {
         "type": type,
@@ -430,8 +553,8 @@ class ProviderDistribusi extends ChangeNotifier {
         data: {"customer_id": data, "vehicle_number": no});
 
     if (response?.data['error'] == null) {
+      await getAllBPTK(context);
       Navigator.pop(context);
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

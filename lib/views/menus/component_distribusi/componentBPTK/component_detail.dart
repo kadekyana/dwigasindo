@@ -21,7 +21,7 @@ class ComponentDetail extends StatefulWidget {
 
 class _ComponentDetailState extends State<ComponentDetail> {
   Timer? _timer;
-
+  bool check = false;
   @override
   void initState() {
     super.initState();
@@ -212,46 +212,51 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                     FullWidth: width * 0.2,
                                     FullHeight: 30.h,
                                     title: 'Tambah',
-                                    onpressed: () async {
-                                      if (!mounted) return;
+                                    onpressed: (check == true)
+                                        ? null
+                                        : () async {
+                                            if (!mounted) return;
 
-                                      // Tampilkan Dialog Loading
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext context) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        },
-                                      );
+                                            // Tampilkan Dialog Loading
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            );
 
-                                      try {
-                                        await Future.wait([
-                                          providerS.clearResults(),
-                                          providerS.clearScannedCount(),
-                                        ]);
+                                            try {
+                                              await Future.wait([
+                                                providerS.clearResults(),
+                                                providerS.clearScannedCount(),
+                                              ]);
 
-                                        // Navigate sesuai kondisi
-                                        Navigator.of(context)
-                                            .pop(); // Tutup Dialog Loading
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ComponentScanQrCode(
-                                                    noBptk: data.noBptk!,
-                                                  )),
-                                        );
-                                      } catch (e) {
-                                        Navigator.of(context)
-                                            .pop(); // Tutup Dialog Loading
-                                        print('Error: $e');
-                                        // Tambahkan pesan error jika perlu
-                                      }
-                                    },
-                                    bgColor:
-                                        const Color.fromARGB(255, 55, 72, 199),
+                                              // Navigate sesuai kondisi
+                                              Navigator.of(context)
+                                                  .pop(); // Tutup Dialog Loading
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComponentScanQrCode(
+                                                          noBptk: data.noBptk!,
+                                                        )),
+                                              );
+                                            } catch (e) {
+                                              Navigator.of(context)
+                                                  .pop(); // Tutup Dialog Loading
+                                              print('Error: $e');
+                                              // Tambahkan pesan error jika perlu
+                                            }
+                                          },
+                                    bgColor: (check == true)
+                                        ? Colors.grey
+                                        : const Color.fromARGB(
+                                            255, 55, 72, 199),
                                     color: Colors.transparent),
                                 SizedBox(
                                   width: 10.w,
@@ -260,9 +265,11 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                     FullWidth: 60.w,
                                     FullHeight: 30.h,
                                     title: 'Ubah',
-                                    onpressed: () {},
-                                    bgColor:
-                                        const Color.fromARGB(255, 55, 72, 199),
+                                    onpressed: (check == true) ? null : () {},
+                                    bgColor: (check == true)
+                                        ? Colors.grey
+                                        : const Color.fromARGB(
+                                            255, 55, 72, 199),
                                     color: Colors.transparent),
                                 SizedBox(
                                   width: 10.w,
@@ -271,8 +278,18 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                     FullWidth: 80.w,
                                     FullHeight: 30.h,
                                     title: 'Selesai',
-                                    onpressed: () {},
-                                    bgColor: SECONDARY_COLOR,
+                                    onpressed: (check == true)
+                                        ? null
+                                        : () {
+                                            provider.selesaiBPTK(
+                                                context, data.idStr!);
+                                            setState(() {
+                                              check = true;
+                                            });
+                                          },
+                                    bgColor: (check == true)
+                                        ? Colors.grey
+                                        : SECONDARY_COLOR,
                                     color: Colors.transparent)
                               ],
                             ),

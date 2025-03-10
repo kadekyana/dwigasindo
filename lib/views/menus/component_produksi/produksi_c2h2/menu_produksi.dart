@@ -84,14 +84,15 @@ class _MenuProduksiState extends State<MenuProduksi> {
                 title: widget.title,
               ),
             ),
-            WidgetButtonDistribusi(
-              title: 'Purging',
-              dataList: null,
-              onTap: ComponentPurging(
+            if (widget.title != "C2H2")
+              WidgetButtonDistribusi(
                 title: 'Purging',
-                fill: 0,
+                dataList: null,
+                onTap: ComponentPurging(
+                  title: 'Purging',
+                  fill: 0,
+                ),
               ),
-            ),
             WidgetButtonDistribusi(
               title: 'Control',
               dataList: null,

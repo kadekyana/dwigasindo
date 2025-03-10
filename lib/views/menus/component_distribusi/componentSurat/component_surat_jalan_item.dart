@@ -4,14 +4,12 @@ import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/providers/provider_surat_jalan.dart';
-import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_buat_surat_jalan_Item.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_detail_surat_jalan.dart';
-import 'package:dwigasindo/views/menus/component_distribusi/componentSurat/component_update_driver.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ComponentSuratJalanItem extends StatefulWidget {
@@ -123,243 +121,193 @@ class _ComponentSuratJalanItemState extends State<ComponentSuratJalanItem> {
                                 itemBuilder: (context, index) {
                                   final data = providerDistribusi
                                       .detailSuratJalanItem!.data![index];
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (!mounted) return;
-
-                                      // Tampilkan Dialog Loading
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext context) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        },
-                                      );
-
-                                      try {
-                                        await Future.wait([
-                                          providerDistribusi
-                                              .getDetailSuratJalan(
-                                                  context, data.no!),
-                                        ]);
-
-                                        // Navigate sesuai kondisi
-                                        Navigator.of(context)
-                                            .pop(); // Tutup Dialog Loading
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ComponentDetailSuratJalan()),
-                                        );
-                                      } catch (e) {
-                                        Navigator.of(context)
-                                            .pop(); // Tutup Dialog Loading
-                                        print('Error: $e');
-                                        // Tambahkan pesan error jika perlu
-                                      }
-                                    },
-                                    child: Container(
-                                      width: double.maxFinite,
-                                      height: height * 0.2,
-                                      margin: EdgeInsets.only(
-                                          bottom: height * 0.02),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            blurRadius: 1,
-                                            color: Color(0xffE4E4E4),
-                                            offset: Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            width: double.maxFinite,
-                                            height: height * 0.05,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  width: width * 0.35,
-                                                  height: height * 0.05,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: PRIMARY_COLOR,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      bottomRight:
-                                                          Radius.circular(40),
-                                                    ),
-                                                  ),
-                                                  child: FittedBox(
-                                                    fit: BoxFit.scaleDown,
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                      data.no!,
-                                                      style: titleText,
-                                                    ),
+                                  return Container(
+                                    width: double.maxFinite,
+                                    height: 250.h,
+                                    margin:
+                                        EdgeInsets.only(bottom: height * 0.02),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          blurRadius: 1,
+                                          color: Color(0xffE4E4E4),
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: double.maxFinite,
+                                          height: height * 0.05,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: width * 0.35,
+                                                height: height * 0.05,
+                                                decoration: const BoxDecoration(
+                                                  color: PRIMARY_COLOR,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(8),
+                                                    bottomRight:
+                                                        Radius.circular(40),
                                                   ),
                                                 ),
-                                                // kurang create at pada API
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  width: width * 0.35,
-                                                  height: height * 0.05,
-                                                  child: FittedBox(
-                                                    fit: BoxFit.scaleDown,
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Text(
-                                                      '23-09-2024 | 10:30:00',
-                                                      style: titleTextNormal,
-                                                    ),
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    data.no!,
+                                                    style: titleText,
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: width * 0.02,
-                                                  vertical: height * 0.01),
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  top: BorderSide(
-                                                      color:
-                                                          Colors.grey.shade300),
                                                 ),
                                               ),
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Driver',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
+                                              // kurang create at pada API
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                width: width * 0.35,
+                                                height: height * 0.05,
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Text(
+                                                    '23-09-2024 | 10:30:00',
+                                                    style: titleTextNormal,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.02,
+                                                vertical: height * 0.01),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                top: BorderSide(
+                                                    color:
+                                                        Colors.grey.shade300),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Driver',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
-                                                        const Text(':'),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              '\t${data.no}',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Admin',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
+                                                      ),
+                                                      const Text(':'),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\t${data.no}',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
-                                                        const Text(':'),
-                                                        // Kurang Admin Pada API
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              '\tUdin',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              'Nomor Kendaraan',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
+                                                ),
+                                                Expanded(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Admin',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
-                                                        const Text(':'),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: FittedBox(
-                                                            fit: BoxFit
-                                                                .scaleDown,
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text(
-                                                              '\t${data.vehicleNumber}',
-                                                              style:
-                                                                  subtitleTextBlack,
-                                                            ),
+                                                      ),
+                                                      const Text(':'),
+                                                      // Kurang Admin Pada API
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\tUdin',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Expanded(
-                                                      child: Row(
+                                                ),
+                                                Expanded(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'Nomor Kendaraan',
+                                                            style:
+                                                                subtitleTextBlack,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Text(':'),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '\t${data.vehicleNumber}',
+                                                            style:
+                                                                subtitleTextBlack,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
@@ -378,49 +326,140 @@ class _ComponentSuratJalanItemState extends State<ComponentSuratJalanItem> {
                                                       ),
                                                       const Text(':'),
                                                       Expanded(
-                                                        flex: 1,
+                                                        flex: 2,
                                                         child: FittedBox(
                                                           fit: BoxFit.scaleDown,
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              '\t${(data.type == 0) ? "User" : "Non User"}',
-                                                              style:
-                                                                  subtitleTextBlack),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ComponentUpdateDriver(
-                                                                  uuid: data
-                                                                      .idStr!,
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          icon:
-                                                              SvgPicture.asset(
-                                                            'assets/images/edit.svg',
+                                                            '\t${(data.type == 0) ? "User" : "Non User"}',
+                                                            style:
+                                                                subtitleTextBlack,
                                                           ),
                                                         ),
                                                       )
                                                     ],
-                                                  )),
-                                                ],
-                                              ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Container(
+                                          width: width,
+                                          height: 40.h,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10.w),
+                                          child: WidgetButtonCustom(
+                                            FullWidth: width,
+                                            FullHeight: 40.h,
+                                            title: "Lihat Detail",
+                                            color: PRIMARY_COLOR,
+                                            bgColor: PRIMARY_COLOR,
+                                            onpressed: () async {
+                                              if (!mounted) return;
+
+                                              // Tampilkan Dialog Loading
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+
+                                              try {
+                                                await Future.wait([
+                                                  providerDistribusi
+                                                      .getSatuanSuratJalanItem(
+                                                          context, data.no!),
+                                                ]);
+
+                                                // Navigate sesuai kondisi
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ComponentDetailSuratJalanItem()),
+                                                );
+                                              } catch (e) {
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                print('Error: $e');
+                                                // Tambahkan pesan error jika perlu
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Container(
+                                          width: width,
+                                          height: 40.h,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10.w),
+                                          child: WidgetButtonCustom(
+                                            FullWidth: width,
+                                            FullHeight: 40.h,
+                                            title: "Edit Surat Jalan Item",
+                                            color: PRIMARY_COLOR,
+                                            bgColor: PRIMARY_COLOR,
+                                            onpressed: () async {
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+
+                                              try {
+                                                await Future.wait([
+                                                  providerSales
+                                                      .getUsersPic(context),
+                                                  providerItem.getAllOrder(
+                                                      context, 1),
+                                                  providerItem
+                                                      .getAllItem(context),
+                                                  providerDistribusi
+                                                      .getSatuanSuratJalanItem(
+                                                          context, data.no!),
+                                                ]);
+
+                                                // Navigate sesuai kondisi
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComponentUpdateSuratJalanItem(),
+                                                  ),
+                                                );
+                                              } catch (e) {
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                print('Error: $e');
+                                                // Tambahkan pesan error jika perlu
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },

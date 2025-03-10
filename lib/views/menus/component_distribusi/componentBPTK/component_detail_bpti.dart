@@ -176,7 +176,7 @@ class _ComponentDetailBptiState extends State<ComponentDetailBpti> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
-                                          '${data.customer?.name}',
+                                          '${data.customerName}',
                                           overflow: TextOverflow.ellipsis,
                                           style: subtitleTextNormalwhite,
                                         ),
@@ -291,7 +291,7 @@ class WidgetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderDistribusi>(context);
-    final data = provider.verifikasiBptk?.data;
+    final data = provider.detailBpti?.data;
     return Expanded(
       child: ListView.builder(
         itemCount: data?.details?.length,
@@ -332,7 +332,7 @@ class WidgetCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '${details?.tubeCustomerName}',
+                            '${details?.tubeNo}',
                             style: titleText,
                           ),
                         ),
@@ -381,7 +381,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                  '${(data?.customer == null) ? "-" : data?.customer?.name}',
+                                  '${(data?.customerName == null) ? "-" : data?.customerName}',
                                   overflow: TextOverflow.ellipsis,
                                   style: subtitleTextBlack),
                             ),
@@ -405,7 +405,7 @@ class WidgetCard extends StatelessWidget {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                  '${(details?.isHasGrade == false) ? "Single" : (details?.tubeGrade == null) ? '-' : details?.tubeGrade}',
+                                  '${(details?.tubeGrade == false) ? "Single" : (details?.tubeGrade == null) ? '-' : details?.tubeGrade}',
                                   overflow: TextOverflow.ellipsis,
                                   style: subtitleTextBlack),
                             )
@@ -417,7 +417,7 @@ class WidgetCard extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  'Kondisi',
+                                  'Gas',
                                   style: subtitleTextBlack,
                                 ),
                               ),
@@ -428,7 +428,7 @@ class WidgetCard extends StatelessWidget {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  '-',
+                                  details?.tubeGas ?? "-",
                                   style: subtitleTextBlack,
                                 ),
                               ),
@@ -440,7 +440,7 @@ class WidgetCard extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Lokasi',
+                                  'Type',
                                   style: subtitleTextBlack,
                                 ),
                               ),
@@ -451,7 +451,7 @@ class WidgetCard extends StatelessWidget {
                               Expanded(
                                 flex: 3,
                                 child: Text(
-                                  '${(details?.lastLocation == null) ? "-" : details!.lastLocation}',
+                                  '${(details?.tubeType == null) ? "-" : details!.tubeType}',
                                   style: subtitleTextBlack,
                                 ),
                               ),
@@ -630,7 +630,7 @@ class WidgetCard extends StatelessWidget {
                                                                                 () async {
                                                                               Navigator.pop(context);
                                                                               // print("No BPTK : ${data!.noBptk}\nId : ${details!.id}\nReason : ${reason.text}");
-                                                                              await provider.deleteDetail(context, data!.noBptk!, details!.id!, reason.text);
+                                                                              await provider.deleteDetail(context, data!.noBpti!, details!.id!, reason.text);
                                                                             },
                                                                             color:
                                                                                 SECONDARY_COLOR),
@@ -645,7 +645,7 @@ class WidgetCard extends StatelessWidget {
                                                                     .deleteDetail(
                                                                         context,
                                                                         data!
-                                                                            .noBptk!,
+                                                                            .noBpti!,
                                                                         details!
                                                                             .id!,
                                                                         reason

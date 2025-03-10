@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -22,6 +23,32 @@ class ComponentUpdateDriver extends StatefulWidget {
 }
 
 class _ComponentUpdateDriverState extends State<ComponentUpdateDriver> {
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+    final providerSales = Provider.of<ProviderSales>(context, listen: false);
+    final data = provider.satuanSuratJalan?.data;
+
+    String? getDriverById(int id) {
+      final pic = providerSales.modelUsersPic!.data
+          ?.map((data) => {'id': data.id, 'name': data.name})
+          .toList();
+      // Mencari data dengan ID yang sesuai
+      final selected = pic?.firstWhere(
+        (e) => e['id'] == id,
+      );
+      return selected?['name'].toString();
+    }
+
+    driver = SingleSelectController(getDriverById(data!.driverId!));
+    noKendaraan = TextEditingController(text: data.vehicleNumber);
+    nama = TextEditingController(text: data.name);
+    type = GroupButtonController(selectedIndex: data.type);
+    typeJ = data!.type!;
+    selectPicId = data!.driverId!;
+  }
+
   SingleSelectController<String?> driver =
       SingleSelectController<String?>(null);
   TextEditingController noKendaraan = TextEditingController();

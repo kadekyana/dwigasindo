@@ -17,17 +17,8 @@ class ModelCard {
     this.error,
   });
 
-  ModelCard copyWith({
-    Data? data,
-    dynamic error,
-  }) =>
-      ModelCard(
-        data: data ?? this.data,
-        error: error ?? this.error,
-      );
-
   factory ModelCard.fromJson(Map<String, dynamic> json) => ModelCard(
-        data: Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
       );
 
@@ -42,30 +33,37 @@ class Data {
   String? idStr;
   String? code;
   String? photo;
+  dynamic oldTubeNumber;
   int? ownerShipType;
   bool? isHasTubeType;
-  dynamic tubeTypeId;
+  int? tubeTypeId;
+  String? tubeTypeName;
   bool? isHasGrade;
-  dynamic tubeGradeId;
+  int? tubeGradeId;
+  String? tubeGradeName;
   int? tubeYear;
   String? serialNumber;
-  dynamic customerId;
+  int? customerId;
   String? customerName;
-  dynamic vendorId;
+  int? vendorId;
   String? vendorName;
   String? lastLocation;
   int? tubeGasId;
+  String? tubeGasName;
 
   Data({
     this.id,
     this.idStr,
     this.code,
     this.photo,
+    this.oldTubeNumber,
     this.ownerShipType,
     this.isHasTubeType,
     this.tubeTypeId,
+    this.tubeTypeName,
     this.isHasGrade,
     this.tubeGradeId,
+    this.tubeGradeName,
     this.tubeYear,
     this.serialNumber,
     this.customerId,
@@ -74,57 +72,22 @@ class Data {
     this.vendorName,
     this.lastLocation,
     this.tubeGasId,
+    this.tubeGasName,
   });
-
-  Data copyWith({
-    int? id,
-    String? idStr,
-    String? code,
-    String? photo,
-    int? ownerShipType,
-    bool? isHasTubeType,
-    dynamic tubeTypeId,
-    bool? isHasGrade,
-    dynamic tubeGradeId,
-    int? tubeYear,
-    String? serialNumber,
-    dynamic customerId,
-    String? customerName,
-    dynamic vendorId,
-    String? vendorName,
-    String? lastLocation,
-    int? tubeGasId,
-  }) =>
-      Data(
-        id: id ?? this.id,
-        idStr: idStr ?? this.idStr,
-        code: code ?? this.code,
-        photo: photo ?? this.photo,
-        ownerShipType: ownerShipType ?? this.ownerShipType,
-        isHasTubeType: isHasTubeType ?? this.isHasTubeType,
-        tubeTypeId: tubeTypeId ?? this.tubeTypeId,
-        isHasGrade: isHasGrade ?? this.isHasGrade,
-        tubeGradeId: tubeGradeId ?? this.tubeGradeId,
-        tubeYear: tubeYear ?? this.tubeYear,
-        serialNumber: serialNumber ?? this.serialNumber,
-        customerId: customerId ?? this.customerId,
-        customerName: customerName ?? this.customerName,
-        vendorId: vendorId ?? this.vendorId,
-        vendorName: vendorName ?? this.vendorName,
-        lastLocation: lastLocation ?? this.lastLocation,
-        tubeGasId: tubeGasId ?? this.tubeGasId,
-      );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         idStr: json["id_str"],
         code: json["code"],
         photo: json["photo"],
+        oldTubeNumber: json["old_tube_number"],
         ownerShipType: json["owner_ship_type"],
         isHasTubeType: json["is_has_tube_type"],
         tubeTypeId: json["tube_type_id"],
+        tubeTypeName: json["tube_type_name"],
         isHasGrade: json["is_has_grade"],
         tubeGradeId: json["tube_grade_id"],
+        tubeGradeName: json["tube_grade_name"],
         tubeYear: json["tube_year"],
         serialNumber: json["serial_number"],
         customerId: json["customer_id"],
@@ -133,6 +96,7 @@ class Data {
         vendorName: json["vendor_name"],
         lastLocation: json["last_location"],
         tubeGasId: json["tube_gas_id"],
+        tubeGasName: json["tube_gas_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -140,11 +104,14 @@ class Data {
         "id_str": idStr,
         "code": code,
         "photo": photo,
+        "old_tube_number": oldTubeNumber,
         "owner_ship_type": ownerShipType,
         "is_has_tube_type": isHasTubeType,
         "tube_type_id": tubeTypeId,
+        "tube_type_name": tubeTypeName,
         "is_has_grade": isHasGrade,
         "tube_grade_id": tubeGradeId,
+        "tube_grade_name": tubeGradeName,
         "tube_year": tubeYear,
         "serial_number": serialNumber,
         "customer_id": customerId,
@@ -153,5 +120,6 @@ class Data {
         "vendor_name": vendorName,
         "last_location": lastLocation,
         "tube_gas_id": tubeGasId,
+        "tube_gas_name": tubeGasName,
       };
 }
