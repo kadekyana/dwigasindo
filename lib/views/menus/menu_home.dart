@@ -4,6 +4,7 @@ import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/views/menus/menu_assets.dart';
 import 'package:dwigasindo/views/menus/menu_distribusi.dart';
 import 'package:dwigasindo/views/menus/menu_item_produksi.dart';
 import 'package:dwigasindo/views/menus/menu_maintenance.dart';
@@ -298,12 +299,19 @@ class MenuHome extends StatelessWidget {
                               ),
                             );
                           }),
-                      // WidgetMenu(
-                      //     HB: height,
-                      //     FW: width,
-                      //     icon: Image.asset('assets/images/produksi.png'),
-                      //     isi: "Asset",
-                      //     navigator: () async {}),
+                      WidgetMenu(
+                          HB: height,
+                          FW: width,
+                          icon: Image.asset('assets/images/produksi.png'),
+                          isi: "Asset",
+                          navigator: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MenuAssets(),
+                              ),
+                            );
+                          }),
                       WidgetMenu(
                           HB: height,
                           FW: width,

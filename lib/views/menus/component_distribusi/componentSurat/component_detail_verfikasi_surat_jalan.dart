@@ -5,7 +5,6 @@ import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:provider/provider.dart';
 
