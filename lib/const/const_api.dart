@@ -55,6 +55,8 @@ class DioServiceAPI {
     int maxRetries = 3,
     int timeoutSeconds = 10,
   }) async {
+    final Dio _dio = Dio(); // Pastikan Dio instance sudah diinisialisasi
+
     try {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {
@@ -62,15 +64,17 @@ class DioServiceAPI {
             (X509Certificate cert, String host, int port) => true;
         return client;
       };
+
       return await retry(
         () async {
           _dio.options.headers['Authorization'] = 'Bearer $token';
-          _dio.options.headers['Content-Type'] = 'multipart/form-data';
 
+          // Membuat FormData dengan file dan data statis
           FormData formData = FormData.fromMap({
             fieldName: await MultipartFile.fromFile(filePath,
                 filename: filePath.split("/").last),
-            ...data,
+            'folder': 'dwigasindo', // Data statis
+            ...data, // Data dinamis lainnya
           });
 
           final response = await _dio

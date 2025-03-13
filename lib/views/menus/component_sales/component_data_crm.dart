@@ -1325,8 +1325,10 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
 
       // Upload gambar ke server
 
-      await Provider.of<ProviderSales>(context, listen: false)
-          .uploadDoc(context, id, imageFile.path);
+      final provider = Provider.of<ProviderSales>(context, listen: false);
+      final filePath = await provider.uploadFile(
+          context, imageFile, imageFile.path.split("/").last);
+      await provider.uploadDoc(context, id, filePath);
     }
   }
 
@@ -1532,82 +1534,97 @@ class _ComponentFollowUpState extends State<ComponentFollowUp> {
                 ),
               ),
             if (selectButton == false)
-              SizedBox(
-                width: width,
-                height: height * 0.55,
-                child: Container(
-                  width: width,
-                  height: height,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 1),
-                        color: Colors.grey.shade400,
-                        blurRadius: 1,
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Header
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF1D2340),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8),
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: width,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(0, 1),
+                          color: Colors.grey.shade400,
+                          blurRadius: 1,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF1D2340),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Dokumentasi',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        child: const Text(
-                          'Dokumentasi',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
 
-                      // GridView untuk menampilkan gambar
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: dataDoc!.length + images.length + 1,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // 2 kolom per baris
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio:
-                                1, // Kotak gambar tetap proporsional
+                        // GridView untuk menampilkan gambar
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: dataDoc!.length +
+                                images.length +
+                                1, // Menambahkan 1 item untuk tombol upload
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, // 2 kolom per baris
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio:
+                                  1, // Kotak gambar tetap proporsional
+                            ),
+                            itemBuilder: (context, index) {
+                              if (index < dataDoc.length) {
+                                // Menampilkan gambar dari API (dataDoc)
+                                return _buildImageNetwork(dataDoc[index].path!);
+                              } else if (index == dataDoc.length) {
+                                // Menampilkan tombol upload di slot terakhir
+                                return _buildUploadButton(data.id!);
+                              }
+                            },
                           ),
-                          itemBuilder: (context, index) {
-                            if (index < dataDoc.length) {
-                              // Menampilkan gambar dari API (dataDoc)
-                              return _buildImageNetwork(dataDoc[index].path!);
-                            } else if (index < dataDoc.length + images.length) {
-                              // Menampilkan gambar yang baru di-upload
-                              return _buildImageFile(
-                                  images[index - dataDoc.length]);
-                            } else if (widget.title == "Detail Lead") {
-                              // Menampilkan tombol upload di slot terakhir
-                              return _buildUploadButton(data.id!);
-                            } else {
-                              return null;
-                            }
-                          },
                         ),
-                      ),
-                    ],
+
+                        if (provider.uploadProgress > 0)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: Column(
+                              children: [
+                                LinearProgressIndicator(
+                                  value: provider.uploadProgress / 100,
+                                  backgroundColor: Colors.grey[300],
+                                  color: Colors.blue,
+                                ),
+                                SizedBox(height: 10),
+                                Text((provider.uploadProgress < 100)
+                                    ? "${provider.uploadProgress.toStringAsFixed(2)}% Uploading..."
+                                    : "Berhasil Upload"),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),

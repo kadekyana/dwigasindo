@@ -300,8 +300,10 @@ class _CardDokumentasiState extends State<CardDokumentasi> {
 
       // Upload gambar ke server
 
-      await Provider.of<ProviderSales>(context, listen: false)
-          .uploadDoc(context, id, imageFile.path);
+      final provider = Provider.of<ProviderSales>(context, listen: false);
+      final filePath = await provider.uploadFile(
+          context, imageFile, imageFile.path.split("/").last);
+      await provider.uploadDocCustomer(context, widget.id, filePath);
     }
   }
 
@@ -365,15 +367,31 @@ class _CardDokumentasiState extends State<CardDokumentasi> {
                 if (index < dataDoc.length) {
                   // Menampilkan gambar dari API (dataDoc)
                   return _buildImageNetwork(dataDoc[index].path!);
-                } else if (index < dataDoc.length + images.length) {
-                  // Menampilkan gambar yang baru di-upload
-                  return _buildImageFile(images[index - dataDoc.length]);
-                } else {
+                } else if (index == dataDoc.length) {
+                  // Menampilkan tombol upload di slot terakhir
                   return _buildUploadButton(widget.id);
                 }
               },
             ),
           ),
+
+          if (provider.uploadProgress > 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Column(
+                children: [
+                  LinearProgressIndicator(
+                    value: provider.uploadProgress / 100,
+                    backgroundColor: Colors.grey[300],
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 10),
+                  Text((provider.uploadProgress < 100)
+                      ? "${provider.uploadProgress.toStringAsFixed(2)}% Uploading..."
+                      : "Berhasil Upload"),
+                ],
+              ),
+            ),
         ],
       ),
     );

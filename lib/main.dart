@@ -63,7 +63,8 @@ class MyApp extends StatelessWidget {
         }
 
         // Cetak ukuran desain yang digunakan
-        print("Using designSize: \${designSize.width} x \${designSize.height}");
+        print(
+            "Using designSize: \t ${designSize.width} x \t ${designSize.height}");
 
         return MultiProvider(
           providers: [

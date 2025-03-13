@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
@@ -73,7 +74,7 @@ class MenuOrder extends StatelessWidget {
                 try {
                   await Future.wait([
                     providerSa.getUsersPic(context),
-                    providerSa.getAllOrder(context, 2),
+                    providerSa.getAllOrder(context, 1),
                     providerItem.getAllItem(context),
                     providerSa.getSummaryOrder(context),
                     provider.getMasterProduk(context),
@@ -1187,7 +1188,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   int? selectItemId;
   List<TextEditingController> hppBaruControllers = [];
   List<TextEditingController> hppBaruControllersB = [];
-
+  String filepath = '';
   int selectPicId = 0;
   int selectPicId1 = 0;
   int selectPicId2 = 0;
@@ -1258,9 +1259,15 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   String? pdfPath;
 
   // Function to handle the PDF upload
-  void _onPdfPicked(String path) {
+  void _onPdfPicked(String path) async {
     setState(() {
       pdfPath = path; // Store the PDF file path
+    });
+    final provider = Provider.of<ProviderSales>(context, listen: false);
+    final pathData =
+        await provider.uploadFile(context, File(path), path.split("/").last);
+    setState(() {
+      filepath = pathData;
     });
   }
 
@@ -1375,7 +1382,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: PdfUploadWidget(
                   onFilePicked: (path) {
-                    _onPdfPicked(path); // Update PDF path on pick
+                    _onPdfPicked(path); // Update PDF path on pick and upload
                   },
                 ),
               ),
@@ -1389,17 +1396,40 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 child: Column(
                   children: [
                     Text(
-                        'PDF Uploaded: ${pdfPath != null ? path.basename(pdfPath!) : 'No file selected'}',
-                        style: const TextStyle(color: Colors.red)),
-                    SizedBox(height: 10.h),
-                    WidgetButtonCustom(
-                      title: 'Ganti File',
-                      onpressed: _replacePdf,
-                      bgColor: Colors.red,
-                      color: Colors.white,
-                      FullWidth: width,
-                      FullHeight: 40.h,
+                      'PDF Uploaded: ${pdfPath != null ? path.basename(pdfPath!) : 'No file selected'}',
+                      style: const TextStyle(color: Colors.red),
                     ),
+                    if (providerSales.uploadProgress < 100)
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            SizedBox(height: 10.h),
+                            LinearProgressIndicator(
+                              value: providerSales.uploadProgress / 100,
+                              minHeight: 10.h,
+                              backgroundColor: Colors.grey[300],
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.blue),
+                            ),
+                          ],
+                        ),
+                      ),
+                    SizedBox(height: 10.h),
+                    if (providerSales.uploadProgress ==
+                        100) // Show replace button after upload is complete
+                      WidgetButtonCustom(
+                        title: 'Ganti File',
+                        onpressed: _replacePdf,
+                        bgColor: Colors.red,
+                        color: Colors.white,
+                        FullWidth: width,
+                        FullHeight: 40.h,
+                      ),
                   ],
                 ),
               ),
@@ -2003,7 +2033,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                     context,
                     jenisCustomer,
                     (buat?.selectedIndex ?? 0) + 1,
-                    pdfPath,
+                    filepath,
                     selectPicId,
                     selectPicId1,
                     selectPicId2,

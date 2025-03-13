@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/model/modelAllOrder.dart';
@@ -34,6 +36,7 @@ class ProviderSales extends ChangeNotifier {
   final dio = Dio();
   bool isLoading = false;
   int cekLoad = 0;
+  double uploadProgress = 0.0; // Variabel untuk progres upload
 
   ModelLeads? _leads;
 
@@ -244,6 +247,61 @@ class ProviderSales extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  Future<String> uploadFile(
+      BuildContext context, File file, String filename) async {
+    Dio dio = Dio();
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    // Menambahkan header Authorization dengan Bearer Token
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'multipart/form-data', // pastikan konten adalah multipart
+    };
+
+    try {
+      // Membuat objek FormData untuk mengirim file
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path, filename: filename),
+      });
+
+      // URL endpoint untuk upload file
+      String uploadUrl =
+          '$baseUrl/s3/upload'; // Ganti dengan URL upload server Anda
+
+      // Mengirim request POST
+      Response response = await dio.post(
+        uploadUrl,
+        data: formData,
+        onSendProgress: (int sent, int total) {
+          if (total != -1) {
+            // Calculate progress as a percentage
+            double progress = (sent / total) * 100;
+            uploadProgress = progress;
+            notifyListeners();
+          }
+        },
+      );
+
+      // Mengecek apakah upload berhasil
+      if (response.statusCode == 200) {
+        print('File berhasil di-upload');
+        print(response.data['data']['path']);
+        return response.data['data']['path'];
+      } else {
+        print('Gagal meng-upload file: ${response.statusCode}');
+        uploadProgress = 0.0;
+        notifyListeners();
+        return '';
+      }
+    } catch (e) {
+      print('Error saat meng-upload file: $e');
+      uploadProgress = 0.0;
+      notifyListeners();
+    }
+    return '';
   }
 
   Future<void> updateSparepart(
@@ -804,16 +862,32 @@ class ProviderSales extends ChangeNotifier {
   Future<void> uploadDoc(BuildContext context, int id, String filePath) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
-    final response = await DioServiceAPI().uploadFile(
+    final response = await DioServiceAPI().postRequest(
       url: "leads/documentation/$id",
       token: token,
-      filePath: filePath,
       data: {"path": filePath},
     );
 
     print(response?.data);
     if (response?.data['error'] == null) {
       getDocumentationLeads(context, id);
+      notifyListeners();
+    }
+  }
+
+  Future<void> uploadDocCustomer(
+      BuildContext context, int id, String filePath) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI().postRequest(
+      url: "crm/documentations/create",
+      token: token,
+      data: {"path": filePath, "customer_id": id},
+    );
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getDocumentationCMD(context, id);
       notifyListeners();
     }
   }
