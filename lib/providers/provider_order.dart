@@ -261,11 +261,19 @@ class ProviderOrder extends ChangeNotifier {
       "products": products,
     };
 
-    final response = await DioServiceAPI().postRequest(
-      url: 'products/create',
-      token: token,
-      data: payload,
-    );
+    print(payload);
+
+    final response = await DioServiceAPI()
+        .postRequest(url: 'orders/create', token: token, data: {
+      "customer_id": customerId,
+      "type": type,
+      "path": path,
+      "approval1": approval1,
+      "approval2": approval2,
+      "approval3": approval3,
+      "items": items,
+      "products": products
+    });
 
     print(response?.data['error']);
     if (response?.data['error'] == null) {

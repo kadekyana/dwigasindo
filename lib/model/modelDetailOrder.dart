@@ -126,8 +126,8 @@ class Product {
   String? productName;
   int? type;
   bool? isGrade;
-  int? gradeId;
-  String? gradeName;
+  dynamic gradeId;
+  dynamic gradeName;
   int? remainigQty;
   int? qty;
   dynamic note;

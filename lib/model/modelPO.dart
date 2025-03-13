@@ -6,25 +6,21 @@ String modelPoToJson(ModelPo data) => json.encode(data.toJson());
 
 class ModelPo {
   List<Datum>? data;
-  dynamic error;
 
   ModelPo({
     this.data,
-    this.error,
   });
 
   factory ModelPo.fromJson(Map<String, dynamic> json) => ModelPo(
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-        error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
         "data": data == null
             ? []
             : List<dynamic>.from(data!.map((x) => x.toJson())),
-        "error": error,
       };
 }
 
@@ -41,18 +37,24 @@ class Datum {
   String? vendorName;
   int? paymentType;
   DateTime? paymentDeadline;
+
+  // Changed these fields to double
   double? totalPrice;
   double? totalPpn;
   double? totalPayment;
   double? installmentPaymentPrice;
   double? installmentPaymentPpn;
   double? installmentPaymentTotal;
+
   dynamic picVerifiedBy;
   dynamic picVerifiedName;
+  dynamic picVerifiedStatus;
   dynamic picAcknowledgedBy;
   dynamic picAcknowledgedName;
+  dynamic picAcknowledgedStatus;
   dynamic picApprovedBy;
   dynamic picApprovedName;
+  dynamic picApprovedStatus;
   int? createdBy;
   String? createdByName;
   DateTime? createdAt;
@@ -78,10 +80,13 @@ class Datum {
     this.installmentPaymentTotal,
     this.picVerifiedBy,
     this.picVerifiedName,
+    this.picVerifiedStatus,
     this.picAcknowledgedBy,
     this.picAcknowledgedName,
+    this.picAcknowledgedStatus,
     this.picApprovedBy,
     this.picApprovedName,
+    this.picApprovedStatus,
     this.createdBy,
     this.createdByName,
     this.createdAt,
@@ -103,30 +108,48 @@ class Datum {
         paymentDeadline: json["payment_deadline"] == null
             ? null
             : DateTime.parse(json["payment_deadline"]),
+
+        // Adjust parsing for double
         totalPrice: json["total_price"] == null
             ? null
-            : double.tryParse(json["total_price"].toString()),
+            : (json["total_price"] is int
+                ? (json["total_price"] as int).toDouble()
+                : json["total_price"].toDouble()),
         totalPpn: json["total_ppn"] == null
             ? null
-            : double.tryParse(json["total_ppn"].toString()),
+            : (json["total_ppn"] is int
+                ? (json["total_ppn"] as int).toDouble()
+                : json["total_ppn"].toDouble()),
         totalPayment: json["total_payment"] == null
             ? null
-            : double.tryParse(json["total_payment"].toString()),
+            : (json["total_payment"] is int
+                ? (json["total_payment"] as int).toDouble()
+                : json["total_payment"].toDouble()),
         installmentPaymentPrice: json["installment_payment_price"] == null
             ? null
-            : double.tryParse(json["installment_payment_price"].toString()),
+            : (json["installment_payment_price"] is int
+                ? (json["installment_payment_price"] as int).toDouble()
+                : json["installment_payment_price"].toDouble()),
         installmentPaymentPpn: json["installment_payment_ppn"] == null
             ? null
-            : double.tryParse(json["installment_payment_ppn"].toString()),
+            : (json["installment_payment_ppn"] is int
+                ? (json["installment_payment_ppn"] as int).toDouble()
+                : json["installment_payment_ppn"].toDouble()),
         installmentPaymentTotal: json["installment_payment_total"] == null
             ? null
-            : double.tryParse(json["installment_payment_total"].toString()),
+            : (json["installment_payment_total"] is int
+                ? (json["installment_payment_total"] as int).toDouble()
+                : json["installment_payment_total"].toDouble()),
+
         picVerifiedBy: json["pic_verified_by"],
         picVerifiedName: json["pic_verified_name"],
+        picVerifiedStatus: json["pic_verified_status"],
         picAcknowledgedBy: json["pic_acknowledged_by"],
         picAcknowledgedName: json["pic_acknowledged_name"],
+        picAcknowledgedStatus: json["pic_acknowledged_status"],
         picApprovedBy: json["pic_approved_by"],
         picApprovedName: json["pic_approved_name"],
+        picApprovedStatus: json["pic_approved_status"],
         createdBy: json["created_by"],
         createdByName: json["created_by_name"],
         createdAt: json["created_at"] == null
@@ -147,18 +170,24 @@ class Datum {
         "vendor_name": vendorName,
         "payment_type": paymentType,
         "payment_deadline": paymentDeadline?.toIso8601String(),
+
+        // Convert double back to JSON
         "total_price": totalPrice,
         "total_ppn": totalPpn,
         "total_payment": totalPayment,
         "installment_payment_price": installmentPaymentPrice,
         "installment_payment_ppn": installmentPaymentPpn,
         "installment_payment_total": installmentPaymentTotal,
+
         "pic_verified_by": picVerifiedBy,
         "pic_verified_name": picVerifiedName,
+        "pic_verified_status": picVerifiedStatus,
         "pic_acknowledged_by": picAcknowledgedBy,
         "pic_acknowledged_name": picAcknowledgedName,
+        "pic_acknowledged_status": picAcknowledgedStatus,
         "pic_approved_by": picApprovedBy,
         "pic_approved_name": picApprovedName,
+        "pic_approved_status": picApprovedStatus,
         "created_by": createdBy,
         "created_by_name": createdByName,
         "created_at": createdAt?.toIso8601String(),

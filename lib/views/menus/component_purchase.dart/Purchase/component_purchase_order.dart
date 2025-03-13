@@ -229,7 +229,15 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    (data == true) ? "Approve" : "Menunggu",
+                                    (data?.picAcknowledgedStatus == 1 &&
+                                            data?.picApprovedStatus == 1 &&
+                                            data?.picVerifiedStatus == 1)
+                                        ? "Approve"
+                                        : (data?.picAcknowledgedStatus == 3 &&
+                                                data?.picApprovedStatus == 3 &&
+                                                data?.picVerifiedStatus == 3)
+                                            ? "Reject"
+                                            : "Menunggu",
                                     style: titleText,
                                   ),
                                 ),
@@ -282,29 +290,41 @@ class _ComponentPurchaseOrderState extends State<ComponentPurchaseOrder> {
                                         children: [
                                           SvgPicture.asset(
                                             'assets/images/approve4.svg',
+                                            color: (data?.picAcknowledgedStatus ==
+                                                    1)
+                                                ? null
+                                                : (data?.picAcknowledgedStatus ==
+                                                        3)
+                                                    ? Colors.red
+                                                    : Colors.grey,
                                           ),
                                           SizedBox(
                                             width: 5.w,
                                           ),
                                           SvgPicture.asset(
                                             'assets/images/1.svg',
+                                            color: (data?.picApprovedStatus ==
+                                                    1)
+                                                ? null
+                                                : (data?.picApprovedStatus == 3)
+                                                    ? Colors.red
+                                                    : Colors.grey,
                                           ),
                                           SizedBox(
                                             width: 5.w,
                                           ),
                                           SvgPicture.asset(
                                             'assets/images/2.svg',
+                                            color: (data?.picVerifiedStatus ==
+                                                    1)
+                                                ? null
+                                                : (data?.picVerifiedStatus == 3)
+                                                    ? Colors.red
+                                                    : Colors.grey,
                                           ),
                                           SizedBox(
                                             width: 5.w,
                                           ),
-                                          (data == true)
-                                              ? SvgPicture.asset(
-                                                  'assets/images/approve3.svg',
-                                                )
-                                              : SvgPicture.asset(
-                                                  'assets/images/approve1.svg',
-                                                ),
                                         ],
                                       ),
                                     ),

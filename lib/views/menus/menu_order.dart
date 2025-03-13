@@ -79,6 +79,7 @@ class MenuOrder extends StatelessWidget {
                     provider.getMasterProduk(context),
                     provider.getMasterProdukTrash(context),
                     providerDis.getAllTubeGrade(context),
+                    providerDis.getAllCostumer(context),
                     provider.getData(context),
                   ]);
 
@@ -388,7 +389,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<ProviderOrder>(context, listen: false);
+    final provider = Provider.of<ProviderSales>(context, listen: false);
     provider.getAllOrder(context, 1);
   }
 
@@ -396,7 +397,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final provider = Provider.of<ProviderOrder>(context);
+    final provider = Provider.of<ProviderSales>(context);
     final data = provider.order?.data;
 
     return Scaffold(
@@ -456,7 +457,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
               child: ListView.builder(
                 itemCount: data?.length,
                 itemBuilder: (context, index) {
-                  final dataCard = data?[index];
+                  final dataCard = data![index];
                   return Container(
                     width: double.maxFinite,
                     height: 200.h,
@@ -481,7 +482,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 130.w,
+                                width: 150.w,
                                 height: 40.h,
                                 decoration: const BoxDecoration(
                                   color: PRIMARY_COLOR,
@@ -492,18 +493,20 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'PO20241212001',
-                                    style: titleText,
+                                    '${dataCard.code}',
+                                    style: subtitleText,
                                   ),
                                 ),
                               ),
                               Container(
-                                width: 130.w,
+                                width: 150.w,
                                 height: 40.h,
                                 decoration: BoxDecoration(
-                                  color: (data == true)
+                                  color: (dataCard.approvalStatus == "Approve")
                                       ? Colors.green
-                                      : SECONDARY_COLOR,
+                                      : (dataCard.approvalStatus == "Review")
+                                          ? Colors.yellow
+                                          : SECONDARY_COLOR,
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(8),
                                     bottomLeft: Radius.circular(30),
@@ -511,8 +514,10 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    (data == true) ? "Approve" : "Reject",
-                                    style: titleText,
+                                    "${dataCard.approvalStatus}",
+                                    style: (dataCard.approvalStatus == "Review")
+                                        ? titleTextBlack
+                                        : titleText,
                                   ),
                                 ),
                               ),
@@ -538,6 +543,64 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
+                                          'Customer',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          ' : ',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          '${dataCard.customerName}',
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.justify,
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'Kecamatan',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          ' : ',
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          '${dataCard.districtName}',
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.justify,
+                                          style: subtitleTextBlack,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
                                           'Jenis Produk',
                                           style: subtitleTextBlack,
                                         ),
@@ -551,64 +614,8 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                       Expanded(
                                         flex: 3,
                                         child: Text(
-                                          'Gas',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Produk',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          'Argon IG',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Customer',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text('PT. Lorem Ipsum',
+                                            provider.getRemarksLabel(
+                                                dataCard.remarks!),
                                             style: subtitleTextBlack),
                                       ),
                                     ],
@@ -633,7 +640,9 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                       ),
                                       Expanded(
                                         flex: 3,
-                                        child: Text('Rp.70.000.000',
+                                        child: Text(
+                                            provider.formatCurrency(dataCard
+                                                .totalTransaction as num),
                                             style: subtitleTextBlack),
                                       ),
                                     ],
@@ -658,7 +667,7 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                       ),
                                       Expanded(
                                         flex: 3,
-                                        child: Text('User 1',
+                                        child: Text('${dataCard.createdBy}',
                                             style: subtitleTextNormal),
                                       ),
                                     ],
@@ -683,7 +692,9 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                       ),
                                       Expanded(
                                         flex: 3,
-                                        child: Text('17 - 12 - 2024',
+                                        child: Text(
+                                            provider.formatDate(
+                                                dataCard.createdAt.toString()),
                                             style: subtitleTextNormal),
                                       ),
                                     ],
@@ -704,14 +715,40 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
                                   FullWidth: width * 0.3,
                                   FullHeight: 30.h,
                                   title: "Lihat Order",
-                                  onpressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ComponentDetailOrder(),
-                                      ),
+                                  onpressed: () async {
+                                    // Tampilkan Dialog Loading
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
                                     );
+
+                                    try {
+                                      await Future.wait([
+                                        provider.getDetailOrder(
+                                            context, dataCard.id!),
+                                      ]);
+
+                                      // Navigate sesuai kondisi
+                                      Navigator.of(context)
+                                          .pop(); // Tutup Dialog Loading
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ComponentDetailOrder(),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      Navigator.of(context)
+                                          .pop(); // Tutup Dialog Loading
+                                      print('Error: $e');
+                                      // Tambahkan pesan error jika perlu
+                                    }
                                   },
                                   bgColor: PRIMARY_COLOR,
                                   color: Colors.transparent,
@@ -751,7 +788,7 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<ProviderOrder>(context, listen: false);
+    final provider = Provider.of<ProviderSales>(context, listen: false);
     provider.getAllOrder(context, 2);
   }
 
@@ -759,7 +796,6 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final providerOr = Provider.of<ProviderOrder>(context);
     final provider = Provider.of<ProviderSales>(context);
     final data = provider.order?.data;
     return Scaffold(
@@ -1145,10 +1181,12 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   GroupButtonController? button = GroupButtonController(selectedIndex: 0);
   GroupButtonController? buat = GroupButtonController(selectedIndex: 0);
   bool cek = false;
-  int jenis = 0;
+  int jenisCustomer = 0;
   int cari = 0;
   int? selectProdukId;
   int? selectItemId;
+  List<TextEditingController> hppBaruControllers = [];
+  List<TextEditingController> hppBaruControllersB = [];
 
   int selectPicId = 0;
   int selectPicId1 = 0;
@@ -1182,6 +1220,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
         "qty": null,
         "note": null
       });
+      hppBaruControllers.add(TextEditingController());
     });
   }
 
@@ -1189,6 +1228,8 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   void _removeForm(int index) {
     setState(() {
       formList.removeAt(index);
+      hppBaruControllers[index].dispose();
+      hppBaruControllers.removeAt(index);
     });
   }
 
@@ -1201,6 +1242,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
         "qty": null,
         "note": null // null or string
       });
+      hppBaruControllersB.add(TextEditingController());
     });
   }
 
@@ -1208,6 +1250,8 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   void _removeFormB(int index) {
     setState(() {
       formListB.removeAt(index);
+      hppBaruControllersB[index].dispose();
+      hppBaruControllersB.removeAt(index);
     });
   }
 
@@ -1228,10 +1272,19 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   }
 
   @override
+  void dispose() {
+    for (var controller in hppBaruControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final provider = Provider.of<ProviderOrder>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
     return Scaffold(
       appBar: WidgetAppbar(
         title: 'Buat Order',
@@ -1258,9 +1311,9 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 ),
                 subtitle: Align(
                   alignment: Alignment.topLeft,
-                  child: Consumer<ProviderSales>(
+                  child: Consumer<ProviderDistribusi>(
                     builder: (context, provider, child) {
-                      final pic = provider.modelUsersPic!.data!
+                      final pic = provider.customer!.data!
                           .map((data) => {'id': data.id, 'name': data.name})
                           .toList();
 
@@ -1270,7 +1323,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                 Border.all(color: Colors.grey.shade400),
                             expandedBorder:
                                 Border.all(color: Colors.grey.shade400)),
-                        hintText: 'Pilih PIC Menyetujui',
+                        hintText: 'Pilih Customer',
                         items: pic.map((e) => e['name']).toList(),
                         onChanged: (item) {
                           print("Selected Item: $item");
@@ -1280,10 +1333,11 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                           );
 
                           setState(() {
-                            selectPicId2 = int.parse(selected['id'].toString());
+                            jenisCustomer =
+                                int.parse(selected['id'].toString());
                           });
 
-                          print("Selected ID: $selectPicId2");
+                          print("Selected ID: $jenisCustomer");
                         },
                       );
                     },
@@ -1303,31 +1357,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                   alignment: Alignment.topLeft,
                   child: GroupButton(
                       isRadio: true,
-                      options: GroupButtonOptions(
-                        buttonWidth: 100.w,
-                        selectedColor: PRIMARY_COLOR,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      onSelected: (value, index, isSelected) {
-                        print('DATA KLIK : $value - $index - $isSelected');
-                      },
-                      buttons: const ['PO', "Retail"]),
-                ),
-              ),
-            ),
-
-            SizedBox(
-              width: width,
-              height: 80.h,
-              child: ListTile(
-                title: Text(
-                  'Jenis Order',
-                  style: subtitleTextBlack,
-                ),
-                subtitle: Align(
-                  alignment: Alignment.topLeft,
-                  child: GroupButton(
-                      isRadio: true,
+                      controller: buat,
                       options: GroupButtonOptions(
                         buttonWidth: 100.w,
                         selectedColor: PRIMARY_COLOR,
@@ -1419,8 +1449,11 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                           child: Consumer<ProviderOrder>(
                             builder: (context, provider, child) {
                               final produk = provider.produk!.data!
-                                  .map((data) =>
-                                      {'id': data.id, 'name': data.name})
+                                  .map((data) => {
+                                        'id': data.id,
+                                        'name': data.name,
+                                        'hpp': data.hpp
+                                      })
                                   .toList();
 
                               return CustomAutocomplete(
@@ -1437,11 +1470,13 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                   setState(() {
                                     selectProdukId =
                                         int.parse(selected!['id'].toString());
-                                  });
-
-                                  setState(() {
                                     formList[index]['product_id'] =
                                         selectProdukId;
+                                    formList[index]['hpp'] = selected['hpp'];
+                                    formList[index]['new_hpp'] =
+                                        selected['hpp'];
+                                    hppBaruControllers[index].text =
+                                        selected['hpp'].toString();
                                   });
 
                                   print("Selected ID: $selectProdukId");
@@ -1461,43 +1496,17 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                       height: 80.h,
                       child: ListTile(
                         title: Text(
-                          'Hpp',
-                          style: subtitleTextBlack,
-                        ),
-                        subtitle: Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: WidgetForm(
-                            change: (value) {
-                              setState(() {
-                                formList[index]['hpp'] = value;
-                              });
-                            },
-                            alert: 'Hpp',
-                            hint: 'Hpp',
-                            typeInput: TextInputType.number,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                      width: width,
-                      height: 80.h,
-                      child: ListTile(
-                        title: Text(
                           'Hpp Baru',
                           style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
                           child: WidgetForm(
+                            controller: hppBaruControllers[index],
                             change: (value) {
                               setState(() {
-                                formList[index]['new_hpp'] = value;
+                                formList[index]['new_hpp'] =
+                                    double.tryParse(value) ?? 0.0;
                               });
                             },
                             alert: 'Hpp Baru',
@@ -1525,7 +1534,8 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                           child: WidgetForm(
                             change: (value) {
                               setState(() {
-                                formList[index]['qty'] = value;
+                                formList[index]['qty'] =
+                                    int.tryParse(value) ?? 0;
                               });
                             },
                             alert: 'Qty',
@@ -1634,8 +1644,11 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                           child: Consumer<ProviderItem>(
                             builder: (context, provider, child) {
                               final item = provider.allItem!.data!
-                                  .map((data) =>
-                                      {'id': data.id, 'name': data.name})
+                                  .map((data) => {
+                                        'id': data.id,
+                                        'name': data.name,
+                                        "hpp": data.price
+                                      })
                                   .toList();
 
                               return CustomAutocomplete(
@@ -1655,6 +1668,11 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
 
                                   setState(() {
                                     formListB[index]['item_id'] = selectItemId;
+                                    formListB[index]['hpp'] = selected['hpp'];
+                                    formListB[index]['new_hpp'] =
+                                        selected['hpp'];
+                                    hppBaruControllersB[index].text =
+                                        selected['hpp'].toString();
                                   });
 
                                   print("Selected ID: $selectItemId");
@@ -1674,43 +1692,17 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                       height: 80.h,
                       child: ListTile(
                         title: Text(
-                          'Hpp',
-                          style: subtitleTextBlack,
-                        ),
-                        subtitle: Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          child: WidgetForm(
-                            change: (value) {
-                              setState(() {
-                                formListB[index]['hpp'] = value;
-                              });
-                            },
-                            alert: 'Hpp',
-                            hint: 'Hpp',
-                            typeInput: TextInputType.number,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                      width: width,
-                      height: 80.h,
-                      child: ListTile(
-                        title: Text(
                           'Hpp Baru',
                           style: subtitleTextBlack,
                         ),
                         subtitle: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
                           child: WidgetForm(
+                            controller: hppBaruControllersB[index],
                             change: (value) {
                               setState(() {
-                                formListB[index]['new_hpp'] = value;
+                                formListB[index]['new_hpp'] =
+                                    double.tryParse(value) ?? 0.0;
                               });
                             },
                             alert: 'Hpp Baru',
@@ -1738,7 +1730,8 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                           child: WidgetForm(
                             change: (value) {
                               setState(() {
-                                formListB[index]['qty'] = value;
+                                formListB[index]['qty'] =
+                                    int.tryParse(value) ?? 0;
                               });
                             },
                             alert: 'Qty',
@@ -1934,9 +1927,88 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
               FullHeight: height * 0.05,
               title: 'Simpan',
               onpressed: () async {
-                // provider.createProdukOrder(
-                //   context,
-                // );
+                // Clean and format the data before sending
+                final cleanFormList = formList
+                    .where((form) =>
+                        form['product_id'] != null &&
+                        form['hpp'] != null &&
+                        form['new_hpp'] != null &&
+                        form['qty'] != null)
+                    .map((form) => {
+                          "product_id": form['product_id'] as int,
+                          "hpp": (form['hpp'] is int || form['hpp'] is double)
+                              ? form['hpp']
+                              : double.parse(form['hpp'].toString()),
+                          "new_hpp": (form['new_hpp'] is int ||
+                                  form['new_hpp'] is double)
+                              ? form['new_hpp']
+                              : double.parse(form['new_hpp'].toString()),
+                          "qty": form['qty'] is int
+                              ? form['qty']
+                              : int.parse(form['qty'].toString()),
+                          "note": form['note']?.toString() ?? ""
+                        })
+                    .toList();
+
+                final cleanFormListB = formListB
+                    .where((form) =>
+                        form['item_id'] != null &&
+                        form['hpp'] != null &&
+                        form['new_hpp'] != null &&
+                        form['qty'] != null)
+                    .map((form) => {
+                          "item_id": form['item_id'] as int,
+                          "hpp": (form['hpp'] is int || form['hpp'] is double)
+                              ? form['hpp']
+                              : double.parse(form['hpp'].toString()),
+                          "new_hpp": (form['new_hpp'] is int ||
+                                  form['new_hpp'] is double)
+                              ? form['new_hpp']
+                              : double.parse(form['new_hpp'].toString()),
+                          "qty": form['qty'] is int
+                              ? form['qty']
+                              : int.parse(form['qty'].toString()),
+                          "note": form['note']?.toString() ?? ""
+                        })
+                    .toList();
+
+                if (jenisCustomer == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Pilih Customer terlebih dahulu')));
+                  return;
+                }
+
+                if (cleanFormList.isEmpty && cleanFormListB.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text('Tambahkan minimal satu item atau produk')));
+                  return;
+                }
+
+                if (selectPicId == 0 ||
+                    selectPicId1 == 0 ||
+                    selectPicId2 == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Pilih semua PIC approval')));
+                  return;
+                }
+
+                // Print untuk debugging
+                print('Clean Products:');
+                print(cleanFormList);
+                print('Clean Items:');
+                print(cleanFormListB);
+
+                provider.createProdukOrder(
+                    context,
+                    jenisCustomer,
+                    (buat?.selectedIndex ?? 0) + 1,
+                    pdfPath,
+                    selectPicId,
+                    selectPicId1,
+                    selectPicId2,
+                    cleanFormListB,
+                    cleanFormList);
               },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
