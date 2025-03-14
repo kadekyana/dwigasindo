@@ -507,7 +507,8 @@ class ProviderItem extends ChangeNotifier {
       double priceSell,
       int limit,
       int idVendor,
-      int isRawMaterial) async {
+      int isRawMaterial,
+      String path) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     print({
@@ -520,10 +521,10 @@ class ProviderItem extends ChangeNotifier {
       "price": price,
       "limit_stock": limit,
       "vendor_id": idVendor,
-      "photo": null,
+      "photo": path,
       "is_raw_material": isRawMaterial,
-      "is_item_sell": 1, // 1 = no, 2 = yes
-      "sell_price": 10.2, // when is_item_sell
+      "is_item_sell": isSell, // 1 = no, 2 = yes
+      "sell_price": priceSell, // when is_item_sell
     });
     final response =
         await DioServiceAPI().postRequest(url: 'items', token: token, data: {
@@ -536,10 +537,10 @@ class ProviderItem extends ChangeNotifier {
       "price": price,
       "limit_stock": limit,
       "vendor_id": idVendor,
-      "photo": null,
+      "photo": path,
       "is_raw_material": isRawMaterial,
-      "is_item_sell": 1, // 1 = no, 2 = yes
-      "sell_price": 10.2, // when is_item_sell
+      "is_item_sell": isSell, // 1 = no, 2 = yes
+      "sell_price": priceSell, // when is_item_sell
     });
 
     print(response?.data['error']);

@@ -1,3 +1,4 @@
+import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_mutasi_stok.dart';
@@ -254,6 +255,12 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                             width: 90.w,
                                             height: 90.h,
                                             decoration: BoxDecoration(
+                                              image: (data.photo != null)
+                                                  ? DecorationImage(
+                                                      image: NetworkImage(
+                                                          '$pathUrl/${data.photo}'),
+                                                      fit: BoxFit.cover)
+                                                  : null,
                                               border: Border.all(
                                                   color: PRIMARY_COLOR,
                                                   width: 1),

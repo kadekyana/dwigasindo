@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -27,12 +28,19 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
   TextEditingController? controller = TextEditingController();
+  String? filepath;
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
+      });
+      final providerSales = Provider.of<ProviderSales>(context, listen: false);
+      final path = await providerSales.uploadFile(
+          context, _imageFile!, _imageFile!.path.split("/").last);
+      setState(() {
+        filepath = path;
       });
     }
   }
@@ -94,6 +102,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
 
     final categories = provider.allcategory?.data
         .map((data) => {'id': data.id, 'name': data.name})
@@ -455,6 +464,38 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                   ),
                 ),
               ),
+              SizedBox(height: 30.h),
+              if (providerSales.uploadProgress < 100)
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(height: 10.h),
+                      LinearProgressIndicator(
+                        value: providerSales.uploadProgress / 100,
+                        minHeight: 10.h,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(height: 10.h),
+              if (providerSales.uploadProgress ==
+                  100) // Show replace button after upload is complete
+                WidgetButtonCustom(
+                  title: 'Ganti File',
+                  onpressed: _showImageSourceDialog,
+                  bgColor: Colors.red,
+                  color: Colors.white,
+                  FullWidth: width,
+                  FullHeight: 40.h,
+                ),
               SizedBox(
                 height: 30.h,
               ),
@@ -483,6 +524,18 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                     );
                   },
                 );
+                print(filepath);
+                print(kode.text);
+                print(nama.text);
+                print(selectKategori);
+                print(selectLokasi);
+                print(selectUnit);
+                print(stok.text);
+                print(harga.text);
+                print(check);
+                print(hargaJual.text);
+                print(limit.text);
+                print(selectVendor);
 
                 try {
                   await Future.wait([
@@ -496,10 +549,13 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                         int.parse(stok.text),
                         double.parse(harga.text),
                         check,
-                        double.parse(hargaJual.text),
+                        (hargaJual.text == '')
+                            ? 0
+                            : double.parse(hargaJual.text),
                         int.parse(limit.text),
                         selectVendor!,
-                        1),
+                        1,
+                        filepath!),
                   ]);
 
                   // Navigate sesuai kondisi

@@ -5,6 +5,7 @@ import 'package:dio/io.dart';
 import 'package:retry/retry.dart';
 
 const baseUrl = "https://api.gas.devku.xyz/api/v1";
+const pathUrl = "https://go-clinic-bucket.s3.ap-southeast-1.amazonaws.com";
 
 class DioServiceAPI {
   final Dio _dio = Dio();
