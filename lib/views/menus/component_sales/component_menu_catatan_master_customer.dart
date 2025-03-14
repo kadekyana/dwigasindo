@@ -1,13 +1,10 @@
 import 'dart:io';
-
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/model/modelCatatanCMD.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
-import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:dwigasindo/widgets/widget_note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;

@@ -1,6 +1,9 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_asset.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_detail_komponen.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_maintance_asset.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_pajak_asset.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/DaftarVendor/component_daftar_vendor.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_spb.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
@@ -93,17 +96,17 @@ class MenuAssets extends StatelessWidget {
             WidgetButtonDistribusi(
               title: 'Komponen',
               dataList: null,
-              onTap: ComponentApproval(),
+              onTap: ComponentDetailKomponen(),
             ),
             WidgetButtonDistribusi(
               title: 'Maintenance',
               dataList: null,
-              onTap: ComponentSpb(),
+              onTap: ComponentMaintanceAsset(),
             ),
-            const WidgetButtonDistribusi(
+            WidgetButtonDistribusi(
               title: 'Pajak / KIR',
               dataList: null,
-              onTap: ComponentDaftarVendor(),
+              onTap: ComponentPajakAsset(),
             ),
           ],
         ),

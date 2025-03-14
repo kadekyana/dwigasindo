@@ -1,28 +1,31 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
+import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ComponentDetailAsset extends StatefulWidget {
-  ComponentDetailAsset({super.key});
+class ComponentDetailMaintenance extends StatefulWidget {
+  ComponentDetailMaintenance({super.key});
 
   @override
-  _ComponentDetailAssetState createState() => _ComponentDetailAssetState();
+  _ComponentDetailMaintenanceState createState() =>
+      _ComponentDetailMaintenanceState();
 }
 
-class _ComponentDetailAssetState extends State<ComponentDetailAsset>
+class _ComponentDetailMaintenanceState extends State<ComponentDetailMaintenance>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int currentIndex = 0;
@@ -78,8 +81,8 @@ class _ComponentDetailAssetState extends State<ComponentDetailAsset>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 100.w,
-                  height: 85.h,
+                  width: 150.w,
+                  height: 100.h,
                   decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(12)),
@@ -87,87 +90,18 @@ class _ComponentDetailAssetState extends State<ComponentDetailAsset>
                 SizedBox(
                   width: 10.w,
                 ),
-                Container(
-                  width: 200.w,
-                  height: 100.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 40.h,
-                        child: WidgetButtonCustom(
-                          FullWidth: width,
-                          FullHeight: 40.h,
-                          title: "Check In",
-                          color: PRIMARY_COLOR,
-                          bgColor: PRIMARY_COLOR,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                        child: WidgetButtonCustom(
-                          FullWidth: width,
-                          FullHeight: 40.h,
-                          title: "Check In",
-                          color: PRIMARY_COLOR,
-                          bgColor: PRIMARY_COLOR,
-                        ),
-                      )
-                    ],
+                if (currentIndex == 1)
+                  Container(
+                    width: 200.w,
+                    height: 40.h,
+                    child: WidgetButtonCustom(
+                      FullWidth: width,
+                      FullHeight: 40.h,
+                      title: "Selesai Maintenance",
+                      color: PRIMARY_COLOR,
+                      bgColor: PRIMARY_COLOR,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      if (currentIndex == 0)
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: FaIcon(
-                                      FontAwesomeIcons.screwdriverWrench)),
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  "Maintenance",
-                                  style: subtitleTextBlack,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.print,
-                                size: 30.h,
-                              ),
-                            ),
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                "Print Label",
-                                style: subtitleTextBlack,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -190,7 +124,7 @@ class _ComponentDetailAssetState extends State<ComponentDetailAsset>
               controller: _tabController,
               children: [
                 ComponentListDetail(),
-                CompponentLisKomponen(),
+                ComponentMaintenance(),
                 CompponentListHistory(),
                 CardDokumentasi(width: width, height: height, id: 1),
               ],
@@ -935,27 +869,77 @@ class _ComponentListDetailState extends State<ComponentListDetail> {
   }
 }
 
-class CompponentLisKomponen extends StatefulWidget {
-  const CompponentLisKomponen({
+class ComponentMaintenance extends StatefulWidget {
+  const ComponentMaintenance({
     super.key,
   });
 
   @override
-  State<CompponentLisKomponen> createState() => _CompponentLisKomponenState();
+  State<ComponentMaintenance> createState() => _CompponentLisKomponenState();
 }
 
-class _CompponentLisKomponenState extends State<CompponentLisKomponen> {
+class _CompponentLisKomponenState extends State<ComponentMaintenance> {
   List<bool> check = [true, false];
   bool non = false;
   GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
   TextEditingController search = TextEditingController();
+  int vendorId = 0;
+
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  TextEditingController? controller = TextEditingController();
+  String? filepath;
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+      final providerSales = Provider.of<ProviderSales>(context, listen: false);
+      final path = await providerSales.uploadFile(
+          context, _imageFile!, _imageFile!.path.split("/").last);
+      setState(() {
+        filepath = path;
+      });
+    }
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final provider = Provider.of<ProviderSales>(context);
-    final providerDis = Provider.of<ProviderDistribusi>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
 
     return Scaffold(
       body: Container(
@@ -967,376 +951,149 @@ class _CompponentLisKomponenState extends State<CompponentLisKomponen> {
             SizedBox(
               height: 10.h,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: WidgetButtonCustom(
-                FullWidth: 200.w,
-                FullHeight: 40.h,
-                title: "Check In Komponen",
-                color: PRIMARY_COLOR,
-                bgColor: PRIMARY_COLOR,
-              ),
-            ),
             SizedBox(
-              height: 10.h,
-            ),
-            Expanded(
-              child: (provider.produk!.data!.isEmpty)
-                  ? const Center(
-                      child: Text('Belum Terdapat Produk Trash'),
-                    )
-                  : ListView.builder(
-                      itemCount: provider.produk!.data!.length,
-                      itemBuilder: (context, index) {
-                        final data = provider.produk?.data![index];
-                        return Container(
-                          width: double.maxFinite,
-                          height: 200.h,
-                          margin: EdgeInsets.only(bottom: height * 0.02),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 1,
-                                color: Color(0xffE4E4E4),
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: double.maxFinite,
-                                height: 40.h,
-                                child: Stack(
-                                  children: [
-                                    // Bagian hijau (OK)
+              width: width,
+              height: 100.h,
+              child: Center(
+                child: ListTile(
+                  title: Text(
+                    'Vendors',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Container(
+                    margin: EdgeInsets.only(top: height * 0.01),
+                    child: Consumer<ProviderItem>(
+                      builder: (context, provider, child) {
+                        final pic = provider.supplier!.data
+                            .map((data) => {'id': data.id, 'name': data.name})
+                            .toList();
 
-                                    // Bagian biru (No. 12345)
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Container(
-                                        width: 120.w, // 30% dari lebar layar
-                                        height: double.infinity,
-                                        decoration: const BoxDecoration(
-                                          color:
-                                              PRIMARY_COLOR, // Warna biru tua
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(30),
-                                          ),
-                                        ),
-                                        alignment: Alignment.center,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Text(
-                                            (data?.type == 1)
-                                                ? "Jenis Asset"
-                                                : "Jenis Asset",
-                                            style: titleText),
-                                      ),
-                                    ),
-                                    // Bagian kanan (TW: 36.8)
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        width: width * 0.35,
-                                        padding: EdgeInsets.only(right: 10.w),
-                                        child: FittedBox(
-                                          alignment: Alignment.centerRight,
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                              "Dibuat Oleh : ${data!.createdBy}",
-                                              style: minisubtitleTextGrey),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 5.h),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 80.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(),
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Nama Asset',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text(
-                                                        '\t${data.name}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Lokasi Asset',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text(
-                                                        '\t${(data.isGrade == true) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Asset Tag',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text(
-                                                        '\t${(data.note == "") ? "-" : data.note}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Serial',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text('\t-',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Mark',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text('\t-',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Supplier',
-                                                        style:
-                                                            subtitleTextNormalblack,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const Text(':'),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text('\t-',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalblack),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Dibuat Pada',
-                                                        style:
-                                                            subtitleTextNormalGrey,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    ':',
-                                                    style:
-                                                        subtitleTextNormalGrey,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Text(
-                                                        '\t${provider.formatDate(data.createdAt.toString())} | ${provider.formatTime(data.createdAt.toString())}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            subtitleTextNormalGrey),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10.w, right: 10.w, bottom: 5.h),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Check Out",
-                                          onpressed: () async {},
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Lihat Data",
-                                          onpressed: () async {},
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        return CustomDropdown(
+                          decoration: CustomDropdownDecoration(
+                              closedBorder:
+                                  Border.all(color: Colors.grey.shade400),
+                              expandedBorder:
+                                  Border.all(color: Colors.grey.shade400)),
+                          hintText: 'Pilih Vendors',
+                          items: pic.map((e) => e['name']).toList(),
+                          onChanged: (item) {
+                            print("Selected Item: $item");
+
+                            final selected = pic.firstWhere(
+                              (e) => e['name'] == item,
+                            );
+
+                            setState(() {
+                              vendorId = int.parse(selected['id'].toString());
+                            });
+
+                            print("Selected ID: $vendorId");
+                          },
                         );
                       },
                     ),
+                  ),
+                ),
+              ),
             ),
+            SizedBox(
+              width: width,
+              height: 150.h,
+              child: ListTile(
+                title: Text(
+                  'Keterangan',
+                  style: subtitleTextBlack,
+                ),
+                subtitle: Container(
+                  margin: EdgeInsets.only(top: height * 0.01),
+                  height: 110.h,
+                  child: TextField(
+                    maxLines: null,
+                    expands: true,
+                    decoration: InputDecoration(
+                      hintText: 'Masukkan keterangan di sini...',
+                      contentPadding: const EdgeInsets.all(10),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    style: subtitleTextBlack,
+                    textAlignVertical: TextAlignVertical.top,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: width,
+              height: 80.h,
+              child: Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap:
+                      _showImageSourceDialog, // Panggil fungsi saat button diklik
+                  child: SizedBox(
+                    width: width,
+                    height: height * 0.1,
+                    child: ListTile(
+                      title: Text(
+                        'Upload Image',
+                        style: subtitleTextBlack,
+                      ),
+                      subtitle: Container(
+                        height: 100.h,
+                        margin: EdgeInsets.only(top: height * 0.01),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: _imageFile != null
+                            ? Image.file(
+                                _imageFile!,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: SvgPicture.asset(
+                                    'assets/images/gambar.svg'),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 30.h),
+            if (providerSales.uploadProgress < 100)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                child: Column(
+                  children: [
+                    Text(
+                      'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    SizedBox(height: 10.h),
+                    LinearProgressIndicator(
+                      value: providerSales.uploadProgress / 100,
+                      minHeight: 10.h,
+                      backgroundColor: Colors.grey[300],
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    ),
+                  ],
+                ),
+              ),
+            SizedBox(height: 10.h),
+            if (providerSales.uploadProgress ==
+                100) // Show replace button after upload is complete
+              WidgetButtonCustom(
+                title: 'Ganti File',
+                onpressed: _showImageSourceDialog,
+                bgColor: Colors.red,
+                color: Colors.white,
+                FullWidth: width,
+                FullHeight: 40.h,
+              ),
           ],
         ),
       ),

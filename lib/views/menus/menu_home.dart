@@ -3,6 +3,7 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
+import 'package:dwigasindo/providers/provider_order.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/menu_assets.dart';
 import 'package:dwigasindo/views/menus/menu_distribusi.dart';
@@ -305,12 +306,44 @@ class MenuHome extends StatelessWidget {
                           icon: Image.asset('assets/images/produksi.png'),
                           isi: "Asset",
                           navigator: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuAssets(),
-                              ),
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
+
+                            try {
+                              await Future.wait([
+                                providerSales.getUsersPic(context),
+                                providerSales.getAllOrder(context, 1),
+                                providerItem.getAllItem(context),
+                                providerSales.getSummaryOrder(context),
+                                providerSales.getMasterProduk(context),
+                                providerSales.getMasterProdukTrash(context),
+                                providerDistribusi.getAllTubeGrade(context),
+                                providerDistribusi.getAllCostumer(context),
+                                providerItem.getAllVendor(context),
+                              ]);
+
+                              // Navigate sesuai kondisi
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuAssets(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           }),
                       WidgetMenu(
                           HB: height,

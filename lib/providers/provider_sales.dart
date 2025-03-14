@@ -139,6 +139,10 @@ class ProviderSales extends ChangeNotifier {
 
   ModelItemSupport? get itemSupport => _itemSupport;
 
+  ModelMasterProduk? _produkTrash;
+
+  ModelMasterProduk? get produkTrash => _produkTrash;
+
   String getRemarksLabel(String remarks) {
     List<String> values =
         remarks.split(',').map((e) => e.trim()).toList(); // Hapus spasi
@@ -149,6 +153,20 @@ class ProviderSales extends ChangeNotifier {
     if (values.contains('3')) labels.add('item');
 
     return labels.join(' , ');
+  }
+
+  Future<void> getMasterProdukTrash(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "products/get-all?is_deleted=true", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelMasterProduk.fromJson(response!.data);
+      _produkTrash = data;
+      notifyListeners();
+    }
   }
 
   Future<void> updateHP(

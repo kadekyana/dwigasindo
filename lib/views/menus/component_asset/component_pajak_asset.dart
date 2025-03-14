@@ -13,14 +13,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-class ComponentAsset extends StatefulWidget {
-  ComponentAsset({super.key});
+class ComponentPajakAsset extends StatefulWidget {
+  ComponentPajakAsset({super.key});
 
   @override
-  _ComponentAssetState createState() => _ComponentAssetState();
+  _ComponentPajakAssetState createState() => _ComponentPajakAssetState();
 }
 
-class _ComponentAssetState extends State<ComponentAsset>
+class _ComponentPajakAssetState extends State<ComponentPajakAsset>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   Set<int> expandedCards = {};
@@ -48,7 +48,7 @@ class _ComponentAssetState extends State<ComponentAsset>
     final provider = Provider.of<ProviderSales>(context);
     return Scaffold(
       appBar: WidgetAppbar(
-        title: 'Asset',
+        title: 'Pajak / Kir',
         colorBG: Colors.grey.shade100,
         colorTitle: Colors.black,
         colorBack: Colors.black,
@@ -68,8 +68,8 @@ class _ComponentAssetState extends State<ComponentAsset>
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
             tabs: const [
-              Tab(text: "List Asset"),
-              Tab(text: "List Arsip"),
+              Tab(text: "List"),
+              Tab(text: "History"),
             ],
           ),
           Expanded(
@@ -77,7 +77,7 @@ class _ComponentAssetState extends State<ComponentAsset>
               controller: _tabController,
               children: [
                 CompponentLisAsset(),
-                CompponetListArsip(),
+                // CompponetListArsip(),
                 // Konten untuk setiap tab
               ],
             ),
@@ -496,20 +496,7 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                         child: WidgetButtonCustom(
                                           FullWidth: width,
                                           FullHeight: 40.h,
-                                          title: "Check In",
-                                          onpressed: () async {},
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Check Out",
+                                          title: "Bayar",
                                           onpressed: () async {},
                                           bgColor: PRIMARY_COLOR,
                                           color: Colors.transparent,
@@ -523,15 +510,7 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                           FullWidth: width,
                                           FullHeight: 40.h,
                                           title: "Lihat Data",
-                                          onpressed: () async {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ComponentDetailAsset(),
-                                              ),
-                                            );
-                                          },
+                                          onpressed: () async {},
                                           bgColor: PRIMARY_COLOR,
                                           color: Colors.transparent,
                                         ),

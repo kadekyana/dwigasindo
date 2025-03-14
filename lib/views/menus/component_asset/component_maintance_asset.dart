@@ -5,6 +5,7 @@ import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_detail.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_detail_maintenance.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -13,14 +14,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-class ComponentAsset extends StatefulWidget {
-  ComponentAsset({super.key});
+class ComponentMaintanceAsset extends StatefulWidget {
+  ComponentMaintanceAsset({super.key});
 
   @override
-  _ComponentAssetState createState() => _ComponentAssetState();
+  _ComponentMaintanceAssetState createState() =>
+      _ComponentMaintanceAssetState();
 }
 
-class _ComponentAssetState extends State<ComponentAsset>
+class _ComponentMaintanceAssetState extends State<ComponentMaintanceAsset>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   Set<int> expandedCards = {};
@@ -48,7 +50,7 @@ class _ComponentAssetState extends State<ComponentAsset>
     final provider = Provider.of<ProviderSales>(context);
     return Scaffold(
       appBar: WidgetAppbar(
-        title: 'Asset',
+        title: 'Maintenance',
         colorBG: Colors.grey.shade100,
         colorTitle: Colors.black,
         colorBack: Colors.black,
@@ -68,8 +70,8 @@ class _ComponentAssetState extends State<ComponentAsset>
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
             tabs: const [
-              Tab(text: "List Asset"),
               Tab(text: "List Arsip"),
+              Tab(text: "List History"),
             ],
           ),
           Expanded(
@@ -77,7 +79,7 @@ class _ComponentAssetState extends State<ComponentAsset>
               controller: _tabController,
               children: [
                 CompponentLisAsset(),
-                CompponetListArsip(),
+                // CompponetListArsip(),
                 // Konten untuk setiap tab
               ],
             ),
@@ -490,53 +492,21 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                 child: Padding(
                                   padding: EdgeInsets.only(
                                       left: 10.w, right: 10.w, bottom: 5.h),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Check In",
-                                          onpressed: () async {},
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
+                                  child: WidgetButtonCustom(
+                                    FullWidth: width,
+                                    FullHeight: 40.h,
+                                    title: "Lihat Data",
+                                    onpressed: () async {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ComponentDetailMaintenance(),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Check Out",
-                                          onpressed: () async {},
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Expanded(
-                                        child: WidgetButtonCustom(
-                                          FullWidth: width,
-                                          FullHeight: 40.h,
-                                          title: "Lihat Data",
-                                          onpressed: () async {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ComponentDetailAsset(),
-                                              ),
-                                            );
-                                          },
-                                          bgColor: PRIMARY_COLOR,
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
-                                    ],
+                                      );
+                                    },
+                                    bgColor: PRIMARY_COLOR,
+                                    color: Colors.transparent,
                                   ),
                                 ),
                               ),
