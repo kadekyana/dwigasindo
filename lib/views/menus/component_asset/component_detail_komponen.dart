@@ -5,12 +5,12 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_form.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +97,12 @@ class _ComponentDetailKomponenState extends State<ComponentDetailKomponen>
                     title: "Check Out",
                     color: PRIMARY_COLOR,
                     bgColor: PRIMARY_COLOR,
+                    onpressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ComponentFormCheckOut()));
+                    },
                   ),
                 ),
                 SizedBox(

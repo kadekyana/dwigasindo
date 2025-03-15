@@ -5,6 +5,7 @@ import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_detail.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_form.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -324,7 +325,7 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data.isGrade == true) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
+                                                        '\t${(data.tubeGradeId != null) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:
@@ -497,7 +498,17 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                           FullWidth: width,
                                           FullHeight: 40.h,
                                           title: "Check In",
-                                          onpressed: () async {},
+                                          onpressed: () async {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComponentFormAsset(
+                                                  title: 'Check In Asset',
+                                                ),
+                                              ),
+                                            );
+                                          },
                                           bgColor: PRIMARY_COLOR,
                                           color: Colors.transparent,
                                         ),
@@ -510,7 +521,17 @@ class _CompponentLisAssetState extends State<CompponentLisAsset> {
                                           FullWidth: width,
                                           FullHeight: 40.h,
                                           title: "Check Out",
-                                          onpressed: () async {},
+                                          onpressed: () async {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComponentFormAsset(
+                                                  title: 'Check Out Asset',
+                                                ),
+                                              ),
+                                            );
+                                          },
                                           bgColor: PRIMARY_COLOR,
                                           color: Colors.transparent,
                                         ),
@@ -636,9 +657,9 @@ class _CompponetListArsipState extends State<CompponetListArsip> {
                       child: Text('Belum Terdapat Produk Trash'),
                     )
                   : ListView.builder(
-                      itemCount: provider.produkTrash!.data!.length,
+                      itemCount: provider.produkTrash?.data?.length,
                       itemBuilder: (context, index) {
-                        final data = provider.produkTrash?.data![index];
+                        final data = provider.produkTrash?.data?[index];
                         return Container(
                           width: double.maxFinite,
                           height: 160.h,
@@ -784,7 +805,7 @@ class _CompponetListArsipState extends State<CompponetListArsip> {
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                        '\t${(data.isGrade == true) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
+                                                        '\t${(data.tubeGradeId != null) ? providerDis.getGrade(data.tubeGradeId!) : "-"}',
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style:

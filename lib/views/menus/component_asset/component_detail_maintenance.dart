@@ -114,7 +114,7 @@ class _ComponentDetailMaintenanceState extends State<ComponentDetailMaintenance>
             unselectedLabelColor: Colors.grey,
             tabs: const [
               Tab(text: "Detail"),
-              Tab(text: "Komponen"),
+              Tab(text: "Maintenance"),
               Tab(text: "History"),
               Tab(text: "File"),
             ],
@@ -870,10 +870,12 @@ class _ComponentListDetailState extends State<ComponentListDetail> {
 }
 
 class ComponentMaintenance extends StatefulWidget {
-  const ComponentMaintenance({
+  ComponentMaintenance({
     super.key,
+    this.title,
   });
 
+  String? title;
   @override
   State<ComponentMaintenance> createState() => _CompponentLisKomponenState();
 }
@@ -883,6 +885,7 @@ class _CompponentLisKomponenState extends State<ComponentMaintenance> {
   bool non = false;
   GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
   TextEditingController search = TextEditingController();
+  TextEditingController nama = TextEditingController();
   int vendorId = 0;
 
   final ImagePicker _picker = ImagePicker();
@@ -942,6 +945,19 @@ class _CompponentLisKomponenState extends State<ComponentMaintenance> {
     final providerSales = Provider.of<ProviderSales>(context);
 
     return Scaffold(
+      appBar: (widget.title == 'Maintenance')
+          ? WidgetAppbar(
+              title: 'Maintenance',
+              colorBG: Colors.grey.shade100,
+              colorTitle: Colors.black,
+              colorBack: Colors.black,
+              back: true,
+              center: true,
+              route: () {
+                Navigator.pop(context);
+              },
+            )
+          : null,
       body: Container(
         width: width,
         height: height,
@@ -951,6 +967,31 @@ class _CompponentLisKomponenState extends State<ComponentMaintenance> {
             SizedBox(
               height: 10.h,
             ),
+            if (widget.title != null)
+              SizedBox(
+                width: width,
+                height: height * 0.1,
+                child: ListTile(
+                  title: Text(
+                    'Asset',
+                    style: subtitleTextBlack,
+                  ),
+                  subtitle: Container(
+                    margin: EdgeInsets.only(top: height * 0.01),
+                    child: WidgetForm(
+                      controller: nama,
+                      alert: 'Otomatis Terisi',
+                      hint: 'Otomatis Terisi',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+              ),
+            if (widget.title != null)
+              SizedBox(
+                height: 10.h,
+              ),
             SizedBox(
               width: width,
               height: 100.h,

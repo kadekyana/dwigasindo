@@ -5,6 +5,8 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_detail_maintenance.dart';
+import 'package:dwigasindo/views/menus/component_asset/component_form.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -131,7 +133,16 @@ class _ComponentDetailAssetState extends State<ComponentDetailAsset>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ComponentMaintenance(
+                                                title: 'Maintenance'),
+                                      ),
+                                    );
+                                  },
                                   icon: FaIcon(
                                       FontAwesomeIcons.screwdriverWrench)),
                               FittedBox(
@@ -975,6 +986,12 @@ class _CompponentLisKomponenState extends State<CompponentLisKomponen> {
                 title: "Check In Komponen",
                 color: PRIMARY_COLOR,
                 bgColor: PRIMARY_COLOR,
+                onpressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ComponentFormCheckIn()));
+                },
               ),
             ),
             SizedBox(
@@ -1309,7 +1326,16 @@ class _CompponentLisKomponenState extends State<CompponentLisKomponen> {
                                           FullWidth: width,
                                           FullHeight: 40.h,
                                           title: "Check Out",
-                                          onpressed: () async {},
+                                          onpressed: () async {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComponentFormCheckOut(
+                                                          title:
+                                                              "Check Out Komponen",
+                                                        )));
+                                          },
                                           bgColor: PRIMARY_COLOR,
                                           color: Colors.transparent,
                                         ),
