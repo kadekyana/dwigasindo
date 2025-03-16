@@ -11,6 +11,7 @@ import 'package:dwigasindo/views/menus/component_distribusi/componentTabung/comp
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class MenuDistribusi extends StatelessWidget {
@@ -39,8 +40,9 @@ class MenuDistribusi extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Column(
             children: [
-              const Expanded(
-                flex: 1,
+              SizedBox(
+                width: width,
+                height: 200.h,
                 child: CardUpDistribusi(),
               ),
               SizedBox(

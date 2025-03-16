@@ -21,8 +21,8 @@ class ProviderBottomBar extends ChangeNotifier {
 
   final List<Widget> pages = [
     MenuHome(),
-    const MenuReport(),
-    const MenuNotifikasi(),
+    // const MenuReport(),
+    // const MenuNotifikasi(),
     const MenuPreferences(),
   ];
 

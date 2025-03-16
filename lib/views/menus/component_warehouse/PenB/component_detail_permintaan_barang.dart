@@ -312,7 +312,7 @@ class _ComponentDetailPermintaanBarangState
                                         alignment: Alignment.centerLeft,
                                         fit: BoxFit.scaleDown,
                                         child: Text(
-                                          'No. PB',
+                                          'Gudang',
                                           style: subtitleTextBlack,
                                         ),
                                       ),
@@ -429,7 +429,7 @@ class _ComponentDetailPermintaanBarangState
                                         child: FittedBox(
                                           alignment: Alignment.centerLeft,
                                           fit: BoxFit.scaleDown,
-                                          child: Text(': -',
+                                          child: Text(': ${data.category}',
                                               style: subtitleTextBlack),
                                         ),
                                       ),

@@ -3,7 +3,6 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
-import 'package:dwigasindo/providers/provider_order.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/menu_assets.dart';
 import 'package:dwigasindo/views/menus/menu_distribusi.dart';
@@ -15,6 +14,7 @@ import 'package:dwigasindo/views/menus/menu_sales.dart';
 import 'package:dwigasindo/views/menus/menu_warehouse.dart';
 import 'package:dwigasindo/widgets/widget_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class MenuHome extends StatelessWidget {
@@ -42,7 +42,7 @@ class MenuHome extends StatelessWidget {
             children: [
               Container(
                 width: double.maxFinite,
-                height: height * 0.15,
+                height: 130.h,
                 padding: EdgeInsets.symmetric(
                     horizontal: width * 0.03, vertical: height * 0.005),
                 child: Column(

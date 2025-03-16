@@ -2,6 +2,7 @@ import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_detail_spb.dart';
 import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_tambah_spb.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -347,7 +348,40 @@ class _ComponentSpbState extends State<ComponentSpb> {
                                 FullWidth: width,
                                 FullHeight: 50.h,
                                 title: "Lihat Barang",
-                                onpressed: () {},
+                                onpressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  );
+
+                                  try {
+                                    await Future.wait([
+                                      provider.getDetailSPB(
+                                          context, dataCard.no!),
+                                    ]);
+
+                                    // Navigate sesuai kondisi
+                                    Navigator.of(context)
+                                        .pop(); // Tutup Dialog Loading
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ComponentDetailSpb(),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    Navigator.of(context)
+                                        .pop(); // Tutup Dialog Loading
+                                    print('Error: $e');
+                                    // Tambahkan pesan error jika perlu
+                                  }
+                                },
                                 bgColor: PRIMARY_COLOR,
                                 color: Colors.transparent),
                           ),

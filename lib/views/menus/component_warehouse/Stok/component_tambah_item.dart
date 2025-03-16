@@ -25,9 +25,9 @@ class ComponentTambahItem extends StatefulWidget {
 }
 
 class _ComponentTambahItemState extends State<ComponentTambahItem> {
+  TextEditingController? controller = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
-  TextEditingController? controller = TextEditingController();
   String? filepath;
 
   Future<void> _pickImage(ImageSource source) async {

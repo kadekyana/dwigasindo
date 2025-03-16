@@ -4,15 +4,10 @@ import 'package:dwigasindo/views/menus/component_asset/component_asset.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_detail_komponen.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_maintance_asset.dart';
 import 'package:dwigasindo/views/menus/component_asset/component_pajak_asset.dart';
-import 'package:dwigasindo/views/menus/component_purchase.dart/DaftarVendor/component_daftar_vendor.dart';
-import 'package:dwigasindo/views/menus/component_purchase.dart/SPB/component_spb.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_distribusi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'component_purchase.dart/Approval/component_approval.dart';
-import 'component_purchase.dart/Purchase/component_purchase_order.dart';
 
 class MenuAssets extends StatelessWidget {
   const MenuAssets({super.key});

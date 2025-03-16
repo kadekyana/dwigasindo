@@ -49,15 +49,15 @@ class MyApp extends StatelessWidget {
         Size designSize;
 
         if (screenWidth <= 360) {
-          designSize = const Size(320, 640); // HP sangat kecil
+          designSize = const Size(320, 460); // HP sangat kecil
         } else if (screenWidth <= 400) {
-          designSize = const Size(360, 772); // HP kecil
+          designSize = const Size(360, 500); // HP kecil
         } else if (screenWidth <= 411) {
-          designSize = const Size(375, 812); // HP menengah
+          designSize = const Size(375, 600); // HP menengah
         } else if (screenWidth <= 430) {
-          designSize = const Size(411, 797); // HP besar
+          designSize = const Size(411, 650); // HP besar -- cukup
         } else if (screenWidth <= 480) {
-          designSize = const Size(430, 932); // HP sangat besar
+          designSize = const Size(430, 700); // HP sangat besar
         } else {
           designSize = const Size(600, 1024); // Tablet
         }

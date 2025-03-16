@@ -1188,7 +1188,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   int? selectItemId;
   List<TextEditingController> hppBaruControllers = [];
   List<TextEditingController> hppBaruControllersB = [];
-  String filepath = '';
+
   int selectPicId = 0;
   int selectPicId1 = 0;
   int selectPicId2 = 0;
@@ -1257,6 +1257,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   }
 
   String? pdfPath;
+  String filepath = '';
 
   // Function to handle the PDF upload
   void _onPdfPicked(String path) async {

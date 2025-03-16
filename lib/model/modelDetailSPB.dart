@@ -35,15 +35,18 @@ class Data {
   String? no;
   DateTime? spbDate;
   int? spbType;
-  dynamic picVerified;
-  dynamic picVerifiedName;
-  dynamic picAcknowledged;
-  dynamic picAcknowledgedName;
-  dynamic picApproved;
-  dynamic picApprovedName;
+  int? picVerified;
+  String? picVerifiedName;
+  int? picAcknowledged;
+  String? picAcknowledgedName;
+  int? picApproved;
+  String? picApprovedName;
   int? createdBy;
   String? createdByName;
   List<SpbDetail>? spbDetail;
+  int? picVerifiedStatus;
+  int? picAcknowledgedStatus;
+  int? picApprovedStatus;
 
   Data({
     this.id,
@@ -60,6 +63,9 @@ class Data {
     this.createdBy,
     this.createdByName,
     this.spbDetail,
+    this.picVerifiedStatus,
+    this.picAcknowledgedStatus,
+    this.picApprovedStatus,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -81,6 +87,9 @@ class Data {
             ? []
             : List<SpbDetail>.from(
                 json["spb_detail"]!.map((x) => SpbDetail.fromJson(x))),
+        picVerifiedStatus: json["pic_verified_status"],
+        picAcknowledgedStatus: json["pic_acknowledged_status"],
+        picApprovedStatus: json["pic_approved_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +109,9 @@ class Data {
         "spb_detail": spbDetail == null
             ? []
             : List<dynamic>.from(spbDetail!.map((x) => x.toJson())),
+        "pic_verified_status": picVerifiedStatus,
+        "pic_acknowledged_status": picAcknowledgedStatus,
+        "pic_approved_status": picApprovedStatus,
       };
 }
 

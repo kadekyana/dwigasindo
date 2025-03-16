@@ -1101,7 +1101,9 @@ class _ComponentLeadsTrashState extends State<ComponentLeadsTrash> {
                                           FullWidth: 100,
                                           FullHeight: 30.h,
                                           title: "Back To Lead",
-                                          onpressed: () {
+                                          onpressed: () async {
+                                            await provider.updateLead(
+                                                context, dataCard.id);
                                             Navigator.pop(context);
                                             Navigator.push(
                                               context,

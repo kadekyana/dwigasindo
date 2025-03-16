@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,12 +45,19 @@ class _ComponentSerahTerimaBarangState
 
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
+  String? filepath;
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
+      });
+      final providerSales = Provider.of<ProviderSales>(context, listen: false);
+      final path = await providerSales.uploadFile(
+          context, _imageFile!, _imageFile!.path.split("/").last);
+      setState(() {
+        filepath = path;
       });
     }
   }
@@ -103,6 +112,7 @@ class _ComponentSerahTerimaBarangState
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderItem>(context);
+    final providerSales = Provider.of<ProviderSales>(context);
 
     final warehouse = provider.warehouse?.data
         .map((data) => {'id': data.id, 'name': data.name})
@@ -334,38 +344,79 @@ class _ComponentSerahTerimaBarangState
                       height: height * 0.01,
                     )
                   : const SizedBox.shrink(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap:
-                      _showImageSourceDialog, // Panggil fungsi saat button diklik
-                  child: SizedBox(
-                    width: width,
-                    height: height * 0.1,
-                    child: ListTile(
-                      title: Text('Foto Bukti', style: subtitleTextBlack),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(12),
+              SizedBox(
+                width: width,
+                height: 80.h,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap:
+                        _showImageSourceDialog, // Panggil fungsi saat button diklik
+                    child: SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Upload Image',
+                          style: subtitleTextBlack,
                         ),
-                        child: ListTile(
-                          leading: _imageFile != null
+                        subtitle: Container(
+                          height: 100.h,
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _imageFile != null
                               ? Image.file(
                                   _imageFile!,
                                   width: 50,
                                   height: 50,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fitHeight,
                                 )
-                              : SvgPicture.asset('assets/images/gambar.svg'),
-                          title: Text('Foto Bukti', style: subtitleTextNormal),
+                              : Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: SvgPicture.asset(
+                                      'assets/images/gambar.svg'),
+                                ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
+              SizedBox(height: 30.h),
+              if (providerSales.uploadProgress < 100)
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(height: 10.h),
+                      LinearProgressIndicator(
+                        value: providerSales.uploadProgress / 100,
+                        minHeight: 10.h,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(height: 10.h),
+              if (providerSales.uploadProgress ==
+                  100) // Show replace button after upload is complete
+                WidgetButtonCustom(
+                  title: 'Ganti File',
+                  onpressed: _showImageSourceDialog,
+                  bgColor: Colors.red,
+                  color: Colors.white,
+                  FullWidth: width,
+                  FullHeight: 40.h,
+                ),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -398,7 +449,7 @@ class _ComponentSerahTerimaBarangState
                                 (tfS == true) ? 1 : 0,
                                 int.parse(qty.text),
                                 catatan.text,
-                                _imageFile!.path,
+                                filepath!,
                                 selectWarehouse);
                           },
                           bgColor: PRIMARY_COLOR,

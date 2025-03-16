@@ -288,34 +288,6 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
                   ),
                 ),
               ),
-            // SizedBox(
-            //   width: width,
-            //   height: 80.h,
-            //   child: ListTile(
-            //     title: Text(
-            //       'Tanggal dan Jam',
-            //       style: subtitleTextBlack,
-            //     ),
-            //     subtitle: Container(
-            //       margin: EdgeInsets.only(top: height * 0.01),
-            //       child: GestureDetector(
-            //         onTap: () => _selectDateTime(context),
-            //         child: AbsorbPointer(
-            //           child: TextField(
-            //             controller: serial,
-            //             keyboardType: TextInputType.datetime,
-            //             decoration: InputDecoration(
-            //                 hintText: 'Pilih Tanggal',
-            //                 border: OutlineInputBorder(
-            //                   borderRadius: BorderRadius.circular(12),
-            //                 ),
-            //                 suffixIcon: const Icon(Icons.calendar_month)),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Align(
               alignment: Alignment.centerLeft,
               child: ListTile(

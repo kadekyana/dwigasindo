@@ -867,7 +867,7 @@ class ProviderSales extends ChangeNotifier {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response = await DioServiceAPI()
-        .putRequest(url: "leads/closing-deal/$id", token: token, data: {});
+        .postRequest(url: "leads/closing-deal/$id", token: token, data: {});
 
     print(response?.data);
     if (response?.data['error'] == null) {
