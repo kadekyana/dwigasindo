@@ -748,38 +748,72 @@ class ProviderItem extends ChangeNotifier {
 
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
-    final response =
-        await DioServiceAPI().postRequest(url: 'po', token: token, data: {
-      "po_date": poDate,
-      "spb_no": spbNo,
-      "spb_type": spbType,
-      "category_id": categoryId,
-      "vendor_id": vendor,
-      "payment_type": paymentType,
-      "payment_deadline": paymentDeadline,
-      "total_price": totalPrice,
-      "total_ppn": totalPpn,
-      "total_payment": totalPayment,
-      "details": details
-    });
-
-    print(response?.data['error']);
-    if (response?.data['error'] == null) {
-      getAllPo(context);
-      Navigator.pop(context);
-      showTopSnackBar(
-        Overlay.of(context),
-        const CustomSnackBar.success(
-          message: 'Berhasil Tambah PO',
-        ),
-      );
+    if (paymentType == 1) {
+      final response =
+          await DioServiceAPI().postRequest(url: 'po', token: token, data: {
+        "po_date": poDate,
+        "spb_no": spbNo,
+        "spb_type": spbType,
+        "category_id": categoryId,
+        "vendor_id": vendor,
+        "payment_type": paymentType,
+        "payment_deadline": paymentDeadline,
+        "total_price": totalPrice,
+        "total_ppn": totalPpn,
+        "total_payment": totalPayment,
+        "details": details
+      });
+      print(response?.data['error']);
+      if (response?.data['error'] == null) {
+        getAllPo(context);
+        Navigator.pop(context);
+        showTopSnackBar(
+          Overlay.of(context),
+          const CustomSnackBar.success(
+            message: 'Berhasil Tambah PO',
+          ),
+        );
+      } else {
+        showTopSnackBar(
+          Overlay.of(context),
+          const CustomSnackBar.error(
+            message: 'Gagal Tambah PO',
+          ),
+        );
+      }
     } else {
-      showTopSnackBar(
-        Overlay.of(context),
-        const CustomSnackBar.error(
-          message: 'Gagal Tambah PO',
-        ),
-      );
+      final response =
+          await DioServiceAPI().postRequest(url: 'po', token: token, data: {
+        "po_date": poDate,
+        "spb_no": spbNo,
+        "spb_type": spbType,
+        "category_id": categoryId,
+        "vendor_id": vendor,
+        "payment_type": paymentType,
+        "payment_deadline": paymentDeadline,
+        "installment_payment_price": totalPrice,
+        "installment_payment_ppn": totalPpn,
+        "installment_payment_total": totalPayment,
+        "details": details
+      });
+      print(response?.data['error']);
+      if (response?.data['error'] == null) {
+        getAllPo(context);
+        Navigator.pop(context);
+        showTopSnackBar(
+          Overlay.of(context),
+          const CustomSnackBar.success(
+            message: 'Berhasil Tambah PO',
+          ),
+        );
+      } else {
+        showTopSnackBar(
+          Overlay.of(context),
+          const CustomSnackBar.error(
+            message: 'Gagal Tambah PO',
+          ),
+        );
+      }
     }
   }
 

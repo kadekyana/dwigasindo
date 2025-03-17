@@ -68,98 +68,93 @@ class MenuHome extends StatelessWidget {
                       child: Container(
                         width: double.maxFinite,
                         padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.05, vertical: height * 0.015),
+                            horizontal: 20.w, vertical: 15.h),
                         decoration: BoxDecoration(
                           color: PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: const DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/notif.png'),
-                                  ),
+                            Container(
+                              width: 90.w,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                image: const DecorationImage(
+                                  image: AssetImage('assets/images/notif.png'),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              width: width * 0.03,
+                              width: 10.w,
                             ),
                             Expanded(
-                                flex: 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: double.maxFinite,
-                                      height: height * 0.02,
-                                      child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            'Notifikasi',
-                                            style: subtitleText,
-                                          )),
+                              flex: 2,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: double.maxFinite,
+                                    height: height * 0.02,
+                                    child: FittedBox(
+                                        alignment: Alignment.centerLeft,
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          'Notifikasi',
+                                          style: subtitleText,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    width: double.maxFinite,
+                                    height: height * 0.03,
+                                    child: FittedBox(
+                                      alignment: Alignment.centerLeft,
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Info Tugas',
+                                        style: titleText,
+                                      ),
                                     ),
-                                    SizedBox(
-                                      width: double.maxFinite,
-                                      height: height * 0.03,
-                                      child: FittedBox(
-                                          alignment: Alignment.centerLeft,
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            'Info Tugas',
-                                            style: titleText,
-                                          )),
-                                    )
-                                  ],
-                                )),
+                                  )
+                                ],
+                              ),
+                            ),
                             Expanded(
-                                flex: 2,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          width: width * 0.2,
-                                          height: height * 0.02,
-                                          child: FittedBox(
-                                              alignment: Alignment.centerLeft,
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                'Lihat Detail',
-                                                style: titleText,
-                                              )),
+                              flex: 2,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    height: 15.h,
+                                    child: FittedBox(
+                                      alignment: Alignment.centerLeft,
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Lihat Detail',
+                                        style: titleText,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  ClipOval(
+                                    child: Container(
+                                      width: 15.w,
+                                      height: 10.h,
+                                      color: Colors.white,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          '5',
+                                          style: subtitleTextBlack,
                                         ),
-                                        ClipOval(
-                                          child: Container(
-                                            width: width * 0.05,
-                                            height: height * 0.025,
-                                            color: Colors.white,
-                                            child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  '5',
-                                                  style: subtitleTextBlack,
-                                                )),
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      width: double.maxFinite,
-                                      height: 25,
-                                    ),
-                                  ],
-                                )),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),

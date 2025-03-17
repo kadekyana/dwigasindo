@@ -382,53 +382,6 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    // Container(
-                    //   width: width,
-                    //   height: 80.h,
-                    //   child: ListTile(
-                    //     title: Text(
-                    //       'Item Barang',
-                    //       style: subtitleTextBlack,
-                    //     ),
-                    //     subtitle: Consumer<ProviderItem>(
-                    //       builder: (context, provider, child) {
-                    //         final pic = provider.allItem!.data!
-                    //             .map((data) => {
-                    //                   'id': data.id,
-                    //                   'name': data.name,
-                    //                   'price': data.price,
-                    //                 })
-                    //             .toList();
-
-                    //         return CustomDropdown(
-                    //           decoration: CustomDropdownDecoration(
-                    //               closedBorder:
-                    //                   Border.all(color: Colors.grey.shade400),
-                    //               expandedBorder:
-                    //                   Border.all(color: Colors.grey.shade400)),
-                    //           hintText: 'Pilih Item',
-                    //           items: pic.map((e) => e['name']).toList(),
-                    //           onChanged: (item) {
-                    //             print("Selected Item: $item");
-
-                    //             final selected = pic.firstWhere(
-                    //               (e) => e['name'] == item,
-                    //             );
-
-                    //             setState(() {
-                    //               formList[index]['item_id'] =
-                    //                   int.parse(selected['id'].toString());
-                    //               formList[index]['item_price'] =
-                    //                   selected['price'];
-                    //             });
-
-                    //             print("Selected ID: $selectPicId2");
-                    //           },
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
                     // Di dalam ListView.builder pada form item:
                     SizedBox(
                       width: width,
@@ -816,9 +769,15 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                                         double percentage =
                                             double.tryParse(value) ?? 0;
 
+                                        double valueForm = double.tryParse(
+                                                formListB[index]['bertahap']
+                                                    .toString()) ??
+                                            0;
+
                                         // Hitung total tahap ini
                                         formListB[index]['total'] =
                                             previousTotal +
+                                                valueForm +
                                                 (previousTotal *
                                                     percentage /
                                                     100);
@@ -841,14 +800,41 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                         height: 80.h,
                         child: ListTile(
                           title: Text(
-                            'Total',
+                            'Harga Total Item',
                             style: subtitleTextBlack,
                           ),
                           subtitle: Container(
                             margin: EdgeInsets.only(top: height * 0.01),
                             child: WidgetForm(
-                              alert: 'Total',
-                              hint: 'Total',
+                              controller: TextEditingController(
+                                  text:
+                                      providerSales.formatCurrency(totalPrice)),
+                              alert: 'Harga Total Item',
+                              hint: 'Harga Total Item',
+                              enable: false,
+                              typeInput: TextInputType.number,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      SizedBox(
+                        width: width,
+                        height: 80.h,
+                        child: ListTile(
+                          title: Text(
+                            'Total Bayar Tahap ${index + 1}',
+                            style: subtitleTextBlack,
+                          ),
+                          subtitle: Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            child: WidgetForm(
+                              alert: 'Total Bayar Tahap ${index + 1}',
+                              hint: 'Total Bayar Tahap ${index + 1}',
                               change: (value) {
                                 setState(() {
                                   formListB[index]['total'] = value;
@@ -1082,20 +1068,35 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
 
                 final spbValue = spb?.value?.toString() ?? "";
                 double ppnValue = double.tryParse(ppn.text) ?? 0;
-
-                provider.createPO(
-                    context,
-                    tanggal.text,
-                    spbValue,
-                    jenisSpb.selectedIndex!,
-                    kategoriId!,
-                    vendorId!,
-                    syarat.selectedIndex!,
-                    deadline.text,
-                    totalPrice,
-                    ppnValue,
-                    grandTotal,
-                    formList);
+                if (syarat.selectedIndex == 0) {
+                  provider.createPO(
+                      context,
+                      tanggal.text,
+                      spbValue,
+                      jenisSpb.selectedIndex!,
+                      kategoriId!,
+                      vendorId!,
+                      syarat.selectedIndex!,
+                      deadline.text,
+                      totalPrice,
+                      ppnValue,
+                      grandTotal,
+                      formList);
+                } else {
+                  provider.createPO(
+                      context,
+                      tanggal.text,
+                      spbValue,
+                      jenisSpb.selectedIndex!,
+                      kategoriId!,
+                      vendorId!,
+                      syarat.selectedIndex!,
+                      deadline.text,
+                      totalPrice,
+                      ppnValue,
+                      grandTotal,
+                      formList);
+                }
               },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),
