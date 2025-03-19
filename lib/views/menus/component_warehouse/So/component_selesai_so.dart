@@ -378,8 +378,9 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
         colorBack: Colors.black,
         colorBG: Colors.grey.shade100,
         back: true,
-        route: () {
+        route: () async {
           Navigator.pop(context);
+          await provider.getLihatSO(context, widget.id);
         },
       ),
       body: (data?.length == 0)

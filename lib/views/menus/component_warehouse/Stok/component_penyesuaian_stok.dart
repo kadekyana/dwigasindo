@@ -174,7 +174,7 @@ class _ComponentPenyesuaianStokState extends State<ComponentPenyesuaianStok> {
               SizedBox(height: height * 0.02),
               SizedBox(
                 width: width,
-                height: 200.h,
+                height: 230.h,
                 child: ListTile(
                   title: Text(
                     'PIC Approval',

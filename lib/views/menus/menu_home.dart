@@ -43,14 +43,13 @@ class MenuHome extends StatelessWidget {
               Container(
                 width: double.maxFinite,
                 height: 130.h,
-                padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.03, vertical: height * 0.005),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
                 child: Column(
                   children: [
                     // name user login
                     SizedBox(
                       width: double.maxFinite,
-                      height: 30,
+                      height: 30.h,
                       child: FittedBox(
                         alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
@@ -61,14 +60,14 @@ class MenuHome extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.01,
+                      height: 10.h,
                     ),
                     // card notifications
                     Expanded(
                       child: Container(
                         width: double.maxFinite,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 15.h),
+                            horizontal: 15.w, vertical: 10.h),
                         decoration: BoxDecoration(
                           color: PRIMARY_COLOR,
                           borderRadius: BorderRadius.circular(12),
@@ -95,7 +94,7 @@ class MenuHome extends StatelessWidget {
                                 children: [
                                   SizedBox(
                                     width: double.maxFinite,
-                                    height: height * 0.02,
+                                    height: 20.h,
                                     child: FittedBox(
                                         alignment: Alignment.centerLeft,
                                         fit: BoxFit.scaleDown,
@@ -106,7 +105,7 @@ class MenuHome extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     width: double.maxFinite,
-                                    height: height * 0.03,
+                                    height: 25.h,
                                     child: FittedBox(
                                       alignment: Alignment.centerLeft,
                                       fit: BoxFit.scaleDown,
@@ -140,8 +139,8 @@ class MenuHome extends StatelessWidget {
                                   ),
                                   ClipOval(
                                     child: Container(
-                                      width: 15.w,
-                                      height: 10.h,
+                                      width: 20.w,
+                                      height: 20.h,
                                       color: Colors.white,
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
@@ -316,12 +315,15 @@ class MenuHome extends StatelessWidget {
                                 providerSales.getUsersPic(context),
                                 providerSales.getAllOrder(context, 1),
                                 providerItem.getAllItem(context),
+                                providerItem.getAllLocation(context),
                                 providerSales.getSummaryOrder(context),
                                 providerSales.getMasterProduk(context),
                                 providerSales.getMasterProdukTrash(context),
                                 providerDistribusi.getAllTubeGrade(context),
                                 providerDistribusi.getAllCostumer(context),
                                 providerItem.getAllVendor(context),
+                                providerSales.getDocumentationCMD(
+                                    context, 2 ?? 0),
                               ]);
 
                               // Navigate sesuai kondisi

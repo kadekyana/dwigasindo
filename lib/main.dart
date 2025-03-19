@@ -48,18 +48,12 @@ class MyApp extends StatelessWidget {
         // Menyesuaikan ukuran desain berdasarkan kategori layar
         Size designSize;
 
-        if (screenWidth <= 360) {
-          designSize = const Size(320, 460); // HP sangat kecil
-        } else if (screenWidth <= 400) {
-          designSize = const Size(360, 500); // HP kecil
-        } else if (screenWidth <= 411) {
-          designSize = const Size(375, 600); // HP menengah
-        } else if (screenWidth <= 430) {
-          designSize = const Size(411, 650); // HP besar -- cukup
-        } else if (screenWidth <= 480) {
-          designSize = const Size(430, 700); // HP sangat besar
+        if (screenHeight >= 400 && screenHeight <= 600) {
+          designSize = const Size(360, 560); // HP sangat kecil
+        } else if (screenHeight >= 600 && screenHeight <= 800) {
+          designSize = const Size(420, 760); // HP besar -- cukup
         } else {
-          designSize = const Size(600, 1024); // Tablet
+          designSize = const Size(460, 960); // HP sangat besar
         }
 
         // Cetak ukuran desain yang digunakan

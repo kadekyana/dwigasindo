@@ -37,16 +37,16 @@ class MenuDistribusi extends StatelessWidget {
         child: Container(
           width: double.maxFinite,
           height: double.maxFinite,
-          margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             children: [
               SizedBox(
                 width: width,
-                height: 200.h,
+                height: 250.h,
                 child: CardUpDistribusi(),
               ),
               SizedBox(
-                height: height * 0.01,
+                height: 10.h,
               ),
               Expanded(
                 flex: 2,
@@ -193,7 +193,7 @@ class CardUpDistribusi extends StatelessWidget {
         children: [
           SizedBox(
             width: double.maxFinite,
-            height: 26,
+            height: 26.h,
             child: FittedBox(
               alignment: Alignment.centerLeft,
               fit: BoxFit.scaleDown,

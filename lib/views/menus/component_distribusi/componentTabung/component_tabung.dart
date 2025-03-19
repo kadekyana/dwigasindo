@@ -118,9 +118,9 @@ class _ComponentTabungState extends State<ComponentTabung> {
                 height: 10.h,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.maxFinite,
-                height: height * 0.05,
+                height: 45.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -531,7 +531,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${item?.customerName ?? "-"}',
+                                                              ': ${(item?.ownerShipType == 1) ? item?.vendorName : item?.customerName}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),

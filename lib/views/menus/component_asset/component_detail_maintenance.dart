@@ -958,184 +958,187 @@ class _CompponentLisKomponenState extends State<ComponentMaintenance> {
               },
             )
           : null,
-      body: Container(
-        width: width,
-        height: height,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            if (widget.title != null)
-              SizedBox(
-                width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Asset',
-                    style: subtitleTextBlack,
-                  ),
-                  subtitle: Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    child: WidgetForm(
-                      controller: nama,
-                      alert: 'Otomatis Terisi',
-                      hint: 'Otomatis Terisi',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-              ),
-            if (widget.title != null)
+      body: SingleChildScrollView(
+        child: Container(
+          width: width,
+          height: height * 0.7,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
               SizedBox(
                 height: 10.h,
               ),
-            SizedBox(
-              width: width,
-              height: 100.h,
-              child: Center(
+              if (widget.title != null)
+                SizedBox(
+                  width: width,
+                  height: height * 0.1,
+                  child: ListTile(
+                    title: Text(
+                      'Asset',
+                      style: subtitleTextBlack,
+                    ),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: height * 0.01),
+                      child: WidgetForm(
+                        controller: nama,
+                        alert: 'Otomatis Terisi',
+                        hint: 'Otomatis Terisi',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ),
+              if (widget.title != null)
+                SizedBox(
+                  height: 10.h,
+                ),
+              SizedBox(
+                width: width,
+                height: 100.h,
+                child: Center(
+                  child: ListTile(
+                    title: Text(
+                      'Vendors',
+                      style: subtitleTextBlack,
+                    ),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: height * 0.01),
+                      child: Consumer<ProviderItem>(
+                        builder: (context, provider, child) {
+                          final pic = provider.supplier!.data
+                              .map((data) => {'id': data.id, 'name': data.name})
+                              .toList();
+
+                          return CustomDropdown(
+                            decoration: CustomDropdownDecoration(
+                                closedBorder:
+                                    Border.all(color: Colors.grey.shade400),
+                                expandedBorder:
+                                    Border.all(color: Colors.grey.shade400)),
+                            hintText: 'Pilih Vendors',
+                            items: pic.map((e) => e['name']).toList(),
+                            onChanged: (item) {
+                              print("Selected Item: $item");
+
+                              final selected = pic.firstWhere(
+                                (e) => e['name'] == item,
+                              );
+
+                              setState(() {
+                                vendorId = int.parse(selected['id'].toString());
+                              });
+
+                              print("Selected ID: $vendorId");
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: width,
+                height: 150.h,
                 child: ListTile(
                   title: Text(
-                    'Vendors',
+                    'Keterangan',
                     style: subtitleTextBlack,
                   ),
                   subtitle: Container(
                     margin: EdgeInsets.only(top: height * 0.01),
-                    child: Consumer<ProviderItem>(
-                      builder: (context, provider, child) {
-                        final pic = provider.supplier!.data
-                            .map((data) => {'id': data.id, 'name': data.name})
-                            .toList();
-
-                        return CustomDropdown(
-                          decoration: CustomDropdownDecoration(
-                              closedBorder:
-                                  Border.all(color: Colors.grey.shade400),
-                              expandedBorder:
-                                  Border.all(color: Colors.grey.shade400)),
-                          hintText: 'Pilih Vendors',
-                          items: pic.map((e) => e['name']).toList(),
-                          onChanged: (item) {
-                            print("Selected Item: $item");
-
-                            final selected = pic.firstWhere(
-                              (e) => e['name'] == item,
-                            );
-
-                            setState(() {
-                              vendorId = int.parse(selected['id'].toString());
-                            });
-
-                            print("Selected ID: $vendorId");
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: width,
-              height: 150.h,
-              child: ListTile(
-                title: Text(
-                  'Keterangan',
-                  style: subtitleTextBlack,
-                ),
-                subtitle: Container(
-                  margin: EdgeInsets.only(top: height * 0.01),
-                  height: 110.h,
-                  child: TextField(
-                    maxLines: null,
-                    expands: true,
-                    decoration: InputDecoration(
-                      hintText: 'Masukkan keterangan di sini...',
-                      contentPadding: const EdgeInsets.all(10),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                    style: subtitleTextBlack,
-                    textAlignVertical: TextAlignVertical.top,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: width,
-              height: 80.h,
-              child: Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap:
-                      _showImageSourceDialog, // Panggil fungsi saat button diklik
-                  child: SizedBox(
-                    width: width,
-                    height: height * 0.1,
-                    child: ListTile(
-                      title: Text(
-                        'Upload Image',
-                        style: subtitleTextBlack,
+                    height: 110.h,
+                    child: TextField(
+                      maxLines: null,
+                      expands: true,
+                      decoration: InputDecoration(
+                        hintText: 'Masukkan keterangan di sini...',
+                        contentPadding: const EdgeInsets.all(10),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
-                      subtitle: Container(
-                        height: 100.h,
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(12),
+                      style: subtitleTextBlack,
+                      textAlignVertical: TextAlignVertical.top,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: width,
+                height: 80.h,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap:
+                        _showImageSourceDialog, // Panggil fungsi saat button diklik
+                    child: SizedBox(
+                      width: width,
+                      height: height * 0.1,
+                      child: ListTile(
+                        title: Text(
+                          'Upload Image',
+                          style: subtitleTextBlack,
                         ),
-                        child: _imageFile != null
-                            ? Image.file(
-                                _imageFile!,
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.fitHeight,
-                              )
-                            : Padding(
-                                padding: EdgeInsets.all(10.h),
-                                child: SvgPicture.asset(
-                                    'assets/images/gambar.svg'),
-                              ),
+                        subtitle: Container(
+                          height: 100.h,
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _imageFile != null
+                              ? Image.file(
+                                  _imageFile!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fitHeight,
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: SvgPicture.asset(
+                                      'assets/images/gambar.svg'),
+                                ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 30.h),
-            if (providerSales.uploadProgress < 100)
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-                child: Column(
-                  children: [
-                    Text(
-                      'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    SizedBox(height: 10.h),
-                    LinearProgressIndicator(
-                      value: providerSales.uploadProgress / 100,
-                      minHeight: 10.h,
-                      backgroundColor: Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    ),
-                  ],
+              SizedBox(height: 30.h),
+              if (providerSales.uploadProgress < 100)
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Upload Progress: ${providerSales.uploadProgress.toStringAsFixed(2)}%',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(height: 10.h),
+                      LinearProgressIndicator(
+                        value: providerSales.uploadProgress / 100,
+                        minHeight: 10.h,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            SizedBox(height: 10.h),
-            if (providerSales.uploadProgress ==
-                100) // Show replace button after upload is complete
-              WidgetButtonCustom(
-                title: 'Ganti File',
-                onpressed: _showImageSourceDialog,
-                bgColor: Colors.red,
-                color: Colors.white,
-                FullWidth: width,
-                FullHeight: 40.h,
-              ),
-          ],
+              SizedBox(height: 10.h),
+              if (providerSales.uploadProgress ==
+                  100) // Show replace button after upload is complete
+                WidgetButtonCustom(
+                  title: 'Ganti File',
+                  onpressed: _showImageSourceDialog,
+                  bgColor: Colors.red,
+                  color: Colors.white,
+                  FullWidth: width,
+                  FullHeight: 40.h,
+                ),
+            ],
+          ),
         ),
       ),
     );

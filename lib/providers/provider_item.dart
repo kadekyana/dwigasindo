@@ -607,6 +607,62 @@ class ProviderItem extends ChangeNotifier {
     }
   }
 
+  Future<void> createPermintaanBarang(
+    BuildContext context,
+    int divisiId,
+    int pic1,
+    int pic2,
+    int pic3,
+    List<Map<String, dynamic>> data,
+  ) async {
+    print({
+      "divisi": divisiId,
+      "pic1": pic1,
+      "pic2": pic2,
+      "pic3": pic3,
+      "details": data
+    });
+    data = data
+        .map((item) => {
+              "item_id":
+                  int.parse(item["item_id"].toString()), // Pastikan integer
+              "qty": int.parse(item["qty"].toString()), // Pastikan integer
+              "note": item["note"].toString().trim() // Pastikan string bersih
+            })
+        .toList();
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI()
+        .postRequest(url: 'item_requests', token: token, data: {
+      "division_id": divisiId,
+      "pic_verified_by": pic1,
+      "pic_acknowledged_by": pic2,
+      "pic_approved_by": pic3,
+      "details": data
+    });
+
+    print(response?.data['error']);
+    if (response?.data['error'] == null) {
+      getPenerimaanBarang(context);
+      Navigator.pop(context);
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Permintaan Barang',
+        ),
+      );
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Tambah Item',
+        ),
+      );
+    }
+  }
+
   Future<void> updateSerahTerima(
       BuildContext context,
       String uuid,
@@ -718,6 +774,7 @@ class ProviderItem extends ChangeNotifier {
       double totalPrice,
       double totalPpn,
       double totalPayment,
+      List<Map<String, dynamic>>? payment,
       List<Map<String, dynamic>> details) async {
     details = details
         .map((item) => {
@@ -732,6 +789,19 @@ class ProviderItem extends ChangeNotifier {
             })
         .toList();
 
+    if (payment != null) {
+      payment = payment
+          .map((item) => {
+                "installment_payment_price": double.parse(
+                    item["bertahap"].toString()), // Pastikan integer
+                "installment_payment_ppn":
+                    int.parse(item["%"].toString()), // Pastikan integer
+                "installment_payment_total":
+                    double.parse(item["total"].toString()),
+              })
+          .toList();
+    }
+
     print({
       "po_date": poDate,
       "spb_no": spbNo,
@@ -743,6 +813,7 @@ class ProviderItem extends ChangeNotifier {
       "total_price": totalPrice,
       "total_ppn": totalPpn,
       "total_payment": totalPayment,
+      "installment_payments": payment,
       "details": details
     });
 
@@ -791,9 +862,7 @@ class ProviderItem extends ChangeNotifier {
         "vendor_id": vendor,
         "payment_type": paymentType,
         "payment_deadline": paymentDeadline,
-        "installment_payment_price": totalPrice,
-        "installment_payment_ppn": totalPpn,
-        "installment_payment_total": totalPayment,
+        "installment_payments": payment,
         "details": details
       });
       print(response?.data['error']);
@@ -920,14 +989,8 @@ class ProviderItem extends ChangeNotifier {
     if (response?.data['error'] == null) {
       await getAllSO(context);
       await getLihatSO(context, stockId);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DetailLihatSO(
-            id: stockId,
-          ),
-        ),
-      );
+      Navigator.pop(context);
+      Navigator.pop(context);
     } else {
       print('error update');
     }

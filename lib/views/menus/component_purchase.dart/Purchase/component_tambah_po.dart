@@ -1068,6 +1068,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
 
                 final spbValue = spb?.value?.toString() ?? "";
                 double ppnValue = double.tryParse(ppn.text) ?? 0;
+                print(formListB);
                 if (syarat.selectedIndex == 0) {
                   provider.createPO(
                       context,
@@ -1081,6 +1082,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                       totalPrice,
                       ppnValue,
                       grandTotal,
+                      formListB,
                       formList);
                 } else {
                   provider.createPO(
@@ -1095,6 +1097,7 @@ class _ComponentTambahPoState extends State<ComponentTambahPo> {
                       totalPrice,
                       ppnValue,
                       grandTotal,
+                      formListB,
                       formList);
                 }
               },

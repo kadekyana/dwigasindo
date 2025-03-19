@@ -41,12 +41,13 @@ class _ComponentStokOpnameState extends State<ComponentStokOpname> {
         colorBG: Colors.grey.shade100,
         back: true,
         route: () {
-          final provider = Provider.of<ProviderItem>(context, listen: false);
-          setState(() {
-            provider.cekLoad = 0;
-          });
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MenuWarehouse()));
+          // final provider = Provider.of<ProviderItem>(context, listen: false);
+          // setState(() {
+          //   provider.cekLoad = 0;
+          // });
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (context) => MenuWarehouse()));
+          Navigator.pop(context);
         },
         actions: [
           IconButton(
@@ -336,8 +337,7 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
         colorBG: Colors.grey.shade100,
         back: true,
         route: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ComponentStokOpname()));
+          Navigator.pop(context);
         },
       ),
       body: Container(

@@ -392,6 +392,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
   Future<void> createCradle(
       BuildContext context,
+      Printer printer,
       int owner,
       bool isHasTube,
       int typeId,
@@ -416,6 +417,12 @@ class ProviderDistribusi extends ChangeNotifier {
 
     print(response?.data);
     if (response?.data['error'] == null) {
+      if (response?.data['data']['owner_ship_type'] == 1) {
+        await printZPLCradle(printer, response?.data['data']['tube_gas_name'],
+            response?.data['data']['code']);
+      } else {
+        await printZPLCustomer(printer, response?.data['data']['code']);
+      }
       getAllCradle(context);
       notifyListeners();
     }
@@ -1025,8 +1032,11 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response?.data != null) {
       if (response?.data['data']['owner_ship_type'] == 1) {
-        await printZPL(printer, response?.data['data']['tube_gas_name'],
-            response?.data['data']['code']);
+        await printZPL(
+          printer,
+          response?.data['data']['tube_gas_name'],
+          response?.data['data']['no'],
+        );
       } else {
         await printZPLCustomer(printer, response?.data['data']['code']);
       }
@@ -1056,6 +1066,55 @@ class ProviderDistribusi extends ChangeNotifier {
     String zplData = '''
 ^XA
 ^CF0,25^FO340,68^FD$name^FS
+^CFB,15^FO340,93^FDIndustrial Grade 2^FS
+^AN,15^FO340,107^FDNo telp^FS
+^AN,15^FO400,107^FD:^FS
+^AN,15^FO410,107^FD021 - 89117509^FS
+^AN,15^FO340,123^FDNo wa^FS
+^AN,15^FO400,123^FD:^FS
+^AN,15^FO410,123^FD0812 8000 0429^FS
+^AN,15^FO340,137^FDEmail^FS
+^AN,15^FO400,137^FD:^FS
+^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
+^FO225,5
+^BQN,2,5
+^FD5xx$serialNumber^FS
+^CF0,18
+^FB130,1,0,C
+^FO215,123
+^FD$serialNumber^FS
+^CF0N,10
+^FB130,1,0,C
+^FO213,143
+^FDPT. Dwigasindo Abadi^FS
+^FO340,15
+^BY2
+^BCN,50,N,N,N,A^FD$serialNumber^FS
+^XZ
+  ''';
+
+    try {
+      log("Mengirim data ZPL ke printer: ${printer.name}");
+      await flutterThermalPrinterPlugin.printData(
+        printer,
+        zplData.codeUnits,
+      );
+      log("Cetak ZPL berhasil.");
+    } catch (e) {
+      log("Error saat mencetak ZPL: $e");
+    }
+  }
+
+// Fungsi untuk mencetak label menggunakan ZPL
+  Future<void> printZPLCradle(
+      Printer printer, String name, String serialNumber) async {
+    final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+    String zplData = '''
+^XA
+^CF0,25^FO340,68^FD$serialNumber^FS
+^CF0,25^FO485,68^FD|^FS
+^CF0,25^FO500,68^FD$name^FS
 ^CFB,15^FO340,93^FDIndustrial Grade 2^FS
 ^AN,15^FO340,107^FDNo telp^FS
 ^AN,15^FO400,107^FD:^FS

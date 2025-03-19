@@ -7,7 +7,6 @@ import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_printer.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
-import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
@@ -712,6 +711,31 @@ class ComponentTambahCradle extends StatefulWidget {
 
 class _ComponentTambahCradleState extends State<ComponentTambahCradle> {
   final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+  List<Printer> printers = [];
+  Printer? dataP;
+  StreamSubscription<List<Printer>>? _devicesStreamSubscription;
+
+  void startScan() async {
+    log("Starting printer scan...");
+    _devicesStreamSubscription?.cancel();
+    await _flutterThermalPrinterPlugin.getPrinters(connectionTypes: [
+      ConnectionType.BLE,
+      ConnectionType.USB,
+    ]);
+    _devicesStreamSubscription = _flutterThermalPrinterPlugin.devicesStream
+        .listen((List<Printer> event) {
+      log("Printers found: ${event.map((e) => e.name).toList()}");
+      setState(() {
+        printers =
+            event.where((e) => e.name != null && e.name!.isNotEmpty).toList();
+      });
+    });
+  }
+
+  stopScan() {
+    log("Stopping printer scan...");
+    _flutterThermalPrinterPlugin.stopScan();
+  }
 
   Timer? _timer;
   TextEditingController tahun = TextEditingController();
@@ -754,7 +778,9 @@ class _ComponentTambahCradleState extends State<ComponentTambahCradle> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startScan();
+    });
     final provider = Provider.of<ProviderDistribusi>(context, listen: false);
 
     // Ambil data dan cek apakah tidak null
@@ -1110,63 +1136,166 @@ class _ComponentTambahCradleState extends State<ComponentTambahCradle> {
                     SizedBox(
                       height: height * 0.05,
                     ),
+                    ElevatedButton(
+                      onPressed: startScan,
+                      child: const Text('Scan Printers'),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: 200.h,
+                      child: ListView.builder(
+                        itemCount: printers.length,
+                        itemBuilder: (context, index) {
+                          final printer = printers[index];
+                          return ListTile(
+                            title: Text(printer.name ?? 'No Name'),
+                            subtitle: Text(
+                                "Connected: ${printer.isConnected ?? false}"),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.print),
+                              onPressed: () async {
+                                if (printer.isConnected ?? false) {
+                                  if (owner == 2) {
+                                    print("A : $selectSupllier");
+                                    print("B : $selectCustomer");
+                                  } else {
+                                    print("A : $selectSupllier");
+                                    print("B : $selectCustomer");
+                                  }
+
+                                  // Atur nilai null sesuai kondisi
+                                  if (nonGrade == false) {
+                                    setState(() {
+                                      selectedGradeIndex = null;
+                                    });
+                                  } else if (isSingle == true) {
+                                    setState(() {
+                                      nonSingletubeType = null;
+                                    });
+                                  }
+
+                                  int intTahun = int.parse(tahun.text);
+                                  int intGas = int.parse(selectTubeGas);
+
+                                  // Proses pembuatan tabung dan print
+                                  if (owner == 1) {
+                                    await provider.createCradle(
+                                      context,
+                                      printer,
+                                      owner!,
+                                      isSingle,
+                                      nonSingletubeType!,
+                                      nonGrade,
+                                      null,
+                                      selectSupllier,
+                                      lokasi.text,
+                                      int.parse(selectTubeGas),
+                                    );
+                                    provider.getAllCradle(context);
+                                    Navigator.pop(context);
+                                    provider.countTube();
+                                  } else {
+                                    await provider.createCradle(
+                                      context,
+                                      printer,
+                                      owner!,
+                                      isSingle,
+                                      nonSingletubeType!,
+                                      nonGrade,
+                                      selectCustomer,
+                                      null,
+                                      lokasi.text,
+                                      int.parse(selectTubeGas),
+                                    );
+                                    await provider.getAllCradle(context);
+                                    Navigator.pop(context);
+                                    await provider.countTube();
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "Printer ${printer.name ?? 'Unknown'} is not connected."),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                            onTap: () async {
+                              if (printer.isConnected ?? false) {
+                                await _flutterThermalPrinterPlugin
+                                    .disconnect(printer);
+                                setState(() {});
+                              } else {
+                                bool connected =
+                                    await _flutterThermalPrinterPlugin
+                                        .connect(printer);
+                                if (connected) {
+                                  setState(() {});
+                                }
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-      bottomNavigationBar: Container(
-        width: width,
-        height: 50.h,
-        margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-        child: WidgetButtonCustom(
-          FullWidth: width,
-          FullHeight: 30.h,
-          title: "Tambah Cradle",
-          color: PRIMARY_COLOR,
-          onpressed: () async {
-            print(owner);
-            print(isSingle);
-            print(nonSingletubeType);
-            print(nonGrade);
-            print(selectCustomer);
-            print("Cek $selectSupllier");
-            print(selectTubeGas);
-            if (owner == 1) {
-              await provider.createCradle(
-                context,
-                owner!,
-                isSingle,
-                nonSingletubeType!,
-                nonGrade,
-                null,
-                selectSupllier,
-                lokasi.text,
-                int.parse(selectTubeGas),
-              );
-            } else {
-              await provider.createCradle(
-                context,
-                owner!,
-                isSingle,
-                nonSingletubeType!,
-                nonGrade,
-                selectCustomer,
-                null,
-                lokasi.text,
-                int.parse(selectTubeGas),
-              );
-            }
-            Navigator.pop(context);
-            await provider.countTube();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Berhasil Tambah Data"),
-              ),
-            );
-          },
-          bgColor: PRIMARY_COLOR,
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   width: width,
+      //   height: 50.h,
+      //   margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+      //   child: WidgetButtonCustom(
+      //     FullWidth: width,
+      //     FullHeight: 30.h,
+      //     title: "Tambah Cradle",
+      //     color: PRIMARY_COLOR,
+      //     onpressed: () async {
+      //       print(owner);
+      //       print(isSingle);
+      //       print(nonSingletubeType);
+      //       print(nonGrade);
+      //       print(selectCustomer);
+      //       print("Cek $selectSupllier");
+      //       print(selectTubeGas);
+      //       if (owner == 1) {
+      //         await provider.createCradle(
+      //           context,
+      //           owner!,
+      //           isSingle,
+      //           nonSingletubeType!,
+      //           nonGrade,
+      //           null,
+      //           selectSupllier,
+      //           lokasi.text,
+      //           int.parse(selectTubeGas),
+      //         );
+      //       } else {
+      //         await provider.createCradle(
+      //           context,
+      //           owner!,
+      //           isSingle,
+      //           nonSingletubeType!,
+      //           nonGrade,
+      //           selectCustomer,
+      //           null,
+      //           lokasi.text,
+      //           int.parse(selectTubeGas),
+      //         );
+      //       }
+      //       Navigator.pop(context);
+      //       await provider.countTube();
+      //       ScaffoldMessenger.of(context).showSnackBar(
+      //         SnackBar(
+      //           content: Text("Berhasil Tambah Data"),
+      //         ),
+      //       );
+      //     },
+      //     bgColor: PRIMARY_COLOR,
+      //   ),
+      // ),
     );
   }
 }
