@@ -399,7 +399,7 @@ class _ComponentListDetailState extends State<ComponentListDetail> {
             Expanded(
               child: (provider.produk!.data!.isEmpty)
                   ? const Center(
-                      child: Text('Belum Terdapat Produk Trash'),
+                      child: Text('Belum Terdapat Detail Item'),
                     )
                   : Container(
                       width: double.maxFinite,

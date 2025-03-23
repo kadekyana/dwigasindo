@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final modelDetailBpti = modelDetailBptiFromJson(jsonString);
+//     final modelDetailItem = modelDetailItemFromJson(jsonString);
 
 import 'dart:convert';
 
-ModelDetailBpti modelDetailBptiFromJson(String str) =>
-    ModelDetailBpti.fromJson(json.decode(str));
+ModelDetailItem modelDetailItemFromJson(String str) =>
+    ModelDetailItem.fromJson(json.decode(str));
 
-String modelDetailBptiToJson(ModelDetailBpti data) =>
+String modelDetailItemToJson(ModelDetailItem data) =>
     json.encode(data.toJson());
 
-class ModelDetailBpti {
+class ModelDetailItem {
   Data? data;
   dynamic error;
 
-  ModelDetailBpti({
+  ModelDetailItem({
     this.data,
     this.error,
   });
 
-  factory ModelDetailBpti.fromJson(Map<String, dynamic> json) =>
-      ModelDetailBpti(
+  factory ModelDetailItem.fromJson(Map<String, dynamic> json) =>
+      ModelDetailItem(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
       );

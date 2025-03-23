@@ -83,9 +83,9 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
 
   TextEditingController kode = TextEditingController();
   TextEditingController nama = TextEditingController();
-  TextEditingController stok = TextEditingController();
+  // TextEditingController stok = TextEditingController();
   TextEditingController harga = TextEditingController();
-  TextEditingController lokasi = TextEditingController();
+  // TextEditingController lokasi = TextEditingController();
   TextEditingController limit = TextEditingController();
   TextEditingController supplier = TextEditingController();
   GroupButtonController? sell = GroupButtonController(selectedIndex: 0);
@@ -208,37 +208,37 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                   ),
                 ),
               ),
-              SizedBox(height: height * 0.01),
-              SizedBox(
-                width: width,
-                height: 80.h,
-                child: ListTile(
-                  title: Container(
-                    margin: EdgeInsets.only(bottom: 8.h),
-                    child: Text(
-                      'Lokasi',
-                      style: subtitleTextBlack,
-                    ),
-                  ),
-                  subtitle: CustomAutocomplete(
-                    data: locations!.map((e) => e['name']).toList(),
-                    displayString: (item) => item.toString(),
-                    onSelected: (value) {
-                      if (value != null) {
-                        final ID = locations.firstWhere(
-                          (item) => item['name'] == value,
-                        );
-                        setState(() {
-                          selectLokasi = int.parse(ID['id'].toString());
-                        });
-                        print(selectLokasi);
-                      }
-                    },
-                    labelText: 'Cari Barang',
-                    controller: controller,
-                  ),
-                ),
-              ),
+              // SizedBox(height: height * 0.01),
+              // SizedBox(
+              //   width: width,
+              //   height: 80.h,
+              //   child: ListTile(
+              //     title: Container(
+              //       margin: EdgeInsets.only(bottom: 8.h),
+              //       child: Text(
+              //         'Lokasi',
+              //         style: subtitleTextBlack,
+              //       ),
+              //     ),
+              //     subtitle: CustomAutocomplete(
+              //       data: locations!.map((e) => e['name']).toList(),
+              //       displayString: (item) => item.toString(),
+              //       onSelected: (value) {
+              //         if (value != null) {
+              //           final ID = locations.firstWhere(
+              //             (item) => item['name'] == value,
+              //           );
+              //           setState(() {
+              //             selectLokasi = int.parse(ID['id'].toString());
+              //           });
+              //           print(selectLokasi);
+              //         }
+              //       },
+              //       labelText: 'Cari Barang',
+              //       controller: controller,
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: height * 0.01),
               SizedBox(
                 width: width,
@@ -268,29 +268,29 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              SizedBox(
-                width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Stok Item',
-                    style: subtitleTextBlack,
-                  ),
-                  subtitle: Container(
-                    margin: EdgeInsets.only(top: height * 0.01),
-                    child: WidgetForm(
-                      controller: stok,
-                      alert: 'Stok',
-                      hint: 'Stok',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-              ),
+              // SizedBox(
+              //   height: height * 0.01,
+              // ),
+              // SizedBox(
+              //   width: width,
+              //   height: height * 0.1,
+              //   child: ListTile(
+              //     title: Text(
+              //       'Stok Item',
+              //       style: subtitleTextBlack,
+              //     ),
+              //     subtitle: Container(
+              //       margin: EdgeInsets.only(top: height * 0.01),
+              //       child: WidgetForm(
+              //         controller: stok,
+              //         alert: 'Stok',
+              //         hint: 'Stok',
+              //         border: OutlineInputBorder(
+              //             borderRadius: BorderRadius.circular(12)),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: height * 0.02,
               ),
@@ -530,7 +530,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                 print(selectKategori);
                 print(selectLokasi);
                 print(selectUnit);
-                print(stok.text);
+                // print(stok.text);
                 print(harga.text);
                 print(check);
                 print(hargaJual.text);
@@ -544,9 +544,7 @@ class _ComponentTambahItemState extends State<ComponentTambahItem> {
                         kode.text,
                         nama.text,
                         selectKategori!,
-                        selectLokasi!,
                         selectUnit!,
-                        int.parse(stok.text),
                         double.parse(harga.text),
                         check,
                         (hargaJual.text == '')

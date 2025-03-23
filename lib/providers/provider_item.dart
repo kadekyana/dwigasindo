@@ -11,6 +11,7 @@ import 'package:dwigasindo/model/modelAllWarehouse.dart';
 import 'package:dwigasindo/model/modelApprovalVerifikasi.dart';
 import 'package:dwigasindo/model/modelCity.dart';
 import 'package:dwigasindo/model/modelDataBPTI.dart';
+import 'package:dwigasindo/model/modelDetailItem.dart';
 import 'package:dwigasindo/model/modelDetailPenerimaanBarang.dart';
 import 'package:dwigasindo/model/modelDetailPurchase.dart';
 import 'package:dwigasindo/model/modelDetailSPB.dart';
@@ -112,6 +113,23 @@ class ProviderItem extends ChangeNotifier {
 
   ModelDetailPurchase? _detailPurchase;
   ModelDetailPurchase? get detailPurchase => _detailPurchase;
+
+  ModelDetailItem? _detailItem;
+  ModelDetailItem? get detailItem => _detailItem;
+
+  Future<void> getDetailItem(BuildContext context, String uuid) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "items/$uuid", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelDetailItem.fromJson(response!.data);
+      _detailItem = data;
+      notifyListeners();
+    }
+  }
 
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
@@ -499,9 +517,7 @@ class ProviderItem extends ChangeNotifier {
       String kode,
       String nama,
       int idCategory,
-      int lokasi,
       int idUnit,
-      int stock,
       double price,
       int isSell,
       double priceSell,
@@ -515,9 +531,7 @@ class ProviderItem extends ChangeNotifier {
       "code": kode,
       "name": nama,
       "category_id": idCategory,
-      "location_id": lokasi,
       "unit_id": idUnit,
-      "stock": stock,
       "price": price,
       "limit_stock": limit,
       "vendor_id": idVendor,
@@ -531,9 +545,7 @@ class ProviderItem extends ChangeNotifier {
       "code": kode,
       "name": nama,
       "category_id": idCategory,
-      "location_id": lokasi,
       "unit_id": idUnit,
-      "stock": stock,
       "price": price,
       "limit_stock": limit,
       "vendor_id": idVendor,

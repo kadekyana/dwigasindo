@@ -1,6 +1,7 @@
 import 'package:dwigasindo/const/const_api.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
+import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_detail_item.dart';
 import 'package:dwigasindo/views/menus/component_warehouse/Stok/component_mutasi_stok.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
@@ -282,8 +283,8 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                                     'Kode', data.code!),
                                                 _buildRowDetail(
                                                     'Vendor', data.vendorName!),
-                                                _buildRowDetail('Tersedia',
-                                                    data.stock.toString()),
+                                                _buildRowDetail('Limit Stok',
+                                                    data.limitStock.toString()),
                                                 _buildRowDetail('Dibuat oleh',
                                                     data.createdByName!),
                                                 _buildRowDetail(
@@ -380,7 +381,42 @@ class _ComponentItemStokState extends State<ComponentItemStok> {
                                             FullWidth: width * 0.25,
                                             FullHeight: 30.h,
                                             title: 'Lihat',
-                                            onpressed: () {},
+                                            onpressed: () async {
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+
+                                              try {
+                                                await Future.wait([
+                                                  provider.getDetailItem(
+                                                      context, data.idStr!)
+                                                ]);
+
+                                                // Navigate sesuai kondisi
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComponentDetailItem(),
+                                                  ),
+                                                );
+                                              } catch (e) {
+                                                Navigator.of(context)
+                                                    .pop(); // Tutup Dialog Loading
+                                                print('Error: $e');
+                                                // Tambahkan pesan error jika perlu
+                                              }
+                                            },
                                             bgColor: PRIMARY_COLOR,
                                             color: Colors.transparent,
                                           ),
