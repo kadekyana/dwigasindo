@@ -380,7 +380,6 @@ class _ApprovalVerifikasiState extends State<ApprovalVerifikasi> {
         back: true,
         route: () async {
           Navigator.pop(context);
-          await provider.getLihatSO(context, widget.id);
         },
       ),
       body: (data?.length == 0)

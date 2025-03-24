@@ -28,7 +28,7 @@ class _ComponentDetailItemState extends State<ComponentDetailItem>
     final data = provider.detailItem?.data;
     return Scaffold(
       appBar: WidgetAppbar(
-        title: data?.name ?? "-",
+        title: "Detail Item",
         colorBG: Colors.grey.shade100,
         colorTitle: Colors.black,
         colorBack: Colors.black,
@@ -50,7 +50,7 @@ class _ComponentDetailItemState extends State<ComponentDetailItem>
               border: Border.all(),
               borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
-                  image: NetworkImage("$pathUrl/${data?.photo}" ?? ""),
+                  image: NetworkImage("$pathUrl/${data?.photo}"),
                   fit: BoxFit.cover),
             ),
           ),
@@ -58,442 +58,400 @@ class _ComponentDetailItemState extends State<ComponentDetailItem>
             height: 10.h,
           ),
           Expanded(
-            child: (provider.detailItem == null)
-                ? const Center(
-                    child: Text('Belum Terdapat Detail Item'),
-                  )
-                : Container(
-                    width: double.maxFinite,
-                    height: 100.h,
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          blurRadius: 1,
-                          color: Color(0xffE4E4E4),
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 5.h),
-                            child: Row(
+            child: Container(
+              width: double.maxFinite,
+              height: 100.h,
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 1,
+                    color: Color(0xffE4E4E4),
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
                               children: [
                                 Expanded(
-                                  child: Column(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Nama',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':\t'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text(data?.name ?? "-",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Nama',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Code',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':\t'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text(data?.code ?? "-",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(data?.name ?? "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Code',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Kategori',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':\t'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text(
-                                                  '${data?.categoryId.toString()}',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(data?.code ?? "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Kategori',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Unit',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':\t'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text(
-                                                  '${data?.unitId.toString()}',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            '${data?.categoryId.toString()}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Unit',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Harga',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':\t'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text(
-                                                  '${providerSales.formatCurrency(data?.price as num)}',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            '${data?.unitId.toString()}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Harga',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Asset',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('Lorem Ipsum',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            (data?.price != null)
+                                                ? providerSales.formatCurrency(
+                                                    data?.price as num)
+                                                : "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Limit Stok',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Jenis Asset',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('Lorem Ipsum',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            '${data?.limitStock ?? "-"}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Vendor',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Merek',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('Lorem Ipsum',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(data?.vendorName ?? "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Apakah Item Dijual Kembali ?',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Departement',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('Lorem Ipsum',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            (data?.isItemSell == 1)
+                                                ? "Tidak"
+                                                : "Iya",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Harga Jual',
+                                            style: subtitleTextNormalblack,
+                                          ),
                                         ),
                                       ),
+                                      const Text(':\t'),
                                       Expanded(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Harga',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('Rp. 100.000.000',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            (data?.isItemSell == 1)
+                                                ? "-"
+                                                : (data?.sellPrice != null)
+                                                    ? providerSales
+                                                        .formatCurrency(
+                                                            data!.sellPrice)
+                                                    : "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalblack),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Expanded(
+                                //   child: Row(
+                                //     children: [
+                                //       Expanded(
+                                //         flex: 2,
+                                //         child: FittedBox(
+                                //           fit: BoxFit.scaleDown,
+                                //           alignment: Alignment.centerLeft,
+                                //           child: Text(
+                                //             'Harga',
+                                //             style: subtitleTextNormalblack,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       const Text(':'),
+                                //       Expanded(
+                                //         flex: 3,
+                                //         child: Text('Rp. 100.000.000',
+                                //             overflow: TextOverflow.ellipsis,
+                                //             style: subtitleTextNormalblack),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // Expanded(
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.start,
+                                //     children: [
+                                //       Expanded(
+                                //         flex: 2,
+                                //         child: FittedBox(
+                                //           fit: BoxFit.scaleDown,
+                                //           alignment: Alignment.centerLeft,
+                                //           child: Text(
+                                //             'Garansi',
+                                //             style: subtitleTextNormalblack,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       const Text(':'),
+                                //       Expanded(
+                                //         flex: 3,
+                                //         child: Text('\t2 Bulan',
+                                //             overflow: TextOverflow.ellipsis,
+                                //             style: subtitleTextNormalblack),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // Expanded(
+                                //   child: Row(
+                                //     children: [
+                                //       Expanded(
+                                //         flex: 2,
+                                //         child: FittedBox(
+                                //           fit: BoxFit.scaleDown,
+                                //           alignment: Alignment.centerLeft,
+                                //           child: Text(
+                                //             'Deskripsi',
+                                //             style: subtitleTextNormalblack,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       const Text(':'),
+                                //       Expanded(
+                                //         flex: 3,
+                                //         child: Text('\tLorem Ipsum',
+                                //             overflow: TextOverflow.ellipsis,
+                                //             style: subtitleTextNormalblack),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat Pada',
+                                            style: subtitleTextNormalGrey,
+                                          ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Garansi',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('\t2 Bulan',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
-                                        ),
+                                      Text(
+                                        ':\t',
+                                        style: subtitleTextNormalGrey,
                                       ),
                                       Expanded(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Deskripsi',
-                                                  style:
-                                                      subtitleTextNormalblack,
-                                                ),
-                                              ),
-                                            ),
-                                            const Text(':'),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('\tLorem Ipsum',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalblack),
-                                            ),
-                                          ],
+                                        flex: 3,
+                                        child: Text(
+                                            provider.formatDate(
+                                                data!.createdAt.toString()),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalGrey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Dibuat Oleh',
+                                            style: subtitleTextNormalGrey,
+                                          ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Dibuat Pada',
-                                                  style: subtitleTextNormalGrey,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              ':',
-                                              style: subtitleTextNormalGrey,
-                                            ),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('\t12/01/2025',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalGrey),
-                                            ),
-                                          ],
-                                        ),
+                                      Text(
+                                        ':\t',
+                                        style: subtitleTextNormalGrey,
                                       ),
                                       Expanded(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Dibuat Oleh',
-                                                  style: subtitleTextNormalGrey,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              ':',
-                                              style: subtitleTextNormalGrey,
-                                            ),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Text('\tUser 1',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      subtitleTextNormalGrey),
-                                            ),
-                                          ],
-                                        ),
+                                        flex: 3,
+                                        child: Text(data.createdByName ?? "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: subtitleTextNormalGrey),
                                       ),
                                     ],
                                   ),
@@ -501,10 +459,13 @@ class _ComponentDetailItemState extends State<ComponentDetailItem>
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

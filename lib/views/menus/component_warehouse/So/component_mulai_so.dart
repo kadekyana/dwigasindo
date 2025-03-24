@@ -40,7 +40,7 @@ class _ComponentMulaiSoState extends State<ComponentMulaiSo> {
     final provider = Provider.of<ProviderItem>(context);
     return Scaffold(
       appBar: WidgetAppbar(
-        title: 'Stok Opname',
+        title: 'Tambah Detail Stok Opname',
         center: true,
         colorTitle: Colors.black,
         colorBack: Colors.black,
@@ -69,26 +69,6 @@ class _ComponentMulaiSoState extends State<ComponentMulaiSo> {
                     items: item!,
                     controller: controllerD,
                   ),
-                  // child: CustomDropdown(
-                  //   controller: kategoriController,
-                  //   decoration: CustomDropdownDecoration(
-                  //       closedBorder: Border.all(color: Colors.grey.shade400),
-                  //       expandedBorder:
-                  //           Border.all(color: Colors.grey.shade400)),
-                  //   hintText: 'Pilih Kategori',
-                  //   items: item?.map((e) => e['name']).toList(),
-                  //   onChanged: (value) {
-                  //     if (value != null) {
-                  //       final ID =
-                  //           item!.firstWhere((item) => item['name'] == value);
-                  //       setState(() {
-                  //         category = [int.parse(ID['id'].toString())];
-                  //       });
-                  //     } else {
-                  //       print(value);
-                  //     }
-                  //   },
-                  // ),
                 );
               },
             ),

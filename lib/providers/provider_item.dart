@@ -320,10 +320,13 @@ class ProviderItem extends ChangeNotifier {
   }
 
   Future<void> getLihatSO(BuildContext context, int id) async {
+    print("ID MASUK : $id");
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response = await DioServiceAPI()
         .getRequest(url: "stock_opnames/details/get-by-id/$id", token: token);
+
+    print(response?.data);
 
     print(response?.data['error']);
     if (response?.data['error'] == null) {
@@ -476,7 +479,6 @@ class ProviderItem extends ChangeNotifier {
 
     print(response?.data);
     if (response?.data['error'] == null) {
-      await getLihatSO(context, id);
       final data = ModelApprovalVerifikasi.fromJson(response!.data);
       _approvalVerifikasi = data;
       notifyListeners();
