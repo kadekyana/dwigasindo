@@ -155,16 +155,9 @@ class _ComponentDetailSpbState extends State<ComponentDetailSpb> {
                         ),
                         Text(":"),
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '${data.createdByName}',
-                                style: subtitleTextBlack,
-                              ),
-                            ),
+                          child: Text(
+                            '${data.createdByName}',
+                            style: subtitleTextBlack,
                           ),
                         ),
                       ],

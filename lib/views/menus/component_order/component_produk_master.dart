@@ -162,9 +162,8 @@ class _ComponentMenuMasterProdukState extends State<ComponentMenuMasterProduk>
                                       text: "Total Jasa\n",
                                       style: minisubtitleTextBlack),
                                   TextSpan(
-                                      text:
-                                          data?.totalTypeService?.toString() ??
-                                              "0",
+                                      text: data?.totalTypeService.toString() ??
+                                          "0",
                                       style: subtitleTextBoldBlack),
                                 ],
                               ),
@@ -1069,25 +1068,11 @@ class _ComponentProdukTrashMasterState
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 10.w, right: 10.w, bottom: 5.h),
-                                      child: WidgetButtonCustom(
-                                        FullWidth: width,
-                                        FullHeight: 40.h,
-                                        title: "Lihat Produk",
-                                        onpressed: () {},
-                                        bgColor: PRIMARY_COLOR,
-                                        color: Colors.transparent,
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
                               Positioned(
                                 top: 50.h,
-                                left: 100.w,
+                                left: 125.w,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Transform.rotate(

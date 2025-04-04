@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class ComponentUpdateTabung extends StatefulWidget {
   ComponentUpdateTabung({super.key, required this.code});
@@ -598,21 +600,29 @@ class _ComponentUpdateTabungState extends State<ComponentUpdateTabung> {
                     "HASIL RESPONSE :\nowner_ship_type :$owner\nis_has_tube_type : $isSingle\ntube_type_id : ${jenisTabung.selectedIndex}\ntube_gas_id : ${jenisGas.value}\nis_has_grade : ${(gradeBool.selectedIndex == 0) ? true : false}\nvendor_id : $selectSupllier\ntube_year : ${tahun.text}\nserial_number : ${serial.text}\ncustomer_id : ${customer.value}\nlast_location : ${lokasi.text}");
                 // print(
                 //     "HASIL RESPONSE :\nowner_ship_type :$owner\nis_has_tube_type : $isSingle\ntube_type_id : $nonSingletubeType\ntube_gas_id : ${intGas}\nis_has_grade : $nonGrade\nvendor_id : $selectSupllier\ntube_year : ${intTahun}\nserial_number : ${serial.text}\ncustomer_id : ${selectCustomer}\nlast_location : ${lokasi.text}");
-
-                await provider.updateTabung(
-                    context,
-                    widget.code,
-                    owner,
-                    isSingle,
-                    nonSingletubeType,
-                    selectTubeGas,
-                    nonGrade,
-                    selectedGradeIndex,
-                    int.parse(tahun.text),
-                    serial.text,
-                    selectCustomer,
-                    selectSupllier,
-                    lokasi.text);
+                if (selectSupllier != null || selectCustomer != null) {
+                  await provider.updateTabung(
+                      context,
+                      widget.code,
+                      owner,
+                      isSingle,
+                      nonSingletubeType,
+                      selectTubeGas,
+                      nonGrade,
+                      selectedGradeIndex,
+                      int.parse(tahun.text),
+                      serial.text,
+                      selectCustomer,
+                      selectSupllier,
+                      lokasi.text);
+                } else {
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    const CustomSnackBar.error(
+                      message: 'Customer / Supplier Tidak Boleh Kosong',
+                    ),
+                  );
+                }
               },
               bgColor: PRIMARY_COLOR,
               color: PRIMARY_COLOR),

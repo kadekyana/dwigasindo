@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/model/modelLoadingTube.dart';
+import 'package:dwigasindo/model/modelAllOrder.dart';
 import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
@@ -175,7 +175,7 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
   final TextEditingController tare = TextEditingController();
   final TextEditingController empty = TextEditingController();
 
-  late Map<int, StreamController<ModelLoadingTube>> _streamControllers;
+  late Map<int, StreamController<ModelAllOrder>> _streamControllers;
 
   GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
   bool selectMenu = true;
@@ -184,11 +184,51 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: 4, vsync: this);
+    _streamControllers = {
+      0: StreamController<ModelAllOrder>.broadcast(),
+      1: StreamController<ModelAllOrder>.broadcast(),
+      2: StreamController<ModelAllOrder>.broadcast(),
+      3: StreamController<ModelAllOrder>.broadcast(),
+    };
+
+    // Mulai stream untuk setiap tab
+    _startStream(0);
+    _startStream(1);
+    _startStream(2);
+    _startStream(3);
+
+    _tabController = TabController(length: 3, vsync: this);
 
     _tabController.addListener(() {
       final currentIndex = _tabController.index;
+
+      // Mulai stream untuk tab yang aktif
+      _startStream(currentIndex);
     });
+  }
+
+  void _startStream(int status) {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      if (!_streamControllers[status]!.isClosed) {
+        final data = await Provider.of<ProviderSales>(context, listen: false)
+            .getAllOrder(context, status);
+        _streamControllers[status]!.add(data);
+      }
+    });
+  }
+
+  void _stopStream(int status) {
+    _streamControllers[status]?.close();
+  }
+
+  @override
+  void dispose() {
+    // Tutup semua StreamController
+    _tabController.dispose();
+    for (var controller in _streamControllers.values) {
+      controller.close();
+    }
+    super.dispose();
   }
 
   @override
@@ -362,9 +402,9 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
             child: TabBarView(
               controller: _tabController,
               children: [
-                ComponentMenuListPO(),
-                ComponentMenuListRetail(),
-                // Konten untuk setiap tab
+                _buildListPo(context),
+                _buildListRetail(context),
+                _buildListTrash(context),
               ],
             ),
           )
@@ -372,34 +412,11 @@ class _ComponentMenuOrderState extends State<ComponentMenuOrder>
       ),
     );
   }
-}
 
-class ComponentMenuListPO extends StatefulWidget {
-  const ComponentMenuListPO({
-    super.key,
-  });
-
-  @override
-  State<ComponentMenuListPO> createState() => _ComponentMenuListPOState();
-}
-
-class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
-  List<bool> check = [true, false];
-  bool non = false;
-  GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
-  @override
-  void initState() {
-    super.initState();
-    final provider = Provider.of<ProviderSales>(context, listen: false);
-    provider.getAllOrder(context, 1);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildListPo(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderSales>(context);
-    final data = provider.order?.data;
 
     return Scaffold(
       body: Container(
@@ -455,312 +472,342 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: data?.length,
-                itemBuilder: (context, index) {
-                  final dataCard = data![index];
-                  return Container(
-                    width: double.maxFinite,
-                    height: 200.h,
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          blurRadius: 1,
-                          color: Color(0xffE4E4E4),
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
+              child: StreamBuilder<ModelAllOrder>(
+                stream: _streamControllers[0]!.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    final data = snapshot.data!.data;
+                    return ListView.builder(
+                      itemCount: data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final dataCard = data![index];
+                        return Container(
                           width: double.maxFinite,
-                          height: 40.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 150.w,
-                                height: 40.h,
-                                decoration: const BoxDecoration(
-                                  color: PRIMARY_COLOR,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(30),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${dataCard.code}',
-                                    style: subtitleText,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 150.w,
-                                height: 40.h,
-                                decoration: BoxDecoration(
-                                  color: (dataCard.approvalStatus == "Approve")
-                                      ? Colors.green
-                                      : (dataCard.approvalStatus == "Review")
-                                          ? Colors.yellow
-                                          : SECONDARY_COLOR,
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    bottomLeft: Radius.circular(30),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${dataCard.approvalStatus}",
-                                    style: (dataCard.approvalStatus == "Review")
-                                        ? titleTextBlack
-                                        : titleText,
-                                  ),
-                                ),
+                          height: 200.h,
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 1,
+                                color: Color(0xffE4E4E4),
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.025, vertical: 5.h),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(color: Colors.grey.shade300),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Customer',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '${dataCard.customerName}',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Kecamatan',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '${dataCard.districtName}',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Jenis Produk',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.getRemarksLabel(
-                                                dataCard.remarks!),
-                                            style: subtitleTextBlack),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Total Transaksi',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.formatCurrency(dataCard
-                                                .totalTransaction as num),
-                                            style: subtitleTextBlack),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Dibuat Oleh',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text('${dataCard.createdBy}',
-                                            style: subtitleTextNormal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Dibuat Pada',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.formatDate(
-                                                dataCard.createdAt.toString()),
-                                            style: subtitleTextNormal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              bottom: 10.h, left: 10.w, right: 10.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             children: [
+                              SizedBox(
+                                width: double.maxFinite,
+                                height: 40.h,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: const BoxDecoration(
+                                        color: PRIMARY_COLOR,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          bottomRight: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${dataCard.code}',
+                                          style: subtitleText,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: (dataCard.approvalStatus ==
+                                                "Approve")
+                                            ? Colors.green
+                                            : (dataCard.approvalStatus ==
+                                                    "Review")
+                                                ? Colors.yellow
+                                                : SECONDARY_COLOR,
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          bottomLeft: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "${dataCard.approvalStatus}",
+                                          style: (dataCard.approvalStatus ==
+                                                  "Review")
+                                              ? titleTextBlack
+                                              : titleText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Expanded(
-                                child: WidgetButtonCustom(
-                                  FullWidth: width * 0.3,
-                                  FullHeight: 30.h,
-                                  title: "Lihat Order",
-                                  onpressed: () async {
-                                    // Tampilkan Dialog Loading
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (BuildContext context) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                    );
-
-                                    try {
-                                      await Future.wait([
-                                        provider.getDetailOrder(
-                                            context, dataCard.id!),
-                                      ]);
-
-                                      // Navigate sesuai kondisi
-                                      Navigator.of(context)
-                                          .pop(); // Tutup Dialog Loading
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ComponentDetailOrder(),
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025, vertical: 5.h),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          color: Colors.grey.shade300),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Customer',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.customerName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    } catch (e) {
-                                      Navigator.of(context)
-                                          .pop(); // Tutup Dialog Loading
-                                      print('Error: $e');
-                                      // Tambahkan pesan error jika perlu
-                                    }
-                                  },
-                                  bgColor: PRIMARY_COLOR,
-                                  color: Colors.transparent,
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Kecamatan',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.districtName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Jenis Produk',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.getRemarksLabel(
+                                                      dataCard.remarks!),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Total Transaksi',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatCurrency(
+                                                      dataCard.totalTransaction
+                                                          as num),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Oleh',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  '${dataCard.createdBy}',
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Pada',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatDate(dataCard
+                                                      .createdAt
+                                                      .toString()),
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: 10.h, left: 10.w, right: 10.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: WidgetButtonCustom(
+                                        FullWidth: width * 0.3,
+                                        FullHeight: 30.h,
+                                        title: "Lihat Order",
+                                        onpressed: () async {
+                                          // Tampilkan Dialog Loading
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          );
+
+                                          try {
+                                            await Future.wait([
+                                              provider.getDetailOrder(
+                                                  context, dataCard.id!),
+                                            ]);
+
+                                            // Navigate sesuai kondisi
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComponentDetailOrder(),
+                                              ),
+                                            );
+                                          } catch (e) {
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            print('Error: $e');
+                                            // Tambahkan pesan error jika perlu
+                                          }
+                                        },
+                                        bgColor: PRIMARY_COLOR,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else {
+                    return const Center(child: Text('No data found'));
+                  }
                 },
               ),
             ),
@@ -769,36 +816,12 @@ class _ComponentMenuListPOState extends State<ComponentMenuListPO> {
       ),
     );
   }
-}
 
-class ComponentMenuListRetail extends StatefulWidget {
-  const ComponentMenuListRetail({
-    super.key,
-  });
-
-  @override
-  State<ComponentMenuListRetail> createState() =>
-      _ComponentMenuListRetailState();
-}
-
-class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
-  List<bool> check = [true, false];
-  bool non = false;
-  GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
-
-  @override
-  void initState() {
-    super.initState();
-    final provider = Provider.of<ProviderSales>(context, listen: false);
-    provider.getAllOrder(context, 2);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildListRetail(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = Provider.of<ProviderSales>(context);
-    final data = provider.order?.data;
+
     return Scaffold(
       body: Container(
         width: width,
@@ -853,312 +876,746 @@ class _ComponentMenuListRetailState extends State<ComponentMenuListRetail> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: data?.length,
-                itemBuilder: (context, index) {
-                  final dataCard = data![index];
-                  return Container(
-                    width: double.maxFinite,
-                    height: 200.h,
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          blurRadius: 1,
-                          color: Color(0xffE4E4E4),
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
+              child: StreamBuilder<ModelAllOrder>(
+                stream: _streamControllers[2]!.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    final data = snapshot.data!.data;
+                    return ListView.builder(
+                      itemCount: data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final dataCard = data![index];
+                        return Container(
                           width: double.maxFinite,
-                          height: 40.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 150.w,
-                                height: 40.h,
-                                decoration: const BoxDecoration(
-                                  color: PRIMARY_COLOR,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(30),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${dataCard.code}',
-                                    style: subtitleText,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 150.w,
-                                height: 40.h,
-                                decoration: BoxDecoration(
-                                  color: (dataCard.approvalStatus == "Approve")
-                                      ? Colors.green
-                                      : (dataCard.approvalStatus == "Review")
-                                          ? Colors.yellow
-                                          : SECONDARY_COLOR,
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    bottomLeft: Radius.circular(30),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${dataCard.approvalStatus}",
-                                    style: (dataCard.approvalStatus == "Review")
-                                        ? titleTextBlack
-                                        : titleText,
-                                  ),
-                                ),
+                          height: 200.h,
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 1,
+                                color: Color(0xffE4E4E4),
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.025, vertical: 5.h),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(color: Colors.grey.shade300),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Customer',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '${dataCard.customerName}',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Kecamatan',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '${dataCard.districtName}',
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.justify,
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Jenis Produk',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.getRemarksLabel(
-                                                dataCard.remarks!),
-                                            style: subtitleTextBlack),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Total Transaksi',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextBlack,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.formatCurrency(dataCard
-                                                .totalTransaction as num),
-                                            style: subtitleTextBlack),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Dibuat Oleh',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text('${dataCard.createdBy}',
-                                            style: subtitleTextNormal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          'Dibuat Pada',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          ' : ',
-                                          style: subtitleTextNormal,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                            provider.formatDate(
-                                                dataCard.createdAt.toString()),
-                                            style: subtitleTextNormal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              bottom: 10.h, left: 10.w, right: 10.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             children: [
+                              SizedBox(
+                                width: double.maxFinite,
+                                height: 40.h,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: const BoxDecoration(
+                                        color: PRIMARY_COLOR,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          bottomRight: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${dataCard.code}',
+                                          style: subtitleText,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: (dataCard.approvalStatus ==
+                                                "Approve")
+                                            ? Colors.green
+                                            : (dataCard.approvalStatus ==
+                                                    "Review")
+                                                ? Colors.yellow
+                                                : SECONDARY_COLOR,
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          bottomLeft: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "${dataCard.approvalStatus}",
+                                          style: (dataCard.approvalStatus ==
+                                                  "Review")
+                                              ? titleTextBlack
+                                              : titleText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Expanded(
-                                child: WidgetButtonCustom(
-                                  FullWidth: width * 0.3,
-                                  FullHeight: 30.h,
-                                  title: "Lihat Order",
-                                  onpressed: () async {
-                                    // Tampilkan Dialog Loading
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (BuildContext context) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                    );
-
-                                    try {
-                                      await Future.wait([
-                                        provider.getDetailOrder(
-                                            context, dataCard.id!),
-                                      ]);
-
-                                      // Navigate sesuai kondisi
-                                      Navigator.of(context)
-                                          .pop(); // Tutup Dialog Loading
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ComponentDetailOrder(),
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025, vertical: 5.h),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          color: Colors.grey.shade300),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Customer',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.customerName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    } catch (e) {
-                                      Navigator.of(context)
-                                          .pop(); // Tutup Dialog Loading
-                                      print('Error: $e');
-                                      // Tambahkan pesan error jika perlu
-                                    }
-                                  },
-                                  bgColor: PRIMARY_COLOR,
-                                  color: Colors.transparent,
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Kecamatan',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.districtName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Jenis Produk',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.getRemarksLabel(
+                                                      dataCard.remarks!),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Total Transaksi',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatCurrency(
+                                                      dataCard.totalTransaction
+                                                          as num),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Oleh',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  '${dataCard.createdBy}',
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Pada',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatDate(dataCard
+                                                      .createdAt
+                                                      .toString()),
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: 10.h, left: 10.w, right: 10.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: WidgetButtonCustom(
+                                        FullWidth: width * 0.3,
+                                        FullHeight: 30.h,
+                                        title: "Lihat Order",
+                                        onpressed: () async {
+                                          // Tampilkan Dialog Loading
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          );
+
+                                          try {
+                                            await Future.wait([
+                                              provider.getDetailOrder(
+                                                  context, dataCard.id!),
+                                            ]);
+
+                                            // Navigate sesuai kondisi
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComponentDetailOrder(),
+                                              ),
+                                            );
+                                          } catch (e) {
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            print('Error: $e');
+                                            // Tambahkan pesan error jika perlu
+                                          }
+                                        },
+                                        bgColor: PRIMARY_COLOR,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
+                        );
+                      },
+                    );
+                  } else {
+                    return const Center(child: Text('No data found'));
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListTrash(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final provider = Provider.of<ProviderSales>(context);
+
+    return Scaffold(
+      body: Container(
+        width: width,
+        height: height,
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.maxFinite,
+              height: height * 0.1,
+              child: Row(
+                children: [
+                  // Search bar
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey.shade400,
+                          ),
+                          borderRadius: BorderRadius.circular(16)),
+                      child: WidgetForm(
+                        alert: 'Search',
+                        hint: 'Search',
+                        border: InputBorder.none,
+                        preicon: const Icon(
+                          Icons.search_rounded,
+                          color: Colors.grey,
                         ),
-                      ],
+                      ),
                     ),
-                  );
+                  ),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  // filter bar
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.filter_list,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+                ],
+              ),
+            ),
+            Expanded(
+              child: StreamBuilder<ModelAllOrder>(
+                stream: _streamControllers[3]!.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    final data = snapshot.data!.data;
+                    return ListView.builder(
+                      itemCount: data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final dataCard = data![index];
+                        return Container(
+                          width: double.maxFinite,
+                          height: 200.h,
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 1,
+                                color: Color(0xffE4E4E4),
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: double.maxFinite,
+                                height: 40.h,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: const BoxDecoration(
+                                        color: PRIMARY_COLOR,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          bottomRight: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${dataCard.code}',
+                                          style: subtitleText,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 150.w,
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: (dataCard.approvalStatus ==
+                                                "Approve")
+                                            ? Colors.green
+                                            : (dataCard.approvalStatus ==
+                                                    "Review")
+                                                ? Colors.yellow
+                                                : SECONDARY_COLOR,
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          bottomLeft: Radius.circular(30),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "${dataCard.approvalStatus}",
+                                          style: (dataCard.approvalStatus ==
+                                                  "Review")
+                                              ? titleTextBlack
+                                              : titleText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.025, vertical: 5.h),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          color: Colors.grey.shade300),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Customer',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.customerName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Kecamatan',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                '${dataCard.districtName}',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.justify,
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Jenis Produk',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.getRemarksLabel(
+                                                      dataCard.remarks!),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Total Transaksi',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextBlack,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatCurrency(
+                                                      dataCard.totalTransaction
+                                                          as num),
+                                                  style: subtitleTextBlack),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Oleh',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  '${dataCard.createdBy}',
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Dibuat Pada',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Text(
+                                                ' : ',
+                                                style: subtitleTextNormal,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  provider.formatDate(dataCard
+                                                      .createdAt
+                                                      .toString()),
+                                                  style: subtitleTextNormal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: 10.h, left: 10.w, right: 10.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: WidgetButtonCustom(
+                                        FullWidth: width * 0.3,
+                                        FullHeight: 30.h,
+                                        title: "Lihat Order",
+                                        onpressed: () async {
+                                          // Tampilkan Dialog Loading
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            },
+                                          );
+
+                                          try {
+                                            await Future.wait([
+                                              provider.getDetailOrder(
+                                                  context, dataCard.id!),
+                                            ]);
+
+                                            // Navigate sesuai kondisi
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComponentDetailOrder(),
+                                              ),
+                                            );
+                                          } catch (e) {
+                                            Navigator.of(context)
+                                                .pop(); // Tutup Dialog Loading
+                                            print('Error: $e');
+                                            // Tambahkan pesan error jika perlu
+                                          }
+                                        },
+                                        bgColor: PRIMARY_COLOR,
+                                        color: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return const Center(child: Text('No data found'));
+                  }
                 },
               ),
             ),
@@ -1311,7 +1768,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
           children: [
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'Jenis Customer',
@@ -1355,7 +1812,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
             ),
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'Jenis Order',

@@ -549,7 +549,7 @@ class ProviderSales extends ChangeNotifier {
     }
   }
 
-  Future<void> getAllOrder(BuildContext context, int type) async {
+  Future<ModelAllOrder> getAllOrder(BuildContext context, int type) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
     final response = await DioServiceAPI()
@@ -557,9 +557,10 @@ class ProviderSales extends ChangeNotifier {
 
     print(response?.data);
     if (response?.data['error'] == null) {
-      final data = ModelAllOrder.fromJson(response!.data);
-      _order = data;
+      return ModelAllOrder.fromJson(response!.data);
+    } else {
       notifyListeners();
+      throw Exception('Failed to load data');
     }
   }
 

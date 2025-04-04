@@ -107,12 +107,10 @@ class _ComponentMenuCatatanMasterCustomerState
                     ),
                   )
                 : SingleChildScrollView(
-                    child: Expanded(
-                      child: CardDokumentasi(
-                        width: width,
-                        height: height,
-                        id: widget.id,
-                      ),
+                    child: CardDokumentasi(
+                      width: width,
+                      height: height,
+                      id: widget.id,
                     ),
                   ),
           ],

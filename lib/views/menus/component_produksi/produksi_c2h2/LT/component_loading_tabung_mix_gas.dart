@@ -181,7 +181,7 @@ class _ComponentLoadingTabungMixGasDetailState
   }
 
   void _startStream(int status) {
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!_streamControllers[status]!.isClosed) {
         final data = await Provider.of<ProviderProduksi>(context, listen: false)
             .getLoadingTubeMixGas(context, status, widget.fill);
@@ -1387,124 +1387,116 @@ class _ComponentLoadingTabungMixGasDetailState
           return SizedBox(
             width: width,
             height: height,
-            child: (data!.tubeLoadingDetail?.length != 0)
-                ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                    child: Column(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MenuScan(
+                                    title: 'Tube',
+                                  )));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: height * 0.01,
+                        SvgPicture.asset(
+                          'assets/images/scan.svg',
+                          width: 30,
+                          height: 30,
                         ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                                flex: 1, child: Center(child: Text('Status'))),
-                            Expanded(child: Center(child: Text('OK'))),
-                            Expanded(child: Center(child: Text('99'))),
-                            Expanded(child: Center(child: Text('1'))),
-                            Expanded(
-                              child: Center(child: Text('NO')),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Expanded(flex: 1, child: SizedBox.shrink()),
-                            Expanded(
-                              flex: 4,
-                              child: LinearProgressIndicator(
-                                value: 9 / 10,
-                                color: PRIMARY_COLOR,
-                                minHeight: height * 0.01,
-                                backgroundColor: SECONDARY_COLOR,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: ListView.builder(
-                                itemCount: data.tubeLoadingDetail!.length,
-                                itemBuilder: (context, index) {
-                                  final dataTube =
-                                      data.tubeLoadingDetail![index];
-                                  print(dataTube.tubeNo);
-                                  return Column(
-                                    children: [
-                                      _buildInfoCard(
-                                        isOkay: true,
-                                        prefill: false,
-                                        production: false,
-                                        postfill: false,
-                                        finish: true,
-                                        width: width,
-                                        height: height,
-                                        data: {
-                                          "id": dataTube.idStr ?? "-",
-                                          "tube": dataTube.tubeId ?? "-",
-                                          "no": dataTube.tubeNo ?? "-",
-                                          'CB':
-                                              dataTube.prefillCheckBody ?? "-",
-                                          'CV':
-                                              dataTube.prefillCheckValve ?? "-",
-                                          'VENT': dataTube.prefillVent ?? "-",
-                                          'HT':
-                                              dataTube.prefillHammerTest ?? "-",
-                                          'CT':
-                                              dataTube.postfillColdTest ?? "-",
-                                          'TBI': dataTube.productionT0Weight ??
-                                              "-",
-                                          'TBII':
-                                              dataTube.postfillT2Weight ?? "-",
-                                          'Rak': dataTube.tubeShelfName ?? "-",
-                                          'status': "OK",
-                                          'date': "-",
-                                          'time': "-",
-                                          'creator': "-",
-                                        },
-                                        onIsiDataPressed: () {
-                                          // if (_selectedCardIndex != index ||
-                                          //     !_showForm) {
-                                          //   setState(() {
-                                          //     _selectedCardIndex = index;
-                                          //     _showForm = true;
-                                          //   });
-                                          //   _stopStream(
-                                          //       3); // Hentikan stream untuk tab Empty Weight (status = 0)
-                                          // } else {
-                                          //   setState(() {
-                                          //     _showForm = false;
-                                          //   });
-                                          //   _startStream(
-                                          //       3); // Lanjutkan stream setelah selesai
-                                          // }
-                                        },
-                                      ),
-                                      if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
-                                        const SizedBox(height: 16),
-                                      // if (_showForm)
-                                      //   _buildWeightFormFilled(
-                                      //       dataTube.tareWeight!,
-                                      //       dataTube.emptyWeight!,
-                                      //       dataTube.idStr!),
-                                    ],
-                                  );
-                                })),
+                        const SizedBox(width: 5),
+                        const Text('Scan Isi')
                       ],
                     ),
-                  )
-                : Expanded(
-                    child: Center(
-                        child: Text(
-                      'Belum Terdapat Data',
-                      style: titleTextBlack,
-                    )),
                   ),
+                  const SizedBox(height: 10),
+                  (data!.tubeLoadingDetail?.length != 0)
+                      ? Expanded(
+                          child: ListView.builder(
+                            itemCount: data.tubeLoadingDetail!.length,
+                            itemBuilder: (context, index) {
+                              final dataTube = data.tubeLoadingDetail![index];
+                              print(dataTube.tubeNo);
+                              return Column(
+                                children: [
+                                  _buildInfoCard(
+                                    prefill: false,
+                                    production: false,
+                                    postfill: true,
+                                    finish: false,
+                                    width: width,
+                                    height: height,
+                                    data: {
+                                      "id": dataTube.idStr ?? "-",
+                                      "tube": dataTube.tubeId ?? "-",
+                                      "no": dataTube.tubeNo ?? "-",
+                                      'CB': dataTube.prefillCheckBody ?? "-",
+                                      'CV': dataTube.prefillCheckValve ?? "-",
+                                      'VENT': dataTube.prefillVent ?? "-",
+                                      'HT': dataTube.prefillHammerTest ?? "-",
+                                      'CT': dataTube.postfillColdTest ?? "-",
+                                      'TBI': dataTube.productionT0Weight ?? "-",
+                                      'TBII': dataTube.postfillT2Weight ?? "-",
+                                      'Rak': dataTube.tubeShelfName ?? "-",
+                                      'status': "OK",
+                                      'date': "-",
+                                      'time': "-",
+                                      'creator': "-",
+                                    },
+                                    onIsiDataPressed: () {
+                                      // if (_selectedCardIndex != index ||
+                                      //     !_showForm) {
+                                      //   setState(() {
+                                      //     _selectedCardIndex = index;
+                                      //     _showForm = true;
+                                      //   });
+                                      //   _stopStream(
+                                      //       2); // Hentikan stream untuk tab Empty Weight (status = 0)
+                                      // } else {
+                                      //   setState(() {
+                                      //     _showForm = false;
+                                      //   });
+                                      //   _startStream(
+                                      //       2); // Lanjutkan stream setelah selesai
+                                      // }
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              IsiDataLoadingTube(
+                                            title: 'Postfill',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  // if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
+                                  //   SizedBox(height: 16),
+                                  // if (_showForm)
+                                  //   _buildWeightFormFilled(dataTube.tareWeight!,
+                                  //       dataTube.emptyWeight!, dataTube.idStr!),
+                                ],
+                              );
+                            },
+                          ),
+                        )
+                      : Expanded(
+                          child: Center(
+                              child: Text(
+                            'Belum Terdapat Data',
+                            style: titleTextBlack,
+                          )),
+                        ),
+                ],
+              ),
+            ),
           );
         } else {
           return const Center(child: Text('No data found'));
@@ -1512,6 +1504,119 @@ class _ComponentLoadingTabungMixGasDetailState
       },
     );
   }
+
+  // Widget _buildFinishTab(double width, double height) {
+  //   return StreamBuilder<ModelLoadingTubeMixGas>(
+  //     stream: _streamControllers[3]!.stream, // Status untuk Empty Weight
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       } else if (snapshot.hasError) {
+  //         return Center(child: Text('Error: ${snapshot.error}'));
+  //       } else if (snapshot.hasData) {
+  //         final data = snapshot.data!.data;
+  //         return SizedBox(
+  //           width: width,
+  //           height: height,
+  //           child: (data!.tubeLoadingDetail!.isNotEmpty)
+  //               ? Padding(
+  //                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+  //                   child: Column(
+  //                     children: [
+  //                       SizedBox(
+  //                         height: height * 0.01,
+  //                       ),
+  //                       // const Row(
+  //                       //   mainAxisAlignment: MainAxisAlignment.center,
+  //                       //   children: [
+  //                       //     Expanded(
+  //                       //         flex: 1, child: Center(child: Text('Status'))),
+  //                       //     Expanded(child: Center(child: Text('OK'))),
+  //                       //     Expanded(child: Center(child: Text('99'))),
+  //                       //     Expanded(child: Center(child: Text('1'))),
+  //                       //     Expanded(
+  //                       //       child: Center(child: Text('NO')),
+  //                       //     ),
+  //                       //   ],
+  //                       // ),
+  //                       // Row(
+  //                       //   mainAxisAlignment: MainAxisAlignment.center,
+  //                       //   children: [
+  //                       //     const Expanded(flex: 1, child: SizedBox.shrink()),
+  //                       //     Expanded(
+  //                       //       flex: 4,
+  //                       //       child: LinearProgressIndicator(
+  //                       //         value: 9 / 10,
+  //                       //         color: PRIMARY_COLOR,
+  //                       //         minHeight: height * 0.01,
+  //                       //         backgroundColor: SECONDARY_COLOR,
+  //                       //         borderRadius: BorderRadius.circular(12),
+  //                       //       ),
+  //                       //     ),
+  //                       //   ],
+  //                       // ),
+  //                       const SizedBox(
+  //                         height: 10,
+  //                       ),
+  //                       Expanded(
+  //                         child: ListView.builder(
+  //                           itemCount: data.tubeLoadingDetail!.length,
+  //                           itemBuilder: (context, index) {
+  //                             final dataTube = data.tubeLoadingDetail![index];
+  //                             print(dataTube.tubeNo);
+  //                             return Column(
+  //                               children: [
+  //                                 _buildInfoCard(
+  //                                   isOkay: true,
+  //                                   prefill: false,
+  //                                   production: false,
+  //                                   postfill: false,
+  //                                   finish: true,
+  //                                   width: width,
+  //                                   height: height,
+  //                                   data: {
+  //                                     "id": dataTube.idStr ?? "-",
+  //                                     "tube": dataTube.tubeId ?? "-",
+  //                                     "no": dataTube.tubeNo ?? "-",
+  //                                     'CB': dataTube.prefillCheckBody ?? "-",
+  //                                     'CV': dataTube.prefillCheckValve ?? "-",
+  //                                     'VENT': dataTube.prefillVent ?? "-",
+  //                                     'HT': dataTube.prefillHammerTest ?? "-",
+  //                                     'CT': dataTube.postfillColdTest ?? "-",
+  //                                     'TBI': dataTube.productionT0Weight ?? "-",
+  //                                     'TBII': dataTube.postfillT2Weight ?? "-",
+  //                                     'Rak': dataTube.tubeShelfName ?? "-",
+  //                                     'status': "OK",
+  //                                     'date': "-",
+  //                                     'time': "-",
+  //                                     'creator': "-",
+  //                                   },
+  //                                   onIsiDataPressed: () {},
+  //                                 ),
+  //                                 if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
+  //                                   const SizedBox(height: 16),
+  //                               ],
+  //                             );
+  //                           },
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 )
+  //               : Expanded(
+  //                   child: Center(
+  //                       child: Text(
+  //                     'Belum Terdapat Data',
+  //                     style: titleTextBlack,
+  //                   )),
+  //                 ),
+  //         );
+  //       } else {
+  //         return const Center(child: Text('No data found'));
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget _buildInfoCard({
     required double width,

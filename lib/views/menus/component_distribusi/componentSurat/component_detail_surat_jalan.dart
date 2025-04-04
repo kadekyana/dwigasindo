@@ -296,7 +296,7 @@ class _WidgetCardState extends State<WidgetCard> {
                             ),
                             Expanded(
                               flex: 3,
-                              child: Text('${data?.driverName ?? "-"}',
+                              child: Text(data.driverName ?? "-",
                                   overflow: TextOverflow.ellipsis,
                                   style: subtitleTextBlack),
                             ),
@@ -309,7 +309,10 @@ class _WidgetCardState extends State<WidgetCard> {
                               isExpanded[index] = !(isExpanded[index] ?? false);
                             });
                           },
-                          child: Expanded(
+                          child: SizedBox(
+                            // Ganti Expanded dengan SizedBox
+                            height: 24.0,
+                            width: 24.0,
                             child: Icon(
                               expanded
                                   ? Icons.keyboard_arrow_up
@@ -319,7 +322,7 @@ class _WidgetCardState extends State<WidgetCard> {
                             ),
                           ),
                         ),
-                        if (expanded)
+                        if (expanded && details?.items != null)
                           ...details!.items!.map((item) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
@@ -344,7 +347,7 @@ class _WidgetCardState extends State<WidgetCard> {
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        'Item No: ${item.no}',
+                                        'Item No: ${item.no ?? "-"}', // Tambahkan default jika null
                                         style: subtitleTextBlack.copyWith(
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -352,7 +355,7 @@ class _WidgetCardState extends State<WidgetCard> {
                                     Expanded(
                                       flex: 3,
                                       child: Text(
-                                        '${item.tubeGasName}', // Sesuaikan dengan atribut item yang ingin ditampilkan
+                                        '${item.tubeGasName ?? "-"}', // Hindari null
                                         style: subtitleTextBlack,
                                         overflow: TextOverflow.ellipsis,
                                       ),
