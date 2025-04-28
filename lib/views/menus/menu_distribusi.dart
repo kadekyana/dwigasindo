@@ -132,12 +132,13 @@ class MenuDistribusi extends StatelessWidget {
                         try {
                           await Future.wait([
                             provider.countClear(),
-                            provider.getAllTube(context),
-                            provider.getAllTubeGrade(context),
-                            provider.getAllTubeType(context),
-                            provider.getAllTubeGas(context),
-                            provider.getAllCostumer(context),
-                            provider.getAllSupplier(context),
+                            // provider.getAllTube(context),
+                            provider.getTubesPaginated(context),
+                            // provider.getAllTubeGrade(context),
+                            // provider.getAllTubeType(context),
+                            // provider.getAllTubeGas(context),
+                            // provider.getAllCostumer(context),
+                            // provider.getAllSupplier(context),
                             provider.getAllCradle(context),
                             provider.countTube(),
                           ]);

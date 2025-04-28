@@ -205,6 +205,7 @@ class ProviderProduksi extends ChangeNotifier {
       String? name, String customerName, int tubeQty) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
+
     final response = await DioServiceAPI()
         .postRequest(url: 'c2h2_productions', token: token, data: {
       "name": name,
@@ -222,6 +223,28 @@ class ProviderProduksi extends ChangeNotifier {
       Navigator.pop(context);
     } else {
       await getAllProduksi(context);
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> updatePrefillData(
+      BuildContext context, String uuid, int sp, int cb, int vent) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: 'mix_gas_tube_loadings/$uuid',
+        token: token,
+        data: {
+          "status_process": sp,
+          "prefill_check_body": cb,
+          "prefill_vent": vent
+        });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      Navigator.pop(context);
+    } else {
       Navigator.pop(context);
     }
   }

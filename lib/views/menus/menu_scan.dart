@@ -71,6 +71,7 @@ class _MenuScanState extends State<MenuScan> {
                 Provider.of<ProviderProduksi>(context, listen: false);
             provider.getTubeShelfMixGas(context, widget.idRak!);
           }
+          dispose();
         },
       ),
       body: SafeArea(

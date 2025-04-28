@@ -142,7 +142,7 @@ class DioServiceAPI {
     required String url,
     required String token,
     int maxRetries = 3,
-    int timeoutSeconds = 1,
+    int timeoutSeconds = 10,
   }) async {
     try {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =

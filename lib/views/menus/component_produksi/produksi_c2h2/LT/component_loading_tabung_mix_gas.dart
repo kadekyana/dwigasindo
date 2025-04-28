@@ -1,6 +1,8 @@
 import 'package:dwigasindo/model/modelLoadingTubeMixGas.dart';
 import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/component_loading_tabung.dart';
 import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/isi_data_loading_tube.dart';
+import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/isi_data_loading_tube_mix.dart';
+import 'package:dwigasindo/views/menus/menu_scan_tube_mix.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -956,11 +958,13 @@ class _ComponentLoadingTabungMixGasDetailState
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenuScan(
-                                    title: 'Tube',
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenuScan(
+                            title: 'CO2',
+                          ),
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -977,7 +981,25 @@ class _ComponentLoadingTabungMixGasDetailState
                             FullWidth: width * 0.35,
                             FullHeight: height * 0.05,
                             title: "Tambah Tabung",
-                            onpressed: () {},
+                            onpressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuScanTubeMix(
+                                    title: widget.title,
+                                    fill: (widget.title == "CO2")
+                                        ? 1
+                                        : (widget.title == "Gas")
+                                            ? 2
+                                            : (widget.title == "VGL/DEWAR")
+                                                ? 3
+                                                : (widget.title == "Mix Gas")
+                                                    ? 4
+                                                    : 5,
+                                  ),
+                                ),
+                              );
+                            },
                             bgColor: PRIMARY_COLOR,
                             color: PRIMARY_COLOR),
                       ],
@@ -1037,8 +1059,9 @@ class _ComponentLoadingTabungMixGasDetailState
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              IsiDataLoadingTube(
+                                              IsiDataLoadingTubeMix(
                                             title: 'Prefill',
+                                            uuid: dataTube.idStr!,
                                           ),
                                         ),
                                       );

@@ -229,12 +229,40 @@ class MenuHome extends StatelessWidget {
                           icon: Image.asset('assets/images/distribusi.png'),
                           isi: "Distribusi",
                           navigator: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MenuDistribusi(),
-                              ),
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             );
+
+                            try {
+                              await Future.wait([
+                                providerDistribusi.getAllTube(context),
+                                providerDistribusi.getAllTubeGrade(context),
+                                providerDistribusi.getAllTubeType(context),
+                                providerDistribusi.getAllTubeGas(context),
+                                providerDistribusi.getAllCostumer(context),
+                                providerDistribusi.getAllSupplier(context),
+                                providerDistribusi.getAllCradle(context),
+                              ]);
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MenuDistribusi(),
+                                ),
+                              );
+                            } catch (e) {
+                              Navigator.of(context)
+                                  .pop(); // Tutup Dialog Loading
+                              print('Error: $e');
+                              // Tambahkan pesan error jika perlu
+                            }
                           }),
                       WidgetMenu(
                           HB: height,

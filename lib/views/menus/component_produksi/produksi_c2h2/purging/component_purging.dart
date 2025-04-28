@@ -1,6 +1,8 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/model/modelLoadingTubeMixGas.dart';
-import 'package:dwigasindo/views/menus/component_produksi/produksi_c2h2/LT/isi_data_loading_tube.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
+import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dwigasindo/const/const_color.dart';
@@ -121,7 +123,7 @@ class _ComponentPurgingState extends State<ComponentPurging>
               controller: _tabController,
               children: [
                 // Konten untuk setiap tab
-                _buildPrefillTab(width, height),
+                _buildPurgingTab(width, height),
                 _buildFinishTab(width, height),
               ],
             ),
@@ -131,7 +133,7 @@ class _ComponentPurgingState extends State<ComponentPurging>
     );
   }
 
-  Widget _buildPrefillTab(double width, double height) {
+  Widget _buildPurgingTab(double width, double height) {
     return StreamBuilder<ModelLoadingTubeMixGas>(
       stream: _streamControllers[0]!.stream, // Status untuk Empty Weight
       builder: (context, snapshot) {
@@ -163,19 +165,42 @@ class _ComponentPurgingState extends State<ComponentPurging>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                          'assets/images/scan.svg',
-                          width: 30,
-                          height: 30,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PurgingIsiData(),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/scan.svg',
+                                width: 30,
+                                height: 30,
+                              ),
+                              const SizedBox(width: 5),
+                              const Text('Scan Isi'),
+                            ],
+                          ),
                         ),
-                        const SizedBox(width: 5),
-                        const Text('Scan Isi'),
                         const Expanded(child: SizedBox.shrink()),
                         WidgetButtonCustom(
                             FullWidth: width * 0.35,
                             FullHeight: height * 0.05,
                             title: "Tambah Tabung",
-                            onpressed: () {},
+                            onpressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MenuScan(
+                                    title: 'Tube',
+                                  ),
+                                ),
+                              );
+                            },
                             bgColor: PRIMARY_COLOR,
                             color: PRIMARY_COLOR),
                       ],
@@ -215,17 +240,7 @@ class _ComponentPurgingState extends State<ComponentPurging>
                                       'time': "-",
                                       'creator': "-",
                                     },
-                                    onIsiDataPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              IsiDataLoadingTube(
-                                            title: 'Prefill',
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                    onIsiDataPressed: () {},
                                   ),
                                 ],
                               );
@@ -465,7 +480,7 @@ class _ComponentPurgingState extends State<ComponentPurging>
                   child: WidgetButtonCustom(
                     FullWidth: width * 0.25,
                     FullHeight: 30.h,
-                    title: 'Isi Data',
+                    title: 'Back Prefill',
                     onpressed: onIsiDataPressed,
                     bgColor: PRIMARY_COLOR,
                     color: Colors.transparent,
@@ -1550,6 +1565,218 @@ class _ComponentPurgingState extends State<ComponentPurging>
                     ),
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PurgingIsiData extends StatefulWidget {
+  const PurgingIsiData({super.key});
+
+  @override
+  State<PurgingIsiData> createState() => _PurgingIsiDataState();
+}
+
+class _PurgingIsiDataState extends State<PurgingIsiData> {
+  List<Map<String, dynamic>> formList = []; // List untuk menyimpan data form
+  // Fungsi untuk menambah form baru
+  void _addForm() {
+    setState(() {
+      formList.add({"item_id": null, "qty": null, "note": null});
+    });
+  }
+
+  // Fungsi untuk menghapus form terakhir
+  void _removeForm(int index) {
+    setState(() {
+      formList.removeAt(index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      appBar: WidgetAppbar(
+        title: "Scan Isi",
+        colorBG: Colors.grey.shade100,
+        colorTitle: Colors.black,
+        colorBack: Colors.black,
+        back: true,
+        center: true,
+        route: () {
+          Navigator.pop(context);
+        },
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: formList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.only(left: 16.w, right: 10.w, top: 10.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Item ${index + 1}',
+                              style: titleTextBlack,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: IconButton(
+                              onPressed: () => _removeForm(index),
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: 100.h,
+                      child: ListTile(
+                        title: Text(
+                          'Pilih Item',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Align(
+                          alignment: Alignment.topLeft,
+                          child: Consumer<ProviderDistribusi>(
+                            builder: (context, provider, child) {
+                              // final pic = provider.customer!.data!
+                              //     .map((data) => {'id': data.id, 'name': data.name})
+                              //     .toList();
+
+                              return CustomDropdown(
+                                decoration: CustomDropdownDecoration(
+                                    closedBorder:
+                                        Border.all(color: Colors.grey.shade400),
+                                    expandedBorder: Border.all(
+                                        color: Colors.grey.shade400)),
+                                hintText: 'Pilih Item',
+                                // items: pic.map((e) => e['name']).toList(),
+                                items: const ['Item 1', 'Item 2', 'Item 3'],
+                                onChanged: (item) {
+                                  print("Selected Item: $item");
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: 80.h,
+                      child: ListTile(
+                        title: Text(
+                          'Qty',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          child: WidgetForm(
+                            change: (value) {},
+                            alert: 'Qty',
+                            hint: 'Qty',
+                            typeInput: TextInputType.number,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    SizedBox(
+                      width: width,
+                      height: 120.h,
+                      child: ListTile(
+                        title: Text(
+                          'Catatan',
+                          style: subtitleTextBlack,
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          height: 100.h,
+                          child: TextField(
+                            onChanged: (value) {},
+                            maxLines: null,
+                            expands: true,
+                            decoration: InputDecoration(
+                              hintText: 'Masukkan catatan di sini...',
+                              contentPadding: const EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                            style: subtitleTextBlack,
+                            textAlignVertical: TextAlignVertical.top,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            SizedBox(
+              width: width,
+              height: height * 0.06,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: WidgetButtonCustom(
+                    FullWidth: width * 0.9,
+                    FullHeight: 40.h,
+                    title: 'Tambah Form Item',
+                    onpressed: _addForm,
+                    bgColor: PRIMARY_COLOR,
+                    color: PRIMARY_COLOR),
+              ),
+            ),
+            SizedBox(
+              width: width,
+              height: height * 0.06,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: WidgetButtonCustom(
+                    FullWidth: width * 0.9,
+                    FullHeight: 40.h,
+                    title: 'Mulai Scan',
+                    onpressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenuScan(
+                            title: 'Scan Isi',
+                          ),
+                        ),
+                      );
+                    },
+                    bgColor: COMPLEMENTARY_COLOR4,
+                    color: COMPLEMENTARY_COLOR4),
               ),
             ),
           ],

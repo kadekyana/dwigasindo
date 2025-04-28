@@ -19,6 +19,7 @@ import 'package:dwigasindo/model/modelSatuanSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelTube.dart';
+import 'package:dwigasindo/model/modelTubePagination.dart';
 import 'package:dwigasindo/model/modelVendorDetail.dart';
 import 'package:dwigasindo/model/modelVerifikasiBPTK.dart';
 import 'package:dwigasindo/providers/provider_auth.dart';
@@ -633,7 +634,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelCradle.fromJson(response.data);
-      print("RESPONSE : $response");
+      // print("RESPONSE : $response");
       _cradle = data;
       notifyListeners();
     } else {
@@ -816,7 +817,7 @@ class ProviderDistribusi extends ChangeNotifier {
 
     if (response!.data['error'] == null) {
       final data = ModelAllCostumer.fromJson(response.data);
-      print("RESPONSE : $response");
+      // print("RESPONSE : $response");
       _customer = data;
       notifyListeners();
     } else {
@@ -927,6 +928,7 @@ class ProviderDistribusi extends ChangeNotifier {
     final response =
         await DioServiceAPI().getRequest(url: 'tubes', token: token);
 
+    print(response?.data);
     if (response!.data['error'] == null) {
       final data = ModelTube.fromJson(response.data);
       // print("RESPONSE : ${data.data?.length}");
@@ -1040,6 +1042,65 @@ class ProviderDistribusi extends ChangeNotifier {
       } else {
         await printZPLCustomer(printer, response?.data['data']['code']);
       }
+      await countClear();
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.success(
+          message: 'Berhasil Membuat Tube Gas',
+        ),
+      );
+      return response!.data;
+    } else {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Gagal Membuat Tube Gas',
+        ),
+      );
+    }
+  }
+
+  Future<dynamic> createTabungSTDR(
+    BuildContext context,
+    int owner,
+    bool isSingle,
+    int? nonSingletubeType,
+    int idjenisGas,
+    bool nonGrade,
+    int? selectedGradeIndex,
+    int? tahun,
+    String? serial,
+    String? tblama,
+    int? intCustomer,
+    int? intVendor,
+    String? lokasi,
+  ) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    isLoading = true;
+    notifyListeners();
+
+    final response = await DioServiceAPI().postRequest(
+      url: "tubes",
+      token: token,
+      data: {
+        "photo": '',
+        "owner_ship_type": owner,
+        "is_has_tube_type": isSingle,
+        "tube_type_id": nonSingletubeType,
+        "tube_gas_id": idjenisGas,
+        "is_has_grade": nonGrade,
+        "tube_grade_id": selectedGradeIndex,
+        "vendor_id": intVendor,
+        "tube_year": tahun,
+        "serial_number": serial,
+        "old_tube_number": tblama,
+        "customer_id": intCustomer,
+        "last_location": lokasi,
+      },
+    );
+
+    if (response?.data != null) {
       await countClear();
       showTopSnackBar(
         Overlay.of(context),
@@ -1558,5 +1619,75 @@ class ProviderDistribusi extends ChangeNotifier {
   void clearProgress() {
     _progress = 0;
     notifyListeners();
+  }
+
+  // Pagination Function
+
+  int _currentPage = 1;
+  bool isFetchingMore = false;
+  bool hasMoreData = true;
+  ModelTubePagination? _tubePagination; // Sesuaikan model
+
+  List<Tube> get tubes => _tubePagination?.data?.items ?? [];
+
+  Future<void> getTubesPaginated(BuildContext context,
+      {bool isRefresh = false}) async {
+    if (isFetchingMore || !hasMoreData) return;
+
+    isFetchingMore = true;
+    notifyListeners();
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    try {
+      if (isRefresh) {
+        _currentPage = 1;
+        hasMoreData = true;
+        _tubePagination = null;
+      }
+
+      final response = await DioServiceAPI().getRequest(
+        url: 'tubes_paginated?page=$_currentPage',
+        token: token,
+        timeoutSeconds: 1,
+      );
+
+      print("RESPONSE Pagination : ${response?.data}");
+
+      if (response?.data['error'] == null) {
+        final newData = ModelTubePagination.fromJson(response!.data);
+
+        if (isRefresh || _tubePagination == null) {
+          _tubePagination = newData;
+          notifyListeners();
+        } else {
+          _tubePagination!.data!.items!.addAll(newData.data?.items ?? []);
+          notifyListeners();
+        }
+
+        // Update _hasMoreData berdasarkan paginator
+        final paginator = newData.data?.paginator;
+
+        if (paginator != null) {
+          if (paginator.currentPage! >= paginator.lastPage!) {
+            hasMoreData = false;
+            notifyListeners();
+          } else {
+            _currentPage++;
+            notifyListeners();
+          }
+        } else {
+          hasMoreData = false;
+        }
+      } else {
+        print("Error on pagination get: ${response?.data['error']}");
+      }
+    } catch (e) {
+      print("Pagination error: $e");
+    } finally {
+      isFetchingMore = false;
+      notifyListeners();
+    }
   }
 }

@@ -1,0 +1,2 @@
+/Users/mymac/Documents/Dev/dwigasindo/android/app/.cxx/RelWithDebInfo/4a1a4f5f/x86/CMakeFiles/edit_cache.dir
+/Users/mymac/Documents/Dev/dwigasindo/android/app/.cxx/RelWithDebInfo/4a1a4f5f/x86/CMakeFiles/rebuild_cache.dir

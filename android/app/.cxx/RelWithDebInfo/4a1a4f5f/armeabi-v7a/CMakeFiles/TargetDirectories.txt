@@ -1,0 +1,2 @@
+/Users/mymac/Documents/Dev/dwigasindo/android/app/.cxx/RelWithDebInfo/4a1a4f5f/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/mymac/Documents/Dev/dwigasindo/android/app/.cxx/RelWithDebInfo/4a1a4f5f/armeabi-v7a/CMakeFiles/rebuild_cache.dir

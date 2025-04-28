@@ -7,6 +7,7 @@ import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_printer.dart';
 import 'package:dwigasindo/providers/provider_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
+import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_dropdown.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
 import 'package:flutter/material.dart';
@@ -566,6 +567,105 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                     ),
                     SizedBox(
                       height: height * 0.05,
+                    ),
+                    WidgetButtonCustom(
+                        FullWidth: width * 0.9,
+                        FullHeight: 40.h,
+                        title: "Tambah Tabung",
+                        bgColor: PRIMARY_COLOR,
+                        onpressed: () async {
+                          if (owner == 2) {
+                            print("A : $selectSupllier");
+                            print("B : $selectCustomer");
+                          } else {
+                            print("A : $selectSupllier");
+                            print("B : $selectCustomer");
+                          }
+
+                          // Atur nilai null sesuai kondisi
+                          if (nonGrade == false) {
+                            setState(() {
+                              selectedGradeIndex = null;
+                            });
+                          } else if (isSingle == true) {
+                            setState(() {
+                              nonSingletubeType = null;
+                            });
+                          }
+
+                          int intTahun = int.parse(tahun.text);
+                          int intGas = int.parse(selectTubeGas);
+
+                          // Proses pembuatan tabung dan print
+                          if (isBlast == true) {
+                            showDialog(
+                              context: context,
+                              barrierDismissible:
+                                  false, // tidak bisa ditutup manual
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                            for (int i = 0; i < int.parse(blast.text); i++) {
+                              await provider.createTabungSTDR(
+                                context,
+                                owner!,
+                                isSingle,
+                                nonSingletubeType,
+                                intGas,
+                                nonGrade,
+                                selectedGradeIndex,
+                                intTahun,
+                                serial.text,
+                                tblama.text,
+                                selectCustomer,
+                                selectSupllier,
+                                lokasi.text,
+                              );
+                            }
+                            Navigator.pop(context);
+                            provider.getAllTube(context);
+                            provider.countTube();
+                            Navigator.pop(context);
+                          } else {
+                            await provider.createTabungSTDR(
+                              context,
+                              owner!,
+                              isSingle,
+                              nonSingletubeType,
+                              intGas,
+                              nonGrade,
+                              selectedGradeIndex,
+                              intTahun,
+                              serial.text,
+                              tblama.text,
+                              selectCustomer,
+                              selectSupllier,
+                              lokasi.text,
+                            );
+                            await provider.getAllTube(context);
+                            Navigator.pop(context);
+                            await provider.countTube();
+                          }
+                        },
+                        color: PRIMARY_COLOR),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    SizedBox(
+                      height: 50.h,
+                      child: Center(
+                        child: Text(
+                          "Jika Ingin Print Barcode\nPastikan Sudah Tersambung dengan Printer",
+                          style: titleTextBlack,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.h,
                     ),
                     ElevatedButton(
                       onPressed: startScan,

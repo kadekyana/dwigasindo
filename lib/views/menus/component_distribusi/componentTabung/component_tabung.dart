@@ -27,12 +27,40 @@ class _ComponentTabungState extends State<ComponentTabung> {
   Timer? _timer;
   GroupButtonController? cek = GroupButtonController(selectedIndex: 0);
   bool isTube = true;
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final provider = Provider.of<ProviderDistribusi>(context, listen: false);
+
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      if (!provider.isFetchingMore && provider.hasMoreData) {
+        provider.getTubesPaginated(context);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderDistribusi>(context);
     final data = provider.tube?.data;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
+    print(provider.tubes);
 
     return PopScope(
       onPopInvoked: (didPop) {
@@ -363,20 +391,19 @@ class _ComponentTabungState extends State<ComponentTabung> {
                   flex: 3,
                   child: Consumer<ProviderDistribusi>(
                     builder: (context, provider, child) {
-                      final data = provider.tube
-                          ?.data; // Fetch the latest data inside the Consumer
-                      if (data == null || data.isEmpty) {
+                      final data = provider
+                          .tubes; // Fetch the latest data inside the Consumer
+
+                      if (data.isEmpty) {
                         return const Center(child: Text('No data available'));
-                      } else {
-                        print(data);
                       }
 
                       return ListView.builder(
-                        itemCount: provider.tube?.data?.length,
+                        controller: _scrollController,
+                        itemCount: data.length,
                         itemBuilder: (context, index) {
-                          final item = provider.tube?.data?[index];
-
-                          print(item);
+                          final item = data[index];
+                          print(provider.isFetchingMore);
 
                           return Container(
                             margin: EdgeInsets.symmetric(
@@ -417,7 +444,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                           fit: BoxFit.scaleDown,
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            item?.code ?? "-",
+                                            item.code ?? "-",
                                             style: titleText,
                                           ),
                                         ),
@@ -531,7 +558,7 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                           alignment: Alignment
                                                               .centerLeft,
                                                           child: Text(
-                                                              ': ${(item?.ownerShipType == 1) ? item?.vendorName : item?.customerName}',
+                                                              ': ${(item.ownerShipType == 1) ? (item.vendorName == null) ? "-" : item.vendorName : (item.customerName == null) ? "-" : item.customerName}',
                                                               style:
                                                                   subtitleTextBoldBlack),
                                                         ),
@@ -688,23 +715,23 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Expanded(
-                                                      flex: 2,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        child: FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                              ': ${item?.lastLocation ?? "-"}',
-                                                              style:
-                                                                  subtitleTextBoldBlack),
-                                                        ),
-                                                      ),
-                                                    )
+                                                    // Expanded(
+                                                    //   flex: 2,
+                                                    //   child: Container(
+                                                    //     padding:
+                                                    //         const EdgeInsets
+                                                    //             .all(3),
+                                                    //     child: FittedBox(
+                                                    //       fit: BoxFit.scaleDown,
+                                                    //       alignment: Alignment
+                                                    //           .centerLeft,
+                                                    //       child: Text(
+                                                    //           ': ${item. ?? "-"}',
+                                                    //           style:
+                                                    //               subtitleTextBoldBlack),
+                                                    //     ),
+                                                    //   ),
+                                                    // )
                                                   ],
                                                 )),
                                               ],

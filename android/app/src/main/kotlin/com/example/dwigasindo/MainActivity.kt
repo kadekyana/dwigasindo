@@ -1,4 +1,4 @@
-package com.example.dwigasindo
+package com.ptdwigasindoabadi.dwigasindo
 
 import io.flutter.embedding.android.FlutterActivity
 

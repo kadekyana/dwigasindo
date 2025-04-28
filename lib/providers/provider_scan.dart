@@ -137,6 +137,18 @@ class ProviderScan with ChangeNotifier {
     print(response?.data);
   }
 
+  Future<void> scanTubeCO2(BuildContext context, String code, int fill) async {
+    List<String> dataCode = [code];
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().postRequest(
+        url: 'mix_gas_tube_loadings',
+        token: token,
+        data: {"tube_no": code, "fill_type": fill});
+    print(response?.data);
+  }
+
   Future<void> ScanMixGas(BuildContext context, int id, String code) async {
     List<String> dataCode = [code];
     final auth = Provider.of<ProviderAuth>(context, listen: false);

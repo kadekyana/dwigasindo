@@ -405,7 +405,7 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                   final dataCard = data[index];
                   return Container(
                     width: double.maxFinite,
-                    height: 300.h,
+                    height: 280.h,
                     margin: EdgeInsets.only(bottom: height * 0.02),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -613,26 +613,26 @@ class _DetailLihatSOState extends State<DetailLihatSO> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width * 0.025),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: WidgetButtonCustom(
-                                      FullWidth: width * 0.3,
-                                      FullHeight: 30.h,
-                                      title: "Lihat Barang",
-                                      onpressed: () {},
-                                      bgColor: Colors.grey,
-                                      color: Colors.transparent),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: Padding(
+                        //     padding:
+                        //         EdgeInsets.symmetric(horizontal: width * 0.025),
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //       children: [
+                        //         Expanded(
+                        //           child: WidgetButtonCustom(
+                        //               FullWidth: width * 0.3,
+                        //               FullHeight: 30.h,
+                        //               title: "Lihat Barang",
+                        //               onpressed: () {},
+                        //               bgColor: Colors.grey,
+                        //               color: Colors.transparent),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 5.h,
                         ),
