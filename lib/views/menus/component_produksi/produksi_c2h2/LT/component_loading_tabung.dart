@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/model/modelLoadingTube.dart';
@@ -66,7 +65,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
   }
 
   void _startStream(int status) {
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!_streamControllers[status]!.isClosed) {
         final data = await Provider.of<ProviderProduksi>(context, listen: false)
             .getTubeLoading(context, status);
@@ -512,11 +511,13 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenuScan(
-                                    title: 'Tube',
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenuScan(
+                            title: '',
+                          ),
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -527,7 +528,7 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                           height: 30,
                         ),
                         const SizedBox(width: 5),
-                        const Text('Scan Isi')
+                        const Text('Scan Tube')
                       ],
                     ),
                   ),
@@ -576,9 +577,9 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                       }
                                     },
                                   ),
-                                  if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
+                                  if (_showForm && _selectedCardIndex == index)
                                     const SizedBox(height: 16),
-                                  if (_showForm)
+                                  if (_showForm && _selectedCardIndex == index)
                                     _buildWeightForm(dataTube.idStr!),
                                 ],
                               );
@@ -806,9 +807,9 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                       }
                                     },
                                   ),
-                                  if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
+                                  if (_showForm && _selectedCardIndex == index)
                                     const SizedBox(height: 16),
-                                  if (_showForm)
+                                  if (_showForm && _selectedCardIndex == index)
                                     _buildWeightFormFilled(dataTube.tareWeight!,
                                         dataTube.emptyWeight!, dataTube.idStr!),
                                 ],
@@ -938,9 +939,11 @@ class _ComponentLoadingTabungState extends State<ComponentLoadingTabung>
                                           }
                                         },
                                       ),
-                                      if (_showForm) // Menampilkan form hanya jika _showForm bernilai true
+                                      if (_showForm &&
+                                          _selectedCardIndex == index)
                                         const SizedBox(height: 16),
-                                      if (_showForm)
+                                      if (_showForm &&
+                                          _selectedCardIndex == index)
                                         _buildWeightFormFilled(
                                             dataTube.tareWeight!,
                                             dataTube.emptyWeight!,

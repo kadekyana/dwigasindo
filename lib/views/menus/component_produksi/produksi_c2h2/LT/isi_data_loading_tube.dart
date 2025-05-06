@@ -1,6 +1,7 @@
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_produksi.dart';
+import 'package:dwigasindo/views/menus/menu_scan.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:dwigasindo/widgets/widget_button_custom.dart';
 import 'package:dwigasindo/widgets/widget_form.dart';
@@ -63,40 +64,6 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
           height: height,
           child: Column(
             children: [
-              SizedBox(
-                width: width,
-                height: height * 0.1,
-                child: ListTile(
-                  title: Text(
-                    'Pilih Jenis Isi Tabung',
-                    style: titleTextBlack,
-                    textAlign: TextAlign.center,
-                  ),
-                  subtitle: Align(
-                    alignment: Alignment.topCenter,
-                    child: GroupButton(
-                        controller: jenis,
-                        isRadio: true,
-                        options: GroupButtonOptions(
-                          selectedColor: PRIMARY_COLOR,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        onSelected: (value, index, isSelected) {
-                          print('DATA KLIK : $value - $index - $isSelected');
-                          if (index == 0) {
-                            setState(() {
-                              selectJenis = true;
-                            });
-                          } else {
-                            setState(() {
-                              selectJenis = false;
-                            });
-                          }
-                        },
-                        buttons: const ['Massal', "Single"]),
-                  ),
-                ),
-              ),
               if (widget.title == "Production")
                 SizedBox(
                   width: width,
@@ -337,22 +304,11 @@ class _IsiDataLoadingTubeState extends State<IsiDataLoadingTube> {
             FullHeight: height * 0.06,
             title: (selectJenis == true) ? "Submit & Mulai Scan" : 'Submit',
             onpressed: () async {
-              (widget.title == 'C2H2')
-                  ? await provider.createProduksi(
-                      context,
-                      jenis!.selectedIndex,
-                      nomorPo!.text,
-                      name!.text,
-                      namaPelanggan!.text,
-                      int.parse(jumlah!.text))
-                  : await provider.createMixGas(
-                      context,
-                      jenis!.selectedIndex,
-                      nomorPo!.text,
-                      name!.text,
-                      namaPelanggan!.text,
-                      int.parse(jumlah!.text),
-                      selectTubeGas);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MenuScan(title: "Scan Isi")),
+              );
             },
             bgColor: PRIMARY_COLOR,
             color: PRIMARY_COLOR),

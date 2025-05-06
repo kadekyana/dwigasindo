@@ -1,4 +1,3 @@
-import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_printer.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'providers/provider_auth.dart';
 import 'providers/provider_bottom_bar.dart';
 import 'providers/provider_dashboard.dart';
 import 'providers/provider_distribusi.dart';
+import 'providers/provider_order.dart';
 import 'providers/provider_scan.dart';
 import 'providers/provider_surat_jalan.dart';
 import 'providers/provider_item.dart';

@@ -1,5 +1,4 @@
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_sales/component_data_crm.dart';
@@ -8,6 +7,8 @@ import 'package:dwigasindo/views/menus/component_sales/component_data_sales_info
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/provider_order.dart';
 
 class MenuSales extends StatelessWidget {
   const MenuSales({super.key});

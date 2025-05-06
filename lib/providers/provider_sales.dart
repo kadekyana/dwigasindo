@@ -472,7 +472,7 @@ class ProviderSales extends ChangeNotifier {
     }
   }
 
-  Future<void> getListMaintenance(
+  Future<ModelMaintenance> getListMaintenance(
       BuildContext context, int type, int status) async {
     print("----------------------------");
     print(type);
@@ -488,6 +488,9 @@ class ProviderSales extends ChangeNotifier {
       final data = ModelMaintenance.fromJson(response!.data);
       _maintenance = data;
       notifyListeners();
+      return data;
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 

@@ -4,7 +4,6 @@ import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
-import 'package:dwigasindo/providers/provider_produksi.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_sales/component_menu_seles_information.dart';
 import 'package:dwigasindo/views/menus/component_sales/component_tugas.dart';

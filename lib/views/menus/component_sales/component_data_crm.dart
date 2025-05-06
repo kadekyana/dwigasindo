@@ -4,7 +4,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/model/modelDetailLead.dart';
-import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
@@ -19,6 +18,8 @@ import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_list/timeline_list.dart';
+
+import '../../../providers/provider_order.dart';
 
 class ComponentDataCrm extends StatefulWidget {
   ComponentDataCrm({super.key, required this.title});
@@ -323,6 +324,7 @@ class _ComponentLeadsState extends State<ComponentLeads> {
                 itemCount: data!.length,
                 itemBuilder: (context, index) {
                   final dataCard = data[index];
+                  print(dataCard);
                   return Column(
                     children: [
                       Container(
@@ -694,7 +696,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
           children: [
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'Nama PT',
@@ -715,7 +717,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
             ),
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'PIC',
@@ -737,7 +739,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
             ),
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'No Handphone',
@@ -759,7 +761,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
             ),
             SizedBox(
               width: width,
-              height: 120.h,
+              height: 150.h,
               child: ListTile(
                 title: Text(
                   'Jenis Produk',
@@ -788,7 +790,7 @@ class _ComponentTambahLeadState extends State<ComponentTambahLead> {
             ),
             SizedBox(
               width: width,
-              height: 80.h,
+              height: 100.h,
               child: ListTile(
                 title: Text(
                   'Pilih District',

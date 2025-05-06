@@ -1001,7 +1001,7 @@ class _TambahTugasState extends State<TambahTugas> {
             if (selectId == 1 || selectId == 3)
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 250.h,
+                height: 300.h,
                 child: ListTile(
                   contentPadding: EdgeInsets.only(left: 16.w, right: 20.w),
                   title: Text(

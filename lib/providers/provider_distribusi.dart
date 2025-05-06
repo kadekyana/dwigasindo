@@ -429,6 +429,37 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+  Future<void> createCradleSDTR(
+      BuildContext context,
+      int owner,
+      bool isHasTube,
+      int typeId,
+      bool isHas,
+      int? customerId,
+      int? vendorId,
+      String lokasi,
+      int tubeId) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().postRequest(url: "cradles", token: token, data: {
+      "owner_ship_type": owner,
+      "is_has_tube_type": isHasTube,
+      "tube_type_id": typeId,
+      "is_has_grade": isHas,
+      "customer_id": customerId,
+      "vendor_id": vendorId,
+      "location": lokasi,
+      "tube_gas_id": tubeId
+    });
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getAllCradle(context);
+      notifyListeners();
+    }
+  }
+
   //clear data
   Future<void> clearVerifikaisBPTK() async {
     _verifikasiBptk = null;
@@ -1126,53 +1157,10 @@ class ProviderDistribusi extends ChangeNotifier {
 
     String zplData = '''
 ^XA
-^CF0,25^FO340,68^FD$name^FS
-^CFB,15^FO340,93^FDIndustrial Grade 2^FS
-^AN,15^FO340,107^FDNo telp^FS
-^AN,15^FO400,107^FD:^FS
-^AN,15^FO410,107^FD021 - 89117509^FS
-^AN,15^FO340,123^FDNo wa^FS
-^AN,15^FO400,123^FD:^FS
-^AN,15^FO410,123^FD0812 8000 0429^FS
-^AN,15^FO340,137^FDEmail^FS
-^AN,15^FO400,137^FD:^FS
-^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
-^FO225,5
-^BQN,2,5
-^FD5xx$serialNumber^FS
-^CF0,18
-^FB130,1,0,C
-^FO215,123
-^FD$serialNumber^FS
-^CF0N,10
-^FB130,1,0,C
-^FO213,143
-^FDPT. Dwigasindo Abadi^FS
-^FO340,15
-^BY2
-^BCN,50,N,N,N,A^FD$serialNumber^FS
-^XZ
-  ''';
 
-    try {
-      log("Mengirim data ZPL ke printer: ${printer.name}");
-      await flutterThermalPrinterPlugin.printData(
-        printer,
-        zplData.codeUnits,
-      );
-      log("Cetak ZPL berhasil.");
-    } catch (e) {
-      log("Error saat mencetak ZPL: $e");
-    }
-  }
+^FO523,7^GFA,504,504,8,,::N038,:::,M07C,:M07E,:M03E,M03C,O07F,L07C0FF8,K07FC07FC,J01FFC07FC,J07FFE07FC,I01IFE07FC,I07IFE07FC,I0JFE03FC,001KF03FE,003KF03FE,007KF,00JFE,00JF,01IFC,01IF,03FFE,03FFCI07FFE,03FF801JFE,07FF007JFE,07FE01FF03FE,07FE03FF03FE,07FE07FE03FE,07FC07FE03FE,:07FC07FE07FE,07F807FC07FE,07FA07FC07FE,07FA03F80FFC,03FA01F00FFC,03FBJ01FFC,03FB8I01FFC,01FB8I03FF8,01FBEI07FF8,00F9F001IF,00FDFC07IF,007DLFE,003MFC,003ELFC,001F7KF8,I077KF,I03BJFC,I01DJF8,J067FFE,L0FF,,::::^FS
 
-// Fungsi untuk mencetak label menggunakan ZPL
-  Future<void> printZPLCradle(
-      Printer printer, String name, String serialNumber) async {
-    final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
 
-    String zplData = '''
-^XA
 ^CF0,25^FO340,68^FD$serialNumber^FS
 ^CF0,25^FO485,68^FD|^FS
 ^CF0,25^FO500,68^FD$name^FS
@@ -1198,8 +1186,112 @@ class ProviderDistribusi extends ChangeNotifier {
 ^FO213,143
 ^FDPT. Dwigasindo Abadi^FS
 ^FO340,15
-^BY2
+^BY1
 ^BCN,50,N,N,N,A^FD$serialNumber^FS
+
+
+^XZ
+
+  ''';
+
+    try {
+      log("Mengirim data ZPL ke printer: ${printer.name}");
+      await flutterThermalPrinterPlugin.printData(
+        printer,
+        zplData.codeUnits,
+      );
+      log("Cetak ZPL berhasil.");
+    } catch (e) {
+      log("Error saat mencetak ZPL: $e");
+    }
+  }
+
+//   Future<void> printZPL(
+//       Printer printer, String name, String serialNumber) async {
+//     final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+//     String zplData = '''
+// ^XA
+// ^CF0,25^FO340,68^FD$name^FS
+// ^CFB,15^FO340,93^FDIndustrial Grade 2^FS
+// ^AN,15^FO340,107^FDNo telp^FS
+// ^AN,15^FO400,107^FD:^FS
+// ^AN,15^FO410,107^FD021 - 89117509^FS
+// ^AN,15^FO340,123^FDNo wa^FS
+// ^AN,15^FO400,123^FD:^FS
+// ^AN,15^FO410,123^FD0812 8000 0429^FS
+// ^AN,15^FO340,137^FDEmail^FS
+// ^AN,15^FO400,137^FD:^FS
+// ^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
+// ^FO225,5
+// ^BQN,2,5
+// ^FD5xx$serialNumber^FS
+// ^CF0,18
+// ^FB130,1,0,C
+// ^FO215,123
+// ^FD$serialNumber^FS
+// ^CF0N,10
+// ^FB130,1,0,C
+// ^FO213,143
+// ^FDPT. Dwigasindo Abadi^FS
+// ^FO340,15
+// ^BY2
+// ^BCN,50,N,N,N,A^FD$serialNumber^FS
+// ^XZ
+//   ''';
+
+//     try {
+//       log("Mengirim data ZPL ke printer: ${printer.name}");
+//       await flutterThermalPrinterPlugin.printData(
+//         printer,
+//         zplData.codeUnits,
+//       );
+//       log("Cetak ZPL berhasil.");
+//     } catch (e) {
+//       log("Error saat mencetak ZPL: $e");
+//     }
+//   }
+
+// Fungsi untuk mencetak label menggunakan ZPL
+  Future<void> printZPLCradle(
+      Printer printer, String name, String serialNumber) async {
+    final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+    String zplData = '''
+^XA
+
+^FO523,7^GFA,504,504,8,,::N038,:::,M07C,:M07E,:M03E,M03C,O07F,L07C0FF8,K07FC07FC,J01FFC07FC,J07FFE07FC,I01IFE07FC,I07IFE07FC,I0JFE03FC,001KF03FE,003KF03FE,007KF,00JFE,00JF,01IFC,01IF,03FFE,03FFCI07FFE,03FF801JFE,07FF007JFE,07FE01FF03FE,07FE03FF03FE,07FE07FE03FE,07FC07FE03FE,:07FC07FE07FE,07F807FC07FE,07FA07FC07FE,07FA03F80FFC,03FA01F00FFC,03FBJ01FFC,03FB8I01FFC,01FB8I03FF8,01FBEI07FF8,00F9F001IF,00FDFC07IF,007DLFE,003MFC,003ELFC,001F7KF8,I077KF,I03BJFC,I01DJF8,J067FFE,L0FF,,::::^FS
+
+
+^CF0,25^FO340,68^FD$serialNumber^FS
+^CF0,25^FO485,68^FD|^FS
+^CF0,25^FO500,68^FD$name^FS
+^CFB,15^FO340,93^FDIndustrial Grade 2^FS
+^AN,15^FO340,107^FDNo telp^FS
+^AN,15^FO400,107^FD:^FS
+^AN,15^FO410,107^FD021 - 89117509^FS
+^AN,15^FO340,123^FDNo wa^FS
+^AN,15^FO400,123^FD:^FS
+^AN,15^FO410,123^FD0812 8000 0429^FS
+^AN,15^FO340,137^FDEmail^FS
+^AN,15^FO400,137^FD:^FS
+^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
+^FO225,5
+^BQN,2,5
+^FD5xx$serialNumber^FS
+^CF0,18
+^FB130,1,0,C
+^FO215,123
+^FD$serialNumber^FS
+^CF0N,10
+^FB130,1,0,C
+^FO213,143
+^FDPT. Dwigasindo Abadi^FS
+^FO340,15
+^BY1
+^BCN,50,N,N,N,A^FD$serialNumber^FS
+
+
 ^XZ
   ''';
 
@@ -1215,22 +1307,71 @@ class ProviderDistribusi extends ChangeNotifier {
     }
   }
 
+//   Future<void> printZPLCradle(
+//       Printer printer, String name, String serialNumber) async {
+//     final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+//     String zplData = '''
+// ^XA
+// ^CF0,25^FO340,68^FD$serialNumber^FS
+// ^CF0,25^FO485,68^FD|^FS
+// ^CF0,25^FO500,68^FD$name^FS
+// ^CFB,15^FO340,93^FDIndustrial Grade 2^FS
+// ^AN,15^FO340,107^FDNo telp^FS
+// ^AN,15^FO400,107^FD:^FS
+// ^AN,15^FO410,107^FD021 - 89117509^FS
+// ^AN,15^FO340,123^FDNo wa^FS
+// ^AN,15^FO400,123^FD:^FS
+// ^AN,15^FO410,123^FD0812 8000 0429^FS
+// ^AN,15^FO340,137^FDEmail^FS
+// ^AN,15^FO400,137^FD:^FS
+// ^AN,15^FO410,137^FDinfo@dwigasindo.co.id^FS
+// ^FO225,5
+// ^BQN,2,5
+// ^FD5xx$serialNumber^FS
+// ^CF0,18
+// ^FB130,1,0,C
+// ^FO215,123
+// ^FD$serialNumber^FS
+// ^CF0N,10
+// ^FB130,1,0,C
+// ^FO213,143
+// ^FDPT. Dwigasindo Abadi^FS
+// ^FO340,15
+// ^BY1
+// ^BCN,50,N,N,N,A^FD$serialNumber^FS
+// ^XZ
+//   ''';
+
+//     try {
+//       log("Mengirim data ZPL ke printer: ${printer.name}");
+//       await flutterThermalPrinterPlugin.printData(
+//         printer,
+//         zplData.codeUnits,
+//       );
+//       log("Cetak ZPL berhasil.");
+//     } catch (e) {
+//       log("Error saat mencetak ZPL: $e");
+//     }
+//   }
+
   Future<void> printZPLCustomer(Printer printer, String serialNumber) async {
     final flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
 
     String zplData = '''
 ^XA
 
-^FO8,0
-^BQN,2,6
-^FD5xx$serialNumber^FS,,
+^FO255,5
+^BQN,2,5
+^FD5xx$serialNumber^FS
 
-^FO145,10
-^BY3
-^BCN,80,Y,N,N,A^FD$serialNumber^FS
+^FO370,15
+^BY1
+^BCN,50,N,N,N,A^FD$serialNumber^FS
+^CF0,25^FO370,68^FD$serialNumber^FS
 
 
-^XZ
+^XZ 
   ''';
 
     try {
@@ -1629,6 +1770,13 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelTubePagination? _tubePagination; // Sesuaikan model
 
   List<Tube> get tubes => _tubePagination?.data?.items ?? [];
+
+  Future<void> resetPagination() async {
+    tubes.clear();
+    _currentPage = 1;
+    hasMoreData = true;
+    isFetchingMore = false;
+  }
 
   Future<void> getTubesPaginated(BuildContext context,
       {bool isRefresh = false}) async {

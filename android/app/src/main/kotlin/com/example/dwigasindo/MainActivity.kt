@@ -1,4 +1,4 @@
-package com.ptdwigasindoabadi.dwigasindo
+package com.ptdwigasindo.dwigasindo
 
 import io.flutter.embedding.android.FlutterActivity
 

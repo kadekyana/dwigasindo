@@ -144,7 +144,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
           children: [
             SizedBox(
               width: width,
-              height: 120.h,
+              height: 150.h,
               child: ListTile(
                 title: Text(
                   'Pilih Tugas',
@@ -174,7 +174,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
             ),
             SizedBox(
               width: width,
-              height: 70.h,
+              height: 80.h,
               child: ListTile(
                 title: Text(
                   'Jenis Customer',
@@ -329,7 +329,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
             ),
             SizedBox(
               width: width,
-              height: 110.h,
+              height: 130.h,
               child: ListTile(
                 title: Text(
                   'Catatan',
@@ -337,7 +337,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
                 ),
                 subtitle: Container(
                   margin: EdgeInsets.only(top: height * 0.01),
-                  height: 70.h,
+                  height: 80.h,
                   child: TextField(
                     controller: note,
                     maxLines: null,
@@ -358,7 +358,7 @@ class _ComponentMenuBuatTugasState extends State<ComponentMenuBuatTugas> {
               alignment: Alignment.centerLeft,
               child: SizedBox(
                 width: width,
-                height: 220.h,
+                height: 250.h,
                 child: ListTile(
                   title: Text(
                     'PIC Approval',

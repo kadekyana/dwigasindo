@@ -4,7 +4,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
 import 'package:dwigasindo/model/modelAllOrder.dart';
-import 'package:dwigasindo/providers/provider_Order.dart';
 import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/providers/provider_item.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
@@ -20,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/provider_order.dart';
 
 class MenuOrder extends StatelessWidget {
   const MenuOrder({super.key});
@@ -1636,6 +1637,7 @@ class ComponentTambahOrder extends StatefulWidget {
 
 class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
   TextEditingController serial = TextEditingController();
+  TextEditingController poCustomer = TextEditingController();
   GroupButtonController? button = GroupButtonController(selectedIndex: 0);
   GroupButtonController? buat = GroupButtonController(selectedIndex: 0);
   bool cek = false;
@@ -1835,6 +1837,32 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                 ),
               ),
             ),
+            SizedBox(
+              width: width,
+              height: 100.h,
+              child: ListTile(
+                title: Text(
+                  'PO Customer',
+                  style: subtitleTextBlack,
+                ),
+                subtitle: Container(
+                  margin: EdgeInsets.only(
+                    top: height * 0.01,
+                  ),
+                  child: WidgetForm(
+                    controller: poCustomer,
+                    alert: 'PO Customer',
+                    hint: 'PO Customer',
+                    typeInput: TextInputType.text,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
             if (pdfPath == null) // Only show if PDF is not uploaded yet
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -1944,11 +1972,16 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                       })
                                   .toList();
 
-                              return CustomAutocomplete(
-                                data:
+                              return CustomDropdown(
+                                decoration: CustomDropdownDecoration(
+                                    closedBorder:
+                                        Border.all(color: Colors.grey.shade400),
+                                    expandedBorder: Border.all(
+                                        color: Colors.grey.shade400)),
+                                hintText: 'Pilih Customer',
+                                items:
                                     produk.map((e) => e['name']).toList() ?? [],
-                                displayString: (item) => item.toString(),
-                                onSelected: (item) {
+                                onChanged: (item) {
                                   print("Selected Item: $item");
 
                                   final selected = produk.firstWhere(
@@ -1969,7 +2002,6 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
 
                                   print("Selected ID: $selectProdukId");
                                 },
-                                labelText: 'Cari Barang',
                               );
                             },
                           ),
@@ -2139,10 +2171,16 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                                       })
                                   .toList();
 
-                              return CustomAutocomplete(
-                                data: item.map((e) => e['name']).toList() ?? [],
-                                displayString: (item) => item.toString(),
-                                onSelected: (value) {
+                              return CustomDropdown(
+                                decoration: CustomDropdownDecoration(
+                                    closedBorder:
+                                        Border.all(color: Colors.grey.shade400),
+                                    expandedBorder: Border.all(
+                                        color: Colors.grey.shade400)),
+                                hintText: 'Pilih Customer',
+                                items:
+                                    item.map((e) => e['name']).toList() ?? [],
+                                onChanged: (value) {
                                   print("Selected Item: $item");
 
                                   final selected = item.firstWhere(
@@ -2165,7 +2203,6 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
 
                                   print("Selected ID: $selectItemId");
                                 },
-                                labelText: 'Cari Item',
                               );
                             },
                           ),
@@ -2492,6 +2529,7 @@ class _ComponentTambahOrderState extends State<ComponentTambahOrder> {
                     jenisCustomer,
                     (buat?.selectedIndex ?? 0) + 1,
                     filepath,
+                    poCustomer.text,
                     selectPicId,
                     selectPicId1,
                     selectPicId2,

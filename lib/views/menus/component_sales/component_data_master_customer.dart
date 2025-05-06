@@ -2993,7 +2993,7 @@ class _ComponentEditDetailState extends State<ComponentEditDetail> {
               alignment: Alignment.centerLeft,
               child: SizedBox(
                 width: width,
-                height: 420.h,
+                height: 480.h,
                 child: ListTile(
                     title: Text(
                       'PIC Approval',

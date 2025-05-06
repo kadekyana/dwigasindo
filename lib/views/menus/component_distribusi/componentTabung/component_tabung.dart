@@ -316,12 +316,23 @@ class _ComponentTabungState extends State<ComponentTabung> {
 
                         // Navigate sesuai kondisi
                         Navigator.of(context).pop(); // Tutup Dialog Loading
-                        Navigator.push(
+                        final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ComponentTambahTabung(),
                           ),
                         );
+
+// Setelah kembali, refresh data jika diperlukan
+                        if (result == true && mounted) {
+                          final provider = Provider.of<ProviderDistribusi>(
+                              context,
+                              listen: false);
+                          await provider
+                              .resetPagination(); // (jika ada method untuk reset)
+                          await provider.getTubesPaginated(
+                              context); // Ambil ulang data dari awal
+                        }
                       } catch (e) {
                         Navigator.of(context).pop(); // Tutup Dialog Loading
                         print('Error: $e');
@@ -692,48 +703,48 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                     )
                                                   ],
                                                 )),
-                                                Expanded(
-                                                    child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        child: FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                            'Lokasi',
-                                                            style:
-                                                                subtitleTextBoldBlack,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    // Expanded(
-                                                    //   flex: 2,
-                                                    //   child: Container(
-                                                    //     padding:
-                                                    //         const EdgeInsets
-                                                    //             .all(3),
-                                                    //     child: FittedBox(
-                                                    //       fit: BoxFit.scaleDown,
-                                                    //       alignment: Alignment
-                                                    //           .centerLeft,
-                                                    //       child: Text(
-                                                    //           ': ${item. ?? "-"}',
-                                                    //           style:
-                                                    //               subtitleTextBoldBlack),
-                                                    //     ),
-                                                    //   ),
-                                                    // )
-                                                  ],
-                                                )),
+                                                // Expanded(
+                                                //     child: Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       flex: 1,
+                                                //       child: Container(
+                                                //         padding:
+                                                //             const EdgeInsets
+                                                //                 .all(3),
+                                                //         child: FittedBox(
+                                                //           fit: BoxFit.scaleDown,
+                                                //           alignment: Alignment
+                                                //               .centerLeft,
+                                                //           child: Text(
+                                                //             'Lokasi',
+                                                //             style:
+                                                //                 subtitleTextBoldBlack,
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     // Expanded(
+                                                //     //   flex: 2,
+                                                //     //   child: Container(
+                                                //     //     padding:
+                                                //     //         const EdgeInsets
+                                                //     //             .all(3),
+                                                //     //     child: FittedBox(
+                                                //     //       fit: BoxFit.scaleDown,
+                                                //     //       alignment: Alignment
+                                                //     //           .centerLeft,
+                                                //     //       child: Text(
+                                                //     //           ': ${item. ?? "-"}',
+                                                //     //           style:
+                                                //     //               subtitleTextBoldBlack),
+                                                //     //     ),
+                                                //     //   ),
+                                                //     // )
+                                                //   ],
+                                                // )),
                                               ],
                                             ),
                                           ),
@@ -1196,48 +1207,48 @@ class _ComponentTabungState extends State<ComponentTabung> {
                                                     )
                                                   ],
                                                 )),
-                                                Expanded(
-                                                    child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        child: FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                            'Lokasi',
-                                                            style:
-                                                                subtitleTextBoldBlack,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 2,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        child: FittedBox(
-                                                          fit: BoxFit.scaleDown,
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                              ': ${item.location ?? "-"}',
-                                                              style:
-                                                                  subtitleTextBoldBlack),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                )),
+                                                // Expanded(
+                                                //     child: Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       flex: 1,
+                                                //       child: Container(
+                                                //         padding:
+                                                //             const EdgeInsets
+                                                //                 .all(3),
+                                                //         child: FittedBox(
+                                                //           fit: BoxFit.scaleDown,
+                                                //           alignment: Alignment
+                                                //               .centerLeft,
+                                                //           child: Text(
+                                                //             'Lokasi',
+                                                //             style:
+                                                //                 subtitleTextBoldBlack,
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     Expanded(
+                                                //       flex: 2,
+                                                //       child: Container(
+                                                //         padding:
+                                                //             const EdgeInsets
+                                                //                 .all(3),
+                                                //         child: FittedBox(
+                                                //           fit: BoxFit.scaleDown,
+                                                //           alignment: Alignment
+                                                //               .centerLeft,
+                                                //           child: Text(
+                                                //               ': ${item.location ?? "-"}',
+                                                //               style:
+                                                //                   subtitleTextBoldBlack),
+                                                //         ),
+                                                //       ),
+                                                //     )
+                                                //   ],
+                                                // )),
                                               ],
                                             ),
                                           ),

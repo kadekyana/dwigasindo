@@ -960,8 +960,8 @@ class _ComponentLoadingTabungMixGasDetailState
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MenuScan(
-                            title: 'CO2',
+                          builder: (context) => IsiDataLoadingTube(
+                            title: 'Prefill',
                           ),
                         ),
                       );
@@ -1161,8 +1161,8 @@ class _ComponentLoadingTabungMixGasDetailState
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MenuScan(
-                                    title: 'Tube',
+                              builder: (context) => IsiDataLoadingTube(
+                                    title: 'Production',
                                   )));
                     },
                     child: Row(
@@ -1289,11 +1289,13 @@ class _ComponentLoadingTabungMixGasDetailState
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenuScan(
-                                    title: 'Tube',
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IsiDataLoadingTube(
+                            title: 'Postfill',
+                          ),
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1417,28 +1419,30 @@ class _ComponentLoadingTabungMixGasDetailState
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MenuScan(
-                                    title: 'Tube',
-                                  )));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/scan.svg',
-                          width: 30,
-                          height: 30,
-                        ),
-                        const SizedBox(width: 5),
-                        const Text('Scan Isi')
-                      ],
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => IsiDataLoadingTube(
+                  //           title: 'Postfill',
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       SvgPicture.asset(
+                  //         'assets/images/scan.svg',
+                  //         width: 30,
+                  //         height: 30,
+                  //       ),
+                  //       const SizedBox(width: 5),
+                  //       const Text('Scan Isi')
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   (data!.tubeLoadingDetail?.length != 0)
                       ? Expanded(
@@ -1452,8 +1456,8 @@ class _ComponentLoadingTabungMixGasDetailState
                                   _buildInfoCard(
                                     prefill: false,
                                     production: false,
-                                    postfill: true,
-                                    finish: false,
+                                    postfill: false,
+                                    finish: true,
                                     width: width,
                                     height: height,
                                     data: {

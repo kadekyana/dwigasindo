@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:dwigasindo/const/const_color.dart';
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/model/modelLoadingTube.dart';
 import 'package:dwigasindo/providers/provider_sales.dart';
 import 'package:dwigasindo/views/menus/component_maintenance/component_button_maintenance.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
@@ -25,14 +22,10 @@ class ComponentListMaintenance extends StatefulWidget {
 class _ComponentListMaintenanceState extends State<ComponentListMaintenance>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int? _selectedCardIndex;
-  final bool _showForm = false;
   Set<int> expandedCards = {};
-
+  bool _isLoading = false;
   final TextEditingController tare = TextEditingController();
   final TextEditingController empty = TextEditingController();
-
-  late Map<int, StreamController<ModelLoadingTube>> _streamControllers;
 
   GroupButtonController? menu = GroupButtonController(selectedIndex: 0);
   bool selectMenu = true;
@@ -45,49 +38,43 @@ class _ComponentListMaintenanceState extends State<ComponentListMaintenance>
 
     // Menambahkan listener untuk mendeteksi perubahan tab
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        final currentIndex = _tabController.index;
-        // Memanggil fungsi untuk mendapatkan data sesuai tab yang aktif
-        _getDataForTab(currentIndex);
+      if (!_tabController.indexIsChanging &&
+          _tabController.index != _tabController.previousIndex) {
+        _getDataForTab(_tabController.index);
       }
     });
   }
 
   // Fungsi untuk mendapatkan data sesuai tab yang aktif
-  void _getDataForTab(int tabIndex) {
-    // Fungsi untuk mengambil data berdasarkan tab yang aktif
+  void _getDataForTab(int tabIndex) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(Duration(milliseconds: 300)); // efek delay transisi
+
     switch (tabIndex) {
       case 0:
-        // Tab List
-        print("Get data for List");
-        Provider.of<ProviderSales>(context, listen: false)
+        await Provider.of<ProviderSales>(context, listen: false)
             .getListMaintenance(context, 0, 0);
-        // Panggil fungsi untuk mendapatkan data List
         break;
       case 1:
-        // Tab Ready to use
-        print("Get data for Ready to use");
-        Provider.of<ProviderSales>(context, listen: false)
+        await Provider.of<ProviderSales>(context, listen: false)
             .getListMaintenance(context, 0, 3);
-        // Panggil fungsi untuk mendapatkan data Ready to use
         break;
       case 2:
-        // Tab Afkir
-        print("Get data for Afkir");
-        Provider.of<ProviderSales>(context, listen: false)
+        await Provider.of<ProviderSales>(context, listen: false)
             .getListMaintenance(context, 0, 5);
-        // Panggil fungsi untuk mendapatkan data Afkir
         break;
       case 3:
-        // Tab Retur
-        print("Get data for Retur");
-        Provider.of<ProviderSales>(context, listen: false)
+        await Provider.of<ProviderSales>(context, listen: false)
             .getListMaintenance(context, 0, 4);
-        // Panggil fungsi untuk mendapatkan data Retur
-        break;
-      default:
         break;
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -263,17 +250,18 @@ class _ComponentListMaintenanceState extends State<ComponentListMaintenance>
             ],
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                ComponentMenuList(),
-                ComponentMenuReady(),
-                ComponentMenuAfkir(),
-                ComponentMenuReturn(),
-                // Konten untuk setiap tab
-              ],
-            ),
-          )
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : TabBarView(
+                    controller: _tabController,
+                    children: [
+                      ComponentMenuList(),
+                      ComponentMenuReady(),
+                      ComponentMenuAfkir(),
+                      ComponentMenuReturn(),
+                    ],
+                  ),
+          ),
         ],
       ),
     );

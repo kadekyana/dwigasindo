@@ -346,7 +346,7 @@ class _ComponentDataMasterCustomerState
                                       children: [
                                         Expanded(
                                           child: CircularPercentIndicator(
-                                            radius: 45.0,
+                                            radius: 40.0,
                                             lineWidth: 5,
                                             percent: dataCard.totalSales! > 0
                                                 ? dataCard.totalRemaining! /
@@ -375,7 +375,6 @@ class _ComponentDataMasterCustomerState
                                                 CircularStrokeCap.round,
                                           ),
                                         ),
-                                        const SizedBox(height: 5.0),
                                       ],
                                     ),
                                   ),

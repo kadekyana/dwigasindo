@@ -625,10 +625,10 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                 lokasi.text,
                               );
                             }
-                            Navigator.pop(context);
+                            Navigator.pop(context, true);
                             provider.getAllTube(context);
                             provider.countTube();
-                            Navigator.pop(context);
+                            Navigator.pop(context, true);
                           } else {
                             await provider.createTabungSTDR(
                               context,
@@ -646,7 +646,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                               lokasi.text,
                             );
                             await provider.getAllTube(context);
-                            Navigator.pop(context);
+                            Navigator.pop(context, true);
                             await provider.countTube();
                           }
                         },
@@ -737,7 +737,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                       //     dataHasil['data']['code']);
                                     }
                                     provider.getAllTube(context);
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                     provider.countTube();
                                   } else {
                                     final dataHasil =
@@ -763,7 +763,7 @@ class _ComponentTambahTabungState extends State<ComponentTambahTabung> {
                                     //     dataHasil['data']['tube_gas_name'],
                                     //     dataHasil['data']['code']);
                                     await provider.getAllTube(context);
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                     await provider.countTube();
                                   }
                                 } else {
@@ -1234,7 +1234,86 @@ class _ComponentTambahCradleState extends State<ComponentTambahCradle> {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: height * 0.04,
+                    ),
+                    WidgetButtonCustom(
+                        FullWidth: width * 0.9,
+                        FullHeight: 40.h,
+                        title: "Tambah Cradle",
+                        bgColor: PRIMARY_COLOR,
+                        onpressed: () async {
+                          if (owner == 2) {
+                            print("A : $selectSupllier");
+                            print("B : $selectCustomer");
+                          } else {
+                            print("A : $selectSupllier");
+                            print("B : $selectCustomer");
+                          }
+
+                          // Atur nilai null sesuai kondisi
+                          if (nonGrade == false) {
+                            setState(() {
+                              selectedGradeIndex = null;
+                            });
+                          } else if (isSingle == true) {
+                            setState(() {
+                              nonSingletubeType = null;
+                            });
+                          }
+
+                          print(owner);
+                          print(isSingle);
+                          print(nonSingletubeType);
+                          print(nonGrade);
+
+                          if (owner == 1) {
+                            await provider.createCradleSDTR(
+                              context,
+                              owner!,
+                              isSingle,
+                              nonSingletubeType!,
+                              nonGrade,
+                              null,
+                              selectSupllier,
+                              lokasi.text,
+                              int.parse(selectTubeGas),
+                            );
+                            provider.getAllCradle(context);
+                            Navigator.pop(context);
+                            provider.countTube();
+                          } else {
+                            await provider.createCradleSDTR(
+                              context,
+                              owner!,
+                              isSingle,
+                              nonSingletubeType!,
+                              nonGrade,
+                              selectCustomer,
+                              null,
+                              lokasi.text,
+                              int.parse(selectTubeGas),
+                            );
+                            await provider.getAllCradle(context);
+                            Navigator.pop(context);
+                            await provider.countTube();
+                          }
+                        },
+                        color: PRIMARY_COLOR),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    SizedBox(
+                      height: 50.h,
+                      child: Center(
+                        child: Text(
+                          "Jika Ingin Print Barcode\nPastikan Sudah Tersambung dengan Printer",
+                          style: titleTextBlack,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.h,
                     ),
                     ElevatedButton(
                       onPressed: startScan,
