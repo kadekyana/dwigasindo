@@ -248,6 +248,7 @@ class MenuHome extends StatelessWidget {
                                 providerDistribusi.getAllCostumer(context),
                                 providerDistribusi.getAllSupplier(context),
                                 providerDistribusi.getAllCradle(context),
+                                providerDistribusi.getSummarryClaims(context)
                               ]);
 
                               Navigator.pop(context);

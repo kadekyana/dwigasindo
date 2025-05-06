@@ -1,5 +1,5 @@
 import 'package:dwigasindo/const/const_font.dart';
-import 'package:dwigasindo/providers/provider_sales.dart';
+import 'package:dwigasindo/providers/provider_distribusi.dart';
 import 'package:dwigasindo/views/menus/component_distribusi/componentClaim/component_claim_list.dart';
 import 'package:dwigasindo/widgets/widget_appbar.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,8 @@ class ComponentClaimPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final provider = Provider.of<ProviderSales>(context);
+    final provider = Provider.of<ProviderDistribusi>(context);
+    final data = provider.modelSummaryClaims?.data;
     // List map untuk data
     final List<Map<String, dynamic>> items = [
       {'title': 'List Tabung Claim'},
@@ -53,7 +54,7 @@ class ComponentClaimPage extends StatelessWidget {
                     ),
                     child: Center(
                         child: Text(
-                      "Jumlah\nTabung Claim\n1000",
+                      "Jumlah\nTabung Claim\n${data?.totalClaim}",
                       style: subtitleTextBlack,
                       textAlign: TextAlign.center,
                     )),
@@ -67,7 +68,7 @@ class ComponentClaimPage extends StatelessWidget {
                     ),
                     child: Center(
                         child: Text(
-                      "Return Customer\n5000",
+                      "Return Customer\n${data?.totalReturnCustomer}",
                       style: subtitleTextBlack,
                       textAlign: TextAlign.center,
                     )),
@@ -94,12 +95,7 @@ class ComponentClaimPage extends StatelessWidget {
                       );
 
                       try {
-                        await Future.wait([
-                          provider.getListMaintenance(context, 1, 0),
-                          provider.getSummaryMaintenance(context),
-                          provider.getUsersPic(context),
-                          provider.getItemSupport(context),
-                        ]);
+                        await Future.wait([provider.getClaimsAll(context, 0)]);
 
                         // Navigate sesuai kondisi
                         Navigator.of(context).pop(); // Tutup Dialog Loading

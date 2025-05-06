@@ -10,12 +10,14 @@ import 'package:dwigasindo/model/modelAllTubeGas.dart';
 import 'package:dwigasindo/model/modelAllTubeGrade.dart';
 import 'package:dwigasindo/model/modelAllTubeType.dart';
 import 'package:dwigasindo/model/modelAllVendor.dart';
+import 'package:dwigasindo/model/modelClaimsAll.dart';
 import 'package:dwigasindo/model/modelCradle.dart';
 import 'package:dwigasindo/model/modelDetailBpti.dart';
 import 'package:dwigasindo/model/modelDetailSuratJalan.dart';
 import 'package:dwigasindo/model/modelOneBPTK.dart';
 import 'package:dwigasindo/model/modelSatuanSuratJalan.dart';
 import 'package:dwigasindo/model/modelSatuanSuratJalanItem.dart';
+import 'package:dwigasindo/model/modelSummaryClaims.dart';
 import 'package:dwigasindo/model/modelSupplier.dart';
 import 'package:dwigasindo/model/modelSuratJalanItem.dart';
 import 'package:dwigasindo/model/modelTube.dart';
@@ -114,6 +116,12 @@ class ProviderDistribusi extends ChangeNotifier {
   ModelSatuanSuratJalan? _satuanSuratJalan;
   ModelSatuanSuratJalan? get satuanSuratJalan => _satuanSuratJalan;
 
+  ModelSummaryClaims? _modelSummaryClaims;
+  ModelSummaryClaims? get modelSummaryClaims => _modelSummaryClaims;
+
+  ModelClaimsAll? _modelClaimsAll;
+  ModelClaimsAll? get claimsAll => _modelClaimsAll;
+
   Future<void> getDataVendor(BuildContext context) async {
     final auth = Provider.of<ProviderAuth>(context, listen: false);
     final token = auth.auth!.data.accessToken;
@@ -124,6 +132,37 @@ class ProviderDistribusi extends ChangeNotifier {
     if (response?.data['error'] == null) {
       final data = ModelAllVendor.fromJson(response!.data);
       _vendors = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getSummarryClaims(BuildContext context) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response =
+        await DioServiceAPI().getRequest(url: "claims/summary", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelSummaryClaims.fromJson(response!.data);
+      _modelSummaryClaims = data;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getClaimsAll(BuildContext context, int status) async {
+    _modelClaimsAll = null;
+    notifyListeners();
+
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+    final response = await DioServiceAPI()
+        .getRequest(url: "claims/get-all?status=$status", token: token);
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      final data = ModelClaimsAll.fromJson(response!.data);
+      _modelClaimsAll = data;
       notifyListeners();
     }
   }
@@ -1553,6 +1592,23 @@ class ProviderDistribusi extends ChangeNotifier {
       isLoadingVer = false;
       notifyListeners();
     });
+  }
+
+  Future<void> updateStatusClaim(
+      BuildContext context, String noClaim, int status) async {
+    final auth = Provider.of<ProviderAuth>(context, listen: false);
+    final token = auth.auth!.data.accessToken;
+
+    final response = await DioServiceAPI().putRequest(
+        url: "claims/update-status",
+        token: token,
+        data: {"claim_no": noClaim, "status": status});
+
+    print(response?.data);
+    if (response?.data['error'] == null) {
+      getClaimsAll(context, 0);
+      notifyListeners();
+    }
   }
 
   // Create BPTI

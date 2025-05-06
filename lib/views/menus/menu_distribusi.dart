@@ -161,7 +161,7 @@ class MenuDistribusi extends StatelessWidget {
                         provider.isLoadingTube = true;
                       },
                     ),
-                    WidgetButtonDistribusi(
+                    const WidgetButtonDistribusi(
                       title: 'Claim',
                       dataList: null,
                       onTap: ComponentClaimPage(),
